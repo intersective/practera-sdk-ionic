@@ -1,0 +1,63 @@
+// general placeholder mixin
+@mixin placeholderColor {
+  ::-webkit-input-placeholder { /* Chrome General */
+    color: $border-primary; // default theme
+    opacity: 0.6;
+  }
+  :-moz-placeholder { /* Firefox 4 to 18 */
+    color: $border-primary; // default theme
+    opacity: 0.6;
+  }
+  ::-moz-placeholder { /* Firefox 19+ */
+    color: $border-primary; // default theme
+    opacity: 0.6;
+  }
+  :-ms-input-placeholder { /* IE 10-11 */
+    color: $border-primary; // default theme
+    opacity: 0.6;
+  }
+}
+// general btns mixin
+@mixin circle-btn {
+  border-radius: 30pt;
+  width: 100%;
+}
+@mixin closeBtn {
+  font-size: 2.5rem;
+  color: color($colors, secondary, base);
+  font-weight: bold;
+  position: relative;
+  top: -3px;
+}
+@mixin eventBtn {
+  overflow: hidden;
+  margin: 0.4rem 0.2rem;
+  border-radius: 2px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+@mixin bookBtn {
+  @include eventBtn;
+  padding: 0 1.1em;
+  height: 3.6rem;
+  font-size: 1.4rem;
+  color: color($colors, secondary, base); // default-theme
+  background-color: color($colors, button, base); // default-theme
+}
+@mixin cancelBtn {
+  @include eventBtn;
+  padding: 0 0.4em;
+  height: 3.2rem;
+  font-size: 1.2rem;
+  color: color($colors, button, base); // default-theme
+  border-color: color($colors, button, base); // default-theme
+}
+@mixin checkinBtn {
+  @include eventBtn;
+  padding: 0 0.4em;
+  height: 3.2rem;
+  font-size: 1.2rem;
+  color: color($colors, secondary, base) !important; // default-theme
+  background-color: color($colors, button, base); // default-theme
+}
+

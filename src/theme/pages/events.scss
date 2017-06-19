@@ -1,0 +1,34 @@
+// Font-awesome
+@import "font-awesome";
+
+@mixin makeIcon($arg, $val) {
+  .ion-ios-#{$arg}:before ,
+  .ion-ios-#{$arg}-circle:before ,
+  .ion-ios-#{$arg}-circle-outline:before ,
+  .ion-ios-#{$arg}-outline:before ,
+  .ion-md-#{$arg}:before ,
+  .ion-md-#{$arg}-circle:before ,
+  .ion-md-#{$arg}-circle-outline:before ,
+  .ion-md-#{$arg}-outline:before  {
+    content: $val;
+    font-size: 26px;
+  }
+}
+
+@include makeIcon(fa-pdf, $fa-var-file-pdf-o)
+@include makeIcon(fa-word, $fa-var-file-word-o)
+@include makeIcon(fa-archive, $fa-var-file-archive-o)
+@include makeIcon(fa-audio, $fa-var-file-audio-o)
+@include makeIcon(fa-code, $fa-var-file-code-o)
+@include makeIcon(fa-excel, $fa-var-file-excel-o)
+@include makeIcon(fa-image, $fa-var-file-image-o)
+@include makeIcon(fa-movie, $fa-var-file-movie-o)
+@include makeIcon(fa-photo, $fa-var-file-photo-o)
+@include makeIcon(fa-picture, $fa-var-file-picture-o)
+@include makeIcon(fa-powerpoint, $fa-var-file-powerpoint-o)
+@include makeIcon(fa-sound, $fa-var-file-sound-o)
+@include makeIcon(fa-text, $fa-var-file-text-o)
+@include makeIcon(fa-video, $fa-var-file-video-o)
+@include makeIcon(fa-zip, $fa-var-file-zip-o)
+@include makeIcon(fa-file, $fa-var-file-o)
+@include makeIcon(fa-files, $fa-var-files-o)

@@ -1,0 +1,125 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+$font-path: "../assets/fonts";
+$item-md-detail-push-show: true;
+$item-wp-detail-push-show: true;
+
+
+@import "ionic.globals";
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+// General Colors (Shared File)
+$primary: #22c7fa;
+$secondary: #ffffff;
+$danger: #f53d3d;
+$light: #f4f4f4;
+$primary-dark: #000000;
+$secondary-dark: #222222;
+$border-primary: #dddddd;
+$border-secondary: #cccccc;
+$button: #4470a5;
+
+
+// App Mixin Functions
+@import './theme/mixins';
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary: (
+     base: $primary,
+     contrast: $light
+  ),
+  primary-light: (
+     base: lighten($primary, 10%),   // make 10% lighter than primary
+     contrast: darken($secondary, 10%) // darken for contrast?
+  ),
+  primary-dark:  (
+     base: darken($primary, 10%), // make 10% darker than primary
+     contrast: lighten($secondary, 10%) // lighten for contrast?
+  ),
+  secondary: (
+     base: $secondary,
+     contrast: $light
+  ),
+  danger: (
+     base: $danger,     
+     contrast: $secondary
+  ),
+  light: (
+     base: $light,
+     contrast: $secondary
+  ),
+  dark: (
+     base: $primary-dark,
+     contrast: $secondary
+  ),
+  button: (
+    base: $button,
+    contrast: $secondary
+  ),
+  border: (
+    base: $border-primary,
+    contrast: $border-secondary
+  )
+);
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+// @import "roboto";
+// @import "noto-sans";
+

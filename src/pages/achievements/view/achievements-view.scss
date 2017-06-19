@@ -1,0 +1,19 @@
+.achievements-view {
+
+  .badge {
+    height: 100px;
+    width: auto;
+    margin: auto;
+    display: block;
+  }
+
+  .point {
+    text-align: right;
+    color: #8E9093;
+  }
+
+  .unachieved {
+    -webkit-filter: opacity(50%) grayscale(100%);
+    filter: opacity(50%) grayscale(100%);
+  }
+}

@@ -1,0 +1,47 @@
+<ion-menu [content]="sideNav">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Practera</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <button ion-item
+              icon-left
+              *ngIf="isLoggedin()"
+              (click)="onLoad(tabsPage)">
+        <ion-icon name="home"></ion-icon>
+        Home
+      </button>
+      <button ion-item
+              icon-left
+              *ngIf="isLoggedin()"
+              (click)="onLoad(activitiesListPage)">
+        <ion-icon name="list"></ion-icon>
+        Activities
+      </button>
+      <button ion-item
+              icon-left
+              *ngIf="isLoggedin()"
+              (click)="onLoad(levelsListPage)">
+        <ion-icon name="list"></ion-icon>
+        Levels
+      </button>
+      <button ion-item
+              icon-left
+              *ngIf="!isLoggedin()"
+              (click)="onLoad(loginPage)">
+        <ion-icon name="log-in"></ion-icon>
+        Login
+      </button>
+      <button ion-item
+              icon-left
+              *ngIf="isLoggedin()"
+              (click)="onLogout()">
+        <ion-icon name="log-out"></ion-icon>
+        Logout
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+<ion-nav [root]="loginPage" #sideNav></ion-nav>

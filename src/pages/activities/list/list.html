@@ -1,0 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Activities</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="activities" padding="true">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+  <activity *ngFor="let activity of activities" [activity]="activity">
+  </activity>
+</ion-content>

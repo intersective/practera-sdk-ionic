@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar hideBackButton="true">
+    <ion-title>Terms and Conditions</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <term-content></term-content>
+  </ion-list>
+  <!-- <ion-list *ngIf="content">
+    <iframe width="100%" height="2500px" [src]="content" frameborder="0" marginwidth="0"></iframe>
+  </ion-list> -->
+  <ion-list>
+    <!-- <button ion-item stable block (click)="signIn()">Skip (temporary)</button> -->
+    <ion-item>
+     <ion-label>I agree</ion-label>
+     <ion-checkbox [(ngModel)]="agreed" (change)="toggleAgree()" value="Agree"></ion-checkbox>
+   </ion-item>
+  </ion-list>
+  <ion-list class="register-next">
+    <button stable block disabled [disabled]="!agreed" (click)="agree(user)">Next</button>
+  </ion-list>
+</ion-content>

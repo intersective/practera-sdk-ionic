@@ -1,0 +1,28 @@
+<ion-item (click)="gotoActivity(activity.id)">
+  <h2>{{ activity.name }}</h2>
+</ion-item>
+
+
+<!-- <ion-item tappable text-wrap (click)="view(activity)" class="activity-page">
+  <h2>{{activity.name}}</h2>
+  <p *ngIf="activity.end">Due: {{ activity.end }}</p>
+
+  <div *ngIf="activity.status !== 'completed'">
+    <div *ngIf="activity.hasSession">
+      <div class="btn-half">
+        <button block positive
+          *ngIf="!hasReservation(activity) && activity.isBookable"
+          (click)="book('activity')">Book</button>
+
+        <button block secondary
+          *ngIf="hasReservation(activity)"
+          (click)="gotoTicket(activity)">My Ticket</button>
+      </div>
+    </div>
+
+    <button block dark
+      [ngClass]="{inactive: !activity.isRunning}"
+      (click)="view(activity)"
+      >{{activity.status || 'Coming soon...'}}</button>
+  </div>
+</ion-item> -->

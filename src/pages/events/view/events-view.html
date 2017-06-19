@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ event.title }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="events">
+  <ion-list>
+    <ion-item class="title-background"
+      [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
+      <p class="title">{{ event.title }}</p>
+      <div *ngIf="event.isBooked" class="status">
+        <div class="tag">{{ (event.isAttended) ? 'Attended' : 'Booked' }}</div>
+      </div>
+    </ion-item>
+  </ion-list>
+  <ion-list class="details">
+    <ion-row>
+      <ion-col col-8 class="info">
+        <p><strong>{{ event.startDisplay }}</strong></p>
+        <p class="lighter">{{ event.location }}</p>
+        <p class="lighter">{{ event.activity.name }}</p>
+      </ion-col>
+    </ion-row>
+  </ion-list>
+  <ion-list no-lines>
+    <ion-item text-wrap>
+      {{ event.description || 'No description available.' }}
+    </ion-item>
+  </ion-list>
+  <ion-list inset class="download">
+    <button ion-item (click)="gotoDownload(event)" detail-push>Download</button>
+  </ion-list>
+</ion-content>
+<ion-footer class="events">
+  <ion-toolbar>
+    <p class="lighter spacer-left">{{ bookingStatus }}</p>
+    <ion-buttons end>
+      <button ion-button *ngIf="!event.isBooked" class="book-btn" (click)="book(event)">
+        Book
+      </button>
+      <button ion-button *ngIf="event.isBooked" class="checkin-btn" (click)="checkin(event)">
+        Check-in
+      </button>
+      <button ion-button *ngIf="event.isBooked" class="cancel-btn" outline (click)="cancelBooking(event)">
+        Cancel Booking
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
