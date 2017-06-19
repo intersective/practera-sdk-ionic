@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ this.achievement.name }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="achievements-view">
+  <ion-list inset>
+    <ion-list-header>
+      <img
+        class="badge {{ (!this.achievement.achieved) ? 'unachieved' : '' }}"
+        alt="{{this.achievement.name}}"
+        src="{{this.achievement.badge}}"
+      />
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Points</ion-label>
+      <ion-label class="point">{{ this.achievement.points }}</ion-label>
+    </ion-item>
+    <ion-item>
+      <p>{{ this.achievement.description }}</p>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,163 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Shared Imports
+// --------------------------------------------------
+// These are the imports which make up the design of this app.
+// By default each design mode includes these shared imports.
+// App Shared Sass variables belong in app.variables.scss.
+
+// @import "../pages/page1/page1";
+// @import "../pages/page2/page2";
+// @import "../pages/page3/page3";
+
+// Font-awesome
+@import "font-awesome";
+
+@font-face {
+  font-family: 'Roboto-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: url('../assets/fonts/roboto/Roboto-Regular.ttf') format('truetype');
+}
+
+* {
+  font-family: "Roboto-Regular";
+}
+
+
+.showfull > textarea {
+  width: 100%;
+  overflow: visible !important;
+  resize: none;
+}
+
+/* Utilities */
+.title-wrap {
+  overflow: inherit;
+  text-overflow: none;
+  white-space: pre-wrap;
+}
+
+.inset {
+  &-header {
+    font-weight: 500;
+    font-size: 14px;
+    opacity: 0.7;
+    padding: 2% 3% 1%;
+    margin-bottom: -4px;
+  }
+
+  &-description {
+    font-weight: 400;
+    font-size: 14px;
+    opacity: 0.4;
+    padding: 2% 3% 1%;
+    margin-bottom: -4px;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-small {
+  font-size: 70%;
+}
+
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
+}
+
+.spacer {
+  margin: 10px;
+  &-bg {
+    margin: 20px;
+  }
+
+  &-top {
+    margin-top: 10px;
+    &-bg {
+      margin-top: 20px;
+    }
+    &-sm {
+      margin-top: 5px;
+    }
+    &-xs {
+      margin-top: 1px;
+    }
+  }
+
+  &-bottom {
+    margin-bottom: 10px;
+    &-bg {
+      margin-bottom: 20px;
+    }
+    &-sm {
+      margin-bottom: 5px;
+    }
+    &-xs {
+      margin-bottom: 1px;
+    }
+  }
+
+  &-left {
+    margin-left: 10px;
+    &-bg {
+      margin-left: 20px;
+    }
+    &-sm {
+      margin-left: 5px;
+    }
+    &-xs {
+      margin-left: 1px;
+    }
+  }
+
+  &-right {
+    margin-right: 10px;
+    &-bg {
+      margin-right: 20px;
+    }
+  }
+}
+
+/* custom styling */
+.warning {
+  text-align: center;
+}
+
+@mixin makeIcon($arg, $val) {
+  .ion-ios-#{$arg}:before ,
+  .ion-ios-#{$arg}-circle:before ,
+  .ion-ios-#{$arg}-circle-outline:before ,
+  .ion-ios-#{$arg}-outline:before ,
+  .ion-md-#{$arg}:before ,
+  .ion-md-#{$arg}-circle:before ,
+  .ion-md-#{$arg}-circle-outline:before ,
+  .ion-md-#{$arg}-outline:before  {
+    content: $val;
+    font-size: 26px;
+  }
+}
+
+@include makeIcon(fa-pdf, $fa-var-file-pdf-o)
+@include makeIcon(fa-word, $fa-var-file-word-o)
+@include makeIcon(fa-archive, $fa-var-file-archive-o)
+@include makeIcon(fa-audio, $fa-var-file-audio-o)
+@include makeIcon(fa-code, $fa-var-file-code-o)
+@include makeIcon(fa-excel, $fa-var-file-excel-o)
+@include makeIcon(fa-image, $fa-var-file-image-o)
+@include makeIcon(fa-movie, $fa-var-file-movie-o)
+@include makeIcon(fa-photo, $fa-var-file-photo-o)
+@include makeIcon(fa-picture, $fa-var-file-picture-o)
+@include makeIcon(fa-powerpoint, $fa-var-file-powerpoint-o)
+@include makeIcon(fa-sound, $fa-var-file-sound-o)
+@include makeIcon(fa-text, $fa-var-file-text-o)
+@include makeIcon(fa-video, $fa-var-file-video-o)
+@include makeIcon(fa-zip, $fa-var-file-zip-o)
+@include makeIcon(fa-file, $fa-var-file-o)
+@include makeIcon(fa-files, $fa-var-files-o)

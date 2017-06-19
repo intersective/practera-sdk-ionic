@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Team
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="levels" padding="true">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+  <ion-list>
+    <member *ngFor="let member of members" [member]="member"></member>
+  </ion-list>
+</ion-content>

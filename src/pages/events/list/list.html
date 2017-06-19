@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Events</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="events">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+	</ion-refresher>
+  <div>&nbsp;</div>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12>
+        <ion-segment [(ngModel)]="filter">
+          <ion-segment-button value="browses" (ionSelect)="selected('browses')">
+            Browse
+          </ion-segment-button>
+          <ion-segment-button value="my-bookings" (ionSelect)="selected('my-bookings')">
+            My Bookings
+          </ion-segment-button>
+          <ion-segment-button value="attended" (ionSelect)="selected('attended')">
+            Attended
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-list>
+    <ion-card *ngIf="showNoEventMessage()">
+      <ion-card-content *ngIf="(filter === 'browses')">
+        There are no scheduled events available. Please check back later.
+      </ion-card-content>
+      <ion-card-content *ngIf="(filter === 'my-bookings')">
+        You have no bookings. Tap on "Browse" and book an event now to enhance your skills.
+      </ion-card-content>
+      <ion-card-content *ngIf="(filter === 'attended')">
+        You have not attended any events yet.
+      </ion-card-content>
+    </ion-card>
+    <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,34 @@
+<ion-content class="login-module">
+  <ion-grid class="default-center-container">
+    <ion-row>
+      <ion-col>
+        <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
+        <p>
+          Great - you are almost there! Just one more thing...
+        </p>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col width-10></ion-col>
+      <ion-col width-80 class="login-container">
+        <button class="general-circle-btn"
+                ion-button
+                block
+                color="button"
+                (click)="popRegistrationModal()">
+          SET PASSWORD
+        </button>
+      </ion-col>
+      <ion-col width-10></ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+ <ion-content class="mode-warn" *ngIf="verifySuccess == false">
+  <div class="mode-warn-sms">
+    <div class="mode-text-container">
+      <span>
+        Sorry, verification failed, please resend your email and password.
+      </span>
+    </div>
+  </div>
+</ion-content>

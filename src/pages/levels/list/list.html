@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button
+              icon-only
+              menuToggle>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Levels</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="levels" padding="true">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
+</ion-content>

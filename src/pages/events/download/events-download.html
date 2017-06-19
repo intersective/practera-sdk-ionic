@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Downloads</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-item *ngFor="let file of files; let idx = index;" text-wrap (click)="view(file)">
+    <ion-icon name="{{file.icon}}" class="fa" item-left></ion-icon>
+    {{ file.name || 'Attachment ' + (++idx) }}
+  </ion-item>
+
+  <ion-item *ngIf="files.length == 0">
+    No attachments available.
+  </ion-item>
+
+</ion-content>
+
