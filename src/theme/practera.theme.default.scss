@@ -6,41 +6,10 @@
 // 1.1 General Color Variables
 $events-download-btn: 1px $border-primary solid;
 // 1.2 General Font Variables
-$font-primary-regular: 'Roboto Regular';
-$font-primary-bold: 'Roboto Bold';
-$font-primary-light: 'Roboto Light';
-$font-secondary: 'Raleway Medium';
-$font-secondary-regular: 'Raleway Regular';
-// 2. General Font Family
-// 2.1 General Page Font Family
-@font-face {
-  font-family: 'Roboto Regular';
-  font-weight: normal;
-  font-style: normal;
-  src: local('??'), url('../assets/fonts/roboto/Roboto-Regular.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Roboto Bold';
-  src: local('??'), url('../assets/fonts/roboto/Roboto-Bold.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'Roboto Light';
-  src: local('??'), url('../assets/fonts/roboto/Roboto-Light.ttf') format('truetype');
-}
-// 2.2 Login/Registration/RestPassword Pages Font Family
-@font-face {
-  font-family: 'Raleway Regular';
-  font-weight: normal;
-  font-style: normal;
-  src: local('??'), url('../assets/fonts/raleway/Raleway-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Raleway Medium';
-  font-weight: normal;
-  font-style: normal;
-  src: local('??'), url('../assets/fonts/raleway/Raleway-Medium.ttf') format('truetype');
-}
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
+$font-primary: 'Roboto';
+$font-secondary: 'Raleway';
 
 // 3. General Tab Styling
 .tab-color {
@@ -49,17 +18,17 @@ $font-secondary-regular: 'Raleway Regular';
 }
 // 4. General Text styling
 .app-title {
-  font-family: $font-primary-regular;
+  font-family: $font-primary;
   font-size: 1.7rem;
   font-weight: 600;
   text-align: center;
 }
 .card-title {
-  font-family: $font-primary-regular;
+  font-family: $font-primary;
   font-size: 32px;
 }
 .general-text {
-  font-family: $font-primary-regular;
+  font-family: $font-primary;
   font-size: 1.3rem;
 }
 // 5. General Button Styling
@@ -364,11 +333,11 @@ event {
     font-size: 32px;
     line-height: 40px;
     color: white;
-    font-family: $font-primary-regular; // default-theme
+    font-family: $font-primary; // default-theme
   }
   .event-details {
     padding: 8px 15px;
-    font-family: $font-primary-regular; // default-theme
+    font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
   }
