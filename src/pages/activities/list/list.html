@@ -4,11 +4,15 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="activities" padding="true">
+<ion-content padding="true">
   <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
 	</ion-refresher>
 
-  <activity *ngFor="let activity of activities" [activity]="activity">
-  </activity>
+  <ion-list *ngFor="let activity of activities" (click)="gotoActivity(activity)">
+    <p>{{activity.name}}</p>
+  </ion-list>
 </ion-content>

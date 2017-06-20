@@ -81,6 +81,7 @@ export class EventsListPage {
 
       // Get activities IDs
       this.activityService.getList()
+      .toPromise()
       .then((activities) => {
         let activityIDs = [];
         _.forEach(activities, (act) => {
