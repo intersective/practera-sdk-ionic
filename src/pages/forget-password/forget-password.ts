@@ -4,7 +4,6 @@ import { NavController,
          LoadingController,
          AlertController,
          ToastController } from 'ionic-angular';
-import { Http, Response } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
