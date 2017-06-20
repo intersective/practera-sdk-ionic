@@ -1,13 +1,50 @@
-<ion-header>
+<ion-header class="activity-detail">
   <ion-navbar>
-    <ion-title>Activity</ion-title>
+    <ion-title>{{ activity.name }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openModal()">
+        <ion-icon name="information-circle"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
-  <ion-toolbar>
-    <ion-title>{{currentActivity.title}}</ion-title>
-  </ion-toolbar>
+  <ion-list class="header-content">
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12>
+          <ion-icon name="{{activity.icon || 'globe-outline'}}" item-left></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+
 </ion-header>
 
-<ion-content>
-  <pre>{{currentActivity | json}}</pre>
+<ion-content padding>
+  <ion-fab top center-right edge>
+    <button ion-fab color="soft-green" mini>
+      <ion-icon name="help" color="secondary"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-fab top right edge>
+    <button ion-fab color="soft-green" (click)="goAssessment(activity)">
+      <ion-icon name="add" color="secondary"></ion-icon>
+    </button>
+  </ion-fab>
+
+  <ion-list>
+    <ion-item>
+      top header
+    </ion-item>
+  </ion-list>
+  <ion-list *ngIf="activity">
+    <ion-item>
+      <p>Name:{{activity.name}}</p>
+      <p>Dead: {{activity.deadline}}</p>
+      <p>Desc: {{activity.description}}</p>
+      <p>End: {{activity.end}}</p>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
