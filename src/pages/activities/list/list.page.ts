@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { NavController, ToastController } from 'ionic-angular';
+import { Component, Input, OnInit } from '@angular/core';
+import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
 import { ActivitiesViewPage } from '../view/view.page';
 import { ActivityComponent } from '../../../components/activity/activity.component';
@@ -9,77 +9,43 @@ import { ActivityService } from '../../../services/activity.service';
   selector: 'activities-list-page',
   templateUrl: 'list.html'
 })
-export class ActivitiesListPage {
-  @Input() activity;
+export class ActivitiesListPage implements OnInit {
   public activities = [];
-
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController
   ) {}
-
-  // @TODO: Move to shared function later...
-  private _error(err) {
-    let toast = this.toastCtrl.create({
-      message: err,
-      duration: 5000,
-      position: 'bottom',
-      dismissOnPageChange: true
+  // get activities list data
+  ngOnInit(){
+    let loadingActivities = this.loadingCtrl.create({
+      content: 'Loading ..'
     });
-
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
+    let loadingFailed = this.toastCtrl.create({
+      message: 'Sorry, laoding activity process is failed, please try it again later.',
+      duration: 4000,
+      position: 'bottom'
     });
-
-    toast.present();
+    loadingActivities.present();
+    this.activityService.getActivities()
+        .subscribe( 
+          data => {
+            this.activities = data;
+            loadingActivities.dismiss().then(() => {
+              console.log("Activities: ", this.activities);
+            });
+          },
+          err => {
+            loadingActivities.dismiss().then(() => {
+              console.log('Error of getting activity data, ', err);
+              loadingFailed.present();
+            });
+          }
+        )
   }
-
-  private _pullData(refresher = null) {
-    return this.activityService.getList()
-      .then((activities: any) => {
-        this.activities = activities;
-        if (activities.length === 0) {
-          this.activities.push({
-            id: 1,
-            title: 'fake activity',
-            description: 'some description'
-          });
-        }
-        if (refresher) {
-          refresher.complete();
-        }
-      }, err => {
-        this._error(err);
-        console.log('err', err);
-        if (refresher) {
-          refresher.complete();
-        }
-      });
-  }
-
-  public doRefresh(refresher) {
-    return this._pullData(refresher);
-  }
-
-  ionViewDidEnter() {
-    // @TODO: add loading indicator/marker
-    this._pullData();
-  }
-
-  view(activity: Object | any = {}) {
-    this.navCtrl.push(ActivitiesViewPage, {id: activity.id});
-  }
-
-  public hasReservation(activity) {
-    return false;
-  }
-
-  public viewTicket(activity) {
-
-  }
-
-  public book(activity) {
-
+  // redirect to activity detail page
+  goToDetail(activity: any, id: any){
+    this.navCtrl.push(ActivitiesViewPage, { activity: activity, id: id });
   }
 }
