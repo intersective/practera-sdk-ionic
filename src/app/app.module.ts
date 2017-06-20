@@ -41,6 +41,7 @@ import { TermContentComponent } from '../pages/term-condition/term-content.compo
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
+import { ActivitiesViewPage } from '../pages/activities/view/view.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -73,6 +74,7 @@ import { default as Configure } from '../configs/config';
   declarations: [
     AchievementsViewPage,
     ActivitiesListPage,
+    ActivitiesViewPage,
     ActivityComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
@@ -157,6 +159,7 @@ import { default as Configure } from '../configs/config';
   entryComponents: [
     AchievementsViewPage,
     ActivitiesListPage,
+    ActivitiesViewPage,
     ActivityComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,

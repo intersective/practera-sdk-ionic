@@ -1,13 +1,19 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Activity</ion-title>
+    <ion-title>{{currentActivity.Activity.name}}</ion-title>
   </ion-navbar>
-
-  <ion-toolbar>
-    <ion-title>{{currentActivity.title}}</ion-title>
-  </ion-toolbar>
 </ion-header>
-
 <ion-content>
-  <pre>{{currentActivity | json}}</pre>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div>
+          <p>{{currentActivity.Activity.id}}</p>
+          <p>{{currentActivity.Activity.description}}</p>
+          <p>{{currentActivity.Activity.start}}</p>
+          <p>{{currentActivity.Activity.end}}</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

@@ -342,4 +342,91 @@ event {
     line-height: 20px;
   }
 }
-// 9. General Evidence Page Styling
+// 9. General Dashboard Page Styling
+.activities {
+  .scroll-content {
+    overflow: hidden;
+  }
+  .scroll-content,
+  .grid,
+  .col {
+    padding: 0px !important;
+    margin: 0px;
+  }
+  .grid {
+    height: 100%;
+    .row {
+      height: 50%;
+    }
+  }
+  .score-board {
+    display: block;
+    background-color: color($colors, primary, base); // default-theme
+    background-size: cover;
+    text-align: center;
+    .score-board-inner {
+      height: 100%;
+    }
+    ion-row:last-child {
+      background-color: color($colors, secondary, base);
+    }
+    ion-col {
+      .score-inner-box {
+        width: 40%;
+        height: 40%;
+        margin: 5% auto;
+        background-color: color($colors, secondary, base);
+        div {
+          height: 100%;
+          padding: 10% 0;
+          h4 {
+            font-size: 16pt;
+            font-weight: 400;
+            text-transform: uppercase;
+            margin: 0px;
+            height: 40%;
+          }
+          h1 {
+            margin: 0px;
+            height: 40%;
+            font-size: 28pt;
+            font-weight: bold;
+            
+          }
+        }
+      }
+    }
+    ion-col:first-child {
+      div {
+        margin-bottom: 0pt;
+      }
+    }
+  }
+  .activity-list {
+    ion-col {
+      overflow: scroll;
+    }
+    div {
+      border-bottom: 1px solid color($colors, border, base);
+    }
+  }
+}
+// landscape activity list view
+@media screen and (min-width: 500px) {
+  .score-board {
+    display: inline-block;
+    .col {
+      .score-inner-box {
+        display: inline-block;
+        height: 80% !important;
+        padding: 0 !important;
+        margin: 2% !important;
+        div {
+          display: inline-block;
+          padding: 0 !important;
+        }
+      }
+    }
+  }
+}
+
