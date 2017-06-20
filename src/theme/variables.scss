@@ -25,6 +25,7 @@ $secondary-dark: #222222;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
 $button: #4470a5;
+$soft-green: #49BA81;
 
 
 // App Mixin Functions
@@ -56,7 +57,7 @@ $colors: (
      contrast: $light
   ),
   danger: (
-     base: $danger,     
+     base: $danger,
      contrast: $secondary
   ),
   light: (
@@ -74,7 +75,11 @@ $colors: (
   border: (
     base: $border-primary,
     contrast: $border-secondary
-  )
+  ),
+  soft-green: (
+     base: $soft-green,
+     contrast: darken($soft-green, 10%) // darken for contrast?
+  ),
 );
 
 
