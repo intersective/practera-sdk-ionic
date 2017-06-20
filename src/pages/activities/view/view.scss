@@ -1,0 +1,21 @@
+.activity-detail {
+  background-color: $primary;
+
+  &.header {
+    .toolbar-background {
+      background-color: transparent;
+    }
+  }
+
+  .header-content {
+    height:10em;
+    text-align: center;
+    color: $background-color;
+    margin-top: 2.5rem;
+    margin-bottom: 0;
+
+    .icon {
+      font-size: 10rem;
+    }
+  }
+}

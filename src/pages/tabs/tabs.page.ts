@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 import { HomePage } from '../home/home';
 import { GalleryPage } from '../gallery/gallery';
-import { ActivitiesListPage } from '../activities/list/list.page';
+import { ActivitiesListPage } from '../activities/list/activities-list.page';
 import { LevelsListPage } from '../levels/list/list';
 import { TeamPage } from '../team/team';
 
