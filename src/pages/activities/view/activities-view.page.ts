@@ -19,8 +19,20 @@ export class ActivitiesViewPage {
   }
 
   // @TODO: use simple mock data for assessment first
+  /**
+   * on assessment implementation, to do list:
+   * - load badges
+   * - change icon display based on responded data format
+   * - load submission into this.submissions
+   * - change template view based on responded data format 
+   */
   ionViewDidEnter(): void {
     this.activity = this.navParams.get('activity');
+    this.activity.badges = [
+      {url: 'http://leevibe.com/images/category_thumbs/video/19.jpg'},
+      {url: 'http://mobileapp.redcross.org.uk/achievements/heart-icon.png'},
+      {url: 'http://americanredcross.3sidedcube.com/media/45334/fire-large.png'},
+    ];
     this.submissions = this.navParams.get('submissions') || [
       {
         title: 'Submission 1',
