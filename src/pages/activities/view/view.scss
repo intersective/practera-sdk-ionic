@@ -1,21 +1,32 @@
 .activity-detail {
-  background-color: $primary;
 
   &.header {
+    background-color: $primary;
     .toolbar-background {
       background-color: transparent;
     }
+
+    .header-content {
+      height:10em;
+      text-align: center;
+      color: $background-color;
+      margin-top: 2.5rem;
+      margin-bottom: 0;
+
+      .icon {
+        font-size: 10rem;
+      }
+    }
   }
 
-  .header-content {
-    height:10em;
-    text-align: center;
-    color: $background-color;
-    margin-top: 2.5rem;
-    margin-bottom: 0;
-
-    .icon {
-      font-size: 10rem;
+  .submissions {
+    ion-col {
+      padding: 0;
+      &.note {  
+        font-size: 12px;
+        align-self: flex-start;
+        text-align: right;
+      }
     }
   }
 }
