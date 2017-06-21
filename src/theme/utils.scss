@@ -49,13 +49,13 @@
 
 .spacer {
   margin: 10px;
-  &-bg {
+  &-lg {
     margin: 20px;
   }
 
   &-top {
     margin-top: 10px;
-    &-bg {
+    &-lg {
       margin-top: 20px;
     }
     &-sm {
@@ -68,7 +68,7 @@
 
   &-bottom {
     margin-bottom: 10px;
-    &-bg {
+    &-lg {
       margin-bottom: 20px;
     }
     &-sm {
@@ -81,7 +81,7 @@
 
   &-left {
     margin-left: 10px;
-    &-bg {
+    &-lg {
       margin-left: 20px;
     }
     &-sm {
@@ -94,7 +94,7 @@
 
   &-right {
     margin-right: 10px;
-    &-bg {
+    &-lg {
       margin-right: 20px;
     }
   }

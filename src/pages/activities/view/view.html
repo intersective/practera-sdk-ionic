@@ -33,8 +33,12 @@
     </button>
   </ion-fab>
 
-  <ion-list>
-    Carousel
+  <ion-list class="spacer-top-lg" *ngIf="activity.badges">
+    <ion-slides pager>
+      <ion-slide *ngFor="let badge of activity.badges">
+        <img [src]="badge.url">
+      </ion-slide>
+    </ion-slides>
   </ion-list> 
 
   <ion-list class="submissions">
