@@ -3,15 +3,12 @@ import { RequestService } from '../shared/request/request.service';
 
 @Injectable()
 export class AssessmentService {
-  private targetUrl = 'api/assessments.json';
-
   constructor(private request: RequestService) {}
 
   // listAll()
-  public getAssessments(options? : any) {
-    return this.request.get(this.targetUrl)
-      .map(response => response.json())
-      .toPromise()
+  public getAll(options? : any) {
+    return this.request.get('api/assessments.json')
+      .map(response => response.json());
   }
 
 }
