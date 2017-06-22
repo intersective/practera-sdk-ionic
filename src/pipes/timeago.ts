@@ -3,6 +3,10 @@ import {Pipe, PipeTransform} from '@angular/core';
 @Pipe({ name: 'timeago' })
 export class TimeAgoPipe implements PipeTransform {
   transform(input: string, p_allowFuture?: any) : any {
+    if (input.length === 0) {
+      return '';
+    }
+
     var substitute = function (timeStamp, num, strings) {
             // var string = angular.isFunction(timeStamp) ? timeStamp(num, dateDifference) : timeStamp;
             var string = timeStamp;

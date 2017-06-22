@@ -24,21 +24,48 @@ export class ActivitiesViewPage {
    * - load badges
    * - change icon display based on responded data format
    * - load submission into this.submissions
-   * - change template view based on responded data format 
+   * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
     this.activity = this.navParams.get('activity');
     this.activity.badges = [
-      {url: 'http://leevibe.com/images/category_thumbs/video/19.jpg'},
-      {url: 'http://mobileapp.redcross.org.uk/achievements/heart-icon.png'},
-      {url: 'http://americanredcross.3sidedcube.com/media/45334/fire-large.png'},
-    ];
-    this.submissions = this.navParams.get('submissions') || [
       {
-        title: 'Submission 1',
-        status: 'Pending Review'
-      }
+        url: 'http://leevibe.com/images/category_thumbs/video/19.jpg',
+        disabled: true,
+      },
+      {
+        url: 'http://mobileapp.redcross.org.uk/achievements/heart-icon.png',
+        disabled: true,
+      },
+      {
+        url: 'http://americanredcross.3sidedcube.com/media/45334/fire-large.png',
+        disabled: false,
+      },
     ];
+
+    let submission = [];
+    if (this.activity.Activity.name === 'Workshop-2') {
+      submission.push({
+        title: 'Submission 1',
+        submittedOn: 'Thu Jun 19 2017 17:37:08',
+        status: 'Pending Review'
+      });
+      this.activity.badges.map((badge, index) => {
+        if (index === 1 || index === 0) {
+          badge.disabled = false;
+        } else {
+          badge.disabled = true;
+        }
+      });
+    } else {
+      submission.push({
+        title: 'Submission 1',
+        submittedOn: '',
+        status: 'Do Now'
+      });
+    }
+
+    this.submissions = submission;
     console.log(this.activity);
   }
 
@@ -52,7 +79,7 @@ export class ActivitiesViewPage {
 
   /**
    * @description direct to assessment page of a selected activity
-   * @param {Object} activity single activity object from the list of 
+   * @param {Object} activity single activity object from the list of
    * activities respond from get_activities API
    */
   goAssessment(activity) {
