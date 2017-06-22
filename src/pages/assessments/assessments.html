@@ -1,6 +1,18 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons>
+      <button ion-button icon-only (click)="clickDiscard()">
+        <ion-icon name="ios-trash-outline"></ion-icon>
+      </button>
+    </ion-buttons>
+
     <ion-title>Assessment</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="clickSubmit()">
+        Submit
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
