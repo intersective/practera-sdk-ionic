@@ -41,7 +41,9 @@ import { TermContentComponent } from '../pages/term-condition/term-content.compo
 import { ActivitiesListPage } from '../pages/activities/list/activities-list.page';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
-import { AssessmentsPage } from '../pages/assessments/assessment.page';
+import { AssessmentsPage } from '../pages/assessments/assessments.page';
+import { AssessmentsComponent } from '../components/assessments/assessments.component';
+import { AssessmentComponent } from '../components/assessment/assessment.component';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -76,6 +78,8 @@ import { default as Configure } from '../configs/config';
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
+    AssessmentComponent,
+    AssessmentsComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -161,6 +165,8 @@ import { default as Configure } from '../configs/config';
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
+    AssessmentComponent,
+    AssessmentsComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
