@@ -31,6 +31,9 @@ $font-secondary: 'Raleway';
   font-family: $font-primary;
   font-size: 1.3rem;
 }
+.line-break {
+  word-break: break-word;
+}
 // 5. General Button Styling
 .general-button {
   background-color: color($colors, button, base);
@@ -406,8 +409,51 @@ event {
     ion-col {
       overflow: scroll;
     }
-    div {
+    .unlocked,
+    .locked {
+      border-bottom: 1px solid color($colors, border, contrast);
+      p {
+        padding: 12px 0px 12px 12px;
+        margin: 0px;
+        min-height: 40px;
+        line-height: 20px;
+        max-width: 320px;
+      }
+    }
+    .locked {
+      background-color: color($colors, border, base);
+      background-size: cover;
+      p {
+        opacity: 0.4;
+      }
+      .fa.fa-lock {
+        position: absolute;
+        right: 12px;
+        line-height: 24px;
+        font-size: 14pt;
+      }
+    }
+  }
+}
+// achievement page styling 
+.ahievements-popup {
+  .scroll-content {
+    overflow: hidden !important;
+  }
+  .popup-contents {
+    .badge-image {
+      margin: 10% auto;
+      display: block;
+      width: 30%;
+      height: 30%;
+    }
+    .badge-points {
+      border-top: 1px solid color($colors, border, base);
       border-bottom: 1px solid color($colors, border, base);
+      line-height: 40px;
+      span:last-child {
+        float: right;
+      }
     }
   }
 }

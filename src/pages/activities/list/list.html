@@ -31,7 +31,12 @@
     <ion-row class="activity-list">
       <ion-col>
         <div *ngFor="let activity of activities">
-          <p (click)="goToDetail(activity, activity.Activity.id)">{{ activity.Activity.name }}</p>
+          <div *ngIf="activity.Activity.is_locked == false" class="unlocked">
+            <p (click)="goToDetail(activity, activity.Activity.id)" class="line-break">{{ activity.Activity.name }}</p>
+          </div>
+          <div *ngIf="activity.Activity.is_locked == true" class="locked">
+            <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">{{ activity.Activity.name }} <i class="fa fa-lock" aria-hidden="true"></i></p>  
+          </div>
         </div>
       </ion-col>
     </ion-row>
