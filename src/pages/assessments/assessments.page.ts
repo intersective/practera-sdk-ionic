@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 
 @Component({
-  templateUrl: './assessment.html'
+  templateUrl: './assessments.html'
 })
-
 export class AssessmentsPage {
   activity;
 
