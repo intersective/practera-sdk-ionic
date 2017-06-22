@@ -5,13 +5,11 @@ import { NavParams } from 'ionic-angular';
   templateUrl: './assessments.html'
 })
 export class AssessmentsPage {
-  activity;
+  activity: any;
 
   constructor(
     private navParams: NavParams
-  ) {}
-
-  ionViewDidEnter() {
-    this.activity = this.navParams.get('activity');
+  ) {
+    this.activity = navParams.get('activity');
   }
 }
