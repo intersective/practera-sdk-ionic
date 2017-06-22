@@ -28,5 +28,10 @@
         text-align: right;
       }
     }
+
+    ion-chip, ion-icon {
+      background-color: color($colors, border);
+      width: 5rem;
+    }
   }
 }
