@@ -1,8 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import * as _ from 'lodash';
-
 // import { ActivityService } from '../../services/activity.service';
 
 @Component({
@@ -10,8 +8,7 @@ import * as _ from 'lodash';
   templateUrl: 'assessment.html'
 })
 export class AssessmentComponent {
-
-  public assessment = {};
+  @Input() assessment: any;
 
   constructor(
     public navCtrl: NavController
