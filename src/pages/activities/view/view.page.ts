@@ -10,6 +10,7 @@ export class ActivitiesViewPage {
   currentId: any;
   constructor(private navParams: NavParams, private activity: ActivityService) {
     this.currentActivity = this.navParams.get('activity');
+    console.log("Current Activity: ", this.currentActivity);
   }
   ionViewDidEnter(): void {}
 }

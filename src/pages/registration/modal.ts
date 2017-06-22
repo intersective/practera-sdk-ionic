@@ -8,7 +8,7 @@ import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import { FormValidator } from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';

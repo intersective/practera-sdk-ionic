@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Http, Headers, RequestOptions, URLSearchParams }    from '@angular/http';
+import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 // services
