@@ -44,7 +44,9 @@
   <ion-list class="submissions">
     <ion-list-header>
       Submission
-      <ion-icon name="time" class="pull-right"></ion-icon>
+      <ion-chip class="pull-right" color="border">
+        <ion-icon name="time" center></ion-icon>
+      </ion-chip>
     </ion-list-header>
     <ion-item *ngFor="let submission of submissions">
       <ion-row>
