@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 
 // import { ActivityService } from '../../services/activity.service';
 
@@ -10,12 +10,17 @@ import * as _ from 'lodash';
   templateUrl: 'assessments.html'
 })
 export class AssessmentsComponent {
-  @Input() assessments;
+  @Input() activityData: any;
+
+  assessments: any;
 
   constructor(
     public navCtrl: NavController
   ) {}
 
-  ionViewDidEnter() {}
+  ngOnInit() {
+    this.assessments = this.activityData.ActivitySequence;
+    console.log('this.assessments', this.assessments)
+  }
 
 }
