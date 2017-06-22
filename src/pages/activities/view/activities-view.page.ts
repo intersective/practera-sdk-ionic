@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController } from 'ionic-angular';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
-import { AssessmentsPage } from '../../assessments/assessment.page';
+import { AssessmentsPage } from '../../assessments/assessments.page';
 
 @Component({
   templateUrl: './view.html'
@@ -24,7 +24,7 @@ export class ActivitiesViewPage {
    * - load badges
    * - change icon display based on responded data format
    * - load submission into this.submissions
-   * - change template view based on responded data format 
+   * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
     this.activity = this.navParams.get('activity');
@@ -52,7 +52,7 @@ export class ActivitiesViewPage {
 
   /**
    * @description direct to assessment page of a selected activity
-   * @param {Object} activity single activity object from the list of 
+   * @param {Object} activity single activity object from the list of
    * activities respond from get_activities API
    */
   goAssessment(activity) {
