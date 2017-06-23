@@ -141,7 +141,9 @@ export class RegistrationModalPage {
                       // console.log(data.data[0].id);
                       this.milestone_id = data.data[0].id;
                       self.cache.setLocalObject('milestone_id', data.data[0].id);
-                      self.navCtrl.push(TabsPage);
+                      self.navCtrl.push(TabsPage).then(() => {
+                        window.history.replaceState({}, '', window.location.origin);
+                      });
                     },
                     err => {
                       console.log(err);
