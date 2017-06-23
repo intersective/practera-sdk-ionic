@@ -1,0 +1,20 @@
+<div class="choice" ng-if="question.choices.length > 0">
+  <div class="item item-text-wrap item-divider" ng-bind="question.name"></div>
+
+  <div class="item item-text-wrap" ng-repeat="submission in question.answers.submitter"
+    ng-bind="submission.answer"></div>
+
+  <div class="item item-text-wrap" ng-repeat="submission in question.answers.reviewer"
+    ng-bind="submission.answer"></div>
+
+  <div class="item item-text-wrap"
+    ng-if="question.answers.reviewer.length === 0 && question.choices.length === 0">
+    <input name="{{'question' + question.id}}" ng-model="formData.questions[question.id].comment" type="text">
+  </div>
+
+  <ion-radio class="item-text-wrap" name="{{'question' + question.id}}"
+    ng-if="question.answers.reviewer.length === 0"
+    ng-repeat="choice in question.choices | orderBy:'order'"
+    ng-model="formData.questions[question.id].answer"
+    ng-value="choice.id">{{choice.name}}</ion-radio>
+</div>

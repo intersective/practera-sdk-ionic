@@ -1,0 +1,18 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Assessment Group</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="groups-question">
+  <h3>A list of question</h3>
+
+  <!-- type: oneOf -->
+  <oneof-question *ngIf="question.type === 'oneof'"></oneof-question>
+
+  <!-- type: file -->
+  <file-question *ngIf="question.type === 'file'"></file-question>
+
+  <!-- type: text -->
+  <text-question *ngIf="question.type === 'text'"></text-question>
+</ion-content>

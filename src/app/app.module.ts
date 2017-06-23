@@ -36,12 +36,17 @@ import { LockerComponent } from '../components/locker/locker';
 import { MemberComponent } from '../components/member/member';
 import { PhotoComponent } from '../components/photo/photo';
 import { TermContentComponent } from '../pages/term-condition/term-content.component';
+import { FileQuestionComponent} from '../components/questions/file';
+import { OneofQuestionComponent} from '../components/questions/oneof';
+import { TextQuestionComponent} from '../components/questions/text';
+
 
 // pages
 import { ActivitiesListPage } from '../pages/activities/list/activities-list.page';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessment.page';
+import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -79,6 +84,7 @@ import { default as Configure } from '../configs/config';
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
+    AssessmentsGroupPage,
     AssessmentsPage,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
@@ -116,6 +122,9 @@ import { default as Configure } from '../configs/config';
     TermConditionPage,
     TermContentComponent,
     TimeAgoPipe,
+    FileQuestionComponent,
+    OneofQuestionComponent,
+    TextQuestionComponent
   ],
   imports: [
     TestModule,
@@ -165,6 +174,7 @@ import { default as Configure } from '../configs/config';
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
+    AssessmentsGroupPage,
     AssessmentsPage,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
@@ -198,8 +208,6 @@ import { default as Configure } from '../configs/config';
     SidenavPage,
     TabsPage,
     TestPage,
-    TermConditionPage,
-    TermContentComponent,
   ],
   providers: [
     { provide: ActivityService, useClass: ActivityService },

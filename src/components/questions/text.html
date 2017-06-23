@@ -1,0 +1,18 @@
+<div class="text">
+  <div class="item item-text-wrap item-divider" ng-bind="question.name"></div>
+
+  <div class="spacer-top item item-text-wrap" ng-if="question.answers.submitter">
+    <p>Student Submission</p>
+    <div class="item" ng-repeat="answ in question.answers.submitter"
+      ng-bind="answ.answer || answ.comment"></div>
+  </div>
+
+  <div class="item item-text-wrap"
+    ng-repeat="answ in question.answers.reviewer"
+    ng-bind="answ.answer || answ.comment"></div>
+
+  <textarea ng-if="question.answers.reviewer.length === 0"
+    ng-model="formData.questions[question.id].comment"
+    style="width: 100%; padding: 1em; resize:none;" rows="8">
+  </textarea>
+</div>
