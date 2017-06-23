@@ -6,12 +6,14 @@ import { NavParams, AlertController } from 'ionic-angular';
 })
 export class AssessmentsPage {
   activity: any;
+  assessments: any;
 
   constructor(
     private navParams: NavParams,
     public alertCtrl: AlertController,
   ) {
     this.activity = this.navParams.get('activity');
+    this.assessments = this.activity.ActivitySequence || [];
   }
 
   doDiscard() {
