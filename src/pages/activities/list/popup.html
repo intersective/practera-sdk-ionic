@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col width-90>
+          <ion-title>Activity Popup</ion-title>
+        </ion-col>
+        <ion-col width-10>
+          <div (click)="closeModal()">
+            <span class="close-btn">
+              &times;
+            </span>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+</ion-header>
+<ion-content class="ahievements-popup">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="popup-contents" *ngIf="enableData == true">
+          <img class="badge-image" src="{{ badgeUrl }}" alt="Badge Image"/> 
+          <p>{{ description }}</p>
+          <p class="badge-points"><span>Points: </span> <span>{{ points }}</span></p>
+        </div>
+        <div class="popup-contents" *ngIf="enableData == false">
+          <p>Sorry, no achievement popped out ..</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

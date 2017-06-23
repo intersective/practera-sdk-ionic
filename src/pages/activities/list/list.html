@@ -1,14 +1,44 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Activities</ion-title>
+    <ion-title>Dashboard</ion-title>
   </ion-navbar>
 </ion-header>
-
-<ion-content class="activities" padding="true">
+<ion-content class="activities" scroll="false">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
 	</ion-refresher>
-
-  <activity *ngFor="let activity of activities" [activity]="activity">
-  </activity>
+  <ion-grid>
+    <ion-row class="score-board">
+      <div class="score-board-inner">
+        <ion-col>
+          <div class="score-inner-box">
+            <div>
+              <h4>Progress</h4>
+              <h1>{{ pointPercentage }}%</h1>  
+            </div>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div class="score-inner-box">
+            <div>
+              <h4>Points</h4>
+              <h1>{{ currentPoints }}</h1>
+            </div>
+          </div>
+        </ion-col>
+      </div>
+    </ion-row>
+    <ion-row class="activity-list">
+      <ion-col>
+        <div *ngFor="let activity of activities">
+          <div *ngIf="activity.Activity.is_locked == false" class="unlocked">
+            <p (click)="goToDetail(activity, activity.Activity.id)" class="line-break">{{ activity.Activity.name }}</p>
+          </div>
+          <div *ngIf="activity.Activity.is_locked == true" class="locked">
+            <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">{{ activity.Activity.name }} <i class="fa fa-lock" aria-hidden="true"></i></p>  
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
