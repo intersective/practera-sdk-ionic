@@ -1,11 +1,20 @@
 <div class="assessments">
-  <div *ngFor="let assessment of assessments; let i = index" class="box">
+  <div *ngFor="let assessment of assessments; let i = index" class="box" tappable>
     <div class="header">
       <button ion-button icon-only small clear class="pull-right">
         <ion-icon name="ios-arrow-forward-outline"></ion-icon>
       </button>
 
       <span class="title">{{ assessment['Assess.Assessment'].name }}</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="answer">
+      {{ truncate('This is example answer!!! This is example answer!!!
+      This is example answer!!! This is example answer!!!
+      This is example answer!!! This is example answer!!!
+      This is example answer!!! This is example answer!!!
+      This is example answer!!! This is example answer!!!
+      This is example answer!!! This is example answer!!!') }}
     </div>
 
   </div>
