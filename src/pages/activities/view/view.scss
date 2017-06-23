@@ -19,10 +19,18 @@
     }
   }
 
+  .badges {
+    .disabled {
+      opacity: 0.5;
+      filter: grayscale(100%);
+    }
+  }
+
+
   .submissions {
     ion-col {
       padding: 0;
-      &.note {  
+      &.note {
         font-size: 12px;
         align-self: flex-start;
         text-align: right;
