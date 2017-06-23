@@ -12,7 +12,7 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12>
-          <ion-icon name="{{activity.icon || 'globe-outline'}}" item-left></ion-icon>
+          <ion-icon name="{{activity.icon || 'globe'}}" item-left></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -21,7 +21,7 @@
 </ion-header>
 
 <ion-content padding class="activity-detail">
-  <ion-fab top center-right edge>
+  <ion-fab top center-right edge *ngIf="false">
     <button ion-fab color="soft-green" mini>
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
@@ -33,13 +33,13 @@
     </button>
   </ion-fab>
 
-  <ion-list class="spacer-top-lg" *ngIf="activity.badges">
+  <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
     <ion-slides pager>
-      <ion-slide *ngFor="let badge of activity.badges">
+      <ion-slide *ngFor="let badge of activity.badges" [ngClass]="{'disabled': badge.disabled }">
         <img [src]="badge.url">
       </ion-slide>
     </ion-slides>
-  </ion-list> 
+  </ion-list>
 
   <ion-list class="submissions">
     <ion-list-header>
@@ -52,14 +52,25 @@
       <ion-row>
         <ion-col align-self-start>
           <div>
-            <h2>{{submission.title}}</h2>
-            <p>{{submission.status}}</p>
+            <h2>{{ submission.title }}</h2>
+            <p>{{ submission.status }}</p>
           </div>
         </ion-col>
         <ion-col align-self-end class="note">
-          <ion-note>Just Now</ion-note>
+          <ion-note>{{ submission.submittedOn | timeago }}</ion-note>
         </ion-col>
-      </ion-row>        
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-note item-start>Test 1</ion-note>
+      <ion-note item-end>Test 2</ion-note>
+    </ion-item>
+
+    <ion-item>
+      Test
     </ion-item>
   </ion-list>
 </ion-content>

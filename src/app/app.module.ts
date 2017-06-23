@@ -69,6 +69,10 @@ import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 
+// custom pipes
+import { TimeAgoPipe } from '../pipes/timeago';
+
+
 // configs
 import { default as Configure } from '../configs/config';
 
@@ -115,6 +119,7 @@ import { default as Configure } from '../configs/config';
     TestPage,
     TermConditionPage,
     TermContentComponent,
+    TimeAgoPipe,
   ],
   imports: [
     TestModule,
