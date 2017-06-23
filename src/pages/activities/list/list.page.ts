@@ -20,6 +20,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 export class ActivitiesListPage implements OnInit {
   public activities = [];
   public currentPoints: number = 0;
+  public nextProgramPoints: number = 0;
   public totalPoints: number = 0;
   public pointPercentage: number = 0;
   public totalAchievements: any = [];
@@ -46,15 +47,23 @@ export class ActivitiesListPage implements OnInit {
     Observable.forkJoin([getUserAchievements, getAllAchievements])
               .subscribe(results => {
                 this.totalAchievements = results;
+                console.log(this.totalAchievements);
                 this.currentPoints = results[0].total_points;
                 for(let index = 0; index < results[1].length; index++){
-                  this.totalPoints += results[1][index].Achievement.points;
+                  this.nextProgramPoints += results[1][index].Achievement.points;
                 }
-                this.totalPoints += this.currentPoints;
-                this.pointPercentage = (this.currentPoints / this.totalPoints) * 100;
+                if(this.nextProgramPoints > 0 && this.currentPoints > 0){
+                  this.totalPoints = this.nextProgramPoints + this.currentPoints;
+                  this.pointPercentage = (this.currentPoints / this.totalPoints) * 100;
+                }else {
+                  this.currentPoints = 0;
+                  this.nextProgramPoints;
+                  this.pointPercentage = 0;
+                }
               },
               err => {
                 this.currentPoints = 0;
+                this.nextProgramPoints = 0;
                 this.totalPoints = 0;
                 this.pointPercentage = 0;
                 loadingFailed.present();
