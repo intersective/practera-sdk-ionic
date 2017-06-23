@@ -70,6 +70,7 @@ import { TestPage } from '../pages/tabs/test.page';
 
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
 
 // configs
@@ -118,6 +119,7 @@ import { default as Configure } from '../configs/config';
     TermConditionPage,
     TermContentComponent,
     TimeAgoPipe,
+    TruncatePipe,
   ],
   imports: [
     TestModule,
