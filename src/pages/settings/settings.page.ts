@@ -25,7 +25,9 @@ export class SettingsPage {
       let root = this.appCtrl.getRootNav();
       // root.setRoot(LoginPage);
       localStorage.clear();
-      this.navCtrl.push(LoginPage);
+      this.navCtrl.push(LoginPage).then(() => {
+        window.history.replaceState({}, '', window.location.origin);
+      });
       // this.navCtrl.rootNav.setRoot(LoginPage);
     });
   }

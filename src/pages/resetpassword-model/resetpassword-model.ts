@@ -94,7 +94,9 @@ export class ResetpasswordModelPage {
                       this.cacheService.setLocalObject('milestone_id', data.data[0].id);
                       console.log("milestone id: " + data.data[0].id);
                       loading.dismiss();
-                      this.navCtrl.push(TabsPage);
+                      this.navCtrl.push(TabsPage).then(() => {
+                        window.history.replaceState({}, '', window.location.origin);
+                      });
                     },
                     err => {
                       console.log(err);
