@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/map';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
@@ -16,16 +19,10 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 })
 export class ActivitiesListPage implements OnInit {
   public activities = [];
-  public totalPoint: number;
-  public nextProgramPoint: number;
-  public pointPercentage: number;
-
-  public achievementData: any;
-  public badgeUrl: string;
-  public description: string;
-  public points: string;
-  public unlock_id: any;
-
+  public currentPoints: number = 0;
+  public totalPoints: number = 0;
+  public pointPercentage: number = 0;
+  public totalAchievements: any = [];
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -34,6 +31,36 @@ export class ActivitiesListPage implements OnInit {
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController
   ) {}
+  ngOnInit(){
+    this.loadingAchievements();
+  }
+  // display user achievemnt statistics score points 
+  loadingAchievements(){
+    let loadingFailed = this.toastCtrl.create({
+      message: 'Sorry, laoding activity process is failed, please try it again later.',
+      duration: 4000,
+      position: 'bottom'
+    });
+    let getUserAchievements = this.achievementService.getAchievements();
+    let getAllAchievements = this.achievementService.getAllAchievements();
+    Observable.forkJoin([getUserAchievements, getAllAchievements])
+              .subscribe(results => {
+                this.totalAchievements = results;
+                this.currentPoints = results[0].total_points;
+                for(let index = 0; index < results[1].length; index++){
+                  this.totalPoints += results[1][index].Achievement.points;
+                }
+                this.pointPercentage = (this.currentPoints / this.totalPoints) * 100;
+                console.log('Current Points1: ' + this.currentPoints + ' Total Points1: ' + this.totalPoints);
+              },
+              err => {
+                this.currentPoints = 0;
+                this.totalPoints = 0;
+                this.pointPercentage = 0;
+                loadingFailed.present();
+              }
+    );
+  }
   // loading activity list data
   loadingActivities(){
     let loadingActivities = this.loadingCtrl.create({
@@ -61,29 +88,15 @@ export class ActivitiesListPage implements OnInit {
           }
         )
   }
-  // get activities list data
-  ngOnInit(){
-    // this.loadingActivities();
-    // display user achievemnt score points 
-    this.achievementService.getAllAchievements()
-        .subscribe(
-          data => {
-            console.log("User Total Achievement, ", data);
-          },
-          err => {
-            console.log(err);
-          }
-        )
-  }
-  // load data
-  ionViewDidEnter() {
+  // load activity data
+  ionViewWillEnter() {
     this.loadingActivities();
   }
-  // refresher 
+  // refresher activities
   doRefresh(e) {
-    this.loadingActivities();
+    this.loadingActivities()
+    e.complete();  
   }
-
   // redirect to activity detail page
   goToDetail(activity: any, id: any){
     this.navCtrl.push(ActivitiesViewPage, { activity: activity, id: id });

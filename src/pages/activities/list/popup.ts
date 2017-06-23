@@ -9,10 +9,11 @@ import { AchievementService } from '../../../services/achievement.service';
 })
 export class ActivityListPopupPage {
   public unlock_id: any;
-  public achievementData: any;
+  public achievementData: any = null;
   public badgeUrl: string;
   public description: string;
   public points: string;
+  public enableData: boolean = null;
   constructor(private viewCtrl: ViewController,
               private navParams: NavParams,
               private toastCtrl: ToastController,
@@ -25,24 +26,38 @@ export class ActivityListPopupPage {
     let loader = this.loadingCtrl.create({
       content: 'Loading ..'
     });
+    let loadingFailed = this.toastCtrl.create({
+      message: 'Sorry, laoding achievement process is failed, please try it again later.',
+      duration: 4000,
+      position: 'bottom'
+    });
+    let nothingLoaded = this.toastCtrl.create({
+      message: 'Sorry, no achievemnts popout, please contact with your system administrator.',
+      duration: 4000,
+      position: 'bottom'
+    });
     loader.present().then(() => {
-      let loadingFailed = this.toastCtrl.create({
-        message: 'Sorry, laoding activity process is failed, please try it again later.',
-        duration: 4000,
-        position: 'bottom'
-      });
       this.achievementService.getAllAchievements()
         .subscribe(
           data => {
-            this.achievementData = data.find(res => res.Achievement.id === this.unlock_id).Achievement;
-            this.badgeUrl = this.achievementData.badge;
-            this.description = this.achievementData.description;
-            this.points = this.achievementData.points;
-            loader.dismiss().then(() => {
-              console.log(this.badgeUrl + ", " + this.description + ", " + this.points);  
-            });
+            if(data.length > 0){
+              this.enableData = true;
+              this.achievementData = data.find(res => res.Achievement.id === this.unlock_id).Achievement;
+              this.badgeUrl = this.achievementData.badge;
+              this.description = this.achievementData.description;
+              this.points = this.achievementData.points;
+              loader.dismiss().then(() => {
+                console.log(this.achievementData);
+              });
+            }else {
+              this.enableData = false;
+              loader.dismiss().then(() => {  
+                nothingLoaded.present();
+              });
+            }
           },
           err => {
+            this.enableData = false;
             loader.dismiss().then(() => {
               console.log('Error of getting achievement data, ', err);
               loadingFailed.present();
