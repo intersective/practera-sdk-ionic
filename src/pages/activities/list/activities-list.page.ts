@@ -42,13 +42,12 @@ export class ActivitiesListPage {
     let result = [];
 
     activities.forEach((act, index) => {
-      result[index] = act.Activity;
-      result[index].activity = act.Activity;
-      result[index].sequences = act.ActivitySequence;
-
-      // raw
-      result[index].Activity = act.Activity;
-      result[index].ActivitySequence = act.ActivitySequence;
+      result[index] = _.merge(act.Activity, {
+        activity: act.Activity,
+        sequences: act.ActivitySequence,
+        Activity: act.Activity,
+        ActivitySequence: act.ActivitySequence,
+      });
     });
     return result;
   }

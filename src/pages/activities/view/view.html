@@ -12,7 +12,7 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12>
-          <ion-icon name="{{ activity.icon || 'globe-outline' }}" item-left></ion-icon>
+          <ion-icon name="{{activity.icon || 'globe'}}" item-left></ion-icon>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -60,6 +60,17 @@
           <ion-note>{{ submission.submittedOn | timeago }}</ion-note>
         </ion-col>
       </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-note item-start>Test 1</ion-note>
+      <ion-note item-end>Test 2</ion-note>
+    </ion-item>
+
+    <ion-item>
+      Test
     </ion-item>
   </ion-list>
 </ion-content>
