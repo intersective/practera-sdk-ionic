@@ -20,6 +20,10 @@
   }
 
   .badges {
+    img {
+      max-height: 8em;
+    }
+
     .disabled {
       opacity: 0.5;
       filter: grayscale(100%);
