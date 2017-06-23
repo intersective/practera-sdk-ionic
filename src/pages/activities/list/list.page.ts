@@ -50,8 +50,8 @@ export class ActivitiesListPage implements OnInit {
                 for(let index = 0; index < results[1].length; index++){
                   this.totalPoints += results[1][index].Achievement.points;
                 }
+                this.totalPoints += this.currentPoints;
                 this.pointPercentage = (this.currentPoints / this.totalPoints) * 100;
-                console.log('Current Points1: ' + this.currentPoints + ' Total Points1: ' + this.totalPoints);
               },
               err => {
                 this.currentPoints = 0;
