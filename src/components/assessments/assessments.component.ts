@@ -10,7 +10,7 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'assessments.html'
 })
 export class AssessmentsComponent {
-  @Input() activityData: any;
+  @Input() assessmentsData: any;
 
   assessments: any;
 
@@ -19,8 +19,7 @@ export class AssessmentsComponent {
   ) {}
 
   ngOnInit() {
-    this.assessments = this.activityData.ActivitySequence;
-    console.log('this.assessments', this.assessments)
+    this.assessments = this.assessmentsData;
   }
 
 }

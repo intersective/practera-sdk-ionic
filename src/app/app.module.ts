@@ -27,6 +27,7 @@ import { WindowRef } from '../shared/window';
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
+import { AssessmentsComponent } from '../components/assessments/assessments.component';
 import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
 import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
@@ -42,8 +43,6 @@ import { ActivitiesListPage } from '../pages/activities/list/activities-list.pag
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
-import { AssessmentsComponent } from '../components/assessments/assessments.component';
-import { AssessmentComponent } from '../components/assessment/assessment.component';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -82,7 +81,6 @@ import { default as Configure } from '../configs/config';
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
-    AssessmentComponent,
     AssessmentsComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
@@ -170,7 +168,6 @@ import { default as Configure } from '../configs/config';
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
-    AssessmentComponent,
     AssessmentsComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
