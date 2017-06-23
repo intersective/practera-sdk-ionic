@@ -1,7 +1,7 @@
 <ion-header class="activity-detail">
   <ion-navbar>
     <ion-title>{{ activity.name }}</ion-title>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="activity.description || activity.video_url">
       <button ion-button icon-only (click)="openModal()">
         <ion-icon name="information-circle"></ion-icon>
       </button>
@@ -44,20 +44,17 @@
   <ion-list class="submissions">
     <ion-list-header>
       Submission
-      <ion-chip class="pull-right" color="border">
-        <ion-icon name="time" center></ion-icon>
-      </ion-chip>
     </ion-list-header>
     <ion-item *ngFor="let submission of submissions">
       <ion-row>
         <ion-col align-self-start>
           <div>
             <h2>{{ submission.title }}</h2>
-            <p>{{ submission.status }}</p>
+            <p>{{ submission.submittedOn | timeago }}</p>
           </div>
         </ion-col>
         <ion-col align-self-end class="note">
-          <ion-note>{{ submission.submittedOn | timeago }}</ion-note>
+          <ion-note>{{ submission.status }}</ion-note>
         </ion-col>
       </ion-row>
     </ion-item>
