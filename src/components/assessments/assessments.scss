@@ -5,7 +5,6 @@ assessments {
     border: 2px solid;
     border-radius: 10px;
     border-color: $border-primary;
-    height: 100px;
   }
 
   .header {
@@ -20,5 +19,11 @@ assessments {
       top: -7px;
       right: 0px;
     }
+  }
+
+  .answer {
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
