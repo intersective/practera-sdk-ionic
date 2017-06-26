@@ -24,16 +24,7 @@ import { ViewController, NavParams } from 'ionic-angular';
 
       <ion-list *ngIf="activity.video_url">
         <iframe width="640" height="390" [src]="activity.video_url" frameborder="0" allowfullscreen></iframe>
-      </ion-list>
-
-      <ion-list *ngIf="activity.video_url">
         <a ion-button full [href]="activity.video_url">Download</a>
-      </ion-list>
-
-      <ion-list *ngIf="activity.video_url" class="center">
-        <video width="100%" height="200" controls>
-          <source [src]="activity.video_url" type="{{activity.mimetype}}">
-        </video>
       </ion-list>
     </ion-content>
   `
