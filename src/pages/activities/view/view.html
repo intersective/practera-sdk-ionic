@@ -1,7 +1,7 @@
 <ion-header class="activity-detail">
   <ion-navbar>
     <ion-title>{{ activity.name }}</ion-title>
-    <ion-buttons end *ngIf="activity.description || activity.video_url">
+    <ion-buttons end *ngIf="activity.description">
       <button ion-button icon-only (click)="openModal()">
         <ion-icon name="information-circle"></ion-icon>
       </button>
