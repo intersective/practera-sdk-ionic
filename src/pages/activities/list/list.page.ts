@@ -23,6 +23,7 @@ export class ActivitiesListPage implements OnInit {
   public currentPoints: number = 0;
   public maxPoints: number = 0;
   public pointPercentage: number = 0;
+  public percentageValue: any = 0;
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -52,7 +53,8 @@ export class ActivitiesListPage implements OnInit {
                 this.maxPoints = results[2].max_achievable_points;
                 this.currentPoints = results[0].total_points;
                 if(this.currentPoints >= 0){
-                  this.pointPercentage = (this.currentPoints / this.maxPoints) * 100;
+                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
+                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
                 }else if(this.currentPoints > this.maxPoints){
                   this.pointPercentage = 100;
                 }else {
