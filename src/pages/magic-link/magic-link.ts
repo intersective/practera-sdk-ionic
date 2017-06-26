@@ -55,7 +55,8 @@ export class MagicLinkPage {
       this.authService.getUser()
         .subscribe(
           data => {
-            console.log(data);
+            this.cacheService.setLocalObject('program_id', data.User.program_id);
+            this.cacheService.setLocalObject('project_id', data.User.project_id);
           },
           err => {
             console.log(err);
