@@ -1,10 +1,10 @@
 <div class="item item-text-wrap">
-  <span class="item item-text-wrap item-divider" ng-bind="question.name"></span>
+  <span class="item item-text-wrap item-divider" [innerHtml]="question.name"></span>
 
   <div class="item item-text-wrap">
-    <div class="spacer-bottom" ng-if="question.answers.submitter">
+    <div class="spacer-bottom" *ngIf="question.answers.submitter">
       <p>Student Submission</p>
-      <div ng-repeat="answ in question.answers.submitter">
+      <div *ngFor="let answ of question.answers.submitter">
         <div class="photo" style="text-align: center;">
           <div class="photo">
             <img [src]="answ.answer" />
@@ -13,9 +13,9 @@
       </div>
     </div>
 
-    <div ng-if="question.answers.reviewer">
+    <div *ngIf="question.answers.reviewer">
       <p>Reviewer Submission</p>
-      <div ng-repeat="answ in question.answers.reviewer">
+      <div *ngFor="let answ of question.answers.reviewer">
         <div class="photo" style="text-align: center;">
           <div class="photo">
             <img [src]="answ.answer" />

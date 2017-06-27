@@ -13,6 +13,16 @@ export class AssessmentsGroupPage {
   ) {}
 
   ionViewDidEnter() {
-    this.groups = this.navParams.get('groups');
+    this.groups = this.navParams.get('groups') || [
+      {
+        type: 'oneof'
+      },
+      {
+        type: 'file'
+      },
+      {
+        type: 'text'
+      }
+    ];
   }
 }
