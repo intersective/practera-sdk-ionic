@@ -19,10 +19,11 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 })
 export class ActivitiesListPage implements OnInit {
   public activities = [];
-  public currentPoints: number = 0;
-  public totalPoints: number = 0;
-  public pointPercentage: number = 0;
   public totalAchievements: any = [];
+  public currentPoints: number = 0;
+  public maxPoints: number = 0;
+  public pointPercentage: number = 0;
+  public percentageValue: any = 0;
   constructor(
     public navCtrl: NavController,
     public activityService: ActivityService,
@@ -43,19 +44,28 @@ export class ActivitiesListPage implements OnInit {
     });
     let getUserAchievements = this.achievementService.getAchievements();
     let getAllAchievements = this.achievementService.getAllAchievements();
-    Observable.forkJoin([getUserAchievements, getAllAchievements])
+    let getMaxPoints = this.achievementService.getMaxPoints();
+    Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
               .subscribe(results => {
                 this.totalAchievements = results;
+                console.log(this.totalAchievements);
+                console.log("Max Points: ", results[2].max_achievable_points);
+                this.maxPoints = results[2].max_achievable_points;
                 this.currentPoints = results[0].total_points;
-                for(let index = 0; index < results[1].length; index++){
-                  this.totalPoints += results[1][index].Achievement.points;
+                if(this.currentPoints >= 0){
+                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
+                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
+                }else if(this.currentPoints > this.maxPoints){
+                  this.pointPercentage = 100;
+                }else {
+                  this.currentPoints = 0;
+                  this.maxPoints = 0;
+                  this.pointPercentage = 0;
                 }
-                this.totalPoints += this.currentPoints;
-                this.pointPercentage = (this.currentPoints / this.totalPoints) * 100;
               },
               err => {
                 this.currentPoints = 0;
-                this.totalPoints = 0;
+                this.maxPoints = 0;
                 this.pointPercentage = 0;
                 loadingFailed.present();
               }

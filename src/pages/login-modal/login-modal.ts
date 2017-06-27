@@ -91,7 +91,8 @@ export class LoginModalPage {
           this.authService.getUser()
               .subscribe(
                 data => {
-                  console.log(data);
+                  self.cacheService.setLocalObject('program_id', data.User.program_id);
+                  self.cacheService.setLocalObject('project_id', data.User.project_id);
                 },
                 err => {
                   console.log(err);
