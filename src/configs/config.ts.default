@@ -1,9 +1,0 @@
-// Need update read me
-// Copy file to config.ts
-export default {
-  prefixUrl: 'http://local.practera.com/',
-  appKey: 'replace-app-key-here',
-  filestack: {
-    apiKey: 'replace-filestack-api-key-here'
-  },
-}

@@ -10,6 +10,7 @@ import { FilestackModule } from '../shared/filestack/filestack.module';
 import { TestModule } from '../shared/testModules/test.module';
 
 // services
+import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
@@ -41,6 +42,8 @@ import { TermContentComponent } from '../pages/term-condition/term-content.compo
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
+import { ActivityListPopupPage } from '../pages/activities/list/popup';
+import { ActivitiesViewPage } from '../pages/activities/view/view.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -66,6 +69,9 @@ import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 
+// pipes
+import { TruncatePipe } from '../pipes/truncate.pipe';
+
 // configs
 import { default as Configure } from '../configs/config';
 
@@ -73,6 +79,8 @@ import { default as Configure } from '../configs/config';
   declarations: [
     AchievementsViewPage,
     ActivitiesListPage,
+    ActivityListPopupPage,
+    ActivitiesViewPage,
     ActivityComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
@@ -109,6 +117,7 @@ import { default as Configure } from '../configs/config';
     TestPage,
     TermConditionPage,
     TermContentComponent,
+    TruncatePipe
   ],
   imports: [
     TestModule,
@@ -157,6 +166,8 @@ import { default as Configure } from '../configs/config';
   entryComponents: [
     AchievementsViewPage,
     ActivitiesListPage,
+    ActivityListPopupPage,
+    ActivitiesViewPage,
     ActivityComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
@@ -194,6 +205,7 @@ import { default as Configure } from '../configs/config';
     TermContentComponent,
   ],
   providers: [
+    { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },

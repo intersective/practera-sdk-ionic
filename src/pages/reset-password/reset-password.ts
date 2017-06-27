@@ -87,7 +87,9 @@ export class ResetPasswordPage {
         this.verifySuccess = false;
         console.log("valueFalse: " + this.verifySuccess);
         setTimeout(() => {
-          this.navCtrl.push(LoginPage);
+          this.navCtrl.push(LoginPage).then(() => {
+              window.history.replaceState({}, '', window.location.origin);
+            });
         }, 5000);
       });
   }
