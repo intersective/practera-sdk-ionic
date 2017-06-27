@@ -13,6 +13,7 @@ export class ActivityListPopupPage {
   public badgeUrl: string;
   public description: string;
   public points: string;
+  public achievementName: string;
   public enableData: boolean = null;
   constructor(private viewCtrl: ViewController,
               private navParams: NavParams,
@@ -43,6 +44,7 @@ export class ActivityListPopupPage {
             if(data.length > 0){
               this.enableData = true;
               this.achievementData = data.find(res => res.Achievement.id === this.unlock_id).Achievement;
+              this.achievementName = this.achievementData.name;
               this.badgeUrl = this.achievementData.badge;
               this.description = this.achievementData.description;
               this.points = this.achievementData.points;
