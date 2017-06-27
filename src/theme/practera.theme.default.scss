@@ -1,5 +1,6 @@
 @import './pages/events';
-
+// Font-awesome
+@import "font-awesome";
 // Default Theme: Practera Theme
 @import './theme/variables';
 // 1. General Variables
@@ -429,7 +430,7 @@ event {
       .fa.fa-lock {
         position: absolute;
         right: 12px;
-        line-height: 24px;
+        line-height: 44px;
         font-size: 14pt;
       }
     }
