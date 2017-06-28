@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, AlertController } from 'ionic-angular';
+import { NavParams, NavController, AlertController } from 'ionic-angular';
 import { CacheService } from '../../shared/cache/cache.service';
 import * as _ from 'lodash';
 
@@ -15,6 +15,7 @@ export class AssessmentsPage {
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
+    private navCtrl: NavController,
   ) {
     this.activity = this.navParams.get('activity');
     this.assessments = this.activity.ActivitySequence || [];
@@ -28,7 +29,7 @@ export class AssessmentsPage {
       }
     });
 
-    this.answers = this.cache.getLocalObject('answers') || [];
+    this.answers = this.cache.getLocalObject('answers') || {};
 
     console.log('this.answers', this.answers);
 
@@ -45,7 +46,10 @@ export class AssessmentsPage {
   }
 
   doDiscard() {
-    console.log('Okay');
+    this.cache.setLocalObject('answers', {});
+    _.forEach(this.assessments, (assessment, key) => {
+      this.assessments[key]['Assess.Assessment'].answer = null;
+    });
   }
 
   clickDiscard() {
@@ -57,6 +61,7 @@ export class AssessmentsPage {
           text: 'Okay',
           handler: () => {
             this.doDiscard();
+            this.navCtrl.pop();
           }
         },
         {
