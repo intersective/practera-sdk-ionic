@@ -4,8 +4,6 @@ import { NavController,
          LoadingController,
          AlertController,
          ModalController  } from 'ionic-angular';
-import { RequestOptions,
-         Response } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 // services
@@ -63,7 +61,6 @@ export class LoginPage {
             let screnWidth = window.innerWidth;
             let screenHeight = window.innerHeight;
             let ratio = gcd(screnWidth, screenHeight);
-            let ratioValue = screnWidth/ratio + ":" + screenHeight/ratio;
             let ratioRate = (screnWidth/ratio)/(screenHeight/ratio);
             if(ratioRate > 1.2 && window.innerWidth < 1024){
               this.windowHeight = window.innerHeight / 6;
@@ -83,7 +80,6 @@ export class LoginPage {
     let screnWidth = window.innerWidth;
     let screenHeight = window.innerHeight;
     let ratio = gcd(screnWidth, screenHeight);
-    let ratioValue = screnWidth/ratio + ":" + screenHeight/ratio;
     let ratioRate = (screnWidth/ratio)/(screenHeight/ratio);
     return (ratioRate > 1.2 && window.innerWidth < 1024) ? this.isLandscaped = true : this.isLandscaped = false;
   }
