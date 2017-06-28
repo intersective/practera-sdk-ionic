@@ -4,15 +4,17 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content class="groups-question">
+<ion-content class="groups-question" padding>
   <h3>A list of question</h3>
 
-  <!-- type: oneOf -->
-  <oneof-question *ngIf="question.type === 'oneof'"></oneof-question>
+  <div *ngFor="let question of questions">
+    <!-- type: oneOf -->
+    <oneof-question *ngIf="question.type === 'oneof'" [question]="question" ></oneof-question>
 
-  <!-- type: file -->
-  <file-question *ngIf="question.type === 'file'"></file-question>
+    <!-- type: file -->
+    <file-question *ngIf="question.type === 'file'" [question]="question" ></file-question>
 
-  <!-- type: text -->
-  <text-question *ngIf="question.type === 'text'"></text-question>
+    <!-- type: text -->
+    <text-question *ngIf="question.type === 'text'" [question]="question" ></text-question>
+  </div>
 </ion-content>

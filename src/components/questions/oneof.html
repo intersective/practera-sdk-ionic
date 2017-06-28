@@ -1,16 +1,5 @@
-<div class="choice" *ngIf="question.choices.length > 0">
+<div class="choice" *ngIf="question.choices">
   <div class="item item-text-wrap item-divider" [innerHtml]="question.name"></div>
-
-  <div class="item item-text-wrap" *ngFor="let submission of question.answers.submitter"
-    [innerHtml]="submission.answer"></div>
-
-  <div class="item item-text-wrap" *ngFor="let submission of question.answers.reviewer"
-    [innerHtml]="submission.answer"></div>
-
-  <div class="item item-text-wrap"
-    *ngIf="question.answers.reviewer.length === 0 && question.choices.length === 0">
-    <input name="{{'question' + question.id}}" [(ngModel)]="formData.questions[question.id].comment" type="text">
-  </div>
 
   <ion-radio class="item-text-wrap" name="{{'question' + question.id}}"
     *ngFor="let choice of question.choices"

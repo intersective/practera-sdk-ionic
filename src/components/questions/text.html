@@ -12,7 +12,6 @@
     [innerHtml]="answ.answer || answ.comment"></div>
 
   <textarea *ngIf="question.answers.reviewer.length === 0"
-    [(ngModel)]="formData.questions[question.id].comment"
     style="width: 100%; padding: 1em; resize:none;" rows="8">
   </textarea>
 </div>
