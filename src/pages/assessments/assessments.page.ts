@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavParams, NavController, AlertController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { NavParams, NavController, AlertController, Navbar } from 'ionic-angular';
 import { CacheService } from '../../shared/cache/cache.service';
 import * as _ from 'lodash';
 
@@ -7,6 +7,8 @@ import * as _ from 'lodash';
   templateUrl: './assessments.html'
 })
 export class AssessmentsPage {
+  @ViewChild(Navbar) navbar: Navbar;
+
   activity: any;
   assessments: any;
   answers: any;
@@ -15,7 +17,7 @@ export class AssessmentsPage {
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
-    private navCtrl: NavController,
+    private navCtrl: NavController
   ) {
     this.activity = this.navParams.get('activity');
     this.assessments = this.activity.ActivitySequence || [];
@@ -25,7 +27,14 @@ export class AssessmentsPage {
     this.cache.setLocalObject('answers', {
       29: {
         type: 'file',
-        url: 'https://placeimg.com/100/100/tech/grayscale'
+        files: [
+          {
+            url: 'https://placeimg.com/100/100/tech/grayscale'
+          },
+          {
+            url: 'https://placeimg.com/100/100/tech/grayscale'
+          },
+        ]
       }
     });
 
@@ -43,6 +52,12 @@ export class AssessmentsPage {
     });
 
     console.log('this.assessments', this.assessments);
+  }
+
+  ionViewDidLoad() {
+    this.navbar.backButtonClick = (e: UIEvent) => {
+      this.clickDiscard();
+    }
   }
 
   doDiscard() {
