@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 
 // pages
 import { AchievementsViewPage } from '../../../../pages/achievements/view/achievements-view.page';
-import { ActivitiesListPage } from '../../../../pages/activities/list/list.page';
+import { ActivitiesListPage } from '../../../../pages/activities/list/activities-list.page';
 import { EventsListPage } from '../../../../pages/events/list/list.page';
 import { EventsDownloadPage } from '../../../../pages/events/download/events-download.page';
 import { GalleryPage } from '../../../../pages/gallery/gallery';
