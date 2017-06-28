@@ -11,7 +11,12 @@
     <div class="answer">
       <div *ngIf="assessment['Assess.Assessment'].answer">
         <div *ngIf="assessment['Assess.Assessment'].answer.type === 'file'">
-          <img src="{{assessment['Assess.Assessment'].answer.url}}" />
+          <div *ngIf="assessment['Assess.Assessment'].answer.files.length === 1">
+            {{ assessment['Assess.Assessment'].answer.files.length + ' file uploaded.' }}
+          </div>
+          <div *ngIf="assessment['Assess.Assessment'].answer.files.length !== 1">
+            {{ assessment['Assess.Assessment'].answer.files.length + ' files uploaded.' }}
+          </div>
         </div>
 
         <div *ngIf="assessment['Assess.Assessment'].answer.type === 'text'">
