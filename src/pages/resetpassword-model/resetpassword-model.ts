@@ -1,17 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController,
          NavParams,
          ViewController,
          LoadingController,
          AlertController } from 'ionic-angular';
-import { Http, Response } from '@angular/http';
 import { FormBuilder, Validators } from '@angular/forms';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
-// directives
-import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';

@@ -4,9 +4,6 @@ import { NavController,
          LoadingController,
          AlertController,
          ModalController } from 'ionic-angular';
-import { Http, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 // services
 import { AuthService } from '../../services/auth.service';
 import { ResponsiveService } from '../../services/responsive.service';
@@ -20,7 +17,7 @@ import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpas
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
 })
-export class ResetPasswordPage {
+export class ResetPasswordPage implements OnInit {
   public keyVal: string;
   public emailVal: string;
   private windowHeight: number = window.innerHeight / 3;

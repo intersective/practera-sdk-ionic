@@ -27,7 +27,6 @@ import { WindowRef } from '../shared/window';
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
-import { ActivityComponent } from '../components/activity/activity.component';
 import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
 import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
@@ -39,8 +38,10 @@ import { PhotoComponent } from '../components/photo/photo';
 import { TermContentComponent } from '../pages/term-condition/term-content.component';
 
 // pages
-import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
-import { ActivitiesListPage } from '../pages/activities/list/list.page';
+import { ActivitiesListPage } from '../pages/activities/list/activities-list.page';
+import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
+import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
+import { AssessmentsPage } from '../pages/assessments/assessment.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -66,14 +67,19 @@ import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 
+// custom pipes
+import { TimeAgoPipe } from '../pipes/timeago';
+
+
 // configs
 import { default as Configure } from '../configs/config';
 
 @NgModule({
   declarations: [
-    AchievementsViewPage,
     ActivitiesListPage,
-    ActivityComponent,
+    ActivitiesViewModalPage,
+    ActivitiesViewPage,
+    AssessmentsPage,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -109,6 +115,7 @@ import { default as Configure } from '../configs/config';
     TestPage,
     TermConditionPage,
     TermContentComponent,
+    TimeAgoPipe,
   ],
   imports: [
     TestModule,
@@ -155,9 +162,10 @@ import { default as Configure } from '../configs/config';
     IonicApp
   ],
   entryComponents: [
-    AchievementsViewPage,
     ActivitiesListPage,
-    ActivityComponent,
+    ActivitiesViewModalPage,
+    ActivitiesViewPage,
+    AssessmentsPage,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,

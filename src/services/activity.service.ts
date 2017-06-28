@@ -19,8 +19,7 @@ export class ActivityService {
       search: {
         milestone_id: this.cacheService.getLocal('milestone_id')
       }
-    })
-    .toPromise();
+    });
   }
 
   public getLevels = (options?: any) => {
