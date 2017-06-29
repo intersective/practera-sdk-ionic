@@ -25,6 +25,7 @@ export class CurrentActivitiesComponent {
 
   ionViewDidEnter() {
     this.activityService.getList()
+    .toPromise()
     .then((result: any) => {
       this.activities = _.map(result.data, this.activityService.normalise);
     }, (err: any) => console.log(err))

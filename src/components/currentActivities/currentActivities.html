@@ -1,5 +1,8 @@
 <h3>Current Activity</h3>
 
-<ion-list>
-  <activity *ngFor="let activity of activities" [activity]="activity"></activity>
+<ion-list *ngFor="let activity of activities" >
+  <p>Name:{{activity.name}}</p>
+  <p>Dead: {{activity.deadline}}</p>
+  <p>Desc: {{activity.description}}</p>
+  <p>End: {{activity.end}}</p>
 </ion-list>

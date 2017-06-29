@@ -3,7 +3,6 @@ import { NavController,
          NavParams,
          LoadingController,
          AlertController } from 'ionic-angular';
-import { Http, Response } from '@angular/http';
 import 'rxjs/Rx';
 // services
 import { AuthService } from '../../services/auth.service';
