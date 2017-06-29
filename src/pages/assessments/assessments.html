@@ -3,7 +3,7 @@
     <ion-title>Submission 1</ion-title>
 
     <ion-buttons end>
-      <button ion-button (click)="clickSubmit()">
+      <button ion-button (click)="clickSubmit()" [disabled]="!allowSubmit">
         Submit
       </button>
     </ion-buttons>
