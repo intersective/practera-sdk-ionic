@@ -24,21 +24,26 @@ export class AssessmentsPage {
 
     console.log('this.assessments', this.assessments);
 
-    this.cache.setLocalObject('answers', {
-      29: {
-        type: 'file',
-        files: [
-          {
-            url: 'https://placeimg.com/100/100/tech/grayscale'
-          },
-          {
-            url: 'https://placeimg.com/100/100/tech/grayscale'
-          },
-        ]
+    this.cache.setLocalObject('answersSummary', {
+      19: {
+        type: 'checkin',
+        text: '1 file uploaded.'
+      },
+      28: {
+        type: 'survey',
+        text: 'This is answer for a survey...'
+      },
+      25: {
+        type: 'quiz',
+        text: 'This is answer for a quiz...'
+      },
+      24: {
+        type: 'profile',
+        text: 'LinkedIn is linked.'
       }
     });
 
-    this.answers = this.cache.getLocalObject('answers') || {};
+    this.answers = this.cache.getLocalObject('answersSummary') || {};
 
     console.log('this.answers', this.answers);
 
