@@ -10,7 +10,6 @@ export class AssessmentsPage {
   @ViewChild(Navbar) navbar: Navbar;
 
   activity: any;
-  assessments: any;
   answers: any;
 
   constructor(
@@ -20,9 +19,6 @@ export class AssessmentsPage {
     private navCtrl: NavController
   ) {
     this.activity = this.navParams.get('activity');
-    this.assessments = this.activity.ActivitySequence || [];
-
-    console.log('this.assessments', this.assessments);
 
     this.cache.setLocalObject('answers', {
       19: {
@@ -46,6 +42,10 @@ export class AssessmentsPage {
         type: 'quiz',
         text: 'This is answer for a quiz...'
       },
+      125: {
+        type: 'quiz',
+        text: 'This is answer for a quiz 2...'
+      },
       24: {
         type: 'profile',
         linked: true
@@ -54,18 +54,14 @@ export class AssessmentsPage {
 
     this.answers = this.cache.getLocalObject('answers') || {};
 
-    console.log('this.answers', this.answers);
-
-    _.forEach(this.assessments, (assessment, key) => {
+    _.forEach(this.activity.ActivitySequence, (assessment, key) => {
       if (this.answers[assessment['Assess.Assessment'].id]) {
-        this.assessments[key]['Assess.Assessment'].answer =
+        this.activity.ActivitySequence[key]['Assess.Assessment'].answer =
           this.answers[assessment['Assess.Assessment'].id];
       } else {
-        this.assessments[key]['Assess.Assessment'].answer = null;
+        this.activity.ActivitySequence[key]['Assess.Assessment'].answer = null;
       }
     });
-
-    console.log('this.assessments', this.assessments);
   }
 
   ionViewDidLoad() {
@@ -76,8 +72,8 @@ export class AssessmentsPage {
 
   doDiscard() {
     this.cache.setLocalObject('answers', {});
-    _.forEach(this.assessments, (assessment, key) => {
-      this.assessments[key]['Assess.Assessment'].answer = null;
+    _.forEach(this.activity.ActivitySequence, (assessment, key) => {
+      this.activity.ActivitySequence[key]['Assess.Assessment'].answer = null;
     });
   }
 

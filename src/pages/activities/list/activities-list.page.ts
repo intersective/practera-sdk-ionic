@@ -310,6 +310,42 @@ export class ActivitiesListPage {
                             "parent_id": null,
                             "auto_publish_reviews": false
                         }
+                    },
+                    {
+                        "id": 154,
+                        "activity_id": 24,
+                        "model": "Assess.Assessment",
+                        "model_id": 25,
+                        "order": 0,
+                        "is_locked": false,
+                        "Assess.Assessment": {
+                            "id": 125,
+                            "name": "Job Smart Quiz 2",
+                            "description": "Industry Partner Careers Questionaire<br>",
+                            "assessment_type": "quiz",
+                            "is_live": true,
+                            "is_team": false,
+                            "score_type": "numeric",
+                            "experience_id": 2,
+                            "program_id": 4,
+                            "deleted": false,
+                            "deleted_date": null,
+                            "comparison_group_size": 3,
+                            "comparison_group_points": 10,
+                            "review_period": 72,
+                            "review_scope": "assessment",
+                            "review_scope_id": null,
+                            "created": "2016-02-01 04:45:21.573033",
+                            "modified": "2016-10-25 23:58:39",
+                            "review_instructions": null,
+                            "is_repeatable": false,
+                            "num_reviews": null,
+                            "review_type": null,
+                            "review_role": null,
+                            "auto_assign_reviewers": null,
+                            "parent_id": null,
+                            "auto_publish_reviews": false
+                        }
                     }
                 ]
             },

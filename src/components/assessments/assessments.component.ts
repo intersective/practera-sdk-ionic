@@ -8,7 +8,7 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
   templateUrl: 'assessments.html',
 })
 export class AssessmentsComponent {
-  @Input() assessmentsData: any;
+  @Input() activityData: any;
 
   assessments: any;
 
@@ -17,6 +17,6 @@ export class AssessmentsComponent {
   ) {}
 
   ngOnInit() {
-    this.assessments = this.assessmentsData;
+    this.assessments = this.activityData.ActivitySequence;
   }
 }
