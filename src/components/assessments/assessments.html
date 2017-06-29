@@ -11,7 +11,28 @@
 
     <div class="answer">
       <div *ngIf="assessment['Assess.Assessment'].answer">
-        {{ assessment['Assess.Assessment'].answer.text | truncate: 150 }}
+
+        <div *ngIf="assessment['Assess.Assessment'].answer.type === 'checkin'">
+          <div *ngIf="assessment['Assess.Assessment'].answer.files.length === 1">
+            {{ assessment['Assess.Assessment'].answer.files.length + ' file uploaded.' }}
+          </div>
+          <div *ngIf="assessment['Assess.Assessment'].answer.files.length !== 1">
+            {{ assessment['Assess.Assessment'].answer.files.length + ' files uploaded.' }}
+          </div>
+        </div>
+
+        <div *ngIf="assessment['Assess.Assessment'].answer.type === 'profile'">
+          {{ assessment['Assess.Assessment'].answer.linked ? 'LinkedIn is linked.' : 'LinkedIn not linking yet.' }}
+        </div>
+
+        <div *ngIf="assessment['Assess.Assessment'].answer.type === 'survey'">
+          {{ assessment['Assess.Assessment'].answer.text | truncate: 150 }}
+        </div>
+
+        <div *ngIf="assessment['Assess.Assessment'].answer.type === 'quiz'">
+          {{ assessment['Assess.Assessment'].answer.text | truncate: 150 }}
+        </div>
+
       </div>
     </div>
 
