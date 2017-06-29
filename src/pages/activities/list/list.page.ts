@@ -6,10 +6,8 @@ import 'rxjs/add/operator/map';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
-// components
-import { ActivityComponent } from '../../../components/activity/activity.component';
 // pages
-import { ActivitiesViewPage } from '../view/view.page';
+import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
