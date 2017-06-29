@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'oneof-question',
@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
 })
 export class OneofQuestionComponent {
   @Input() question;
+  // @Output() oneofForm = new EventEmitter();
 
   constructor() {}
 

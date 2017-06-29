@@ -7,14 +7,17 @@
 <ion-content class="groups-question" padding>
   <h3>A list of question</h3>
 
-  <div *ngFor="let question of questions">
+  <ion-list *ngFor="let question of questions">
     <!-- type: oneOf -->
-    <oneof-question *ngIf="question.type === 'oneof'" [question]="question" ></oneof-question>
+    <oneof-question
+      [question]="question"
+      *ngIf="question.type === 'oneof'"
+      [(ngModel)]="formData[question.id]"></oneof-question>
 
     <!-- type: file -->
     <file-question *ngIf="question.type === 'file'" [question]="question" ></file-question>
 
     <!-- type: text -->
     <text-question *ngIf="question.type === 'text'" [question]="question" ></text-question>
-  </div>
+  </ion-list>
 </ion-content>

@@ -1,8 +1,9 @@
-<div class="choice" *ngIf="question.choices">
-  <div class="item item-text-wrap item-divider" [innerHtml]="question.name"></div>
+<ion-list radio-group>
 
-  <ion-radio class="item-text-wrap" name="{{'question' + question.id}}"
-    *ngFor="let choice of question.choices"
-    [(ngModel)]="formData.questions[question.id].answer"
-    value="choice.id">{{choice.name}}</ion-radio>
-</div>
+  <ion-list-header [innerHtml]="question.name"></ion-list-header>
+
+  <ion-item class="choice" *ngFor="let choice of question.choices">
+    <ion-label>{{'question' + question.id}}</ion-label>
+    <ion-radio value="choice.id">{{choice.name}}</ion-radio>
+  </ion-item>
+</ion-list>

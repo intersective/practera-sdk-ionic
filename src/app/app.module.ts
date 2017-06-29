@@ -24,6 +24,7 @@ import { NotificationService } from '../shared/notification/notification.service
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+import { GroupEmitterService } from '../components/questions/group-emitter.service';
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
@@ -225,6 +226,7 @@ import { default as Configure } from '../configs/config';
     { provide: TeamService, useClass: TeamService },
     { provide: FilestackService, useClass: FilestackService },
     WindowRef,
+    GroupEmitterService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })

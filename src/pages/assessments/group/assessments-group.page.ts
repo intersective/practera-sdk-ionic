@@ -7,6 +7,7 @@ import { NavParams, NavController } from 'ionic-angular';
 export class AssessmentsGroupPage {
   groups = [];
   questions = [];
+  formData = {};
 
   constructor(
     private navParams: NavParams,

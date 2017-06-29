@@ -1,4 +1,4 @@
-<div class="text">
+<ion-item class="text">
   <div class="item item-text-wrap item-divider" [innerHtml]="question.name"></div>
 
   <div class="spacer-top item item-text-wrap" *ngIf="question.answers.submitter">
@@ -11,7 +11,9 @@
     *ngFor="let answ of question.answers.reviewer"
     [innerHtml]="answ.answer || answ.comment"></div>
 
-  <textarea *ngIf="question.answers.reviewer.length === 0"
-    style="width: 100%; padding: 1em; resize:none;" rows="8">
-  </textarea>
-</div>
+  <ion-textarea *ngIf="question.answers.reviewer.length === 0"
+    style="width: 100%; padding: 1em; resize:none;"
+    placeholder="Required"
+    rows="8">
+  </ion-textarea>
+</ion-item>
