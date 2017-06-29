@@ -71,7 +71,7 @@ export class GalleryPage {
   }
 
   private _pullData() {
-    this.assessmentService.getAssessments()
+    this.assessmentService.getAll().toPromise()
     .then((result) => {
       this.assessments = result;
       return this.submissionService.getSubmissions();
