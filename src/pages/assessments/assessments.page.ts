@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavParams, NavController, AlertController, Navbar } from 'ionic-angular';
 import { CacheService } from '../../shared/cache/cache.service';
+import { AssessmentService } from '../../services/assessment.service';
+
 import * as _ from 'lodash';
 
 @Component({
@@ -9,22 +11,35 @@ import * as _ from 'lodash';
 export class AssessmentsPage {
   @ViewChild(Navbar) navbar: Navbar;
 
-  activity: any;
-  answers: any;
-
+  activity: any = {};
+  answers: any = {};
+  assessmentGroup: any = {};
+  assessmentQuestions: any = [];
   allowSubmit: any = true;
 
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private assessmentService: AssessmentService
   ) {
     this.activity = this.navParams.get('activity');
+    console.log('this.activity', this.activity);
+  }
 
+  ionViewDidLoad() {
+    // Custom back button on page
+    this.navbar.backButtonClick = (e: UIEvent) => {
+      this.clickDiscard();
+    }
+  }
+
+  ionViewWillEnter() {
+    // Hardcoded answers for now
     this.cache.setLocalObject('answers', {
-      19: {
-        type: 'checkin',
+      59: {
+        type: 'file',
         files: [
           {
             mime: 'image/jpeg',
@@ -36,39 +51,120 @@ export class AssessmentsPage {
           }
         ]
       },
-      28: {
-        type: 'survey',
-        text: 'This is answer for a survey...'
+      60: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 60...'
+          }
+        ]
       },
-      25: {
-        type: 'quiz',
-        text: 'This is answer for a quiz...'
+      61: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 61...'
+          }
+        ]
       },
-      24: {
-        type: 'profile',
-        linked: true
-      }
+      92: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 92...'
+          }
+        ]
+      },
+      93: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 93...'
+          }
+        ]
+      },
+      94: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 94...'
+          }
+        ]
+      },
+      75: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 75...'
+          }
+        ]
+      },
+      76: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 76...'
+          }
+        ]
+      },
+      77: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 77...'
+          }
+        ]
+      },
+      78: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 78...'
+          }
+        ]
+      },
+      79: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 79...'
+          }
+        ]
+      },
+      80: {
+        type: 'oneof',
+        answers: [
+          {
+            context: 'This is answer for 80...'
+          }
+        ]
+      },
     });
 
     this.answers = this.cache.getLocalObject('answers') || {};
 
-    _.forEach(this.activity.ActivitySequence, (assessment, key) => {
-      if (this.answers[assessment['Assess.Assessment'].id]) {
-        this.activity.ActivitySequence[key]['Assess.Assessment'].answer =
-          this.answers[assessment['Assess.Assessment'].id];
-      } else {
-        // Set allowSubmit to false when some assessment no answer
-        this.allowSubmit = false;
-        this.activity.ActivitySequence[key]['Assess.Assessment'].answer = null;
-      }
-    });
-  }
 
-  ionViewDidLoad() {
-    // Custom back button on page
-    this.navbar.backButtonClick = (e: UIEvent) => {
-      this.clickDiscard();
-    }
+    this.assessmentService.getAll({
+      search: {
+        assessment_id: this.activity.sequences[0]['Assess.Assessment'].id
+      }
+    }).subscribe(assessmentData => {
+      this.assessmentGroup = assessmentData[0].AssessmentGroup[0];
+      this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
+
+      _.forEach(this.assessmentQuestions, (question, key) => {
+        // Inject answers
+        if (this.answers[question.id]) {
+          this.assessmentQuestions[key].answer = this.answers[question.id];
+        } else {
+          // Set allowSubmit to false when some assessment no answer
+          this.allowSubmit = false;
+          this.assessmentQuestions[key].answer = null;
+        }
+      });
+
+      console.log('this.assessmentQuestions', this.assessmentQuestions);
+    });
   }
 
   doDiscard() {

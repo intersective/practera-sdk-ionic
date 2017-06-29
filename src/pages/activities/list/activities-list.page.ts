@@ -348,59 +348,6 @@ export class ActivitiesListPage {
                         }
                     }
                 ]
-            },
-            {
-                "Activity": {
-                    "id": 25,
-                    "milestone_id": 9,
-                    "name": "Link profile to LinkedIn closes",
-                    "description": "By now, you have guidance and tips to create a professional profile in LinkedIn - create an account, if you already don't have one and link it to your Job Smart profile",
-                    "video_url": "",
-                    "order": null,
-                    "instructions": "",
-                    "is_locked": false,
-                    "start": "2016-11-01 13:00:05",
-                    "end": "2016-11-20 12:59:59",
-                    "deadline": "2016-11-20 12:59:59"
-                },
-                "ActivitySequence": [
-                    {
-                        "id": 55,
-                        "activity_id": 25,
-                        "model": "Assess.Assessment",
-                        "model_id": 24,
-                        "order": 0,
-                        "is_locked": false,
-                        "Assess.Assessment": {
-                            "id": 24,
-                            "name": "Link to LinkedIn",
-                            "description": "Link your LinkedIn profile by clicking the button.<br>",
-                            "assessment_type": "profile",
-                            "is_live": true,
-                            "is_team": false,
-                            "score_type": "numeric",
-                            "experience_id": 2,
-                            "program_id": 4,
-                            "deleted": false,
-                            "deleted_date": null,
-                            "comparison_group_size": 3,
-                            "comparison_group_points": 10,
-                            "review_period": 72,
-                            "review_scope": "assessment",
-                            "review_scope_id": null,
-                            "created": "2016-02-01 04:45:21.573033",
-                            "modified": "2016-10-25 23:56:20",
-                            "review_instructions": null,
-                            "is_repeatable": false,
-                            "num_reviews": null,
-                            "review_type": null,
-                            "review_role": null,
-                            "auto_assign_reviewers": null,
-                            "parent_id": null,
-                            "auto_publish_reviews": false
-                        }
-                    }
-                ]
             }
         ]);
         loader.dismiss();
