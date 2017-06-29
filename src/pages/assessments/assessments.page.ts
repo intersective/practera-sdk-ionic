@@ -57,6 +57,7 @@ export class AssessmentsPage {
         this.activity.ActivitySequence[key]['Assess.Assessment'].answer =
           this.answers[assessment['Assess.Assessment'].id];
       } else {
+        // Set allowSubmit to false when some assessment no answer
         this.allowSubmit = false;
         this.activity.ActivitySequence[key]['Assess.Assessment'].answer = null;
       }
@@ -64,6 +65,7 @@ export class AssessmentsPage {
   }
 
   ionViewDidLoad() {
+    // Custom back button on page
     this.navbar.backButtonClick = (e: UIEvent) => {
       this.clickDiscard();
     }
@@ -77,6 +79,9 @@ export class AssessmentsPage {
   }
 
   clickDiscard() {
+    // Send alert to user before user click back page
+    // If user click okay will remove all answers in local storage
+    // No data will send to server
     const confirm = this.alertCtrl.create({
       title: 'Discard all change',
       message: 'Do you really want to discard all your change?',
