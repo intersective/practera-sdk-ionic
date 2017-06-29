@@ -6,8 +6,13 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class OneofQuestionComponent {
   @Input() question;
-  // @Output() oneofForm = new EventEmitter();
+  @Input() questionForm;
+  @Output() oneofForm = new EventEmitter();
 
   constructor() {}
-
+  change(e) {
+    console.log(e);
+    console.log(this.question);
+    this.oneofForm.emit(e);
+  }
 }

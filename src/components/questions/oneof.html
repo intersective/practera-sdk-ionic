@@ -1,9 +1,9 @@
-<ion-list radio-group>
+<ion-list radio-group [(ngModel)]="questionForm" (ngModelChange)="change($event)">
 
   <ion-list-header [innerHtml]="question.name"></ion-list-header>
 
   <ion-item class="choice" *ngFor="let choice of question.choices">
-    <ion-label>{{'question' + question.id}}</ion-label>
-    <ion-radio value="choice.id">{{choice.name}}</ion-radio>
+    <ion-label>{{choice.name}}</ion-label>
+    <ion-radio value="{{choice.id}}"></ion-radio>
   </ion-item>
 </ion-list>
