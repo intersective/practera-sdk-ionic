@@ -1,5 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavParams, NavController, AlertController, Navbar } from 'ionic-angular';
+import {
+  NavParams,
+  NavController,
+  AlertController,
+  Navbar,
+  LoadingController
+} from 'ionic-angular';
 import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
 
@@ -22,6 +28,7 @@ export class AssessmentsPage {
     private alertCtrl: AlertController,
     private cache: CacheService,
     private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService
   ) {
     this.activity = this.navParams.get('activity');
@@ -33,6 +40,32 @@ export class AssessmentsPage {
     this.navbar.backButtonClick = (e: UIEvent) => {
       this.clickDiscard();
     }
+  }
+
+  loadQuestions(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.assessmentService.getAll({
+        search: {
+          assessment_id: this.activity.sequences[0]['Assess.Assessment'].id
+        }
+      }).subscribe(assessmentData => {
+        this.assessmentGroup = assessmentData[0].AssessmentGroup[0];
+        this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
+
+        _.forEach(this.assessmentQuestions, (question, key) => {
+          // Inject answers
+          if (this.answers[question.id]) {
+            this.assessmentQuestions[key].answer = this.answers[question.id];
+          } else {
+            // Set allowSubmit to false when some assessment no answer
+            this.allowSubmit = false;
+            this.assessmentQuestions[key].answer = null;
+          }
+        });
+
+        return resolve();
+      }, reject);
+    });
   }
 
   ionViewWillEnter() {
@@ -143,27 +176,17 @@ export class AssessmentsPage {
 
     this.answers = this.cache.getLocalObject('answers') || {};
 
+    let loader = this.loadingCtrl.create();
 
-    this.assessmentService.getAll({
-      search: {
-        assessment_id: this.activity.sequences[0]['Assess.Assessment'].id
-      }
-    }).subscribe(assessmentData => {
-      this.assessmentGroup = assessmentData[0].AssessmentGroup[0];
-      this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
-
-      _.forEach(this.assessmentQuestions, (question, key) => {
-        // Inject answers
-        if (this.answers[question.id]) {
-          this.assessmentQuestions[key].answer = this.answers[question.id];
-        } else {
-          // Set allowSubmit to false when some assessment no answer
-          this.allowSubmit = false;
-          this.assessmentQuestions[key].answer = null;
-        }
+    loader.present().then(() => {
+      this.loadQuestions()
+      .then(() => {
+        loader.dismiss();
+      })
+      .catch((err) => {
+        console.log(err);
+        loader.dismiss();
       });
-
-      console.log('this.assessmentQuestions', this.assessmentQuestions);
     });
   }
 
