@@ -12,6 +12,8 @@ export class AssessmentsPage {
   activity: any;
   answers: any;
 
+  allowSubmit: any = true;
+
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
@@ -42,10 +44,6 @@ export class AssessmentsPage {
         type: 'quiz',
         text: 'This is answer for a quiz...'
       },
-      125: {
-        type: 'quiz',
-        text: 'This is answer for a quiz 2...'
-      },
       24: {
         type: 'profile',
         linked: true
@@ -59,6 +57,7 @@ export class AssessmentsPage {
         this.activity.ActivitySequence[key]['Assess.Assessment'].answer =
           this.answers[assessment['Assess.Assessment'].id];
       } else {
+        this.allowSubmit = false;
         this.activity.ActivitySequence[key]['Assess.Assessment'].answer = null;
       }
     });
