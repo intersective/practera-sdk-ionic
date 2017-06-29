@@ -24,10 +24,19 @@ export class AssessmentsPage {
 
     console.log('this.assessments', this.assessments);
 
-    this.cache.setLocalObject('answersSummary', {
+    this.cache.setLocalObject('answers', {
       19: {
         type: 'checkin',
-        text: '1 file uploaded.'
+        files: [
+          {
+            mime: 'image/jpeg',
+            url: 'https://placeimg.com/100/100/nature/grayscale'
+          },
+          {
+            mime: 'image/jpeg',
+            url: 'https://placeimg.com/100/100/nature/grayscale'
+          }
+        ]
       },
       28: {
         type: 'survey',
@@ -39,11 +48,11 @@ export class AssessmentsPage {
       },
       24: {
         type: 'profile',
-        text: 'LinkedIn is linked.'
+        linked: true
       }
     });
 
-    this.answers = this.cache.getLocalObject('answersSummary') || {};
+    this.answers = this.cache.getLocalObject('answers') || {};
 
     console.log('this.answers', this.answers);
 
