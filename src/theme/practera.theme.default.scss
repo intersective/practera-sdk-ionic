@@ -289,10 +289,10 @@ $font-secondary: 'Raleway';
   text-align: center;
 }
 // single event card styling
+ion-card.rounded {
+  border-radius: 4px;
+}
 event {
-  ion-card.rounded {
-    border-radius: 4px;
-  }
   ion-card-content.with-cover {
     width: 100%;
     height: 124px;

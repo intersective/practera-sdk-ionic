@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ assessmentGroup.name }}</ion-title>
+    <ion-title>{{ assessment.name }}</ion-title>
 
     <ion-buttons end>
       <button ion-button (click)="clickSubmit()" [disabled]="!allowSubmit">
@@ -10,6 +10,13 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <question *ngFor="let question of assessmentQuestions; let i = index" [question]="question" [answers]="answers">
-  </question>
+
+  <ion-card *ngIf="assessment.description" class="rounded">
+    <ion-card-content>
+      <div [innerHTML]="assessment.description"></div>
+    </ion-card-content>
+  </ion-card>
+
+  <questionGroup *ngFor="let questionGroup of assessmentGroups; let i = index" [questionGroup]="questionGroup">
+  </questionGroup>
 </ion-content>
