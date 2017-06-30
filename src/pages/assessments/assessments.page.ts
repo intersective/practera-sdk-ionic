@@ -12,6 +12,7 @@ import { AssessmentService } from '../../services/assessment.service';
 import * as _ from 'lodash';
 
 @Component({
+  selector: 'assessments-page',
   templateUrl: './assessments.html'
 })
 export class AssessmentsPage {
@@ -19,7 +20,9 @@ export class AssessmentsPage {
 
   activity: any = {};
   answers: any = {};
-  assessmentGroup: any = {};
+
+  assessment: any = {};
+  assessmentGroups: any = [];
   assessmentQuestions: any = [];
   allowSubmit: any = true;
 
@@ -49,7 +52,9 @@ export class AssessmentsPage {
           assessment_id: this.activity.sequences[0]['Assess.Assessment'].id
         }
       }).subscribe(assessmentData => {
-        this.assessmentGroup = assessmentData[0].AssessmentGroup[0];
+        console.log('assessmentData', assessmentData);
+        this.assessment = assessmentData[0].Assessment;
+        this.assessmentGroups = assessmentData[0].AssessmentGroup;
         this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
 
         _.forEach(this.assessmentQuestions, (question, key) => {
