@@ -75,110 +75,6 @@ export class AssessmentsPage {
 
   ionViewWillEnter() {
     // Hardcoded answers for now
-    this.cache.setLocalObject('answers', {
-      59: {
-        type: 'file',
-        files: [
-          {
-            mime: 'image/jpeg',
-            url: 'https://placeimg.com/100/100/nature/grayscale'
-          },
-          {
-            mime: 'image/jpeg',
-            url: 'https://placeimg.com/100/100/nature/grayscale'
-          }
-        ]
-      },
-      60: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 60...'
-          }
-        ]
-      },
-      61: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 61...'
-          }
-        ]
-      },
-      92: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 92...'
-          }
-        ]
-      },
-      93: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 93...'
-          }
-        ]
-      },
-      94: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 94...'
-          }
-        ]
-      },
-      75: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 75...'
-          }
-        ]
-      },
-      76: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 76...'
-          }
-        ]
-      },
-      77: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 77...'
-          }
-        ]
-      },
-      78: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 78...'
-          }
-        ]
-      },
-      79: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 79...'
-          }
-        ]
-      },
-      80: {
-        type: 'oneof',
-        answers: [
-          {
-            context: 'This is answer for 80...'
-          }
-        ]
-      },
-    });
-
     this.answers = this.cache.getLocalObject('answers') || {};
 
     let loader = this.loadingCtrl.create();
@@ -197,9 +93,6 @@ export class AssessmentsPage {
 
   doDiscard() {
     this.cache.setLocalObject('answers', {});
-    _.forEach(this.activity.ActivitySequence, (assessment, key) => {
-      this.activity.ActivitySequence[key]['Assess.Assessment'].answer = null;
-    });
   }
 
   clickDiscard() {
@@ -252,5 +145,40 @@ export class AssessmentsPage {
       ]
     });
     confirm.present();
+  }
+
+  // @TODO: Remove it later...
+  clickFillAllAnswers() {
+    _.forEach(this.assessmentQuestions, (question, key) => {
+      console.log('q', question);
+      if (question.question_type === 'file') {
+        this.answers[question.id] = {
+          type: 'file',
+          files: [
+            {
+              mime: 'image/jpeg',
+              url: 'https://placeimg.com/100/100/nature/grayscale'
+            },
+            {
+              mime: 'image/jpeg',
+              url: 'https://placeimg.com/100/100/nature/grayscale'
+            }
+          ]
+        };
+      }
+
+      if (question.question_type === 'oneof') {
+        this.answers[question.id] = {
+          type: 'file',
+          answers: [
+            {
+              context: 'This is answer for ' + question.assessment_id
+            }
+          ]
+        };
+      }
+
+      this.loadQuestions();
+    });
   }
 }
