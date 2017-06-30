@@ -28,6 +28,8 @@
     "@angular/platform-browser-dynamic": "2.2.1",
     "@angular/platform-server": "2.2.1",
     "@ionic/storage": "2.0.0",
+    "@ngx-translate/core": "^7.0.0",
+    "@ngx-translate/http-loader": "^0.1.0",
     "angular2-local-storage": "^0.2.0",
     "angular2-moment": "^0.8.2",
     "d3": "^3.5.17",
