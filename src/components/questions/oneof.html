@@ -1,4 +1,6 @@
-<ion-list radio-group [(ngModel)]="questionForm" (ngModelChange)="change($event)">
+<div [formGroup]="form">
+
+<ion-list radio-group formControlName="answer">
 
   <ion-list-header [innerHtml]="question.name"></ion-list-header>
 
@@ -7,3 +9,5 @@
     <ion-radio value="{{choice.id}}"></ion-radio>
   </ion-item>
 </ion-list>
+
+</div>

@@ -11,26 +11,26 @@
   <h3>A list of question</h3>
 
 
-  <form [formGroup]="formData">
 
-    <ion-list *ngFor="let question of questions">
-      <div [ngSwitch]="question.type">
-        <!-- type: oneOf -->
-        <oneof-question
-          [question]="question"
-          [(questionForm)]="formData[question.id]"
-          *ngSwitchCase="'oneof'"></oneof-question>
+  <ion-list *ngFor="let question of questions">
+    <div [ngSwitch]="question.type">
+      <!-- type: oneOf -->
+      <oneof-question
+        [question]="question"
+        [form]="formGroup[question.id]"
+        *ngSwitchCase="'oneof'"></oneof-question>
 
-        <!-- type: file -->
-        <file-question
-          *ngSwitchCase="'file'"
-          [question]="question"></file-question>
+      <!-- type: file -->
+      <file-question
+        *ngSwitchCase="'file'"
+        [form]="formGroup[question.id]"
+        [question]="question"></file-question>
 
-        <!-- type: text -->
-        <text-question
-          *ngSwitchCase="'text'"
-          [question]="question"></text-question>
-      </div>
-    </ion-list>
-  </form>
+      <!-- type: text -->
+      <text-question
+        *ngSwitchCase="'text'"
+        [form]="formGroup[question.id]"
+        [question]="question"></text-question>
+    </div>
+  </ion-list>
 </ion-content>

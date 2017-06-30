@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'oneof-question',
   templateUrl: './oneof.html'
 })
-export class OneofQuestionComponent {
+export class OneofQuestionComponent implements OnInit {
   @Input() question;
-  @Input() questionForm;
+  @Input() form: FormGroup;
   @Output() oneofForm = new EventEmitter();
 
   constructor() {}
@@ -14,5 +15,9 @@ export class OneofQuestionComponent {
     console.log(e);
     console.log(this.question);
     this.oneofForm.emit(e);
+  }
+
+  ngOnInit() {
+    console.log(this.form);
   }
 }
