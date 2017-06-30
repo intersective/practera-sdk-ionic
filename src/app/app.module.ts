@@ -27,7 +27,7 @@ import { WindowRef } from '../shared/window';
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
-import { QuestionComponent } from '../components/question/question.component';
+import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
 import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
 import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
@@ -82,7 +82,7 @@ import { default as Configure } from '../configs/config';
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
-    QuestionComponent,
+    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -170,7 +170,7 @@ import { default as Configure } from '../configs/config';
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
-    QuestionComponent,
+    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
