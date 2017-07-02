@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from '../../../app/i18n-en'; 
+import { loadingSMSs, errSMSs } from '../../../app/messages'; 
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 // services
@@ -22,21 +26,32 @@ export class ActivitiesListPage implements OnInit {
   public maxPoints: number = 0;
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
+  public activitiesLoadingErr: any = errSMSs.Activities.activities.loading;
+  public activitiesEmptyDataErr: any = errSMSs.Activities.activities.empty;
+  public activitiesFailedErr: any = errSMSs.Activities.activities.failed;
+  result: any;
   constructor(
     public navCtrl: NavController,
+    public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
-    public modalCtrl: ModalController
-  ) {}
-  ngOnInit(){
+    public modalCtrl: ModalController,
+    public translate: TranslateService
+  ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
+                
+  ngOnInit(){ 
     this.loadingAchievements();
   }
   // display user achievemnt statistics score points 
-  loadingAchievements(){
+  loadingAchievements(){ 
     let loadingFailed = this.toastCtrl.create({
-      message: 'Sorry, laoding activity process is failed, please try it again later.',
+      message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
@@ -75,7 +90,7 @@ export class ActivitiesListPage implements OnInit {
       content: 'Loading ..'
     });
     let loadingFailed = this.toastCtrl.create({
-      message: 'Sorry, laoding activity process is failed, please try it again later.',
+      message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
@@ -90,7 +105,6 @@ export class ActivitiesListPage implements OnInit {
           },
           err => {
             loadingActivities.dismiss().then(() => {
-              console.log('Error of getting activity data, ', err);
               loadingFailed.present();
             });
           }
