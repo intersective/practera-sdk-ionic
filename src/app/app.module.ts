@@ -8,7 +8,10 @@ import { NotificationModule } from '../shared/notification/notification.module';
 import { MyApp } from './app.component';
 import { FilestackModule } from '../shared/filestack/filestack.module';
 import { TestModule } from '../shared/testModules/test.module';
-
+import { HttpModule, Http } from '@angular/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { i18nData } from '../../../app/i18n-en'; 
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -77,6 +80,11 @@ import { TimeAgoPipe } from '../pipes/timeago';
 // configs
 import { default as Configure } from '../configs/config';
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: Http) {
+    return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
+}
+
 @NgModule({
   declarations: [
     AchievementsViewPage,
@@ -134,6 +142,13 @@ import { default as Configure } from '../configs/config';
     }),
     FilestackModule.forRoot({
       apikey: Configure.filestack.apiKey
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [Http]
+      }
     }),
     IonicModule.forRoot(MyApp, {}, {
        links: [
