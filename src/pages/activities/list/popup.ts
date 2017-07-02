@@ -1,5 +1,8 @@
 import { Component, Injectable } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from '../../../app/i18n-en'; 
+import { loadingSMSs, errSMSs } from '../../../app/messages'; 
 // services
 import { AchievementService } from '../../../services/achievement.service';
 @Injectable()
@@ -15,25 +18,33 @@ export class ActivityListPopupPage {
   public points: string;
   public achievementName: string;
   public enableData: boolean = null;
+  public loadingSMS: any = loadingSMSs.Loading.loading;
+  public achievementsLoadingErr: any = errSMSs.Activities.achievements.loading;
+  public achievementsEmptyDataErr: any = errSMSs.Activities.achievements.empty;
+  public achievementsFailedErr: any = errSMSs.Activities.achievements.failed;
   constructor(private viewCtrl: ViewController,
               private navParams: NavParams,
               private toastCtrl: ToastController,
               private loadingCtrl: LoadingController,
-              private achievementService: AchievementService){
+              private achievementService: AchievementService,
+              private translate: TranslateService){
                 this.unlock_id = this.navParams.get('unlock_id');
                 console.log('Unlock id value: ', this.unlock_id);
+                translate.addLangs(["en"]);
+                translate.setDefaultLang('en');
+                translate.use('en');
               }
   ionViewWillEnter(){
     let loader = this.loadingCtrl.create({
-      content: 'Loading ..'
+      content: this.loadingSMS
     });
     let loadingFailed = this.toastCtrl.create({
-      message: 'Sorry, laoding achievement process is failed, please try it again later.',
+      message: this.achievementsLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
     let nothingLoaded = this.toastCtrl.create({
-      message: 'Sorry, no achievemnts popout, please contact with your system administrator.',
+      message: this.achievementsEmptyDataErr,
       duration: 4000,
       position: 'bottom'
     });
@@ -61,7 +72,6 @@ export class ActivityListPopupPage {
           err => {
             this.enableData = false;
             loader.dismiss().then(() => {
-              console.log('Error of getting achievement data, ', err);
               loadingFailed.present();
             });
           }
