@@ -14,4 +14,8 @@ export class FileQuestionComponent implements OnInit {
   ngOnInit() {
     console.log(this.form);
   }
+
+  upload(event) {
+    console.log(event);
+  }
 }

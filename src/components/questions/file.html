@@ -1,7 +1,16 @@
-<ion-item class="item item-text-wrap">
-  <span class="item item-text-wrap item-divider" [innerHtml]="question.name"></span>
+<ion-list no-line>
+  <ion-list-header class="uppercase">
+    Files
+  </ion-list-header>
 
-  <div class="item item-text-wrap">
+  <ion-item-divider [innerHtml]="question.name"></ion-item-divider>
+
+  <ion-item *ngFor="let file of files; let idx = index;">
+    <ion-icon name="{{file.icon}}" class="fa" item-left></ion-icon>
+    {{ file.name || 'Attachment ' + (++idx) }}
+  </ion-item>
+
+  <ion-item>
     <div class="spacer-bottom" *ngIf="question.answers.submitter">
       <p>Student Submission</p>
       <div *ngFor="let answ of question.answers.submitter">
@@ -33,5 +42,13 @@
           on-success="onSuccess(question, event.fpfile, {group: group})"></button>
       </div>
     </div>
-  </div>
-</ion-item>
+  </ion-item>
+
+  <button ion-button round color="purple" (click)="upload($event)">Upload</button>
+
+  <ion-item text-wrap>
+    <p>
+      Images, testimonials, documents, etc. Any evidence you think can appropriately show that you have applied what you have learnt in the real world.
+    </p>
+  </ion-item>
+</ion-list>

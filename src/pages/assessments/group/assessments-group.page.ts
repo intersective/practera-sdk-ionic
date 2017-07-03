@@ -27,7 +27,6 @@ export class QuestionBase<T> {
 @Component({
   templateUrl: './assessments-group.html',
 })
-
 export class AssessmentsGroupPage {
   group = [];
   questions = [];
@@ -105,6 +104,17 @@ export class AssessmentsGroupPage {
 
     this.questions = this.navParams.get('questions') || [
       {
+        id: 4,
+        type: 'file',
+        choices: [],
+        answers: {
+          submitter: [],
+          reviewer: [],
+        },
+        name: 'TASK: What was actually required of me in that situation?',
+        required: true
+      },
+      {
         id: 1,
         type: 'oneof',
         choices: [
@@ -150,24 +160,6 @@ export class AssessmentsGroupPage {
         name: 'ACTION: What did I do given the situation and the task?',
         required: true
       },
-      /*{
-        type: 'file',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'TASK: What was actually required of me in that situation?'
-      },*/
-      /*{
-        type: 'text',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'ACTION: What did I do given the situation and the task?'
-      }*/
     ];
 
     this.formGroup = this.formQuestionGroup(this.questions);
