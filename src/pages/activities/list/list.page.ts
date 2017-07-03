@@ -4,7 +4,7 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
 import { i18nData } from '../../../app/i18n-en'; 
-import { loadingSMSs, errSMSs } from '../../../app/messages'; 
+import { loadingMessages, errMessages } from '../../../app/messages'; 
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 // services
@@ -26,9 +26,9 @@ export class ActivitiesListPage implements OnInit {
   public maxPoints: number = 0;
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
-  public activitiesLoadingErr: any = errSMSs.Activities.activities.loading;
-  public activitiesEmptyDataErr: any = errSMSs.Activities.activities.empty;
-  public activitiesFailedErr: any = errSMSs.Activities.activities.failed;
+  public activitiesLoadingErr: any = errMessages.Activities.activities.loading;
+  public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+  public activitiesFailedErr: any = errMessages.Activities.activities.failed;
   result: any;
   constructor(
     public navCtrl: NavController,
