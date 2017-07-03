@@ -26,10 +26,9 @@ export class ActivitiesListPage implements OnInit {
   public maxPoints: number = 0;
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
-  public activitiesLoadingErr: any = errMessages.Activities.activities.loading;
+  public returnError: boolean = false;
+  public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
-  public activitiesFailedErr: any = errMessages.Activities.activities.failed;
-  result: any;
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -65,7 +64,7 @@ export class ActivitiesListPage implements OnInit {
                 console.log("Max Points: ", results[2].max_achievable_points);
                 this.maxPoints = results[2].max_achievable_points;
                 this.currentPoints = results[0].total_points;
-                if(this.currentPoints >= 0){
+                if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
                   this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
                   (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
                 }else if(this.currentPoints > this.maxPoints){
@@ -99,6 +98,9 @@ export class ActivitiesListPage implements OnInit {
         .subscribe( 
           data => {
             this.activities = data;
+            if(this.activities.length == 0){
+              this.returnError = true;
+            }
             loadingActivities.dismiss().then(() => {
               console.log("Activities: ", this.activities);
             });
