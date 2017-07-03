@@ -7,6 +7,7 @@ import { CacheModule } from '../shared/cache/cache.module';
 import { NotificationModule } from '../shared/notification/notification.module';
 import { MyApp } from './app.component';
 import { FilestackModule } from '../shared/filestack/filestack.module';
+import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
 
 // services
@@ -132,6 +133,7 @@ import { default as Configure } from '../configs/config';
     CacheModule,
     NotificationModule,
     FormsModule,
+    UtilsModule,
     RequestModule.forRoot({
       appKey: Configure.appKey,
       prefixUrl: Configure.prefixUrl
