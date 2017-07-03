@@ -8,7 +8,7 @@ import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { CacheService } from '../../shared/cache/cache.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import { FormValidator } from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
@@ -141,7 +141,9 @@ export class RegistrationModalPage {
                       // console.log(data.data[0].id);
                       this.milestone_id = data.data[0].id;
                       self.cache.setLocalObject('milestone_id', data.data[0].id);
-                      self.navCtrl.push(TabsPage);
+                      self.navCtrl.push(TabsPage).then(() => {
+                        window.history.replaceState({}, '', window.location.origin);
+                      });
                     },
                     err => {
                       console.log(err);
