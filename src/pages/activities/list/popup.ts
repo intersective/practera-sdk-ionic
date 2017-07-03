@@ -2,7 +2,7 @@ import { Component, Injectable } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { i18nData } from '../../../app/i18n-en'; 
-import { loadingSMSs, errSMSs } from '../../../app/messages'; 
+import { loadingMessages, errMessages } from '../../../app/messages'; 
 // services
 import { AchievementService } from '../../../services/achievement.service';
 @Injectable()
@@ -18,10 +18,10 @@ export class ActivityListPopupPage {
   public points: string;
   public achievementName: string;
   public enableData: boolean = null;
-  public loadingSMS: any = loadingSMSs.Loading.loading;
-  public achievementsLoadingErr: any = errSMSs.Activities.achievements.loading;
-  public achievementsEmptyDataErr: any = errSMSs.Activities.achievements.empty;
-  public achievementsFailedErr: any = errSMSs.Activities.achievements.failed;
+  public loadingSMS: any = loadingMessages.Loading.loading;
+  public achievementsLoadingErr: any = errMessages.Activities.achievements.loading;
+  public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
+  public achievementsFailedErr: any = errMessages.Activities.achievements.failed;
   constructor(private viewCtrl: ViewController,
               private navParams: NavParams,
               private toastCtrl: ToastController,
