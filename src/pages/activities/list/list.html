@@ -33,6 +33,11 @@
     </ion-row>
     <ion-row class="activity-list">
       <ion-col>
+        <div class="activity-error" *ngIf="returnError == true">
+          <p>
+            {{ activitiesLoadingErr }}
+          </p>
+        </div>
         <div *ngFor="let activity of activities">
           <div *ngIf="activity.Activity.is_locked == false" class="unlocked">
             <p (click)="goToDetail(activity, activity.Activity.id)" class="line-break">

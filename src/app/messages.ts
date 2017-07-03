@@ -1,25 +1,24 @@
 export const loadingMessages = {
   Login: {
-    "login": "Logging in .."
+    "login": "Logging in ..."
   },
-  Loading: {
-    "loading": "Loading .."
+  LoadingSpinner: {
+    "loading": "Loading ..."
+  },
+  Logout: {
+    "logout": "See you next time"
   }
 }
 export const errMessages = {
   Activities: {
     activities: {
-      "loading": "Sorry, loading of the activities process has failed. Please try again later.",
-      "empty": "Sorry, no activities have been returned. Please try again later.",
-      "failed": "Error: Load activities data"
+      "empty": "Whoops... no activity has been setup ..."
     },
     achievements: {
-      "loading": "Sorry, loading of the achievements process has failed. Please try again later.",
-      "empty": "Sorry, no achievements have been returned. Please try again later.",
-      "failed": "Error: Load achievements data"
+      "empty": "Whoops... no achievement has been setup ..."
     },
     assessments: {
-      "error": "Sorry, no data has been returned. Please try again later."
+      "error": "Whoops... no assessment has been setup ..."
     }
   },
   DirectLink: {
@@ -27,21 +26,19 @@ export const errMessages = {
   },
   Events: {
     events: {
-      "loading": "Sorry, loading of the events process has failed. Please try again later.",
-      "empty": "Sorry, no events have been returned. Please try again later.",
-      "failed": "Error: Load events data"
+      "empty": "Whoops... no event has been setup ..."
     }
   },
   General: {
     loading: {
-      "load": "Sorry, the loading process has failed. Please try again later."
+      "load": "Whoops, a connection error occurred. Please try again later."
     },
     empty: {
-      "empty": "Sorry, no data has been returned. Please try again later."
+      "empty": "Whoops... no data has been setup ..."
     }
   },
   Login: {
-
+    
   },
   Registration: {
 
