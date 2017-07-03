@@ -18,7 +18,7 @@ export const errMessages = {
       "empty": "Whoops... no achievement has been setup ..."
     },
     assessments: {
-      "error": "Whoops... no assessment has been setup ..."
+      "empty": "Whoops... no assessment has been setup ..."
     }
   },
   DirectLink: {
