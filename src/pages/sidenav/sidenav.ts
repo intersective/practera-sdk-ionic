@@ -4,7 +4,7 @@ import { NavController, MenuController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { TabsPage } from '../tabs/tabs.page';
 import { HomePage } from '../home/home';
-import { ActivitiesListPage } from '../activities/list/activities-list.page';
+import { ActivitiesListPage } from '../activities/list/list.page';
 import { LevelsListPage } from '../levels/list/list';
 /* This is side navigation bar which shows after user logged in to the app */
 @Component({

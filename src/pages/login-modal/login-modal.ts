@@ -84,7 +84,6 @@ export class LoginModalPage {
           // this.getLogInData(data);
           self.cacheService.setLocalObject('apikey', data.apikey);
           // saved for 3 types of timeline id in order for later use
-          self.cacheService.setLocalObject('timeline_id]', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('teams', data.Teams);
@@ -92,7 +91,8 @@ export class LoginModalPage {
           this.authService.getUser()
               .subscribe(
                 data => {
-                  console.log(data);
+                  self.cacheService.setLocalObject('program_id', data.User.program_id);
+                  self.cacheService.setLocalObject('project_id', data.User.project_id);
                 },
                 err => {
                   console.log(err);
