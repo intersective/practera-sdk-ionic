@@ -10,7 +10,7 @@ const zipMime = [
 @Injectable()
 export class UtilsService {
 
-  getIcon(mimetype) {
+  getIcon(mimetype: string) {
     let result: string = '';
 
     if (zipMime.indexOf(mimetype) >= 0) {

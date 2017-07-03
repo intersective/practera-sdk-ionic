@@ -4,8 +4,8 @@ declare var filestack: any;
 declare var filepicker: any;
 
 export class FilestackUpload {
-  filesfailed: Array<any>;
-  filesuploaded: Array<any>;
+  filesFailed: Array<any>;
+  filesUploaded: Array<any>;
 }
 
 @Injectable()
@@ -43,6 +43,7 @@ export class FilestackService {
         }
       };
     }
+
     return this.filestack.pick(config);
   }
 

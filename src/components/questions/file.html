@@ -5,12 +5,12 @@
 
   <ion-item-divider [innerHtml]="question.name"></ion-item-divider>
 
-  <ion-item *ngFor="let file of files; let idx = index;">
+  <ion-item *ngFor="let file of uploaded">
     <ion-icon name="{{file.icon}}" class="fa" item-left></ion-icon>
-    {{ file.name || 'Attachment ' + (++idx) }}
+    {{ file.filename }}
   </ion-item>
 
-  <ion-item>
+  <!-- <ion-item>
     <div class="spacer-bottom" *ngIf="question.answers.submitter">
       <p>Student Submission</p>
       <div *ngFor="let answ of question.answers.submitter">
@@ -31,18 +31,8 @@
           </div>
         </div>
       </div>
-
-      <div>
-        <button filepicker type="filepicker" data-fp-image-max="600,600"
-          data-fp-store-location="S3" data-fp-mimetype="image/*"
-          data-fp-multiple="false" data-fp-background-upload="false"
-          data-fp-custom-css="https://s3-us-west-2.amazonaws.com/intersective-public/css/filepicker_1.css"
-          data-fp-services="COMPUTER,GOOGLE_DRIVE,DROPBOX,GMAIL,WEBCAM,INSTAGRAM,FLICKR,URL"
-          data-fp-store-location="uploads/"
-          on-success="onSuccess(question, event.fpfile, {group: group})"></button>
-      </div>
     </div>
-  </ion-item>
+  </ion-item> -->
 
   <button ion-button round color="purple" (click)="upload($event)">Upload</button>
 
