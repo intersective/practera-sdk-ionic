@@ -18,10 +18,9 @@ export class ActivityListPopupPage {
   public points: string;
   public achievementName: string;
   public enableData: boolean = null;
-  public loadingSMS: any = loadingMessages.Loading.loading;
-  public achievementsLoadingErr: any = errMessages.Activities.achievements.loading;
+  public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
+  public achievementsLoadingErr: any = errMessages.General.loading.load;
   public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
-  public achievementsFailedErr: any = errMessages.Activities.achievements.failed;
   constructor(private viewCtrl: ViewController,
               private navParams: NavParams,
               private toastCtrl: ToastController,
@@ -36,7 +35,7 @@ export class ActivityListPopupPage {
               }
   ionViewWillEnter(){
     let loader = this.loadingCtrl.create({
-      content: this.loadingSMS
+      content: this.loadingMessage
     });
     let loadingFailed = this.toastCtrl.create({
       message: this.achievementsLoadingErr,
