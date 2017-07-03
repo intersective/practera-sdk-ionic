@@ -9,14 +9,14 @@ export const loadingMessages = {
 export const errMessages = {
   Activities: {
     activities: {
-      "loading": "Sorry, loading of the activity process has failed. Please try again later.",
-      "empty": "Sorry, no activity has been returned. Please try again later.",
-      "failed": "Error: Load activity data"
+      "loading": "Sorry, loading of the activities process has failed. Please try again later.",
+      "empty": "Sorry, no activities have been returned. Please try again later.",
+      "failed": "Error: Load activities data"
     },
     achievements: {
       "loading": "Sorry, loading of the achievements process has failed. Please try again later.",
-      "empty": "Sorry, no achievements has been returned. Please try again later.",
-      "failed": "Error: Load achievement data"
+      "empty": "Sorry, no achievements have been returned. Please try again later.",
+      "failed": "Error: Load achievements data"
     },
     assessments: {
       "error": "Sorry, no data has been returned. Please try again later."
@@ -28,7 +28,7 @@ export const errMessages = {
   Events: {
     events: {
       "loading": "Sorry, loading of the events process has failed. Please try again later.",
-      "empty": "Sorry, no events has been returned. Please try again later.",
+      "empty": "Sorry, no events have been returned. Please try again later.",
       "failed": "Error: Load events data"
     }
   },
