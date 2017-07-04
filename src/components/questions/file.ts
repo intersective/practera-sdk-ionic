@@ -41,6 +41,7 @@ export class FileQuestionComponent implements OnInit {
           file.icon = self.util.getIcon(file.mimetype);
           self.uploaded.push(file);
         });
+        this.form.controls.answer.setValue(self.uploaded);
       });
     });
   }

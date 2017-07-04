@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { CacheService } from '../../../shared/cache/cache.service';
+
+import * as _ from 'lodash';
 
 export class ChoiceBase<T> {
   id: number;
@@ -30,41 +33,15 @@ export class QuestionBase<T> {
 export class AssessmentsGroupPage {
   group = [];
   questions = [];
-  formGroup: FormGroup;
+  formGroup;
   temp;
 
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private cache: CacheService
   ) {
-    /**
-      * {
-      *     Assessment: {
-      *         id: 1,
-      *         review_id: 1,
-      *         submission_id: 1
-      *     },
-      *     AssessmentReviewAnswer: [{
-      *         assessment_question_id: 1,
-      *         answer: 1, // data is depend question type
-      *         comment: "example text" // optional based question type (mostly for text question)
-      *     },
-      *     {
-      *         assessment_question_id: 2,
-      *         answer: 1 // oneof type question
-      *     },
-      *     {
-      *         assessment_question_id: 3,
-      *         answer: {} // file type question
-      *     },
-      *     {
-      *         assessment_question_id: 4,
-      *         comment: "text based answer" // text based question
-      *     }]
-      * }
-     */
-
   }
 
   formQuestionGroup(questions) {
@@ -90,6 +67,7 @@ export class AssessmentsGroupPage {
   }
 
   ionViewDidEnter() {
+
     this.group = this.navParams.get('groups') || [
       {
         type: 'oneof'
@@ -162,22 +140,61 @@ export class AssessmentsGroupPage {
       },
     ];
 
-    this.formGroup = this.formQuestionGroup(this.questions);
+    this.formGroup = this.retrieveProgress(this.formQuestionGroup(this.questions));
   }
 
-  save() {
-    console.log(this.formGroup);
-    void 0;
-
+  /**
+   * @description store assessment answer/progress locally
+   */
+  storeProgress() {
+    let answers = {};
+    _.forEach(this.formGroup, (question, id) => {
+      let values = question.getRawValue();
+      answers[id] = {
+        assessment_question_id: id,
+        answer: values.answer || values.comment
+      }
+    });
 
     // final step - save to localstorage
-    let answer = {
+    let assessmentId = 'temporary_fake_id';
+    let submission = {
       Assessment: {
-          id: 'temporary_fake_id',
+          id: assessmentId,
           activity_id: 'temporary_fake_activity_id'
       },
-      AssessmentSubmissionAnswer: {}
+      AssessmentSubmissionAnswer: answers || {}
     };
-    console.log(answer);
+    console.log(submission);
+    this.cache.setLocal(`assessment.group.${assessmentId}`, JSON.stringify(submission));
+  }
+
+  /**
+   * @description retrieve saved progress from localStorage
+   */
+  retrieveProgress(questions: Array<any>) {
+    let cachedProgress = this.cache.getLocalObject('assessment.group.temporary_fake_id');
+    console.log(cachedProgress);
+
+    let newQuestions = questions;
+    let progress = cachedProgress.AssessmentSubmissionAnswer;
+
+    if (!_.isEmpty(progress)) {
+      _.forEach(newQuestions, (question, id) => {
+         newQuestions[id].controls.answer.setValue(progress[id].answer || '');
+      });
+    }
+    // _.forEach(cachedProgress.AssessmentSubmissionAnswer, (answer, id) => {
+    //   progress[id] = answer;
+    // });
+    return newQuestions;
+  }
+
+  /**
+   * @description initiate save progress and return to previous page/navigation stack
+   */
+  save() {
+    this.storeProgress();
+    this.navCtrl.pop();
   }
 }
