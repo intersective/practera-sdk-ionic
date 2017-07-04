@@ -10,7 +10,7 @@ import { AssessmentsPage } from '../../assessments/assessments.page';
 export class ActivitiesViewPage {
   activity: any = {};
   submissions: Array<any> = [];
-
+  activityData = {};
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -28,6 +28,9 @@ export class ActivitiesViewPage {
    */
   ionViewDidEnter(): void {
     this.activity = this.navParams.get('activity');
+    // console.log("Specific Activity Data, ", this.activity);
+    this.activityData = this.activity.Activity;
+    console.log("Specific Activity Data, ", this.activityData);
     this.activity.badges = [
       {
         url: 'http://leevibe.com/images/category_thumbs/video/19.jpg',

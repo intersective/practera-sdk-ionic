@@ -8,8 +8,12 @@ import { NotificationModule } from '../shared/notification/notification.module';
 import { MyApp } from './app.component';
 import { FilestackModule } from '../shared/filestack/filestack.module';
 import { TestModule } from '../shared/testModules/test.module';
-
+import { HttpModule, Http } from '@angular/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { i18nData } from '../../../app/i18n-en';
 // services
+import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
@@ -39,7 +43,9 @@ import { PhotoComponent } from '../components/photo/photo';
 import { TermContentComponent } from '../pages/term-condition/term-content.component';
 
 // pages
-import { ActivitiesListPage } from '../pages/activities/list/activities-list.page';
+import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
+import { ActivitiesListPage } from '../pages/activities/list/list.page';
+import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
@@ -72,13 +78,19 @@ import { TestPage } from '../pages/tabs/test.page';
 import { TimeAgoPipe } from '../pipes/timeago';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 
-
 // configs
 import { default as Configure } from '../configs/config';
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: Http) {
+    return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
+}
+
 @NgModule({
   declarations: [
+    AchievementsViewPage,
     ActivitiesListPage,
+    ActivityListPopupPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
@@ -118,6 +130,7 @@ import { default as Configure } from '../configs/config';
     TestPage,
     TermConditionPage,
     TermContentComponent,
+    TruncatePipe,
     TimeAgoPipe,
     TruncatePipe,
   ],
@@ -132,6 +145,13 @@ import { default as Configure } from '../configs/config';
     }),
     FilestackModule.forRoot({
       apikey: Configure.filestack.apiKey
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [Http]
+      }
     }),
     IonicModule.forRoot(MyApp, {}, {
        links: [
@@ -166,7 +186,9 @@ import { default as Configure } from '../configs/config';
     IonicApp
   ],
   entryComponents: [
+    AchievementsViewPage,
     ActivitiesListPage,
+    ActivityListPopupPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
@@ -207,6 +229,7 @@ import { default as Configure } from '../configs/config';
     TermContentComponent,
   ],
   providers: [
+    { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
