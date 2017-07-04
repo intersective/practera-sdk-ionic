@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController } from 'ionic-angular';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
-import { AssessmentsPage } from '../../assessments/assessment.page';
+import { AssessmentsPage } from '../../assessments/assessments.page';
 
 @Component({
   templateUrl: './view.html'

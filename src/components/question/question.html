@@ -1,0 +1,31 @@
+<div class="question">
+  <div class="box" tappable>
+    <div class="header">
+      <button ion-button icon-only small clear class="pull-right">
+        <ion-icon name="ios-arrow-forward-outline"></ion-icon>
+      </button>
+
+      <span class="title">{{ question.name }}</span>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="answer">
+      <div *ngIf="question.answer">
+        <div *ngIf="question.answer.type === 'file'">
+          <div *ngIf="question.answer.files.length === 1">
+            {{ question.answer.files.length + ' file uploaded.' }}
+          </div>
+          <div *ngIf="question.answer.files.length !== 1">
+            {{ question.answer.files.length + ' files uploaded.' }}
+          </div>
+        </div>
+
+        <div *ngIf="question.answer.type === 'oneof'">
+          {{ question.answer.answers[0].context | truncate: 150 }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

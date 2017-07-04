@@ -11,7 +11,7 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from '../../../app/i18n-en'; 
+import { i18nData } from '../../../app/i18n-en';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -31,6 +31,7 @@ import { WindowRef } from '../shared/window';
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
+import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
 import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
 import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
@@ -47,7 +48,7 @@ import { ActivitiesListPage } from '../pages/activities/list/list.page';
 import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
-import { AssessmentsPage } from '../pages/assessments/assessment.page';
+import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -73,10 +74,10 @@ import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 
-// pipes
-import { TruncatePipe } from '../pipes/truncate.pipe';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
+import { TruncatePipe } from '../pipes/truncate.pipe';
+
 // configs
 import { default as Configure } from '../configs/config';
 
@@ -93,6 +94,7 @@ export function HttpLoaderFactory(http: Http) {
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
+    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -130,6 +132,7 @@ export function HttpLoaderFactory(http: Http) {
     TermContentComponent,
     TruncatePipe,
     TimeAgoPipe,
+    TruncatePipe,
   ],
   imports: [
     TestModule,
@@ -189,6 +192,7 @@ export function HttpLoaderFactory(http: Http) {
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsPage,
+    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
