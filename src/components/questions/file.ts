@@ -19,8 +19,12 @@ export class FileQuestionComponent implements OnInit {
     private zone: NgZone
   ) {}
 
+  /**
+   * @description at file type question initiation,
+   * uploaded files is retrieved from cached form  (if available)
+   */
   ngOnInit() {
-    console.log(this.form);
+    this.uploaded = this.form.controls.answer.value || [];
   }
 
   /**
