@@ -1,0 +1,29 @@
+questionGroup {
+  .box {
+    margin: 10px;
+    padding: 10px;
+    border: 2px solid;
+    border-radius: 10px;
+    border-color: $border-primary;
+  }
+
+  .header {
+    position: relative;
+
+    .title {
+      font-size: 1.3em;
+    }
+
+    button {
+      position: absolute;
+      top: -7px;
+      right: 0px;
+    }
+  }
+
+  .answer {
+    min-height: 25px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
