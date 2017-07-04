@@ -4,6 +4,7 @@ import { NavController,
          LoadingController,
          AlertController,
          ModalController } from 'ionic-angular';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { ResponsiveService } from '../../services/responsive.service';
@@ -28,6 +29,9 @@ export class ResetPasswordPage implements OnInit {
   private resetPwdFormGroup: any;
   private verifyPwd: boolean = false;
   private minLengthCheck: boolean = true;
+  // loading & error message variables
+  private invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+  private verifyUserMessage = loadingMessages.VerifyUser.verify;
   constructor(private navCtrl: NavController,
               private navParams: NavParams,
               private ngZone: NgZone,
@@ -70,7 +74,7 @@ export class ResetPasswordPage implements OnInit {
         this.keyVal = key;
         this.emailVal = email;
     const loading = this.loadingCtrl.create({
-      content: 'Verifying user identity ..'
+      content: this.verifyUserMessage
     });
     loading.present();
     this.authService.verifyUserKeyEmail(key, email)

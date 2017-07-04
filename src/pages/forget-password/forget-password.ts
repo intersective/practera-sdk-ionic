@@ -7,6 +7,7 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
@@ -18,6 +19,10 @@ import {FormValidator} from '../../validators/formValidator';
 export class ForgetPasswordPage {
   email: string;
   forgotPwdFormGroup: any;
+  // loading & error message variables
+  private sendingEmailLoaddingMessage = loadingMessages.SendingEmail.send;
+  private sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
+  private sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -37,10 +42,10 @@ export class ForgetPasswordPage {
   userForgotPassword(){
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
-      content: 'Sending email to us ..'
+      content: this.sendingEmailLoaddingMessage
     });
 
-    let defaultMsg = `We have sent an email to ${this.email} with a link to log into the system - please check your inbox. If you haven't received an email in a few minutes please check the address you entered and your spam folder.`;
+    let defaultMsg = this.sentEmailMessagePartOne + ` ${this.email} ` + this.sentEmailMessagePartTwo;
 
     loading.present();
     // This part is calling post_forget_password() API from backend

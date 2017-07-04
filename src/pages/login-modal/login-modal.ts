@@ -8,12 +8,12 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
-
 // directives
 import {FormValidator} from '../../validators/formValidator';
 // pages
@@ -35,6 +35,8 @@ export class LoginModalPage {
   milestone_id: string;
   loginFormGroup: any;
   forgetpasswordPage = ForgetPasswordPage;
+  public loginLoadingMessages: any = loadingMessages.Login.login;
+  public invalidLoginMessage: any = errMessages.Login.login;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -75,7 +77,7 @@ export class LoginModalPage {
       // add loading effect during login process
       const loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
-        content: 'Logging in ..'
+        content: this.loginLoadingMessages
       });
       loading.present();
       // This part is calling post_auth() API from backend
@@ -166,7 +168,7 @@ export class LoginModalPage {
   logError(error) {
     const alert = this.alertCtrl.create({
       title: 'Login Failed ..',
-      message: 'Invalid email or password, please type it again',
+      message: this.invalidLoginMessage,
       buttons: ['Close']
     });
     alert.present();

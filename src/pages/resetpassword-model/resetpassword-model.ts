@@ -5,6 +5,7 @@ import { NavController,
          LoadingController,
          AlertController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
@@ -26,6 +27,9 @@ export class ResetpasswordModelPage {
   private isPwdMatch: boolean = false;
   private verifyPwd: boolean = false;
   private minLengthCheck: boolean = true;
+  // loading & error message variables
+  private successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -61,7 +65,7 @@ export class ResetpasswordModelPage {
     let key = this.navParams.get('key'),
         email = decodeURIComponent(this.navParams.get('email'));
     const loading = this.loadingCtrl.create({
-      content: 'Password successfully changed. Logging in now.'
+      content: this.successResetPasswordMessage
     });
     loading.present();
     this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
@@ -107,18 +111,18 @@ export class ResetpasswordModelPage {
               this.cacheService.removeLocal('isAuthenticated');
               this.cacheService.write('isAuthenticated', false);
             });
-        console.log('Succefully updated');
+        // console.log('Succefully updated');
       },
       err => {
         loading.dismiss();
-        console.log('Update failure ..');
+        // console.log('Update failure ..');
       });
   }
   // after password set, auto login error alertbox
   loginError(error) {
     const alertLogin = this.alertCtrl.create({
       title: 'Login Failed ..',
-      message: 'Sorry, login failed, please go to login page to sign in',
+      message: this.resetPasswordLoginFailedMessage,
       buttons: ['Close']
     });
     alertLogin.present();

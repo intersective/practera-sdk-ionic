@@ -12,7 +12,7 @@ import { LoginPage } from '../../pages/login/login';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-  public loadingMessage: any = loadingMessages.Logout.logout;
+  public logoutMessage: any = loadingMessages.Logout.logout;
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
@@ -27,7 +27,7 @@ export class SettingsPage {
   public logout() {
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
-      content: this.loadingMessage
+      content: this.logoutMessage
     });
     loader.present().then(() => {
       this.cache.clear().then(() => {

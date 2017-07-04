@@ -36,12 +36,12 @@
     <div *ngIf="verifyPwd == true">
       <div *ngIf="pwdMatchCheck()" class="error-hint">
         <small class="text-danger">
-         Password Mismatch ..
+         {{ passwordMismatchMessage }}
         </small>
       </div>
       <div *ngIf="checkMinLength() == true" class="error-hint">
         <small class="text-danger">
-         Password minimum length is 8 characters ..
+         {{ passwordMinlengthMessage }}
         </small>
       </div>
     </div>
