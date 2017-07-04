@@ -54,7 +54,8 @@ export class MagicLinkPage {
       this.authService.getUser()
         .subscribe(
           data => {
-            console.log(data);
+            this.cacheService.setLocalObject('program_id', data.User.program_id);
+            this.cacheService.setLocalObject('project_id', data.User.project_id);
           },
           err => {
             console.log(err);
@@ -69,7 +70,9 @@ export class MagicLinkPage {
             this.cacheService.setLocalObject('milestone_id', data.data[0].id);
             console.log("milestone id: " + data.data[0].id);
             loading.dismiss();
-            this.navCtrl.push(TabsPage);
+            this.navCtrl.push(TabsPage).then(() => {
+              window.history.replaceState({}, '', window.location.origin);
+            });
           },
           err => {
             console.log(err);
@@ -85,7 +88,9 @@ export class MagicLinkPage {
         buttons: ['OK']
       });
       failAlert.present();
-        this.navCtrl.push(LoginPage);
+        this.navCtrl.push(LoginPage).then(() => {
+          window.history.replaceState({}, '', window.location.origin);
+        });
         // console.log("Login failed");
         this.cacheService.removeLocal('isAuthenticated');
         this.cacheService.write('isAuthenticated', false);
