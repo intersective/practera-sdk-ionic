@@ -10,30 +10,21 @@ import { ViewController, NavParams } from 'ionic-angular';
             <ion-icon name="close"></ion-icon>
           </button>
         </ion-buttons>
-        <ion-title>{{activity.name}}</ion-title>
+        <ion-title>{{activityData.name}}</ion-title>
       </ion-navbar>
     </ion-header>
     <ion-content padding>
       <ion-list>
-        <h2>{{ activity.name }}</h2>
+        <h2>{{ activityData.name }}</h2>
 
         <div [innerHtml]="activity.content"></div>
 
-        <p>{{ activity.description || 'No descriptions available.' }}</p>
+        <p>{{ activityData.description || 'No descriptions available.' }}</p>
       </ion-list>
 
-      <ion-list *ngIf="activity.video_url">
-        <iframe width="640" height="390" [src]="activity.video_url" frameborder="0" allowfullscreen></iframe>
-      </ion-list>
-
-      <ion-list *ngIf="activity.video_url">
-        <a ion-button full [href]="activity.video_url">Download</a>
-      </ion-list>
-
-      <ion-list *ngIf="activity.video_url" class="center">
-        <video width="100%" height="200" controls>
-          <source [src]="activity.video_url" type="{{activity.mimetype}}">
-        </video>
+      <ion-list *ngIf="activityData.video_url">
+        <iframe width="640" height="390" [src]="activityData.video_url" frameborder="0" allowfullscreen></iframe>
+        <a ion-button full [href]="activityData.video_url">Download</a>
       </ion-list>
     </ion-content>
   `
@@ -41,7 +32,7 @@ import { ViewController, NavParams } from 'ionic-angular';
 
 export class ActivitiesViewModalPage {
   activity: any = {};
-
+  activityData: Object = {};
   constructor(
     private navParams: NavParams,
     private viewCtrl: ViewController
@@ -50,7 +41,8 @@ export class ActivitiesViewModalPage {
 
   ionViewDidEnter(): void {
     this.activity = this.navParams.get('activity');
-    console.log(this.activity);
+    this.activityData = this.activity.Activity;
+    console.log(this.activity.Activity);
   }
 
   dismiss() {

@@ -90,6 +90,13 @@ export class RequestService {
       headers.set('timelineID', timelineId);
     }
 
+    // Inject milestoneID from cached
+    let milestoneId = this.cacheService.getCached('milestone_id') ||
+      this.cacheService.getLocalObject('milestone_id');
+    if (milestoneId) {
+      headers.set('milestoneID', milestoneId);
+    }
+
     // Inject appKey from config
     if (!_.isUndefined(this.appkey)) {
       headers.set('appkey', this.appkey);
