@@ -1,13 +1,12 @@
 <ion-header class="activity-detail">
   <ion-navbar>
-    <ion-title>{{ activity.name }}</ion-title>
-    <ion-buttons end *ngIf="activity.description">
+    <ion-title>{{ activityData.name }}</ion-title>
+    <ion-buttons end *ngIf="activityData.description">
       <button ion-button icon-only (click)="openModal()">
         <ion-icon name="information-circle"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
-
   <ion-list class="header-content">
     <ion-grid>
       <ion-row>
@@ -17,22 +16,18 @@
       </ion-row>
     </ion-grid>
   </ion-list>
-
 </ion-header>
-
 <ion-content padding class="activity-detail">
   <ion-fab top center-right edge *ngIf="false">
     <button ion-fab color="soft-green" mini>
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
-
   <ion-fab top right edge>
     <button ion-fab color="soft-green" (click)="goAssessment(activity)">
       <ion-icon name="add" color="secondary"></ion-icon>
     </button>
   </ion-fab>
-
   <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
     <ion-slides pager>
       <ion-slide *ngFor="let badge of activity.badges" [ngClass]="{'disabled': badge.disabled }">
@@ -40,7 +35,6 @@
       </ion-slide>
     </ion-slides>
   </ion-list>
-
   <ion-list class="submissions">
     <ion-list-header>
       Submission

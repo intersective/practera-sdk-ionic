@@ -90,6 +90,13 @@ export class RequestService {
       headers.set('timelineID', timelineId);
     }
 
+    // Inject milestoneID from cached
+    let milestoneId = this.cacheService.getCached('milestone_id') ||
+      this.cacheService.getLocalObject('milestone_id');
+    if (milestoneId) {
+      headers.set('milestoneID', milestoneId);
+    }
+
     // Inject appKey from config
     if (!_.isUndefined(this.appkey)) {
       headers.set('appkey', this.appkey);
@@ -102,14 +109,18 @@ export class RequestService {
     let result = new RequestOptions({ headers: this.appendHeader() });
     let timelineId = this.cacheService.getLocal('timelineID');
 
-    if (options && options.search && timelineId) {
-      let params = new URLSearchParams();
+    let params = new URLSearchParams();
+    if (timelineId) {
+      params.set('timelineID', timelineId);
+    }
+
+    if (options && options.search) {
       _.each(options.search, (value, key) => {
         params.set(key, value);
       });
-      params.set('timelineID', timelineId);
-      result.search = params;
     }
+    result.search = params;
+
     return result;
   }
 

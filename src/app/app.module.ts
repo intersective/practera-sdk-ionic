@@ -9,8 +9,12 @@ import { MyApp } from './app.component';
 import { FilestackModule } from '../shared/filestack/filestack.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
-
+import { HttpModule, Http } from '@angular/http';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { i18nData } from '../../../app/i18n-en';
 // services
+import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
@@ -29,6 +33,7 @@ import { GroupEmitterService } from '../components/questions/group-emitter.servi
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
+import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
 import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
 import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
@@ -44,10 +49,12 @@ import { TextQuestionComponent} from '../components/questions/text';
 
 
 // pages
-import { ActivitiesListPage } from '../pages/activities/list/activities-list.page';
+import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
+import { ActivitiesListPage } from '../pages/activities/list/list.page';
+import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
-import { AssessmentsPage } from '../pages/assessments/assessment.page';
+import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
@@ -76,18 +83,26 @@ import { TestPage } from '../pages/tabs/test.page';
 
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
-
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
 
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: Http) {
+    return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
+}
+
 @NgModule({
   declarations: [
+    AchievementsViewPage,
     ActivitiesListPage,
+    ActivityListPopupPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -123,10 +138,12 @@ import { default as Configure } from '../configs/config';
     TestPage,
     TermConditionPage,
     TermContentComponent,
+    TruncatePipe,
     TimeAgoPipe,
     FileQuestionComponent,
     OneofQuestionComponent,
-    TextQuestionComponent
+    TextQuestionComponent,
+    TruncatePipe,
   ],
   imports: [
     TestModule,
@@ -140,6 +157,13 @@ import { default as Configure } from '../configs/config';
     }),
     FilestackModule.forRoot({
       apikey: Configure.filestack.apiKey
+    }),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [Http]
+      }
     }),
     IonicModule.forRoot(MyApp, {}, {
        links: [
@@ -174,11 +198,14 @@ import { default as Configure } from '../configs/config';
     IonicApp
   ],
   entryComponents: [
+    AchievementsViewPage,
     ActivitiesListPage,
+    ActivityListPopupPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -213,6 +240,7 @@ import { default as Configure } from '../configs/config';
     TestPage,
   ],
   providers: [
+    { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },

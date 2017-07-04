@@ -3,8 +3,8 @@ import { NavController } from 'ionic-angular';
 
 // pages
 import { AchievementsViewPage } from '../../../../pages/achievements/view/achievements-view.page';
-import { ActivitiesListPage } from '../../../../pages/activities/list/activities-list.page';
 import { AssessmentsGroupPage } from '../../../../pages/assessments/group/assessments-group.page';
+import { ActivitiesListPage } from '../../../../pages/activities/list/list.page';
 import { EventsListPage } from '../../../../pages/events/list/list.page';
 import { EventsDownloadPage } from '../../../../pages/events/download/events-download.page';
 import { GalleryPage } from '../../../../pages/gallery/gallery';
@@ -12,7 +12,6 @@ import { HomePage } from '../../../../pages/home/home';
 import { LevelsListPage } from '../../../../pages/levels/list/list';
 import { LoginPage } from '../../../../pages/login/login';
 import { RegistrationPage } from '../../../../pages/registration/registration.page';
-import { SessionListPage } from '../sessions/list/list.page';
 import { SettingsPage } from '../../../../pages/settings/settings.page';
 import { TeamPage } from '../../../../pages/team/team';
 

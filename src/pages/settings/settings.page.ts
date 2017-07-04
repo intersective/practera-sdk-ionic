@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { App, NavController, MenuController } from 'ionic-angular';
+import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from '../../../app/i18n-en'; 
+import { loadingMessages, errMessages } from '../../app/messages'; 
+// services
 import { CacheService } from '../../shared/cache/cache.service';
-// import { ActivityService } from '../../../services/activity.service';
-// import { MilestoneService } from '../../../services/milestone.service';
 // pages
 import { LoginPage } from '../../pages/login/login';
 @Component({
@@ -10,10 +12,12 @@ import { LoginPage } from '../../pages/login/login';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
+  public loadingMessage: any = loadingMessages.Logout.logout;
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
     private menuCtrl: MenuController,
+    private loadingCtrl: LoadingController,
     private appCtrl: App
   ) {}
   public settings = [];
@@ -21,12 +25,17 @@ export class SettingsPage {
     return 'abcd.example.cc';
   }
   public logout() {
-    this.cache.clear().then(() => {
-      let root = this.appCtrl.getRootNav();
-      // root.setRoot(LoginPage);
-      localStorage.clear();
-      this.navCtrl.push(LoginPage);
-      // this.navCtrl.rootNav.setRoot(LoginPage);
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: this.loadingMessage
+    });
+    loader.present().then(() => {
+      this.cache.clear().then(() => {
+        localStorage.clear();
+        window.location.reload(); // the reason of doing this is because of we need to refresh page content instead of API data cache issue occurs
+        loader.dismiss();
+        this.navCtrl.push(LoginPage);
+      });
     });
   }
 }
