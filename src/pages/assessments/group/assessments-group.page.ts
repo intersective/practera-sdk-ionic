@@ -68,7 +68,7 @@ export class AssessmentsGroupPage {
 
   ionViewDidEnter() {
 
-    this.group = this.navParams.get('groups') || [
+    this.group = this.navParams.get('group') || [
       {
         type: 'oneof'
       },
@@ -79,6 +79,8 @@ export class AssessmentsGroupPage {
         type: 'text'
       }
     ];
+
+    console.log('this.group', this.group)
 
     this.questions = this.navParams.get('questions') || [
       {
@@ -139,6 +141,8 @@ export class AssessmentsGroupPage {
         required: true
       },
     ];
+
+    console.log('this.questions', this.questions)
 
     this.formGroup = this.retrieveProgress(this.formQuestionGroup(this.questions));
   }
