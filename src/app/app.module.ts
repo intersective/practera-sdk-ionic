@@ -11,7 +11,7 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from '../../../app/i18n-en'; 
+import { i18nData } from './assets/i18n-en'; 
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -28,7 +28,6 @@ import { NotificationService } from '../shared/notification/notification.service
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
-
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
@@ -40,7 +39,6 @@ import { LockerComponent } from '../components/locker/locker';
 import { MemberComponent } from '../components/member/member';
 import { PhotoComponent } from '../components/photo/photo';
 import { TermContentComponent } from '../pages/term-condition/term-content.component';
-
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -72,14 +70,12 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
-
 // pipes
 import { TruncatePipe } from '../pipes/truncate.pipe';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 // configs
 import { default as Configure } from '../configs/config';
-
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "./assets/i18n-", ".json");

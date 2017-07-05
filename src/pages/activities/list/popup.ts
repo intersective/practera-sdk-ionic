@@ -1,7 +1,7 @@
 import { Component, Injectable } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from '../../../app/i18n-en'; 
+import { i18nData } from './assets/i18n-en'; 
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 // services
 import { AchievementService } from '../../../services/achievement.service';
@@ -28,7 +28,7 @@ export class ActivityListPopupPage {
               private achievementService: AchievementService,
               private translate: TranslateService){
                 this.unlock_id = this.navParams.get('unlock_id');
-                console.log('Unlock id value: ', this.unlock_id);
+                // console.log('Unlock id value: ', this.unlock_id);
                 translate.addLangs(["en"]);
                 translate.setDefaultLang('en');
                 translate.use('en');

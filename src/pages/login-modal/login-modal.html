@@ -3,7 +3,7 @@
     <ion-grid>
       <ion-row>
         <ion-col width-90>
-          <ion-title>Login</ion-title>
+          <ion-title>{{ 'LOGIN.PAGETITLE' | translate }}</ion-title>
         </ion-col>
         <ion-col width-10>
           <div (click)="closeModal()">
@@ -43,12 +43,12 @@
       color="button"
       (click)="userLogin()"
       [disabled]="loginForm.invalid">
-      LOGIN
+      {{ 'LOGIN.PAGETITLE' | translate }}
     </button>
     <div class="forget-password-container">
       <button class="general-circle-btn"
         (click)="linkToForgetPassword()">
-        Forget Your Password?
+        {{ 'LOGIN.PASSWORDFORGOT' | translate }}
       </button>
     </div>
   </form>

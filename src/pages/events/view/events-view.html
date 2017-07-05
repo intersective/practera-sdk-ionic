@@ -28,7 +28,7 @@
     </ion-item>
   </ion-list>
   <ion-list inset class="download">
-    <button ion-item (click)="gotoDownload(event)" detail-push>Download</button>
+    <button ion-item (click)="gotoDownload(event)" detail-push>{{ 'EVENTS.DOWNLOAD' | translate }}</button>
   </ion-list>
 </ion-content>
 <ion-footer class="events">
@@ -36,13 +36,13 @@
     <p class="lighter spacer-left">{{ bookingStatus }}</p>
     <ion-buttons end>
       <button ion-button *ngIf="!event.isBooked" class="book-btn" (click)="book(event)">
-        Book
+        {{ 'EVENTS.BOOK' | translate }}
       </button>
       <button ion-button *ngIf="event.isBooked" class="checkin-btn" (click)="checkin(event)">
-        Check-in
+        {{ 'EVENTS.CHECKIN' | translate }}
       </button>
       <button ion-button *ngIf="event.isBooked" class="cancel-btn" outline (click)="cancelBooking(event)">
-        Cancel Booking
+        {{ 'EVENTS.CANCELBOOKING' | translate }}
       </button>
     </ion-buttons>
   </ion-toolbar>

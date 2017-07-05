@@ -3,7 +3,7 @@
     <ion-grid>
       <ion-row>
         <ion-col width-90>
-          <ion-title>Set Password</ion-title>
+          <ion-title>{{ 'REGISTRATION.PAGETITLE' | translate }}</ion-title>
         </ion-col>
         <ion-col width-10 *ngIf="changeContent == false">
           <div (click)="closeModal()">
@@ -31,7 +31,7 @@
       color="button"
       class="general-circle-btn"
       [disabled]="password!=verify_password || regForm.invalid">
-      DONE
+      {{ 'REGISTRATION.DONE' | translate }}
     </button>
     <div *ngIf="verifyPwd == true">
       <div *ngIf="pwdMatchCheck()" class="error-hint">

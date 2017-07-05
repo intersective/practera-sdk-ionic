@@ -3,7 +3,7 @@ import { NavController, ToastController, LoadingController, ModalController } fr
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from '../../../app/i18n-en'; 
+import { i18nData } from './assets/i18n-en'; 
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
@@ -27,6 +27,7 @@ export class ActivitiesListPage implements OnInit {
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
   public returnError: boolean = false;
+  // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
   constructor(
@@ -37,7 +38,7 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translate: TranslateService
+    public translate: TranslateService,
   ) {
     translate.addLangs(["en"]);
     translate.setDefaultLang('en');
@@ -60,8 +61,8 @@ export class ActivitiesListPage implements OnInit {
     Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
               .subscribe(results => {
                 this.totalAchievements = results;
-                console.log(this.totalAchievements);
-                console.log("Max Points: ", results[2].max_achievable_points);
+                // console.log(this.totalAchievements);
+                // console.log("Max Points: ", results[2].max_achievable_points);
                 this.maxPoints = results[2].max_achievable_points;
                 this.currentPoints = results[0].total_points;
                 if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){

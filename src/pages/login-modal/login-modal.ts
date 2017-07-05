@@ -8,6 +8,9 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -20,7 +23,6 @@ import {FormValidator} from '../../validators/formValidator';
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { LoginPage } from '../../pages/login/login';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
-import * as _ from 'lodash';
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login-modal',
@@ -45,12 +47,16 @@ export class LoginModalPage {
     private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private authService: AuthService,
+    public translate: TranslateService,
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private ngZone: NgZone
   ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail,

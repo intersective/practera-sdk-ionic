@@ -1,6 +1,8 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Tabs, NavParams, NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
 import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
 // services
 import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
@@ -28,12 +30,16 @@ export class EventsViewPage {
     private nav: NavController,
     private cache: CacheService,
     private eventService: EventService,
+    public translate: TranslateService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private tab: Tabs
   ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
     this.event = params.get('event');
   }
   private availability(event): string {

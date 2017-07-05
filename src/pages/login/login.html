@@ -4,7 +4,7 @@
       <ion-col>
         <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
         <h3>
-          Welcome to Practera
+          {{ 'LOGIN.HEADER' | translate }}
         </h3>
       </ion-col>
     </ion-row>
@@ -16,7 +16,7 @@
                 block
                 color="button"
                 (click)="popLoginModal()">
-          LOGIN
+          {{ 'LOGIN.PAGETITLE' | translate }}
         </button>
       </ion-col>
       <ion-col width-10></ion-col>

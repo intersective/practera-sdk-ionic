@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from '../../../app/i18n-en'; 
+import { i18nData } from './assets/i18n-en'; 
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { CacheService } from '../../shared/cache/cache.service';
@@ -18,8 +18,13 @@ export class SettingsPage {
     private navCtrl: NavController,
     private menuCtrl: MenuController,
     private loadingCtrl: LoadingController,
+    public translate: TranslateService,
     private appCtrl: App
-  ) {}
+  ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
   public settings = [];
   public getUserEmail() {
     return 'abcd.example.cc';

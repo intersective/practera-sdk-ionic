@@ -1,53 +1,58 @@
 import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
-import { RegisterPage } from '../registration/register.page';
-import { TabsPage } from '../tabs/tabs.page';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+// services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
-
+// pages
+import { RegisterPage } from '../registration/register.page';
+import { TabsPage } from '../tabs/tabs.page';
 @Component({
   selector: 'term-condition',
   templateUrl: 'term-condition.html'
 })
-
 export class TermConditionPage {
   @Input('content') content?: SafeResourceUrl;
   @Input('user') user: any;
-
   agreed:boolean = false;
-
+  // loading & error message variables
+  private helpEmailMessage = generalVariableMessages.helpMail.email;
+  private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
+  private verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
   constructor(
     public nav: NavController,
+    private alertCtrl: AlertController,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private alertCtrl: AlertController
-  ) {}
-
+    public translate: TranslateService,
+  ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
+  }
   private displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
       subTitle: errorMessage,
       buttons: [{
-        text: 'OK'
+        text: 'Close'
       }]
     });
-
     alert.present();
   }
-
   ionViewDidEnter() {
     console.log(this.user);
   }
-
   agree(user): void {
     if (this.agreed === true) {
       this.nav.push(RegisterPage, user);
     } else {
-      this.notificationService.present('Agreement is required for further registration process.');
+      this.notificationService.present(this.disagreeErrMessage);
     }
   }
-
   /**
    * verify if params from url is allowed to proceed with registration
    */
@@ -60,30 +65,26 @@ export class TermConditionPage {
         console.log(res);
       },
       err => {
-        this.notificationService.present('Something is wrong with the registration verification.');
+        this.notificationService.present(this.verifyFailedErrMessage);
       },
       () => {
         this.nav.push(TabsPage);
       }
     );
   }
-
   /**
    * toggle Read & confirm to proceed next registration page
    */
   toggleAgree(): void {
     this.agreed = !this.agreed;
   }
-
   navToRegister(): void {
     if (this.agreed === true) {
       console.log(this.nav.getViews());
     }
   }
-
   onTermError(err): void {
-    const supportEmail = 'help@support.com';
-
+    const supportEmail = this.helpEmailMessage;
     if ((err.data || {}).msg) {
       //@TODO: implement error handling
       console.log({title: "Unable to register", template: `Something went wrong, please contact ${supportEmail}.`});
@@ -99,7 +100,6 @@ export class TermConditionPage {
       });
     }
   }
-
   // temporary fix for direct signin
   signIn(): void {
     this.nav.push(TabsPage);

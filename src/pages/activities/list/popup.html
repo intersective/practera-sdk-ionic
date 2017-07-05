@@ -23,7 +23,7 @@
         <div class="popup-contents" *ngIf="enableData == true">
           <img class="badge-image" src="{{ badgeUrl }}" alt="Badge Image"/> 
           <p>{{ description }}</p>
-          <p class="badge-points"><span>Points: </span> <span>{{ points }}</span></p>
+          <p class="badge-points"><span>{{ 'ACTIVITY.POINTS' | translate }}: </span> <span>{{ points }}</span></p>
         </div>
         <div class="popup-contents" *ngIf="enableData == false">
           <p>{{ achievementsLoadingErr }}</p>

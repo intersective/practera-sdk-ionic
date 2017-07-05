@@ -2,7 +2,9 @@ import { Component, ViewChild, NgZone, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
@@ -16,7 +18,7 @@ import { LoginPage } from '../login/login';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 
-const supportEmail = 'help@support.com';
+const supportEmail = generalVariableMessages.helpMail.email;
 
 @Component({
   selector: 'page-registration-modal',
@@ -43,7 +45,7 @@ export class RegistrationModalPage {
   private verify_password: string;
   // loading & error messages variables
   private successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  private passwordMismatchErrMessage: any = errMessages.Registration.mismatch.match;
+  private passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
   private registrationErrMessage: any = errMessages.Registration.error.error;
   private invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
   private noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
@@ -60,9 +62,13 @@ export class RegistrationModalPage {
     private loading: LoadingController,
     private authService: AuthService,
     private cache: CacheService,
+    public translate: TranslateService,
     private milestone: MilestoneService,
     private ngZone:NgZone,
   ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
       password: ['', [Validators.minLength(8), Validators.required]],

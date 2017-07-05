@@ -4,6 +4,8 @@ import { NavController,
          LoadingController,
          AlertController,
          ModalController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -39,7 +41,11 @@ export class ResetPasswordPage implements OnInit {
               private alertCtrl: AlertController,
               private authService: AuthService,
               private loadingCtrl: LoadingController,
-              private responsiveService: ResponsiveService) {
+              private responsiveService: ResponsiveService,
+              public translate: TranslateService) {
+                translate.addLangs(["en"]);
+                translate.setDefaultLang('en');
+                translate.use('en');
               }
   /**
    * Detect user device type (mobile or desktop) on initial page load

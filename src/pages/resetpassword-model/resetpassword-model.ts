@@ -5,6 +5,8 @@ import { NavController,
          LoadingController,
          AlertController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -30,6 +32,8 @@ export class ResetpasswordModelPage {
   // loading & error message variables
   private successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
   private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -39,8 +43,12 @@ export class ResetpasswordModelPage {
     private loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    public translate: TranslateService
   ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
     // validation for both password values: required & minlength is 8
     this.resetPwdFormGroup = formBuilder.group({
       password: ['', [Validators.minLength(8),

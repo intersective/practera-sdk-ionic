@@ -1,3 +1,8 @@
+export const generalVariableMessages = {
+  helpMail: {
+    "email": "help@support.com"
+  }
+}
 export const loadingMessages = {
   Login: {
     "login": "Logging in ..."
@@ -38,17 +43,22 @@ export const errMessages = {
     }
   },
   DirectLink: {
-    "mismatch": "Oops... An error occurred. Please login by typing email and password."
+    "mismatch": "Oops... The link to log you in appears to be broken. Please login by typing your email and password."
   },
   Events: {
     bookEvents: {
-      "book": "Whoops, book event process is failed, please try again later."
+      "book": "Whoops, booking of an event has failed, please try again later."
     },
     cancelBooking: {
-      "cancel": "Whoops, cancel booking event process is failed, please try again later."
+      "cancel": "Whoops, we could not cancel your booking for this event, please try again later."
     },
     events: {
       "empty": "Whoops... no event has been setup ..."
+    },
+    filter: {
+      "empty": "There are no scheduled events available. Please check back later.",
+      "noBookings": `You have no bookings. Tap on "Browse" and book an event now to enhance your skills.`,
+      "noAttended": "You have not attended any events yet."
     }
   },
   General: {
@@ -64,35 +74,46 @@ export const errMessages = {
   },
   PasswordValidation: {
     mismatch: {
-      "mismatch": "Password mismatch ..."
+      "mismatch": "You must enter matching passwords. Please Try again."
     },
     minlength: {
-      "minlength": "Password minimum length is 8 characters ..."
+      "minlength": "The minimum length allowed for a password is 8 characters."
     }
   },
   Registration: {
     mismatch: {
-      "match": "The passwords entered do not match."
+      "mismatch": "The passwords you have entered do not match each other. Please enter the same password."
     },
     error: {
-      "error": "Sorry, something went wrong. Please contact " // after the "contact", the content will be a variable, please check with Registration/model.ts file to view detail
+      "error": "Sorry, something has gone wrong in processing your registration. Please try again or contact " // after the "contact", the content will be a variable, please check with Registration/model.ts file to view detail
     },
     invalidUser: {
-      "account": "Whoops... Account not found. Please contact " // after the "contact", the content will be a variable, please check with Registration/model.ts file to view detail
+      "account": "Whoops... You do not have a account. To have one set up please contact " // after the "contact", the content will be a variable, please check with Registration/model.ts file to view detail
     },
     noPassword: {
-      "password": "Whoopes... Unable to register, invalid password."
+      "password": "Whoops... Sorry, we have been unable to register you. You must enter a valid password."
     },
     alreadyRegistered: {
-      "registered": "This account has already registered. Please type your registered email and password to login."
+      "registered": "You have already registered. Please type the email address and password you registered with to login."
+    },
+    verifyFailed: {
+      "verifyfailed": "Sorry, verification failed, please resend your email and password."
     }
   },
   ResetPassword: {
     resetLoginFailed: {
-      "failed": "Whoops, login failed, please go to login page to sign in."
+      "failed": "Whoops, we were unable to reset your password. Please try again."
     },
     invalidLink: {
-      "invalid": "Oops... an error occurred, please try again. In 5 seconds you will return to the login page ..."
+      "invalid": "Oops... The log in link is broken. You will be redirected to the login page. Try again with your username and password."
+    }
+  },
+  TermConditions: {
+    disagreement: {
+      "noAccepted": "You must agree to the Terms and Conditions."
+    },
+    verifyFailed: {
+      "verifyfailed": "Oops... Registration verification has failed. Please try again later."
     }
   }
 }
