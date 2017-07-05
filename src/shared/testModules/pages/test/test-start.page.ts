@@ -4,7 +4,7 @@ import { NavController } from 'ionic-angular';
 // pages
 import { AchievementsViewPage } from '../../../../pages/achievements/view/achievements-view.page';
 import { AssessmentsGroupPage } from '../../../../pages/assessments/group/assessments-group.page';
-import { ActivitiesListPage } from '../../../../pages/activities/list/list.page';
+import { ActivitiesClassicListPage } from '../../../../pages/activities-classic/list/activities-classic-list.page';
 import { EventsListPage } from '../../../../pages/events/list/list.page';
 import { EventsDownloadPage } from '../../../../pages/events/download/events-download.page';
 import { GalleryPage } from '../../../../pages/gallery/gallery';
@@ -46,7 +46,7 @@ const PAGES = [
   },
   {
     name: 'Activities',
-    page: ActivitiesListPage
+    page: ActivitiesClassicListPage
   },
   {
     name: 'Levels',
@@ -76,7 +76,8 @@ export class TestStartPage {
   testPage;
 
   constructor(public nav: NavController) {
-    console.log('??', AchievementsViewPage);
+    console.log('ActivitiesClassicListPage', ActivitiesClassicListPage)
+    console.log('??', ActivitiesClassicListPage);
   }
 
   goTo(nav) {

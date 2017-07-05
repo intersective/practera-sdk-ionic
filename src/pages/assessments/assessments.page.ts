@@ -58,14 +58,30 @@ export class AssessmentsPage {
         this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
 
         _.forEach(this.assessmentQuestions, (question, key) => {
-          // Inject answers
-          if (this.answers[question.id]) {
-            this.assessmentQuestions[key].answer = this.answers[question.id];
+
+          let idx = `assessment.group.${question.assessment_id}`;
+          let exists = this.cache.getLocalObject(idx);
+
+          if (exists.AssessmentSubmissionAnswer) {
+            if (_.isString(exists.AssessmentSubmissionAnswer)) {
+              this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer;
+            } else {
+              this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer[0].answer;
+            }
           } else {
-            // Set allowSubmit to false when some assessment no answer
             this.allowSubmit = false;
             this.assessmentQuestions[key].answer = null;
           }
+
+
+          // // Inject answers
+          // if (this.answers[question.id]) {
+          //   this.assessmentQuestions[key].answer = this.answers[question.id];
+          // } else {
+          //   // Set allowSubmit to false when some assessment no answer
+          //   this.allowSubmit = false;
+          //   this.assessmentQuestions[key].answer = null;
+          // }
         });
 
         return resolve();
