@@ -47,7 +47,9 @@ export class RegistrationPage implements OnInit {
         text: 'OK',
         handler: () => {
           alert.dismiss().then(() => {
-            this.nav.setRoot(LoginPage);
+            this.nav.setRoot(LoginPage).then(() => {
+              window.history.replaceState({}, '', window.location.origin);
+            });
           })
           return false;
         }

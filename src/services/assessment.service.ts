@@ -7,8 +7,7 @@ export class AssessmentService {
 
   // listAll()
   public getAll(options? : any) {
-    return this.request.get('api/assessments.json')
-      .map(response => response.json());
+    return this.request.get('api/assessments.json', options);
   }
 
 }

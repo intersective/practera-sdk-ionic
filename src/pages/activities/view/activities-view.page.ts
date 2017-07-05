@@ -4,7 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { i18nData } from './assets/i18n-en'; 
 // pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
-import { AssessmentsPage } from '../../assessments/assessment.page';
+// import { AssessmentsPage } from '../../assessments/assessment.page';
+import { AssessmentsPage } from '../../assessments/assessments.page';
 @Component({
   templateUrl: './view.html'
 })

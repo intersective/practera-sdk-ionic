@@ -27,6 +27,7 @@ export class ActivitiesListPage implements OnInit {
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
   public returnError: boolean = false;
+  // public shiftLang: boolean = false;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
@@ -44,7 +45,14 @@ export class ActivitiesListPage implements OnInit {
     translate.setDefaultLang('en');
     translate.use('en');
   }
-                
+  // shiftLanguageTrial(){
+  //   if(this.shiftLang == false){
+  //     this.shiftLang = true;
+  //     return this.translate.use('cn');
+  //   }
+  //   this.shiftLang = false;
+  //   return this.translate.use('en');
+  // }               
   ngOnInit(){ 
     this.loadingAchievements();
   }
@@ -66,12 +74,12 @@ export class ActivitiesListPage implements OnInit {
                 this.maxPoints = results[2].max_achievable_points;
                 this.currentPoints = results[0].total_points;
                 if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
-                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
-                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
-                }else if(this.currentPoints > this.maxPoints){
-                  this.pointPercentage = 100;
-                }else {
-                  this.currentPoints = 0;
+                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
+                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
+                }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
+                  this.pointPercentage = 100; 
+                }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
+                  this.currentPoints = 0; 
                   this.maxPoints = 0;
                   this.pointPercentage = 0;
                 }
