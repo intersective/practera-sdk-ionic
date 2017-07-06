@@ -11,6 +11,10 @@ import { AssessmentService } from '../../services/assessment.service';
 
 import * as _ from 'lodash';
 
+import { TranslateService } from '@ngx-translate/core';
+import { i18nData } from './assets/i18n-en'; 
+import { confirmMessages } from '../../app/messages'; 
+
 @Component({
   selector: 'assessments-page',
   templateUrl: './assessments.html'
@@ -26,14 +30,21 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: any = true;
 
+  // confirm message variables
+  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    public translate: TranslateService,
   ) {
+    translate.addLangs(["en"]);
+    translate.setDefaultLang('en');
+    translate.use('en');
     this.activity = this.navParams.get('activity');
     console.log('this.activity', this.activity);
   }
@@ -101,7 +112,7 @@ export class AssessmentsPage {
     // No data will send to server
     const confirm = this.alertCtrl.create({
       title: 'Discard all change',
-      message: 'Do you really want to discard all your change?',
+      message: this.discardConfirmMessage,
       buttons: [
         {
           text: 'Okay',
@@ -128,7 +139,7 @@ export class AssessmentsPage {
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Submit evidence',
-      message: 'Do you really want to submit this evidence?',
+      message: this.submitConfirmMessage,
       buttons: [
         {
           text: 'Okay',

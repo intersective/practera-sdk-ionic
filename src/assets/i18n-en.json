@@ -23,6 +23,11 @@
     "PAGETITLE": "Forgot Password",
     "SENDBUTTON": "Send to Mailbox"
   },
+  "GENERAL": {
+    "DONE": "Done",
+    "DOWNLOAD": "Download",
+    "SUBMIT": "Submit"
+  },
   "LOGIN": {
     "HEADER": "Welcome to Practera",
     "PAGETITLE": "Login",

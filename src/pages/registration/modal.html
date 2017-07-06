@@ -31,7 +31,7 @@
       color="button"
       class="general-circle-btn"
       [disabled]="password!=verify_password || regForm.invalid">
-      {{ 'REGISTRATION.DONE' | translate }}
+      {{ 'GENERAL.DONE' | translate }}
     </button>
     <div *ngIf="verifyPwd == true">
       <div *ngIf="pwdMatchCheck()" class="error-hint">

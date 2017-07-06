@@ -4,58 +4,6 @@
     "POINTS": "分数",
     "PROGRESS": "进程",
     "SUBMISSION": "提交"
-  },
-  "ASSESSMENT": {
-    "PAGETITLE": "Assessment"
-  },
-  "EVENTS": {
-    "ATTENDED": "Attended",
-    "BOOK": "Book",
-    "BROWSE": "Browse",
-    "CANCELBOOKING": "Cancel Booking",
-    "CHECKIN": "Check-in",
-    "DOWNLOAD": "Download",
-    "MYBOOKINGS": "My Bookings",
-    "PAGETITLE": "Events"
-  },
-  "FORGOTPASSWORD": {
-    "INPUTTITLE": "Please enter your email address to reset password",
-    "PAGETITLE": "Forgot Password",
-    "SENDBUTTON": "Send to Mailbox"
-  },
-  "LOGIN": {
-    "HEADER": "Welcome to Practera",
-    "PAGETITLE": "Login",
-    "PASSWORDFORGOT": "Forget Your Password?"
-  },
-  "REGISTRATION": {
-    "DONE": "Done",
-    "HEADER": "Great - you are almost there! Just one more thing...",
-    "PAGETITLE": "Set Password"
-  },
-  "RESETPASSWORD": {
-    "DONE": "Done",
-    "PAGETITLE": "Reset Password"
-  },
-  "SETTINGS": {
-    "HELP": "Email Help",
-    "LOGOUT": "Logout",
-    "PAGETITLE": "Settings",
-    "PROFILE": "My Profile ",
-    "SUPPORT": "Support",
-    "SWITCHER": "Program Switcher",
-    "TUTORIAL": "Tutorial",
-    "TERMS": "Terms of Use"
-  },
-  "TABS": {
-    "ACCOUNT": "Account",
-    "DASHBOARD": "Dashboard",
-    "EVENTS": "Events",
-    "RANKING": "Ranking"
-  },
-  "TERMCONDITIONS": {
-    "PAGETITLE": "Terms and Conditions",
-    "AGREE": "I agree",
-    "NEXT": "Next"
   }
+  // This file is for demo usage, the data may not be 100% accurate as original file
 }

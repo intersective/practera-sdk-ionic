@@ -27,7 +27,7 @@ export class RegisterPage implements OnInit {
   submitted: boolean = false;
   private windowHeight: number = window.innerHeight / 3;
   private isLandscaped: boolean = false;
-  // loadinbg & error message variables
+  // loading & error message variables
   private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     private navParams: NavParams,

@@ -1,33 +1,11 @@
-export const generalVariableMessages = {
-  helpMail: {
-    "email": "help@support.com"
-  }
-}
-export const loadingMessages = {
-  Login: {
-    "login": "Logging in ..."
-  },
-  LoadingSpinner: {
-    "loading": "Loading ..."
-  },
-  Logout: {
-    "logout": "See you next time"
-  },
-  SendingEmail: {
-    "send": "Sending email to us ..." 
-  },
-  SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
-    "partOne": "We have sent an email to",
-    "partTwo": "with a link to log into the system - please check your inbox. If you haven't received an email in a few minutes please check the address you entered and your spam folder."
-  },
-  SuccessRegistration: {
-    "successRegistration": "Your password has been successfully set. You will now be logged in."
-  },
-  SuccessResetPassword: {
-    "successResetPassword": "Password has been changed successfully. Logging in now."
-  },
-  VerifyUser: {
-    "verify": "Verifying user identity ..."
+export const confirmMessages = {
+  Assessments: {
+    DiscardChanges: {
+      "discard": "Are you sure you want to discard all changes?"
+    },
+    SubmitConfirmation: {
+      "confirm": "Are you sure you want to submit this evidence?"
+    }
   }
 }
 export const errMessages = {
@@ -57,7 +35,7 @@ export const errMessages = {
     },
     filter: {
       "empty": "There are no scheduled events available. Please check back later.",
-      "noBookings": `You have no bookings. Tap on "Browse" and book an event now to enhance your skills.`,
+      "noBookings": "You have no bookings. Tap on 'Browse' and book an event now to enhance your skills.",
       "noAttended": "You have not attended any events yet."
     }
   },
@@ -115,5 +93,37 @@ export const errMessages = {
     verifyFailed: {
       "verifyfailed": "Oops... Registration verification has failed. Please try again later."
     }
+  }
+}
+export const generalVariableMessages = {
+  helpMail: {
+    "email": "help@support.com"
+  }
+}
+export const loadingMessages = {
+  Login: {
+    "login": "Logging in ..."
+  },
+  LoadingSpinner: {
+    "loading": "Loading ..."
+  },
+  Logout: {
+    "logout": "See you next time"
+  },
+  SendingEmail: {
+    "send": "Sending email to us ..." 
+  },
+  SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
+    "partOne": "We have sent an email to",
+    "partTwo": "with a link to log into the system - please check your inbox. If you haven't received an email in a few minutes please check the address you entered and your spam folder."
+  },
+  SuccessRegistration: {
+    "successRegistration": "Your password has been successfully set. You will now be logged in."
+  },
+  SuccessResetPassword: {
+    "successResetPassword": "Password has been changed successfully. Logging in now."
+  },
+  VerifyUser: {
+    "verify": "Verifying user identity ..."
   }
 }
