@@ -74,7 +74,6 @@ export class AssessmentsPage {
             this.assessmentQuestions[key].answer = null;
           }
 
-
           // // Inject answers
           // if (this.answers[question.id]) {
           //   this.assessmentQuestions[key].answer = this.answers[question.id];

@@ -17,14 +17,18 @@ export class AnswerBase<T> {
 }
 
 export class QuestionBase<T> {
+  id: number;
+  assessment_id: number;
+  name: string;
   type: string;
-  choices: ChoiceBase<any>[];
-  answers: {
+  file_type?: string;
+  audience: Array<any>;
+  choices?: ChoiceBase<any>[];
+  answers?: {
     submitter: AnswerBase<any>[],
     reviewer: AnswerBase<any>[],
   };
-  name: string;
-  required: boolean;
+  required?: boolean;
 }
 
 @Component({
@@ -47,6 +51,66 @@ export class AssessmentsGroupPage {
   ) {
   }
 
+  ionViewDidEnter() {
+    this.activity = this.navParams.get('activity');
+    this.assessment = this.navParams.get('assessment') || {
+      "Assessment": {
+        "id": 29,
+        "name": "Check-in 1",
+        "description": "Needs a description...",
+        "assessment_type": "checkin",
+        "is_live": true,
+        "is_team": false,
+        "score_type": "numeric",
+        "experience_id": 2,
+        "program_id": 5,
+        "deleted": false,
+        "deleted_date": null,
+        "comparison_group_size": 3,
+        "comparison_group_points": 10,
+        "review_period": 72,
+        "review_scope": "assessment",
+        "review_scope_id": null,
+        "created": "2016-06-23 06:07:39.681326",
+        "modified": "2017-03-09 00:18:25",
+        "review_instructions": null,
+        "is_repeatable": false,
+        "num_reviews": null,
+        "review_type": null,
+        "review_role": null,
+        "visibility": {
+          "guest": false,
+          "participant": true,
+          "mentor": true,
+          "coordinator": true,
+          "admin": false,
+          "team": false,
+          "sysadmin": false
+        },
+        "auto_assign_reviewers": null,
+        "parent_id": null,
+        "auto_publish_reviews": false
+      },
+      "AssessmentQuestion": [
+        {
+          "name": "Selfie",
+          "question_type": "file",
+          "file_type": "image",
+          "audience": "[\"reviewer\",\"submitter\"]",
+          "id": 100,
+          "assessment_id": 29
+        }
+      ]
+    };
+
+    this.questions = this.normaliseQuestions(this.assessment.AssessmentQuestion);
+    this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
+  }
+
+  /**
+   * turn a collection of questions into angular's FormGroup to share among components
+   * @param {array} questions list of questions from a question group (Assessment group)
+   */
   buildFormGroup(questions) {
     let group: any = {};
 
@@ -59,73 +123,6 @@ export class AssessmentsGroupPage {
     });
 
     return group;
-  }
-
-  ionViewDidEnter() {
-    this.activity = this.navParams.get('activity');
-    this.assessment = this.navParams.get('assessment');
-
-    this.questions = this.navParams.get('questions') || [
-      {
-        id: 4,
-        type: 'file',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'TASK: What was actually required of me in that situation?',
-        required: true
-      },
-      {
-        id: 1,
-        type: 'oneof',
-        choices: [
-          {
-            id: 1,
-            name: 'Test 1'
-          },
-          {
-            id: 2,
-            name: 'Test 2'
-          },
-          {
-            id: 3,
-            name: 'Test 3'
-          },
-        ],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'SITUATION: The context in which this experience took place',
-        required: true
-      },
-      {
-        id: 2,
-        type: 'text',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'TASK: What was actually required of me in that situation?',
-        required: true
-      },
-      {
-        id: 3,
-        type: 'text',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'ACTION: What did I do given the situation and the task?',
-        required: true
-      },
-    ];
-
-    this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
   }
 
   /**
@@ -158,8 +155,7 @@ export class AssessmentsGroupPage {
    * @description retrieve saved progress from localStorage
    */
   retrieveProgress(questions: Array<any>) {
-    let cachedProgress = this.cache.getLocalObject('assessment.group.temporary_fake_id');
-    console.log(cachedProgress);
+    let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.Assessment.id}`);
 
     let newQuestions = questions;
     let progress = cachedProgress.AssessmentSubmissionAnswer;
@@ -169,10 +165,27 @@ export class AssessmentsGroupPage {
          newQuestions[id].controls.answer.setValue(progress[id].answer || '');
       });
     }
-    // _.forEach(cachedProgress.AssessmentSubmissionAnswer, (answer, id) => {
-    //   progress[id] = answer;
-    // });
     return newQuestions;
+  }
+
+  normaliseQuestions(questions) {
+    let result = [];
+
+    questions.forEach((question) => {
+      // let thisQuestion = question['Assess.Assessment'];
+      let normalised: QuestionBase<any> = {
+        id: question.id,
+        assessment_id: question.assessment_id,
+        name: question.name,
+        type: question.question_type,
+        audience: question.audience,
+        file_type: question.file_type
+      };
+
+      result.push(normalised);
+    });
+
+    return result;
   }
 
   /**

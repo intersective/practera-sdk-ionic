@@ -76,8 +76,8 @@ export class TestStartPage {
   testPage;
 
   constructor(public nav: NavController) {
-    console.log('ActivitiesClassicListPage', ActivitiesClassicListPage)
-    console.log('??', ActivitiesClassicListPage);
+    // console.log('ActivitiesClassicListPage', ActivitiesClassicListPage)
+    // console.log('??', ActivitiesClassicListPage);
   }
 
   goTo(nav) {
