@@ -55,9 +55,9 @@ export class AssessmentsPage {
         }
       }).subscribe(assessmentData => {
         console.log('assessmentData', assessmentData);
-        this.assessment = assessmentData[0].Assessment;
-        this.assessmentGroups = assessmentData[0].AssessmentGroup;
-        this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
+        this.assessment = assessmentData.assessments[0].Assessment;
+        // this.assessmentGroups = assessmentData.Assessments[0].AssessmentGroup;
+        this.assessmentQuestions = assessmentData.assessments[0].AssessmentQuestion;
 
         console.log('this.assessmentGroups', this.assessmentGroups);
         console.log('this.assessmentQuestions', this.assessmentQuestions);
@@ -186,8 +186,8 @@ export class AssessmentsPage {
     confirm.present();
   }
 
-  gotoAssessment(group, questions) {
-    this.navCtrl.push(AssessmentsGroupPage, { group, questions });
+  gotoAssessment(group) {
+    this.navCtrl.push(AssessmentsGroupPage, { group });
   }
 
   // @TODO: Remove it later...
