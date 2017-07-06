@@ -31,10 +31,13 @@ export class QuestionBase<T> {
   templateUrl: './assessments-group.html',
 })
 export class AssessmentsGroupPage {
-  group = [];
   questions = [];
   formGroup;
   temp;
+
+  //@TODO: decide which one to use
+  assessment: any;
+  activity: any;
 
   constructor(
     private navParams: NavParams,
@@ -44,18 +47,10 @@ export class AssessmentsGroupPage {
   ) {
   }
 
-  formQuestionGroup(questions) {
+  buildFormGroup(questions) {
     let group: any = {};
 
-    console.log('Going to formGroup for', this.questions);
     this.questions.forEach(question => {
-      /*
-        Assessment: {
-          id: 'assessment.id',
-          activity_id: 'activity_id'
-        },
-        AssessmentSubmissionAnswer: [],
-      */
       group[question.id] = new FormGroup({
         answer: question.required ? new FormControl(question.answer || '', Validators.required) : new FormControl(question.answer || ''),
         comment: question.required ? new FormControl(question.comment || '', Validators.required) : new FormControl(question.comment || ''),
@@ -67,18 +62,8 @@ export class AssessmentsGroupPage {
   }
 
   ionViewDidEnter() {
-
-    this.group = this.navParams.get('groups') || [
-      {
-        type: 'oneof'
-      },
-      {
-        type: 'file'
-      },
-      {
-        type: 'text'
-      }
-    ];
+    this.activity = this.navParams.get('activity');
+    this.assessment = this.navParams.get('assessment');
 
     this.questions = this.navParams.get('questions') || [
       {
@@ -140,7 +125,7 @@ export class AssessmentsGroupPage {
       },
     ];
 
-    this.formGroup = this.retrieveProgress(this.formQuestionGroup(this.questions));
+    this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
   }
 
   /**

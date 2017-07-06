@@ -8,6 +8,7 @@ import {
 } from 'ionic-angular';
 import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
+import { AssessmentsGroupPage } from './group/assessments-group.page';
 
 import * as _ from 'lodash';
 
@@ -196,5 +197,9 @@ export class AssessmentsPage {
 
       this.loadQuestions();
     });
+  }
+
+  doAssessment(question) {
+    this.navCtrl.push(AssessmentsGroupPage, {activity: this.activity, assessment: question});
   }
 }
