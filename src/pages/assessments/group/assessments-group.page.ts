@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
-import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
 
 import * as _ from 'lodash';
@@ -52,7 +52,7 @@ export class AssessmentsGroupPage {
   }
 
   ionViewDidEnter() {
-    this.activity = this.navParams.get('activity');
+    this.activity = this.navParams.get('activity') || {};
     this.assessment = this.navParams.get('assessment') || {
       "Assessment": {
         "id": 29,
@@ -112,17 +112,39 @@ export class AssessmentsGroupPage {
    * @param {array} questions list of questions from a question group (Assessment group)
    */
   buildFormGroup(questions) {
-    let group: any = {};
+    let result: any = {};
 
     this.questions.forEach(question => {
-      group[question.id] = new FormGroup({
+      let group = {
         answer: question.required ? new FormControl(question.answer || '', Validators.required) : new FormControl(question.answer || ''),
-        comment: question.required ? new FormControl(question.comment || '', Validators.required) : new FormControl(question.comment || ''),
-      });
+        comment: question.required ? new FormControl(question.comment || '', Validators.required) : new FormControl(question.comment || '')
+      };
+
+      // render choices' FormGroup
+      let choices = {};
+      if (question.choices && question.type === 'multiple') {
+        question.choices.forEach(choice => {
+          let answer = (question.choices) ? question.choices[choice.id] : false;
+          choices[choice.id] = new FormControl(answer);
+        });
+        group['choices'] = new FormGroup(choices);
+      }
+
+      result[question.id] = new FormGroup(group);
 
     });
 
-    return group;
+    return result;
+  }
+
+  /**
+   * @TODO: confirm with backend how checkbox value submission is handled
+   * @description format checkbox value before post back to server
+   */
+  getCheckboxValues(choices) {
+    let result = {};
+    choices
+    return result;
   }
 
   /**
@@ -134,16 +156,21 @@ export class AssessmentsGroupPage {
       let values = question.getRawValue();
       answers[id] = {
         assessment_question_id: id,
-        answer: values.answer || values.comment
+        answer: values.answer || values.comment,
+      };
+
+      // store it if choice answer is available or skip
+      if (values.choices) {
+        answers[id].choices = values.choices;
       }
     });
 
     // final step - save to localstorage
-    let assessmentId = 'temporary_fake_id';
+    let assessmentId = this.assessment.Assessment.id;
     let submission = {
       Assessment: {
           id: assessmentId,
-          activity_id: 'temporary_fake_activity_id'
+          activity_id: this.activity.id || 'temporary_fake_activity_id'
       },
       AssessmentSubmissionAnswer: answers || {}
     };
@@ -158,14 +185,32 @@ export class AssessmentsGroupPage {
     let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.Assessment.id}`);
 
     let newQuestions = questions;
-    let progress = cachedProgress.AssessmentSubmissionAnswer;
+    let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
 
-    if (!_.isEmpty(progress)) {
+    if (!_.isEmpty(savedProgress)) {
       _.forEach(newQuestions, (question, id) => {
-         newQuestions[id].controls.answer.setValue(progress[id].answer || '');
+        if (savedProgress[id]) {
+          newQuestions[id] = this.setValueWith(question, savedProgress[id]);
+        }
       });
     }
     return newQuestions;
+  }
+
+  /**
+   * @description set value to each FormControl for different answer field
+   *              - "text", "oneof" & "file" using just "answer" field
+   *              - "multiple" answer is stored into "choices" FormControl instead
+   * @param {FormGroup} question FormGroup for a question
+   * @param {Object} answers answer [choices object || string answer]
+   */
+  private setValueWith(question, answers) {
+    if (answers.choices) {
+      question.controls.choices.setValue(answers.choices);
+    } else {
+      question.controls.answer.setValue(answers.answer || '');
+    }
+    return question;
   }
 
   normaliseQuestions(questions) {
@@ -179,7 +224,8 @@ export class AssessmentsGroupPage {
         name: question.name,
         type: question.question_type,
         audience: question.audience,
-        file_type: question.file_type
+        file_type: question.file_type,
+        choices: question.choices // @TODO: correct this after get_assessment format is final
       };
 
       result.push(normalised);
