@@ -101,7 +101,7 @@ export class ActivitiesListPage implements OnInit {
     );
   }
   // loading activity list data
-  loadingActivities(){
+  loadingActivities = () => {
     let loadingActivities = this.loadingCtrl.create({
       content: 'Loading ..'
     });

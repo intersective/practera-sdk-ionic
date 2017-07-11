@@ -59,21 +59,223 @@ const PAGES = [
             "auto_publish_reviews": false
         },
         "AssessmentQuestion": [
-            {
-                "name": "1st Multitple Question",
-                "question_type": "multiple",
-                "file_type": null,
-                "audience": "[\"reviewer\",\"submitter\"]",
+          {
+            "name": "1st Multitple Question",
+            "question_type": "multiple",
+            "file_type": null,
+            "audience": "[\"reviewer\",\"submitter\"]",
+            "id": 140,
+            "assessment_id": 37
+          },
+          {
+            "name": "2nd Multi Question",
+            "question_type": "multiple",
+            "file_type": null,
+            "audience": "[\"reviewer\",\"submitter\"]",
+            "id": 141,
+            "assessment_id": 37,
+            "AssessmentQuestionChoice": [
+              {
+                "id": 286,
+                "assessment_question_id": 141,
+                "assessment_choice_id": 286,
+                "order": 1,
+                "weight": "1",
+                "explanation": null,
+                "AssessmentChoice": {
+                    "id": 286,
+                    "name": "One of the first",
+                    "description": ""
+                }
+              },
+              {
+                "id": 287,
+                "assessment_question_id": 141,
+                "assessment_choice_id": 287,
+                "order": 2,
+                "weight": "1",
+                "explanation": null,
+                "AssessmentChoice": {
+                    "id": 287,
+                    "name": "2nd ",
+                    "description": ""
+                }
+              },
+              {
+                "id": 288,
+                "assessment_question_id": 141,
+                "assessment_choice_id": 288,
+                "order": 3,
+                "weight": "1",
+                "explanation": null,
+                "AssessmentChoice": {
+                    "id": 288,
+                    "name": "3rd Choice",
+                    "description": ""
+                }
+              },
+              {
+                "id": 289,
+                "assessment_question_id": 141,
+                "assessment_choice_id": 289,
+                "order": 4,
+                "weight": "0",
+                "explanation": null,
+                "AssessmentChoice": {
+                    "id": 289,
+                    "name": "Select me too!",
+                    "description": ""
+                }
+              }
+            ]
+          }
+        ],
+        "AssessmentGroup": [
+          {
+              "id": 42,
+              "assessment_id": 37,
+              "name": "1st Group",
+              "description": "",
+              "order": 1,
+              "review_instructions": "",
+              "restart_numbering": false,
+              "AssessmentGroupQuestion": [
+              {
                 "id": 140,
-                "assessment_id": 37
-            },
-            {
-                "name": "2nd Multi Question",
-                "question_type": "multiple",
-                "file_type": null,
-                "audience": "[\"reviewer\",\"submitter\"]",
-                "id": 141,
-                "assessment_id": 37
+                "assessment_group_id": 42,
+                "assessment_question_id": 140,
+                "order": null,
+                "AssessmentQuestion": {
+                  "id": 140,
+                  "assessment_id": 37,
+                  "name": "1st Multitple Question",
+                  "description": "",
+                  "hint": "",
+                  "score": "1",
+                  "question_type": "multiple",
+                  "has_comment": false,
+                  "is_required": false,
+                  "audience": "[\"reviewer\",\"submitter\"]",
+                  "answer": null,
+                  "file_type": null,
+                  "AssessmentQuestionChoice": [
+                    {
+                      "id": 283,
+                      "assessment_question_id": 140,
+                      "assessment_choice_id": 283,
+                      "order": 1,
+                      "weight": "1",
+                      "explanation": null,
+                      "AssessmentChoice": {
+                        "id": 283,
+                        "name": "New Choice 1",
+                        "description": ""
+                      }
+                    },
+                    {
+                      "id": 284,
+                      "assessment_question_id": 140,
+                      "assessment_choice_id": 284,
+                      "order": 2,
+                      "weight": "1",
+                      "explanation": null,
+                      "AssessmentChoice": {
+                        "id": 284,
+                        "name": "New Choice 2",
+                        "description": ""
+                      }
+                    },
+                    {
+                      "id": 285,
+                      "assessment_question_id": 140,
+                      "assessment_choice_id": 285,
+                      "order": 3,
+                      "weight": "1",
+                      "explanation": null,
+                      "AssessmentChoice": {
+                        "id": 285,
+                        "name": "New Choice 3",
+                        "description": ""
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                  "id": 141,
+                  "assessment_group_id": 42,
+                  "assessment_question_id": 141,
+                  "order": null,
+                  "AssessmentQuestion": {
+                      "id": 141,
+                      "assessment_id": 37,
+                      "name": "2nd Multi Question",
+                      "description": "",
+                      "hint": "",
+                      "score": "1",
+                      "question_type": "multiple",
+                      "has_comment": false,
+                      "is_required": false,
+                      "audience": "[\"reviewer\",\"submitter\"]",
+                      "answer": null,
+                      "file_type": null,
+                      "AssessmentQuestionChoice": [
+                          {
+                              "id": 286,
+                              "assessment_question_id": 141,
+                              "assessment_choice_id": 286,
+                              "order": 1,
+                              "weight": "1",
+                              "explanation": null,
+                              "AssessmentChoice": {
+                                  "id": 286,
+                                  "name": "One of the first",
+                                  "description": ""
+                              }
+                          },
+                          {
+                              "id": 287,
+                              "assessment_question_id": 141,
+                              "assessment_choice_id": 287,
+                              "order": 2,
+                              "weight": "1",
+                              "explanation": null,
+                              "AssessmentChoice": {
+                                  "id": 287,
+                                  "name": "2nd ",
+                                  "description": ""
+                              }
+                          },
+                          {
+                              "id": 288,
+                              "assessment_question_id": 141,
+                              "assessment_choice_id": 288,
+                              "order": 3,
+                              "weight": "1",
+                              "explanation": null,
+                              "AssessmentChoice": {
+                                  "id": 288,
+                                  "name": "3rd Choice",
+                                  "description": ""
+                              }
+                          },
+                          {
+                              "id": 289,
+                              "assessment_question_id": 141,
+                              "assessment_choice_id": 289,
+                              "order": 4,
+                              "weight": "0",
+                              "explanation": null,
+                              "AssessmentChoice": {
+                                  "id": 289,
+                                  "name": "Select me too!",
+                                  "description": ""
+                              }
+                          }
+                      ]
+                  }
+                }
+              ]
             }
         ]
       }
