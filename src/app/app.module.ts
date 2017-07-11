@@ -1,4 +1,5 @@
 // libs
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, OnInit } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
@@ -154,6 +155,7 @@ export function HttpLoaderFactory(http: Http) {
     TruncatePipe,
   ],
   imports: [
+    BrowserModule,
     TestModule,
     CacheModule,
     NotificationModule,
