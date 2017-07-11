@@ -232,14 +232,14 @@ export class AssessmentsGroupPage {
   };
 
   /**
-   * @description set value to each FormControl for different answer field
+   * @description set value to each FormControl differently based on type:
    *              - "text", "oneof" & "file" using just "answer" field
    *              - "multiple" answer is stored into "choices" FormControl instead
    * @param {FormGroup} question FormGroup for a question
    * @param {Object} answers answer [choices object || string answer]
    */
   private setValueWith(question, answers) {
-    if (answers.choices) {
+    if (!_.isEmpty(answers.choices)) {
       question.controls.choices.setValue(answers.choices);
     } else {
       question.controls.answer.setValue(answers.answer || '');
