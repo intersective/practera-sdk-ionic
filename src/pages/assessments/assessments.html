@@ -17,6 +17,10 @@
     </ion-card-content>
   </ion-card>
 
-  <questionGroup *ngFor="let questionGroup of assessmentGroups; let i = index" [questionGroup]="questionGroup">
+  <questionGroup
+    *ngFor="let assessmentQuestion of assessmentQuestions; let i = index"
+    [assessmentQuestion]="assessmentQuestion"
+    (click)="gotoAssessment(assessmentQuestion)"
+  >
   </questionGroup>
 </ion-content>

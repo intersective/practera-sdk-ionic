@@ -20,6 +20,7 @@ export class EventsViewPage {
   public bookingStatus: string = '';
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
+  public hasAssessment: boolean = false;;
   constructor(
     private params: NavParams,
     private nav: NavController,
@@ -32,6 +33,7 @@ export class EventsViewPage {
     private tab: Tabs
   ) {
     this.event = params.get('event');
+    this.event.References ? this.hasAssessment = true : this.hasAssessment = false
   }
   private availability(event): string {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
@@ -120,7 +122,7 @@ export class EventsViewPage {
    * @param
    */
   checkin(){
-    // this.nav.push(EventCheckinPage, {event: this.event});
+    this.nav.push(EventCheckinPage, {event: this.event});
   }
   /**
    * Event cancel booking action

@@ -80,6 +80,10 @@ $colors: (
      base: $soft-green,
      contrast: darken($soft-green, 10%) // darken for contrast?
   ),
+  purple: (
+    base: #a94aa9,
+    contrast: $secondary
+  )
 );
 
 

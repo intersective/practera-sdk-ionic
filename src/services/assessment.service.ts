@@ -9,5 +9,8 @@ export class AssessmentService {
   public getAll(options? : any) {
     return this.request.get('api/assessments.json', options);
   }
-
+  // get event assessment
+  public getEventAssesement(assessmentId, options?: any){
+    return this.request.get('api/assessments.json?' + assessmentId, options);
+  }
 }

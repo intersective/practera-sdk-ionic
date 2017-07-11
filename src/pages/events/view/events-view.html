@@ -38,7 +38,7 @@
       <button ion-button *ngIf="!event.isBooked" class="book-btn" (click)="book(event)">
         Book
       </button>
-      <button ion-button *ngIf="event.isBooked" class="checkin-btn" (click)="checkin(event)">
+      <button ion-button *ngIf="event.isBooked && hasAssessment == true" class="checkin-btn" (click)="checkin()">
         Check-in
       </button>
       <button ion-button *ngIf="event.isBooked" class="cancel-btn" outline (click)="cancelBooking(event)">

@@ -7,6 +7,7 @@ import { CacheModule } from '../shared/cache/cache.module';
 import { NotificationModule } from '../shared/notification/notification.module';
 import { MyApp } from './app.component';
 import { FilestackModule } from '../shared/filestack/filestack.module';
+import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -28,6 +29,7 @@ import { NotificationService } from '../shared/notification/notification.service
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+import { GroupEmitterService } from '../components/questions/group-emitter.service';
 
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
@@ -41,6 +43,10 @@ import { LockerComponent } from '../components/locker/locker';
 import { MemberComponent } from '../components/member/member';
 import { PhotoComponent } from '../components/photo/photo';
 import { TermContentComponent } from '../pages/term-condition/term-content.component';
+import { FileQuestionComponent} from '../components/questions/file';
+import { OneofQuestionComponent} from '../components/questions/oneof';
+import { TextQuestionComponent} from '../components/questions/text';
+
 
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
@@ -48,7 +54,11 @@ import { ActivitiesListPage } from '../pages/activities/list/list.page';
 import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
+import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
+import { ActivitiesClassicViewModalPage } from '../pages/activities-classic/view/activities-classic-view-modal.page';
+import { ActivitiesClassicViewPage } from '../pages/activities-classic/view/activities-classic-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
+import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
@@ -93,6 +103,10 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
+    ActivitiesClassicListPage,
+    ActivitiesClassicViewModalPage,
+    ActivitiesClassicViewPage,
+    AssessmentsGroupPage,
     AssessmentsPage,
     QuestionGroupComponent,
     CurrentActivitiesComponent,
@@ -132,6 +146,9 @@ export function HttpLoaderFactory(http: Http) {
     TermContentComponent,
     TruncatePipe,
     TimeAgoPipe,
+    FileQuestionComponent,
+    OneofQuestionComponent,
+    TextQuestionComponent,
     TruncatePipe,
   ],
   imports: [
@@ -139,6 +156,7 @@ export function HttpLoaderFactory(http: Http) {
     CacheModule,
     NotificationModule,
     FormsModule,
+    UtilsModule,
     RequestModule.forRoot({
       appKey: Configure.appKey,
       prefixUrl: Configure.prefixUrl
@@ -191,6 +209,10 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
+    ActivitiesClassicListPage,
+    ActivitiesClassicViewModalPage,
+    ActivitiesClassicViewPage,
+    AssessmentsGroupPage,
     AssessmentsPage,
     QuestionGroupComponent,
     CurrentActivitiesComponent,
@@ -225,8 +247,6 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TestPage,
-    TermConditionPage,
-    TermContentComponent,
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },
@@ -245,6 +265,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: TeamService, useClass: TeamService },
     { provide: FilestackService, useClass: FilestackService },
     WindowRef,
+    GroupEmitterService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })
