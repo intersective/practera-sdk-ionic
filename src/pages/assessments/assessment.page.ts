@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 // services
 import { AssessmentService } from '../../services/assessment.service';
 @Component({
@@ -13,12 +12,8 @@ export class AssessmentsPage {
   constructor(
     private navParams: NavParams,
     private assessmentService: AssessmentService,
-    public translate: TranslateService
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+    public translationService: TranslationService
+  ) {}
   ionViewDidEnter() {
     this.activity = this.navParams.get('activity');
     this.assessmentService.getAll().toPromise().then(assessments => {

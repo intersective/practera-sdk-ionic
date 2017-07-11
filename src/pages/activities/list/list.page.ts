@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
@@ -39,19 +38,11 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translate: TranslateService,
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+    public translationService: TranslationService
+  ) {}
   // shiftLanguageTrial(){
-  //   if(this.shiftLang == false){
-  //     this.shiftLang = true;
-  //     return this.translate.use('cn');
-  //   }
-  //   this.shiftLang = false;
-  //   return this.translate.use('en');
+  //   this.shiftLang = !this.shiftLang;
+  //   this.translationService.isTranslated(this.shiftLang);
   // }               
   ngOnInit(){ 
     this.loadingAchievements();

@@ -12,6 +12,7 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en'; 
+import { TranslationModule } from '../shared/translation/translation.module';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -149,6 +150,7 @@ export function HttpLoaderFactory(http: Http) {
         deps: [Http]
       }
     }),
+    TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
        links: [
         {

@@ -3,8 +3,7 @@ import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
@@ -62,13 +61,10 @@ export class RegistrationModalPage {
     private loading: LoadingController,
     private authService: AuthService,
     private cache: CacheService,
-    public translate: TranslateService,
+    public translationService: TranslationService,
     private milestone: MilestoneService,
     private ngZone:NgZone,
   ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
       password: ['', [Validators.minLength(8), Validators.required]],

@@ -11,8 +11,7 @@ import { AssessmentService } from '../../services/assessment.service';
 
 import * as _ from 'lodash';
 
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 import { confirmMessages } from '../../app/messages'; 
 
 @Component({
@@ -40,11 +39,8 @@ export class AssessmentsPage {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
-    public translate: TranslateService,
+    public translationService: TranslationService
   ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
     this.activity = this.navParams.get('activity');
     console.log('this.activity', this.activity);
   }

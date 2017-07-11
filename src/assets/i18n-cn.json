@@ -4,6 +4,8 @@
     "POINTS": "分数",
     "PROGRESS": "进程",
     "SUBMISSION": "提交"
+  },
+  "ASSESSMENT": {
+    "PAGETITLE": "任务"
   }
-  // This file is for demo usage, the data may not be 100% accurate as original file
 }

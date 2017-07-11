@@ -1,8 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -27,12 +26,8 @@ export class TermConditionPage {
     private alertCtrl: AlertController,
     private authService: AuthService,
     private notificationService: NotificationService,
-    public translate: TranslateService,
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+    public translationService: TranslationService,
+  ) {}
   private displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',

@@ -7,8 +7,7 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -30,13 +29,10 @@ export class ForgetPasswordPage {
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    public translate: TranslateService,
+    public translationService: TranslationService,
     private authService: AuthService,
     private toastCtrl: ToastController,
     private formBuilder: FormBuilder) {
-      translate.addLangs(["en"]);
-      translate.setDefaultLang('en');
-      translate.use('en');
       this.forgotPwdFormGroup = formBuilder.group({
         email: ['', [FormValidator.isValidEmail,
                     Validators.required]],

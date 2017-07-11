@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../../shared/translation/translation.service';
 // pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 // import { AssessmentsPage } from '../../assessments/assessment.page';
@@ -17,12 +16,8 @@ export class ActivitiesViewPage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
-    public translate: TranslateService
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+    public translationService: TranslationService
+  ) {}
   // @TODO: use simple mock data for assessment first
   /**
    * on assessment implementation, to do list:

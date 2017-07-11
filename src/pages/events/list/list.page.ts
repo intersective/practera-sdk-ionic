@@ -2,8 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 // services
 import { ActivityService } from '../../../services/activity.service';
@@ -24,12 +23,8 @@ export class EventsListPage {
     public eventService: EventService,
     public activityService: ActivityService,
     public loadingCtrl: LoadingController,
-    public translate: TranslateService
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+    public translationService: TranslationService
+  ) {}
   loadedEvents = [];
   events = [];
   noEvents = false;

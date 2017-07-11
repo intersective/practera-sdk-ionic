@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../../shared/translation/translation.service';
 let _mock = {
     "id": 59,
     "name": "Test Achievement",
@@ -25,11 +24,8 @@ export class AchievementsViewPage {
 
   constructor(
     private params: NavParams,
-    public translate: TranslateService
+    public translationService: TranslationService
   ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
     this.achievement = {};
   }
 

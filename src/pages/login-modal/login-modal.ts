@@ -9,8 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -47,16 +46,13 @@ export class LoginModalPage {
     private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private authService: AuthService,
-    public translate: TranslateService,
+    public translationService: TranslationService,
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private ngZone: NgZone
   ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail,

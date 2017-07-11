@@ -18,7 +18,6 @@
             <div>
               <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
               <h1>{{ pointPercentage }}%</h1>  
-              <!--<button (click)="shiftLanguageTrial()">shift</button>-->
             </div>
           </div>
         </ion-col>
@@ -34,6 +33,7 @@
     </ion-row>
     <ion-row class="activity-list">
       <ion-col>
+        <!--<button (click)="shiftLanguageTrial()">Shift Language</button>-->
         <div class="activity-error" *ngIf="returnError == true">
           <p>
             {{ activitiesLoadingErr }}

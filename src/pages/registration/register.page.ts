@@ -2,8 +2,7 @@ import { Component, ViewChild, NgZone, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LoadingController, ModalController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { CacheService } from '../../shared/cache/cache.service';
@@ -35,15 +34,11 @@ export class RegisterPage implements OnInit {
     private loading: LoadingController,
     private authService: AuthService,
     private cache: CacheService,
-    public translate: TranslateService,
+    public translationService: TranslationService,
     private milestone: MilestoneService,
     private ngZone:NgZone,
     private modalCtrl: ModalController,
-    private responsiveService: ResponsiveService){
-      translate.addLangs(["en"]);
-      translate.setDefaultLang('en');
-      translate.use('en');
-    }
+    private responsiveService: ResponsiveService){}
   ngOnInit() {
   }
   popRegistrationModal() {

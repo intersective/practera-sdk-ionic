@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en';
+import { TranslationService } from '../../shared/translation/translation.service';
 // pages
 import { HomePage } from '../home/home';
 import { GalleryPage } from '../gallery/gallery';
@@ -29,12 +28,5 @@ export class TabsPage {
   tab7Root: any = SettingsPage;
   tab8Root: any = EventsListPage;
   // public tabDashboard: any;
-  constructor(public translate: TranslateService) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-    // this.tabDashboard = translate.get('TABS').subscribe( result => {
-    //   this.tabDashboard = result.DASHBOARD; 
-    // });
-  }
+  constructor(public translationService: TranslationService) {}
 }

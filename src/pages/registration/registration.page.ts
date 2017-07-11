@@ -3,8 +3,7 @@ import { CacheService } from '../../shared/cache/cache.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from './assets/i18n-en'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -31,14 +30,10 @@ export class RegistrationPage implements OnInit {
     private authService: AuthService,
     private sanitizer: DomSanitizer,
     private notification: NotificationService,
-    public translate: TranslateService,
+    public translationService: TranslationService,
     private alertCtrl: AlertController,
     private cache: CacheService,
-    private request: RequestService) {
-      translate.addLangs(["en"]);
-      translate.setDefaultLang('en');
-      translate.use('en');
-    }
+    private request: RequestService) {}
   displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
