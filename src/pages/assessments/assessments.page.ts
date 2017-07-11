@@ -72,60 +72,29 @@ export class AssessmentsPage {
         }
       });
 
-      // let reflect = (promise) => {
-      //   return promise
-      //     .then(
-      //       (v) => { return {v:v, status: "resolved" }},
-      //       (e) => { return {e:e, status: "rejected" }}
-      //     );
-      // }
-
-      console.log('tasks', tasks);
-
       Observable.forkJoin(tasks)
         .subscribe(
-          t => console.log('t', t),
-          e => console.log('e', e),
-          () => console.log('completed')
+          (groupOfAssessments: any) => {
+            _.forEach(groupOfAssessments, (assessments) => {
+              _.forEach(assessments, (assessment) => {
+                this.assessmentGroups = _.union(this.assessmentGroups, assessment);
+              });
+            });
+
+            // This use in tittle of the page.
+            // In normal case, we only have one assessment in this page.
+            this.assessment = _.head(this.assessmentGroups).Assessment || {};
+            resolve();
+
+          },
+          (e) => {
+            console.log('e', e);
+            reject();
+          },
+          () => {
+            console.log('completed');
+          }
         );
-
-      // Promise.all(tasks.map(reflect)).then(results => {
-      //   console.log('values', results);
-      // });
-
-
-      // this.assessmentService.getAll({
-      //   search: {
-      //     assessment_id: this.activity.Activity.id
-      //   }
-      // }).subscribe(assessmentData => {
-      //   console.log('assessmentData', assessmentData);
-      //   this.assessment = assessmentData.assessments[0].Assessment;
-      //   // this.assessmentGroups = assessmentData.Assessments[0].AssessmentGroup;
-      //   this.assessmentQuestions = assessmentData.assessments[0].AssessmentQuestion;
-      //
-      //   console.log('this.assessmentGroups', this.assessmentGroups);
-      //   console.log('this.assessmentQuestions', this.assessmentQuestions);
-      //
-      //   _.forEach(this.assessmentQuestions, (question, key) => {
-      //
-      //     // @TODO Check question one by one
-      //     let idx = `assessment.group.${question.assessment_id}`;
-      //     let exists = this.cache.getLocalObject(idx);
-      //
-      //     if (exists.AssessmentSubmissionAnswer) {
-      //       if (_.isString(exists.AssessmentSubmissionAnswer)) {
-      //         this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer;
-      //       } else {
-      //         this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer[0].answer;
-      //       }
-      //     } else {
-      //       this.allowSubmit = false;
-      //       this.assessmentQuestions[key].answer = null;
-      //     }
-      //   });
-      //   return resolve();
-      // }, reject);
     });
   }
 
