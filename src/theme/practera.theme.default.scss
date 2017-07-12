@@ -461,6 +461,48 @@ event {
     }
   }
 }
+// tutorial-slides
+.skip-button {
+  background-color: color($colors, secondary, base);
+  border: none;
+  color: color($colors, primary, base);
+  float: right;
+} 
+.tutorial-slides {
+  h1 {
+    padding-bottom: 20pt;
+  }
+  p {
+    padding: 0 36pt;
+    margin-top: -12pt;
+  }
+  img {
+    width: 36%;
+  }
+  button.general-circle-btn {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .swiper-pagination {
+    bottom: 16pt;
+  }
+}
+.slides-button {
+  .toolbar-background {
+    background-color: color($colors, secondary, base);
+    border: none;
+  }
+  .next-button,
+  .skip-button {
+    float: right;
+  }
+  .prev-button,
+  .next-button,
+  .skip-button {
+    background-color: color($colors, secondary, base);
+    color: color($colors, primary, base);
+  }
+}
 // landscape activity list view
 @media screen and (min-width: 500px) {
   .score-board {

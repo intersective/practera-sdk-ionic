@@ -16,14 +16,16 @@ export class TermConditionPage {
   @Input('user') user: any;
 
   agreed:boolean = false;
-
+  private checkAccessMethod: boolean = false;
   constructor(
     public nav: NavController,
     private authService: AuthService,
     private notificationService: NotificationService,
     private alertCtrl: AlertController
   ) {}
-
+  private accessMethod(){
+    return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
+  }
   private displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
@@ -35,7 +37,9 @@ export class TermConditionPage {
 
     alert.present();
   }
-
+  private backToSAccountPage() {
+    this.nav.popToRoot();
+  }
   ionViewDidEnter() {
     console.log(this.user);
   }
