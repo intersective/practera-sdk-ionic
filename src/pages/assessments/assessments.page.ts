@@ -102,7 +102,8 @@ export class AssessmentsPage {
               this.assessment = _.head(assessments)[0].Assessment || {};
             }
 
-            this.submissionService.getSubmissions()
+            this.submissionService
+            .getSubmissions()
             .subscribe(
               (submissions) => {
                 console.log('submissions', submissions)
@@ -134,18 +135,19 @@ export class AssessmentsPage {
               (err) => {
                 console.log('err', err);
                 reject();
+              },
+              () => {
+                console.log('completed')
               }
             );
           },
           (e) => {
             console.log('e', e);
             reject();
-          },
-          () => {
-            console.log('completed')
           }
         );
     });
+
   }
 
   ionViewWillEnter() {
