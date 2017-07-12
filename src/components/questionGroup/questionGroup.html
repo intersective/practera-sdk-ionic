@@ -11,25 +11,6 @@
         <div class="status completed" *ngIf="group.answeredQuestions == group.totalQuestions">Completed</div>
         <div class="status incomplete" *ngIf="group.answeredQuestions !== group.totalQuestions">Incomplete</div>
       </div>
-
-      <!-- <div>{{group | json }}</div> -->
-
-      <!-- <div class="answer">
-        <div *ngIf="assessmentQuestion.answer">
-          <div *ngIf="assessmentQuestion.answer.type === 'file'">
-            <div *ngIf="assessmentQuestion.answer.files.length === 1">
-              {{ questionGroup.answer.files.length + ' file uploaded.' }}
-            </div>
-            <div *ngIf="assessmentQuestion.answer.files.length !== 1">
-              {{ questionGroup.answer.files.length + ' files uploaded.' }}
-            </div>
-          </div>
-
-          <div *ngIf="assessmentQuestion.answer.type === 'oneof'">
-            {{ questionGroup.answer.answers[0].context | truncate: 150 }}
-          </div>
-        </div>
-      </div> -->
     </ion-card-content>
   </ion-card>
 </div>
