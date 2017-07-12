@@ -24,7 +24,6 @@ export class FilestackService {
 
     this.filepicker = filepicker;
     this.filepicker.setKey(config.apikey);
-    console.log(this.filestack);
   }
 
   /**

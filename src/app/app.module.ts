@@ -1,4 +1,5 @@
 // libs
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, OnInit } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { FormsModule }   from '@angular/forms';
@@ -43,9 +44,10 @@ import { LockerComponent } from '../components/locker/locker';
 import { MemberComponent } from '../components/member/member';
 import { PhotoComponent } from '../components/photo/photo';
 import { TermContentComponent } from '../pages/term-condition/term-content.component';
-import { FileQuestionComponent} from '../components/questions/file';
-import { OneofQuestionComponent} from '../components/questions/oneof';
-import { TextQuestionComponent} from '../components/questions/text';
+import { FileQuestionComponent } from '../components/questions/file';
+import { OneofQuestionComponent } from '../components/questions/oneof';
+import { TextQuestionComponent } from '../components/questions/text';
+import { MultipleQuestionComponent } from '../components/questions/multiple';
 
 
 // pages
@@ -99,16 +101,15 @@ export function HttpLoaderFactory(http: Http) {
 @NgModule({
   declarations: [
     AchievementsViewPage,
-    ActivitiesListPage,
-    ActivityListPopupPage,
-    ActivitiesViewModalPage,
-    ActivitiesViewPage,
     ActivitiesClassicListPage,
     ActivitiesClassicViewModalPage,
     ActivitiesClassicViewPage,
+    ActivitiesListPage,
+    ActivitiesViewModalPage,
+    ActivitiesViewPage,
+    ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
-    QuestionGroupComponent,
     CurrentActivitiesComponent,
     CurrentLevelsComponent,
     EventCheckinPage,
@@ -118,6 +119,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsListPage,
     EventsPreviewPage,
     EventsViewPage,
+    FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
     HomePage,
@@ -130,8 +132,11 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     MemberComponent,
     ModalComponent,
+    MultipleQuestionComponent,
     MyApp,
+    OneofQuestionComponent,
     PhotoComponent,
+    QuestionGroupComponent,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,
@@ -141,17 +146,16 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TeamPage,
-    TestPage,
     TermConditionPage,
     TermContentComponent,
-    TruncatePipe,
-    TimeAgoPipe,
-    FileQuestionComponent,
-    OneofQuestionComponent,
+    TestPage,
     TextQuestionComponent,
+    TimeAgoPipe,
+    TruncatePipe,
     TruncatePipe,
   ],
   imports: [
+    BrowserModule,
     TestModule,
     CacheModule,
     NotificationModule,
@@ -205,18 +209,15 @@ export function HttpLoaderFactory(http: Http) {
   ],
   entryComponents: [
     AchievementsViewPage,
-    ActivitiesListPage,
-    ActivityListPopupPage,
-    ActivitiesViewModalPage,
-    ActivitiesViewPage,
     ActivitiesClassicListPage,
     ActivitiesClassicViewModalPage,
     ActivitiesClassicViewPage,
+    ActivitiesListPage,
+    ActivitiesViewModalPage,
+    ActivitiesViewPage,
+    ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
-    QuestionGroupComponent,
-    CurrentActivitiesComponent,
-    CurrentLevelsComponent,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -225,19 +226,13 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
-    GalleryPage,
-    HomePage,
-    LevelComponent,
-    LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
     LoginModalPage,
     LoginPage,
     MagicLinkPage,
-    MemberComponent,
     ModalComponent,
     MyApp,
-    PhotoComponent,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,

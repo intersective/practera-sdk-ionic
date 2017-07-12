@@ -2,13 +2,7 @@
   <ion-list class="text">
     <ion-list-header [innerHtml]="question.name"></ion-list-header>
 
-    <ion-item *ngFor="let answ of question.answers.submitter"
-      [innerHtml]="answ.answer || answ.comment"></ion-item>
-
-    <ion-item *ngFor="let answ of question.answers.reviewer"
-      [innerHtml]="answ.answer || answ.comment"></ion-item>
-
-    <ion-textarea *ngIf="question.answers.reviewer.length === 0"
+    <ion-textarea
       formControlName="answer"
       style="width: 100%; padding: 1em; resize:none;"
       placeholder="Required"

@@ -225,39 +225,4 @@ export class AssessmentsPage {
   gotoAssessment(group) {
     this.navCtrl.push(AssessmentsGroupPage, { group });
   }
-
-  // @TODO: Remove it later...
-  // clickFillAllAnswers() {
-  //   _.forEach(this.assessmentQuestions, (question, key) => {
-  //     console.log('q', question);
-  //     if (question.question_type === 'file') {
-  //       this.answers[question.id] = {
-  //         type: 'file',
-  //         files: [
-  //           {
-  //             mime: 'image/jpeg',
-  //             url: 'https://placeimg.com/100/100/nature/grayscale'
-  //           },
-  //           {
-  //             mime: 'image/jpeg',
-  //             url: 'https://placeimg.com/100/100/nature/grayscale'
-  //           }
-  //         ]
-  //       };
-  //     }
-  //
-  //     if (question.question_type === 'oneof') {
-  //       this.answers[question.id] = {
-  //         type: 'file',
-  //         answers: [
-  //           {
-  //             context: 'This is answer for ' + question.assessment_id
-  //           }
-  //         ]
-  //       };
-  //     }
-  //
-  //     this.loadQuestions();
-  //   });
-  // }
 }

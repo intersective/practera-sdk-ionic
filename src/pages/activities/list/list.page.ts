@@ -1,10 +1,16 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
+import {
+  NavController,
+  ToastController,
+  LoadingController,
+  ModalController,
+  AlertController
+} from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from '../../../app/i18n-en'; 
-import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { i18nData } from '../../../app/i18n-en';
+import { loadingMessages, errMessages } from '../../../app/messages';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 // services
@@ -15,6 +21,14 @@ import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
+
+/**
+ * @TODO: remove after development is complete
+ * flag to tell whether should UI popup toast error message at the bottom
+ * @type {Boolean}
+ */
+const ACTIVATE_TOAST = false;
+
 @Component({
   selector: 'activities-list-page',
   templateUrl: 'list.html'
@@ -37,18 +51,19 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public alertCtrl: AlertController
   ) {
     translate.addLangs(["en"]);
     translate.setDefaultLang('en');
     translate.use('en');
   }
-                
-  ngOnInit(){ 
+
+  ngOnInit(){
     this.loadingAchievements();
   }
-  // display user achievemnt statistics score points 
-  loadingAchievements(){ 
+  // display user achievemnt statistics score points
+  loadingAchievements(){
     let loadingFailed = this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
@@ -79,12 +94,14 @@ export class ActivitiesListPage implements OnInit {
                 this.currentPoints = 0;
                 this.maxPoints = 0;
                 this.pointPercentage = 0;
-                loadingFailed.present();
+                if (ACTIVATE_TOAST) {
+                  loadingFailed.present();
+                }
               }
     );
   }
   // loading activity list data
-  loadingActivities(){
+  loadingActivities = () => {
     let loadingActivities = this.loadingCtrl.create({
       content: 'Loading ..'
     });
@@ -95,7 +112,7 @@ export class ActivitiesListPage implements OnInit {
     });
     loadingActivities.present();
     this.activityService.getActivities()
-        .subscribe( 
+        .subscribe(
           data => {
             this.activities = data;
             if(this.activities.length == 0){
@@ -107,19 +124,47 @@ export class ActivitiesListPage implements OnInit {
           },
           err => {
             loadingActivities.dismiss().then(() => {
-              loadingFailed.present();
+              if (ACTIVATE_TOAST) {
+                loadingFailed.present();
+              }
             });
           }
         )
   }
+
+  /**
+   * @TODO: remove this feature after development near complete
+   * Prompt user to skip loading to skip forced long wait of API
+   * @param {Function} cb callback if user choose to load API call
+   */
+  promptSkipLoading(cb: Function) {
+    let prompt = this.alertCtrl.create({
+      title: "Skip loading?",
+      message: "Skip to speed up development (skip waiting).",
+      buttons: [
+        {
+          text: 'Load it',
+          handler: data => {
+            return cb();
+          }
+        },
+        {
+          text: 'Skip',
+          handler: data => console.log(data)
+        }
+      ]
+    })
+    prompt.present();
+  }
+
   // load activity data
   ionViewWillEnter() {
-    this.loadingActivities();
+    this.promptSkipLoading(this.loadingActivities);
   }
   // refresher activities
   doRefresh(e) {
     this.loadingActivities()
-    e.complete();  
+    e.complete();
   }
   // redirect to activity detail page
   goToDetail(activity: any, id: any){

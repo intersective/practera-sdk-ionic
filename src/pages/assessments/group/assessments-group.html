@@ -15,6 +15,12 @@
       [form]="formGroup[question.id]"
       *ngSwitchCase="'oneof'"></oneof-question>
 
+    <!-- type: oneOf -->
+    <multiple-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'multiple'"></multiple-question>
+
     <!-- type: file -->
     <file-question
       *ngSwitchCase="'file'"
