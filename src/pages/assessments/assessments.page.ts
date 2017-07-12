@@ -101,86 +101,48 @@ export class AssessmentsPage {
             if (assessments) {
               this.assessment = _.head(assessments)[0].Assessment || {};
             }
-            resolve();
+
+            this.submissionService.getSubmissions()
+            .subscribe(
+              (submissions) => {
+                console.log('submissions', submissions)
+
+                // Mapping answer to question
+                _.forEach(this.assessmentGroups, (group, i) => {
+                  _.forEach(group, (assessment, j) => {
+                    _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
+                      _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
+                        this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
+
+                        // Find submission
+                        _.forEach(submissions, (submission, m) => {
+                          _.forEach(submissions.AssessmentSubmissionAnswer, (answer, n) => {
+                            if (answer.assessment_question_id === question.id) {
+                              this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
+                            }
+                          });
+                        });
+
+                      });
+                    });
+                  });
+                });
+
+                console.log('this.assessmentGroups 2', this.assessmentGroups);
+                resolve();
+              },
+              (err) => {
+                console.log('err', err);
+                reject();
+              }
+            );
           },
           (e) => {
             console.log('e', e);
             reject();
           },
           () => {
-            // @TODO: remove it later
-            // this.submissionService.getSubmissions()
-            // .subscribe(
-            //   (submissions) => {
-            //     console.log('submissions', submissions)
-            //
-            //     // Mapping answer to question
-            //
-            //     _.forEach(this.assessmentGroups, (group, idx) => {
-            //
-            //     });
-            //
-            //
-            //     //
-            //     _.forEach(submissions, (submission) => {
-            //       if (submission) {
-            //         _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
-            //           _.forEach(this.assessmentGroups, (group, idx) => {
-            //             console.log('group', group)
-            //
-            //             let foundQuestionIdx = _.findIndex(group.AssessmentQuestion, {
-            //               id: 115 //answer.assessment_question_id
-            //             });
-            //
-            //             if (foundQuestionIdx > -1) {
-            //               console.log('Inject answer to ', this.assessmentGroups[idx].AssessmentQuestion[foundQuestionIdx].id)
-            //               this.assessmentGroups[idx].AssessmentQuestion[foundQuestionIdx].answer = answer;
-            //             }
-            //           });
-            //
-            //         });
-            //       }
-            //     });
-            //
-            //
-            //     console.log('this.assessmentGroups 2', this.assessmentGroups);
-            //   },
-            //   (err) => {
-            //     console.log('err', err)
-            //   }
-            // );
-
-            // Not really test it because it
-            // only can test it when allow to do submission
-            // Observable.forkJoin(submissionTasks)
-            //   .subscribe(
-            //     (submissions) => {
-            //       // Mapping answer to question
-            //       _.forEach(submissions, (submission) => {
-            //         if (submission) {
-            //           _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
-            //             _.forEach(this.assessmentGroups, (group, idx) => {
-            //               let foundQuestionIdx = _.findIndex(group.AssessmentQuestion, {
-            //                 id: answer.assessment_question_id
-            //               });
-            //
-            //               if (foundQuestionIdx > -1) {
-            //                 console.log('Inject answer to ', this.assessmentGroups[idx].AssessmentQuestion.id)
-            //                 this.assessmentGroups[idx].AssessmentQuestion[foundQuestionIdx].answer = answer;
-            //               }
-            //             });
-            //
-            //           });
-            //         }
-            //       });
-            //
-            //
-            //       console.log('this.assessmentGroups 2', this.assessmentGroups);
-            //     },
-            //     (err) => {
-            //       console.log('err', err)
-            //     }
-            //   );
+            console.log('completed')
           }
         );
     });
