@@ -10,23 +10,23 @@
     <ion-list-header>
       My Profile <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
     </ion-list-header>
-    <button ion-item>
+    <button ion-item (click)="goToTutorial()">
       <ion-icon name="medkit" item-left></ion-icon> Tutorial
     </button>
-    <button ion-item>
+    <button ion-item (click)="goToTermConditions()">
       <ion-icon name="clipboard" item-left></ion-icon> Terms of Use
     </button>
-    <button ion-item>
+    <!--<button ion-item>
       <ion-icon name="swap" item-left></ion-icon> Program Switcher
-    </button>
+    </button>-->
   </ion-list>
   <ion-list no-lines>
     <ion-list-header>
       Support
     </ion-list-header>
-    <button ion-item>
+    <a ion-item href="mailto:{{helpline}}?Subject=Tech%20Support%20Request">
       <ion-icon name="mail" item-left></ion-icon> Email Help
-    </button>
+    </a>
     <button ion-item (click)="logout()">
       <ion-icon name="exit" item-left></ion-icon> Logout
     </button>
