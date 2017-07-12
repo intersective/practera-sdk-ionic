@@ -6,10 +6,10 @@
           <ion-icon name="ios-arrow-forward-outline" color="primary-light"></ion-icon>
         </button>
 
-        <span class="title" [innerHTML]="assessmentQuestion.name"></span>
+        <span class="title" [innerHTML]="group.name"></span>
       </div>
 
-      <div class="answer">
+      <!-- <div class="answer">
         <div *ngIf="assessmentQuestion.answer">
           <div *ngIf="assessmentQuestion.answer.type === 'file'">
             <div *ngIf="assessmentQuestion.answer.files.length === 1">
@@ -24,7 +24,7 @@
             {{ questionGroup.answer.answers[0].context | truncate: 150 }}
           </div>
         </div>
-      </div>
+      </div> -->
     </ion-card-content>
   </ion-card>
 </div>

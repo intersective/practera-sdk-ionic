@@ -12,18 +12,21 @@
 <ion-content>
 
   <div *ngFor="let assessmentGroup of assessmentGroups; let i = index">
-    <ion-card *ngIf="assessmentGroup.Assessment.description" class="rounded">
-      <ion-card-content>
-        <div [innerHTML]="assessmentGroup.Assessment.description"></div>
-      </ion-card-content>
-    </ion-card>
+    <div *ngFor="let assessment of assessmentGroup; let j = index">
 
-    <questionGroup
-      *ngFor="let assessmentQuestion of assessmentGroup.AssessmentQuestion; let q = index"
-      [assessmentQuestion]="assessmentQuestion"
-      (click)="gotoAssessment(assessmentQuestion)"
-    >
-    </questionGroup>
+      <ion-card *ngIf="assessment.Assessment.description" class="rounded">
+        <ion-card-content>
+          <div [innerHTML]="assessment.Assessment.description"></div>
+        </ion-card-content>
+      </ion-card>
+
+      <questionGroup
+        *ngFor="let group of assessment.AssessmentGroup; let q = index"
+        [group]="group"
+        (click)="gotoAssessment(group)"
+      >
+      </questionGroup>
+    </div>
   </div>
 
 
