@@ -108,44 +108,73 @@ export class AssessmentsPage {
               this.assessment = _.head(assessments)[0].Assessment || {};
             }
 
-            this.submissionService
-            .getSubmissions()
-            .subscribe(
-              (submissions) => {
-                console.log('submissions', submissions)
+            this.submissionService.getSubmissions()
+              .subscribe(
+                (submissions) => {
+                  console.log('submissions', submissions)
 
-                // Mapping answer to question
-                _.forEach(this.assessmentGroups, (group, i) => {
-                  _.forEach(group, (assessment, j) => {
-                    _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
-                      _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
-                        this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
+                  // Mapping answer to question
+                  _.forEach(this.assessmentGroups, (group, i) => {
+                    _.forEach(group, (assessment, j) => {
+                      _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
+                        _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
+                          this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
 
-                        // Find submission
-                        _.forEach(submissions, (submission, m) => {
-                          _.forEach(submissions.AssessmentSubmissionAnswer, (answer, n) => {
-                            if (answer.assessment_question_id === question.id) {
-                              this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
-                            }
+                          // Find submission
+                          _.forEach(submissions, (submission, m) => {
+                            _.forEach(submissions.AssessmentSubmissionAnswer, (answer, n) => {
+                              if (answer.assessment_question_id === question.id) {
+                                this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
+                              }
+                            });
                           });
+
                         });
 
+                        // Summarise basic answer information
+                        this.assessmentGroups[i][j].AssessmentGroup[k].totalQuestions =
+                          _.size(assessmentGroup.AssessmentGroupQuestion);
+                        this.assessmentGroups[i][j].AssessmentGroup[k].answeredQuestions = 0;
+                        _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
+                          if (q.AssessmentQuestion.answer !== null) {
+                            this.assessmentGroups[i][j].AssessmentGroup[k].answeredQuestions += 1;
+                          }
+                        });
+
+                        // let displayAnswer = null;
+                        // if (assessmentGroup.AssessmentGroupQuestion) {
+                        //   let first = assessmentGroup.AssessmentGroupQuestion[0].AssessmentQuestion;
+                        //   switch(first.question_type) {
+                        //     case 'text':
+                        //       displayAnswer = first.answer.answer || 'Questions not complete answered.';
+                        //     break;
+                        //     case 'oneof':
+                        //       let answer = _.find(first.AssessmentQuestionChoice, {
+                        //         id: first.answer.answer
+                        //       });
+                        //       displayAnswer =  answer.AssessmentChoice.name || 'Questions not complete answered.';
+                        //     break;
+                        //     case 'file':
+                        //       displayAnswer = 'File uploaded.';
+                        //     break;
+                        //   }
+                        // }
+                        // this.assessmentGroups[i][j].AssessmentGroup[k].answeredQuestions.displayAnswer = displayAnswer;
                       });
                     });
                   });
-                });
 
-                console.log('this.assessmentGroups 2', this.assessmentGroups);
-                resolve();
-              },
-              (err) => {
-                console.log('err', err);
-                reject();
-              },
-              () => {
-                console.log('completed')
-              }
-            );
+                  console.log('this.assessmentGroups 2', this.assessmentGroups);
+                  resolve();
+                },
+                (err) => {
+                  console.log('err', err);
+                  reject();
+                },
+                () => {
+                  console.log('completed')
+                }
+              );
           },
           (e) => {
             console.log('e', e);

@@ -19,6 +19,18 @@ questionGroup {
       top: -7px;
       right: 0px;
     }
+
+    .status {
+      text-align: right;
+    }
+
+    .completed {
+      color: $toolbar-active-color
+    }
+
+    .incomplete {
+      color: $toolbar-inactive-color
+    }
   }
 
   .answer {
