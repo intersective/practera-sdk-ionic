@@ -17,7 +17,7 @@
      <ion-checkbox [(ngModel)]="agreed" (change)="toggleAgree()" value="Agree"></ion-checkbox>
    </ion-item>
   </ion-list>
-  <ion-list class="register-next">
+  <ion-list class="register-next" *ngIf="accessMethod() == true">
     <button stable block disabled [disabled]="!agreed" (click)="agree(user)">{{ 'TERMCONDITIONS.NEXT' | translate }}</button>
   </ion-list>
   <ion-list *ngIf="accessMethod() != true">
