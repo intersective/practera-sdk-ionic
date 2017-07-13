@@ -14,6 +14,10 @@
   white-space: pre-wrap;
 }
 
+.uppercase {
+  text-transform: uppercase;
+}
+
 .inset {
   &-header {
     font-weight: 500;

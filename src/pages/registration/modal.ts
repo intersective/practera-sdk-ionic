@@ -71,6 +71,7 @@ export class RegistrationModalPage {
       verify_password: ['', [Validators.minLength(8), Validators.required]],
     });
   }
+
   public displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Test',
@@ -78,9 +79,7 @@ export class RegistrationModalPage {
       buttons: ['OK']
     });
   }
-  ionViewDidLoad() {
-    console.log(this.regForm);
-  }
+
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
@@ -168,6 +167,7 @@ export class RegistrationModalPage {
       }, onRegError, onFinally);
     }
   }
+
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
