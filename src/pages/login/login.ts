@@ -1,5 +1,6 @@
 import { ModalController } from 'ionic-angular';
 import { Component, NgZone, OnInit } from '@angular/core';
+import { TranslationService } from '../../shared/translation/translation.service';
 // services
 import { ResponsiveService } from '../../services/responsive.service';
 // pages
@@ -14,6 +15,7 @@ export class LoginPage {
   private isLandscaped: boolean = false;
   constructor(
     private modalCtrl: ModalController,
+    public translationService: TranslationService,
     private ngZone: NgZone,
     private responsiveService: ResponsiveService
   ){}

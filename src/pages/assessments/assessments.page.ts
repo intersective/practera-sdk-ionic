@@ -14,6 +14,9 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 
 import * as _ from 'lodash';
 
+import { TranslationService } from '../../shared/translation/translation.service';
+import { confirmMessages } from '../../app/messages'; 
+
 @Component({
   selector: 'assessments-page',
   templateUrl: './assessments.html'
@@ -31,13 +34,17 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: any = true;
 
+  // confirm message variables
+  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    public translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
     console.log('this.activity', this.activity);
@@ -157,7 +164,7 @@ export class AssessmentsPage {
     // No data will send to server
     const confirm = this.alertCtrl.create({
       title: 'Discard all change',
-      message: 'Do you really want to discard all your change?',
+      message: this.discardConfirmMessage,
       buttons: [
         {
           text: 'Okay',
@@ -184,7 +191,7 @@ export class AssessmentsPage {
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Submit evidence',
-      message: 'Do you really want to submit this evidence?',
+      message: this.submitConfirmMessage,
       buttons: [
         {
           text: 'Okay',

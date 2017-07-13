@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController } from 'ionic-angular';
+import { TranslationService } from '../../../shared/translation/translation.service';
+// pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
+// import { AssessmentsPage } from '../../assessments/assessment.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
-
 @Component({
   templateUrl: './view.html'
 })
-
 export class ActivitiesViewPage {
   activity: any = {};
   submissions: Array<any> = [];
@@ -14,10 +15,9 @@ export class ActivitiesViewPage {
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
-    private modalCtrl: ModalController
-  ) {
-  }
-
+    private modalCtrl: ModalController,
+    public translationService: TranslationService
+  ) {}
   // @TODO: use simple mock data for assessment first
   /**
    * on assessment implementation, to do list:
@@ -45,7 +45,6 @@ export class ActivitiesViewPage {
         disabled: false,
       },
     ];
-
     let submission = [];
     if (this.activity.Activity.name === 'Workshop-2') {
       submission.push({
@@ -67,11 +66,9 @@ export class ActivitiesViewPage {
         status: 'Do Now'
       });
     }
-
     this.submissions = submission;
     console.log(this.activity);
   }
-
   /**
    * @description display activity detail modal page
    */
@@ -79,7 +76,6 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
-
   /**
    * @description direct to assessment page of a selected activity
    * @param {Object} activity single activity object from the list of
