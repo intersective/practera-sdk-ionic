@@ -110,7 +110,10 @@ export class LoginModalPage {
                   this.milestone_id = data.data[0].id;
                   self.cacheService.setLocalObject('milestone_id', data.data[0].id);
                   console.log("milestone id: " + data.data[0].id);
-                  this.navCtrl.push(TabsPage);
+                  this.navCtrl.push(TabsPage).then(() => {
+                    window.history.replaceState({}, '', window.location.origin);
+                    // console.log("url changed?"); 
+                  });
                 },
                 err => {
                   console.log(err);
