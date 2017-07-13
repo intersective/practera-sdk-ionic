@@ -1,0 +1,45 @@
+.activity-detail {
+
+  &.header {
+    background-color: $primary;
+    .toolbar-background {
+      background-color: transparent;
+    }
+
+    .header-content {
+      height:10em;
+      text-align: center;
+      color: $background-color;
+      margin-top: 2.5rem;
+      margin-bottom: 0;
+
+      .icon {
+        font-size: 10rem;
+      }
+    }
+  }
+
+  .badges {
+    .disabled {
+      opacity: 0.5;
+      filter: grayscale(100%);
+    }
+  }
+
+
+  .submissions {
+    ion-col {
+      padding: 0;
+      &.note {
+        font-size: 12px;
+        align-self: flex-start;
+        text-align: right;
+      }
+    }
+
+    ion-chip, ion-icon {
+      background-color: color($colors, border);
+      width: 5rem;
+    }
+  }
+}
