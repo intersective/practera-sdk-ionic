@@ -2,15 +2,9 @@
   <ion-navbar>
     <ion-grid>
       <ion-row>
-        <ion-col width-90>
+        <ion-col col-12 class="flex-display">
           <ion-title>{{ achievementName }}</ion-title>
-        </ion-col>
-        <ion-col width-10>
-          <div (click)="closeModal()">
-            <span class="close-btn">
-              &times;
-            </span>
-          </div>
+          <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
         </ion-col>
       </ion-row>
     </ion-grid>
