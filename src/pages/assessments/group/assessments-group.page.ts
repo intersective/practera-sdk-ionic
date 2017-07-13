@@ -67,7 +67,11 @@ export class AssessmentsGroupPage {
     this.activity = this.navParams.get('activity') || {};
     this.assessment = this.navParams.get('assessment') || {};
 
-    this.questions = this.normaliseQuestions(this.assessment.AssessmentQuestion);
+    console.log('this.assessment', this.assessment.AssessmentGroup[0].AssessmentGroupQuestion)
+
+
+    this.questions = this.normaliseQuestions(this.assessment.AssessmentGroup[0].AssessmentGroupQuestion);
+    console.log('this.questions', this.questions)
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
   }
 
@@ -281,21 +285,26 @@ export class AssessmentsGroupPage {
     ]
    */
   private normaliseQuestions = (questions) => {
+    console.log('questions', questions)
+
     let result = [];
 
     questions.forEach((question) => {
       // let thisQuestion = question['Assess.Assessment'];
 
-      let choices = (question.AssessmentQuestionChoice) ? this.normaliseChoices(question.AssessmentQuestionChoice) : question.choices;
+      let choices = (question.AssessmentQuestion.AssessmentQuestionChoice) ?
+        this.normaliseChoices(question.AssessmentQuestion.AssessmentQuestionChoice) :
+        [];
 
       let normalised: QuestionBase<any> = {
-        id: question.id,
-        assessment_id: question.assessment_id,
-        name: question.name,
-        type: question.question_type,
-        audience: question.audience,
-        file_type: question.file_type,
-        choices: choices || []
+        id: question.AssessmentQuestion.id,
+        assessment_id: question.assessment_group_id,
+        name: question.AssessmentQuestion.name,
+        type: question.AssessmentQuestion.question_type,
+        audience: question.AssessmentQuestion.audience,
+        file_type: question.AssessmentQuestion.file_type,
+        required: question.AssessmentQuestion.is_required || false,
+        choices: choices
       };
 
       result.push(normalised);
