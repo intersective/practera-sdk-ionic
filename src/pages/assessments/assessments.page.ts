@@ -15,20 +15,20 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 
 import * as _ from 'lodash';
 
-export class ActivityBase<T> {
+export class ActivityBase {
   id: number;
   name: string;
   description: string;
 }
 
-export class ReferenceAssessmentBase<T> {
+export class ReferenceAssessmentBase {
   id: number;
   name: string;
 }
 
-export class ReferenceBase<T> {
+export class ReferenceBase {
   context_id: number;
-  Assessment: ReferenceAssessmentBase<any>
+  Assessment: ReferenceAssessmentBase
 }
 
 @Component({
@@ -92,7 +92,7 @@ export class AssessmentsPage {
     }
   */
   normaliseActivity = (activity) => {
-    let normalisedActivity: ActivityBase<any> = {
+    let normalisedActivity: ActivityBase = {
       id: activity.Activity.id,
       name: activity.Activity.name,
       description: activity.Activity.description
@@ -102,11 +102,11 @@ export class AssessmentsPage {
 
     // Normalise activity reference
     activity.References.forEach((reference, idx) => {
-      let referenceAssessment: ReferenceAssessmentBase<any> = {
+      let referenceAssessment: ReferenceAssessmentBase = {
         id: reference.Assessment.id,
         name: reference.Assessment.name,
       }
-      let normalisedReference: ReferenceBase<any> = {
+      let normalisedReference: ReferenceBase = {
         context_id: reference.context_id,
         Assessment: referenceAssessment
       };
