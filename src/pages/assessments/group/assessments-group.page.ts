@@ -51,8 +51,9 @@ export class AssessmentsGroupPage {
   temp;
 
   //@TODO: decide which one to use
-  assessment: any;
   activity: any;
+  assessment: any;
+  assessmentGroup: any;
 
   constructor(
     private navParams: NavParams,
@@ -66,12 +67,13 @@ export class AssessmentsGroupPage {
   ionViewDidEnter() {
     this.activity = this.navParams.get('activity') || {};
     this.assessment = this.navParams.get('assessment') || {};
+    this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
 
-    console.log('this.assessment', this.assessment.AssessmentGroup[0].AssessmentGroupQuestion)
+    console.log('this.assessmentGroup', this.assessmentGroup);
 
+    this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
+    console.log('this.questions', this.questions);
 
-    this.questions = this.normaliseQuestions(this.assessment.AssessmentGroup[0].AssessmentGroupQuestion);
-    console.log('this.questions', this.questions)
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
   }
 
