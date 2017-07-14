@@ -58,6 +58,44 @@ export class AssessmentsPage {
     }
   }
 
+  mapAssessmentsAndSubmissions(assessments, allSubmissions) {
+    _.forEach(assessments, (group, i) => {
+      _.forEach(group.assessments, (assessment, j) => {
+
+        _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
+          _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
+            // Inject empty answer
+            assessments[i].assessments[j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
+
+            // Find submission
+            _.forEach(allSubmissions, (submissions) => {
+              _.forEach(submissions, (submission) => {
+                _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
+                  if (answer.assessment_question_id === question.id) {
+                    this.assessmentGroups[i].assessments[j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
+                  }
+                });
+              });
+            });
+          });
+
+          // Summarise basic answer information
+          assessments[i].assessments[j].AssessmentGroup[k].totalQuestions =
+            _.size(assessmentGroup.AssessmentGroupQuestion);
+
+          assessments[i].assessments[j].AssessmentGroup[k].answeredQuestions = 0;
+          _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
+            if (q.AssessmentQuestion.answer !== null) {
+              assessments[i].assessments[j].AssessmentGroup[k].answeredQuestions += 1;
+            }
+          });
+        });
+      });
+    });
+
+    return assessments;
+  }
+
   loadQuestions(): Promise<any> {
     return new Promise((resolve, reject) => {
 
@@ -113,37 +151,14 @@ export class AssessmentsPage {
               .subscribe((allSubmissions) => {
                 console.log('allSubmissions', allSubmissions);
 
+                this.assessmentGroups = this.mapAssessmentsAndSubmissions(
+                  this.assessmentGroups,
+                  allSubmissions
+                );
+
+                // Check all questions have submitted
                 _.forEach(this.assessmentGroups, (group, i) => {
                   _.forEach(group.assessments, (assessment, j) => {
-                    _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
-                      _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
-                        this.assessmentGroups[i].assessments[j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
-
-                        // Find submission
-                        _.forEach(allSubmissions, (submissions) => {
-                          _.forEach(submissions, (submission) => {
-                            _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
-                              if (answer.assessment_question_id === question.id) {
-                                this.assessmentGroups[i].assessments[j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
-                              }
-                            });
-                          });
-                        });
-
-                      });
-
-                      // Summarise basic answer information
-                      this.assessmentGroups[i].assessments[j].AssessmentGroup[k].totalQuestions =
-                        _.size(assessmentGroup.AssessmentGroupQuestion);
-                      this.assessmentGroups[i].assessments[j].AssessmentGroup[k].answeredQuestions = 0;
-                      _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
-                        if (q.AssessmentQuestion.answer !== null) {
-                          this.assessmentGroups[i].assessments[j].AssessmentGroup[k].answeredQuestions += 1;
-                        }
-                      });
-
-                    });
-
                     _.forEach(this.assessmentGroups[i].assessments[j].AssessmentGroup, (g) => {
                       if (g.answeredQuestions < g.totalQuestions) {
                         this.allowSubmit = false;
