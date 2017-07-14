@@ -247,10 +247,11 @@ export class AssessmentsPage {
     confirm.present();
   }
 
-  gotoAssessment(group, assessment) {
-    console.log('group', group)
-    console.log('assessment', assessment)
-    this.navCtrl.push(AssessmentsGroupPage, { group, assessment });
+  gotoAssessment(assessmentGroup, assessment, activity) {
+    console.log('assessmentGroup', assessmentGroup);
+    console.log('assessment', assessment);
+    console.log('activity', activity);
+    this.navCtrl.push(AssessmentsGroupPage, { assessmentGroup, assessment });
   }
 
   // @TODO: Remove it later...
