@@ -15,6 +15,12 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 
 import * as _ from 'lodash';
 
+export class ActivityBase<T> {
+  id: number;
+  name: string;
+  description: string;
+}
+
 export class ReferenceAssessmentBase<T> {
   id: number;
   name: string;
@@ -49,7 +55,8 @@ export class AssessmentsPage {
     private assessmentService: AssessmentService,
     private submissionService: SubmissionService
   ) {
-    this.activity = this.navParams.get('activity');
+    this.activity = this.navParams.get('activity') || {};
+    this.activity = this.normaliseActivity(this.activity);
     console.log('this.activity', this.activity);
   }
 
@@ -65,26 +72,11 @@ export class AssessmentsPage {
   {
       "Activity": {
         "id": 14,
-        "milestone_id": 5,
         "name": "Warm-up Round",
         "description": "...",
         ...
       },
       "ActivitySequence": [
-        {
-          "id": 16,
-          "activity_id": 14,
-          "model": "Assess.Assessment",
-          "model_id": 8,
-          "order": 0,
-          "is_locked": false,
-          "Assess.Assessment": {
-            "id": 8,
-            "name": "Team, introduce yourselves!",
-            "description": "...",
-            ...
-          }
-        },
         ...
       ],
       "References": [
@@ -100,7 +92,13 @@ export class AssessmentsPage {
     }
   */
   normaliseActivity = (activity) => {
-    let result = [];
+    let normalisedActivity: ActivityBase<any> = {
+      id: activity.Activity.id,
+      name: activity.Activity.name,
+      description: activity.Activity.description
+    }
+
+    activity.Activity = normalisedActivity;
 
     // Normalise activity reference
     activity.References.forEach((reference, idx) => {
@@ -115,7 +113,7 @@ export class AssessmentsPage {
       activity.References[idx] = normalisedReference;
     });
 
-    return result;
+    return activity;
   }
 
   /**
