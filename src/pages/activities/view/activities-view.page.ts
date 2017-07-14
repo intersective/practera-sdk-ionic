@@ -86,6 +86,7 @@ export class ActivitiesViewPage {
         sequences: act.ActivitySequence,
         Activity: act.Activity,
         ActivitySequence: act.ActivitySequence,
+        References: act.References
       });
     });
     return result;
@@ -100,6 +101,7 @@ export class ActivitiesViewPage {
       sequences: activity.ActivitySequence,
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
+      References: activity.References
     });
   }
 

@@ -11,12 +11,21 @@
 </ion-header>
 <ion-content>
 
-  <ion-card *ngIf="assessment.description" class="rounded">
-    <ion-card-content>
-      <div [innerHTML]="assessment.description"></div>
-    </ion-card-content>
-  </ion-card>
+  <div *ngFor="let assessmentGroup of assessmentGroups; let i = index">
+    <div *ngFor="let assessment of assessmentGroup.assessments; let j = index">
 
-  <questionGroup *ngFor="let questionGroup of assessmentGroups; let i = index" [questionGroup]="questionGroup" (click)="doAssessment(questionGroup)">
-  </questionGroup>
+      <ion-card *ngIf="assessment.Assessment.description" class="rounded">
+        <ion-card-content>
+          <div [innerHTML]="assessment.Assessment.description"></div>
+        </ion-card-content>
+      </ion-card>
+
+      <questionGroup
+        *ngFor="let group of assessment.AssessmentGroup; let q = index"
+        [group]="group"
+        (click)="gotoAssessment(group)"
+      >
+      </questionGroup>
+    </div>
+  </div>
 </ion-content>

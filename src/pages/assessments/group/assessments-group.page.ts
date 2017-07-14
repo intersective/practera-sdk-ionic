@@ -2,45 +2,9 @@ import { Component } from '@angular/core';
 import { NavParams, NavController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
-import { AssessmentService } from '../../../services/assessment.service';
+import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
 
 import * as _ from 'lodash';
-
-export class ChoiceBase<T> {
-  id: number;
-  name: string;
-}
-
-export class AnswerBase<T> {
-  answer: string;
-  url: string;
-  mimetype: string;
-}
-
-export class QuestionBase<T> {
-  id: number;
-  assessment_id: number;
-  name: string;
-  type: string;
-  file_type?: string;
-  audience: Array<any>;
-  choices?: ChoiceBase<any>[];
-  answers?: {
-    submitter: AnswerBase<any>[],
-    reviewer: AnswerBase<any>[],
-  };
-  required?: boolean;
-}
-
-export class Choices<T> {
-  id: number;
-  value: number; // or choice id, usually same as "id" above
-  name: string;
-  description?: string;
-  explanation?: string;
-  order?: number;
-  weight?: number;
-}
 
 @Component({
   templateUrl: './assessments-group.html',
@@ -53,6 +17,7 @@ export class AssessmentsGroupPage {
   //@TODO: decide which one to use
   assessment: any;
   activity: any;
+  submission: Submission;
 
   constructor(
     private navParams: NavParams,
@@ -117,16 +82,17 @@ export class AssessmentsGroupPage {
   storeProgress = () => {
     let answers = {};
     _.forEach(this.formGroup, (question, id) => {
-      let values = question.getRawValue();
-      answers[id] = {
-        assessment_question_id: id,
-        answer: values.answer || values.comment,
-      };
+      let values = question.getRawValue(),
+          answer = {
+            assessment_question_id: id,
+            answer: values.answer || values.comment,
 
-      // store it if choice answer is available or skip
-      if (values.choices) {
-        answers[id].choices = values.choices;
-      }
+            // store it if choice answer is available or skip
+            choices: (!_.isEmpty(values.choices)) ? values.choices : null
+          };
+
+
+      answers[id] = answer;
     });
 
     // final step - save to localstorage
@@ -136,9 +102,10 @@ export class AssessmentsGroupPage {
           id: assessmentId,
           activity_id: this.activity.id || 'temporary_fake_activity_id'
       },
-      AssessmentSubmissionAnswer: answers || {}
+      AssessmentSubmissionAnswer: answers
     };
-    console.log(submission);
+    this.submission = submission;
+    console.log(this.submission);
     this.cache.setLocal(`assessment.group.${assessmentId}`, JSON.stringify(submission));
   };
 
@@ -152,8 +119,11 @@ export class AssessmentsGroupPage {
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
 
     if (!_.isEmpty(savedProgress)) {
+
+      // index "id" is set as question.id in @Function buildFormGroup above
       _.forEach(newQuestions, (question, id) => {
-        if (savedProgress[id]) {
+        // check integrity of saved answer (question might get updated)
+        if (savedProgress[id] && savedProgress[id].assessment_question_id == id) {
           newQuestions[id] = this.setValueWith(question, savedProgress[id]);
         }
       });
@@ -220,9 +190,10 @@ export class AssessmentsGroupPage {
     let result = [];
 
     questions.forEach((question) => {
-      // let thisQuestion = question['Assess.Assessment'];
-
-      let choices = (question.AssessmentQuestionChoice) ? this.normaliseChoices(question.AssessmentQuestionChoice) : question.choices;
+      let choices = question.AssessmentQuestionChoice || [];
+      if (choices.length > 0) {
+        choices = this.normaliseChoices(choices);
+      }
 
       let normalised: QuestionBase<any> = {
         id: question.id,
@@ -231,7 +202,7 @@ export class AssessmentsGroupPage {
         type: question.question_type,
         audience: question.audience,
         file_type: question.file_type,
-        choices: choices || []
+        choices: choices
       };
 
       result.push(normalised);
@@ -267,7 +238,7 @@ export class AssessmentsGroupPage {
     }
    */
   private normaliseChoices = (assessmentQuestionChoice) => {
-    let results: Choices<any>[] = [];
+    let results: ChoiceBase<any>[] = [];
     assessmentQuestionChoice.forEach(choice => {
       let assessmentChoice = choice.AssessmentChoice;
       results.push({
@@ -290,5 +261,6 @@ export class AssessmentsGroupPage {
   save() {
     this.storeProgress();
     this.navCtrl.pop();
+    // this.assessmentService.post();
   }
 }

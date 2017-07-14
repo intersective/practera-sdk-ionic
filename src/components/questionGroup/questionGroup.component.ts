@@ -6,7 +6,7 @@ import { NavController } from 'ionic-angular';
   templateUrl: 'questionGroup.html',
 })
 export class QuestionGroupComponent {
-  @Input() questionGroup: any = {};
+  @Input() group: any = {};
 
   constructor(
     public navCtrl: NavController
