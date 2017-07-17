@@ -9,6 +9,7 @@
 
 <ion-content class="groups-question" padding>
   <div *ngFor="let question of questions" [ngSwitch]="question.type">
+
     <!-- type: oneOf -->
     <oneof-question
       [question]="question"
