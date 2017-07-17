@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController } from 'ionic-angular';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
+import { SubmissionService } from '../../../services/submission.service';
 
 import * as _ from 'lodash';
 
@@ -13,11 +14,21 @@ export class ActivitiesViewPage {
   activity: any = {};
   assessments: Array<any>;
   submissions: Array<any> = [];
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
+    private submissionService: SubmissionService,
     private modalCtrl: ModalController
   ) {
+  }
+
+  getSubmission(): Promise<any> {
+    return this.submissionService.getSubmissions({
+      search: {
+        context_id: this.activity.Reference.context_id
+      }
+    }).toPromise();
   }
 
   // @TODO: use simple mock data for assessment first
@@ -92,13 +103,146 @@ export class ActivitiesViewPage {
     return result;
   }
 
+  /*
+    turns:
+    [
+      {
+        "context_id": 25,
+        "Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1"
+        }
+      },
+      {
+        "context_id": 26,
+        "Assessment": {
+          "id": 20,
+          "name": "Check-In Workshop 2"
+        }
+      },
+      ...
+    ]
+
+    into:
+    {
+      19: 25,
+      20: 26
+    }
+   */
+  private rebuildReferences(references) {
+    let result = {};
+    references.forEach(ref => {
+      result[ref.Assessment.id] = ref.context_id;
+    });
+    return result;
+  }
+
+  /*
+    @name mergeReferenceToSequence
+
+    turns:
+    [
+      {
+        "id": 52,
+        "activity_id": 22,
+        "model": "Assess.Assessment",
+        "model_id": 19,
+        "order": 0,
+        "is_locked": false,
+        "Assess.Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1",
+          "description": "Check in to your first workshop here<br>",
+          "assessment_type": "checkin",
+          "is_live": true,
+          "is_team": false,
+          "score_type": "numeric",
+          "experience_id": 2,
+          "program_id": 4,
+          "deleted": false,
+          "deleted_date": null,
+          "comparison_group_size": 3,
+          "comparison_group_points": 10,
+          "review_period": 72,
+          "review_scope": "assessment",
+          "review_scope_id": null,
+          "created": "2016-02-01 04:45:21.573033",
+          "modified": "2016-10-25 23:54:22",
+          "review_instructions": null,
+          "is_repeatable": false,
+          "num_reviews": null,
+          "review_type": null,
+          "review_role": null,
+          "auto_assign_reviewers": null,
+          "parent_id": null,
+          "auto_publish_reviews": false
+        },
+        "context_id": 25
+      }
+    ]
+
+    into:
+    {
+      "19": {
+        "id": 52,
+        "activity_id": 22,
+        "model": "Assess.Assessment",
+        "model_id": 19,
+        "order": 0,
+        "is_locked": false,
+        "Assess.Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1",
+          "description": "Check in to your first workshop here<br>",
+          "assessment_type": "checkin",
+          "is_live": true,
+          "is_team": false,
+          "score_type": "numeric",
+          "experience_id": 2,
+          "program_id": 4,
+          "deleted": false,
+          "deleted_date": null,
+          "comparison_group_size": 3,
+          "comparison_group_points": 10,
+          "review_period": 72,
+          "review_scope": "assessment",
+          "review_scope_id": null,
+          "created": "2016-02-01 04:45:21.573033",
+          "modified": "2016-10-25 23:54:22",
+          "review_instructions": null,
+          "is_repeatable": false,
+          "num_reviews": null,
+          "review_type": null,
+          "review_role": null,
+          "auto_assign_reviewers": null,
+          "parent_id": null,
+          "auto_publish_reviews": false
+        },
+        "context_id": 25
+      }
+    }
+   */
+  private mergeReferenceToSequence(activity) {
+    let sequences = {};
+    let refs = this.rebuildReferences(activity.References);
+
+    activity.ActivitySequence.forEach(seq => {
+      let modelId = seq.model_id;
+      seq.context_id = refs[modelId];
+      sequences[modelId] = seq;
+    });
+    return sequences;
+  }
+
   /**
    * normalise single activity object
    */
   private normaliseActivity(activity) {
-    return _.merge(activity.Activity, {
+    let thisActivity = activity.Activity;
+
+    return _.merge(thisActivity, {
       activity: activity.Activity,
-      sequences: activity.ActivitySequence,
+      sequences: this.mergeReferenceToSequence(activity),
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
       References: activity.References

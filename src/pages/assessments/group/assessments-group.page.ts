@@ -107,6 +107,7 @@ export class AssessmentsGroupPage {
     this.submission = submission;
     console.log(this.submission);
     this.cache.setLocal(`assessment.group.${assessmentId}`, JSON.stringify(submission));
+    return submission;
   };
 
   /**
@@ -259,7 +260,7 @@ export class AssessmentsGroupPage {
    * @description initiate save progress and return to previous page/navigation stack
    */
   save() {
-    this.storeProgress();
+    this.assessmentService.save(this.storeProgress());
     this.navCtrl.pop();
     // this.assessmentService.post();
   }

@@ -76,6 +76,16 @@ export class AssessmentService {
     return this.request.post('api/assessment_submissions.json', assessmentAnswer);
   }
 
+  /**
+   * save progress using "post" function AssessmentService.post()
+   * @param {Object} assessmentAnswer
+   */
+  public save(assessmentAnswer) {
+    assessmentAnswer.Assessment.in_progress = true; // force in_progress
+    console.log(assessmentAnswer);
+    // return this.post(assessmentAnswer);
+  }
+
   /*
     Turn API format from:
     {
