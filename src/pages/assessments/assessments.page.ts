@@ -123,19 +123,19 @@ export class AssessmentsPage {
    */
   mapAssessmentsAndSubmissions(assessments, allSubmissions) {
     _.forEach(assessments, (group, i) => {
-      _.forEach(group.assessments, (assessment, j) => {
+      _.forEach(group, (assessment, j) => {
 
         _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
           _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
             // Inject empty answer
-            assessments[i].assessments[j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
+            assessments[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
 
             // Find submission
             _.forEach(allSubmissions, (submissions) => {
               _.forEach(submissions, (submission) => {
                 _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
                   if (answer.assessment_question_id === question.id) {
-                    this.assessmentGroups[i].assessments[j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
+                    this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
                   }
                 });
               });
@@ -143,13 +143,13 @@ export class AssessmentsPage {
           });
 
           // Summarise basic answer information
-          assessments[i].assessments[j].AssessmentGroup[k].totalQuestions =
+          assessments[i][j].AssessmentGroup[k].totalQuestions =
             _.size(assessmentGroup.AssessmentGroupQuestion);
 
-          assessments[i].assessments[j].AssessmentGroup[k].answeredQuestions = 0;
+          assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
           _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
             if (q.AssessmentQuestion.answer !== null) {
-              assessments[i].assessments[j].AssessmentGroup[k].answeredQuestions += 1;
+              assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
             }
           });
         });
@@ -206,7 +206,7 @@ export class AssessmentsPage {
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
             if (assessments) {
-              this.assessment = _.head(_.head(assessments).assessments).Assessment || {};
+              this.assessment = _.head(assessments).Assessment || {};
               console.log('this.assessment', this.assessment)
             }
 
@@ -221,8 +221,8 @@ export class AssessmentsPage {
 
                 // Check all questions have submitted
                 _.forEach(this.assessmentGroups, (group, i) => {
-                  _.forEach(group.assessments, (assessment, j) => {
-                    _.forEach(this.assessmentGroups[i].assessments[j].AssessmentGroup, (g) => {
+                  _.forEach(group, (assessment, j) => {
+                    _.forEach(this.assessmentGroups[i][j].AssessmentGroup, (g) => {
                       if (g.answeredQuestions < g.totalQuestions) {
                         this.allowSubmit = false;
                       }
