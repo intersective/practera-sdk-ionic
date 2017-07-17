@@ -20,18 +20,19 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { SessionService } from '../services/session.service';
-import { RequestModule } from '../shared/request/request.module';
-import { ResponsiveService } from '../services/responsive.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
+import { GroupEmitterService } from '../components/questions/group-emitter.service';
 import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
+import { RankingService } from '../services/ranking.service';
+import { RequestModule } from '../shared/request/request.module';
+import { ResponsiveService } from '../services/responsive.service';
+import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
-import { GroupEmitterService } from '../components/questions/group-emitter.service';
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -72,6 +73,8 @@ import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { RankingsPage } from '../pages/rankings/list/rankings.page';
+import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page'; 
 import { RegisterPage } from '../pages/registration/register.page';
 import { RegistrationModalPage } from '../pages/registration/modal';
 import { RegistrationPage } from '../pages/registration/registration.page';
@@ -91,7 +94,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
-    return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
+  return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
 @NgModule({
@@ -133,6 +136,8 @@ export function HttpLoaderFactory(http: Http) {
     OneofQuestionComponent,
     PhotoComponent,
     QuestionGroupComponent,
+    RankingsPage,
+    RankingDetailsPage,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,
@@ -230,6 +235,8 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
+    RankingsPage,
+    RankingDetailsPage,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,
@@ -251,6 +258,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
     { provide: NotificationService, useClass: NotificationService },
+    { provide: RankingService, useClass: RankingService },
     { provide: ResponsiveService, useClass: ResponsiveService },
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },

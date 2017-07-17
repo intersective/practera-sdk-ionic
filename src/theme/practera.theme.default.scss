@@ -446,7 +446,7 @@ event {
     }
   }
 }
-// achievement page styling 
+// 10. Achievement page styling 
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -468,6 +468,45 @@ event {
     }
   }
 }
+// 11. Rankings Page Styling
+.rankings {
+  .scroll-content {
+    bottom: 49px !important;
+  }
+  ion-list:first-child {
+    margin-bottom: 5px;
+  }
+  ion-list {
+    margin: 0px;
+  }
+  ion-col {
+    padding: 0px;
+  }
+  .ranking-list {
+    
+  }
+  .my-ranking {
+    border-top: 1px solid color($colors, border, base);
+    position: fixed;
+    bottom: 49px;
+    height: 54px;
+    width: 100%;
+    background: color($colors, secondary, base);
+  }
+  .ranking-item {
+    width: 100%;
+    display: flex;
+    p:first-child {
+      margin-left: 12pt;
+    }
+    ion-icon {
+      font-size: 10pt;
+      padding-left: 5px;
+      font-weight: 900; 
+    }
+  }
+}
+
 // landscape activity list view
 @media screen and (min-width: 500px) {
   .score-board {
