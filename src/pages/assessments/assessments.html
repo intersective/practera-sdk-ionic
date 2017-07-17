@@ -4,7 +4,7 @@
 
     <ion-buttons end>
       <button ion-button (click)="clickSubmit()" [disabled]="!allowSubmit">
-        Submit
+        {{ 'GENERAL.SUBMIT' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -17,6 +17,6 @@
     </ion-card-content>
   </ion-card>
 
-  <questionGroup *ngFor="let questionGroup of assessmentGroups; let i = index" [questionGroup]="questionGroup">
+  <questionGroup *ngFor="let questionGroup of assessmentGroups; let i = index" [questionGroup]="questionGroup" (click)="doAssessment(questionGroup)">
   </questionGroup>
 </ion-content>

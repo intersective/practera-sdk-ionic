@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Monthly Ranking</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="rankings">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+	</ion-refresher>
+  <ion-list class="ranking-list">
+    <ion-col *ngFor="let listData of rankingsFakeData; let i = index">
+      <div class="ranking-item">
+        <p col-1 *ngIf="i == 0"><ion-icon name="beer"></ion-icon></p>
+        <p col-1 *ngIf="i == 1"><ion-icon name="logo-bitcoin"></ion-icon></p>
+        <p col-1 *ngIf="i == 2"><ion-icon name="book"></ion-icon></p>
+        <p col-1 *ngIf="i > 2">{{ i+1 }}</p>
+        <p col-8>{{ listData.name }}</p>
+        <p col-3>{{ listData.score }}</p>
+      </div>
+    </ion-col>
+  </ion-list>
+  <ion-list class="my-ranking" (click)="goRankingDetail()">
+    <ion-row>
+      <div class="ranking-item">
+        <p col-1>{{ userRanking }}</p>
+        <p col-8>Me</p>
+        <p col-3>{{ userScore }} <ion-icon name="arrow-forward"></ion-icon></p>
+      </div>
+    </ion-row>
+  </ion-list>
+</ion-content>

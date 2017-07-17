@@ -1,0 +1,11 @@
+{
+  "ACTIVITY": {
+    "PAGETITLE": "面板",
+    "POINTS": "分数",
+    "PROGRESS": "进程",
+    "SUBMISSION": "提交"
+  },
+  "ASSESSMENT": {
+    "PAGETITLE": "任务"
+  }
+}
