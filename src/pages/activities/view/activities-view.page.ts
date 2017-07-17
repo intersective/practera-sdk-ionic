@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 
 export class ActivitiesViewPage {
   activity: any = {};
-  assessments: Array<any>;
+  assessment: any = {};
   submissions: Array<any> = [];
 
   constructor(
@@ -23,13 +23,6 @@ export class ActivitiesViewPage {
   ) {
   }
 
-  getSubmission(): Promise<any> {
-    return this.submissionService.getSubmissions({
-      search: {
-        context_id: this.activity.Reference.context_id
-      }
-    }).toPromise();
-  }
 
   // @TODO: use simple mock data for assessment first
   /**
@@ -41,9 +34,9 @@ export class ActivitiesViewPage {
    */
   ionViewDidEnter(): void {
     this.activity = this.normaliseActivity(this.navParams.get('activity') || {});
-    this.assessments = this.activity.sequences || [];
+    this.assessment = this.activity.sequence;
 
-    console.log("Specific Activity Data, ", this.activity);
+    // @TODO: badges images implementation
     this.activity.badges = [
       {
         url: 'http://leevibe.com/images/category_thumbs/video/19.jpg',
@@ -60,6 +53,14 @@ export class ActivitiesViewPage {
     ];
 
     let submission = [];
+    this.submissionService.getSubmissions({
+      search: { context_id: this.assessment.context_id }
+    }).subscribe(response => {
+      if (response.length > 0) {
+        this.submissions = response;
+      }
+    });
+
     if (this.activity.Activity.name === 'Workshop-2') {
       submission.push({
         title: 'Submission 1',
@@ -223,15 +224,15 @@ export class ActivitiesViewPage {
     }
    */
   private mergeReferenceToSequence(activity) {
-    let sequences = {};
     let refs = this.rebuildReferences(activity.References);
 
-    activity.ActivitySequence.forEach(seq => {
-      let modelId = seq.model_id;
-      seq.context_id = refs[modelId];
-      sequences[modelId] = seq;
-    });
-    return sequences;
+    // @NOTE: first "[0]" sequence is the assessment of an activity
+    let sequence = activity.ActivitySequence[0];
+    // activity.ActivitySequence.forEach(seq => {
+      let modelId = sequence.model_id;
+      sequence.context_id = refs[modelId];
+    // });
+    return sequence;
   }
 
   /**
@@ -242,7 +243,7 @@ export class ActivitiesViewPage {
 
     return _.merge(thisActivity, {
       activity: activity.Activity,
-      sequences: this.mergeReferenceToSequence(activity),
+      sequence: this.mergeReferenceToSequence(activity),
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
       References: activity.References
@@ -258,12 +259,12 @@ export class ActivitiesViewPage {
   }
 
   /**
-   * @TODO 2017_07_04: ISDK-10, we'll be using first assessment from the list
+   * @name goAssessment
    * @description direct to assessment page of a selected activity
    * @param {Object} activity single activity object from the list of
-   * activities respond from get_activities API
+   *                          activities respond from get_activities API
    */
   goAssessment(activity) {
-    this.navCtrl.push(AssessmentsPage, {activity, assessment: this.assessments[0]});
+    this.navCtrl.push(AssessmentsPage, {activity, assessment: this.assessment});
   }
 }
