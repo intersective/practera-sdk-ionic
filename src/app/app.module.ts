@@ -73,8 +73,9 @@ import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
-import { RankingsPage } from '../pages/rankings/list/rankings.page';
+import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges.page';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page'; 
+import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
 import { RegistrationModalPage } from '../pages/registration/modal';
 import { RegistrationPage } from '../pages/registration/registration.page';
@@ -136,8 +137,9 @@ export function HttpLoaderFactory(http: Http) {
     OneofQuestionComponent,
     PhotoComponent,
     QuestionGroupComponent,
-    RankingsPage,
+    RankingBadgesPage,
     RankingDetailsPage,
+    RankingsPage,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,
@@ -235,8 +237,9 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
-    RankingsPage,
+    RankingBadgesPage,
     RankingDetailsPage,
+    RankingsPage,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,

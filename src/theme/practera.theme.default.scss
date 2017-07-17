@@ -468,7 +468,7 @@ event {
     }
   }
 }
-// 11. Rankings Page Styling
+// 13. Rankings Page Styling
 .rankings {
   .scroll-content {
     bottom: 49px !important;
@@ -493,6 +493,9 @@ event {
     width: 100%;
     background: color($colors, secondary, base);
   }
+  ion-list.my-ranking.list.list-md {
+    bottom: 55px;
+  }
   .ranking-item {
     width: 100%;
     display: flex;
@@ -501,12 +504,40 @@ event {
     }
     ion-icon {
       font-size: 10pt;
-      padding-left: 5px;
       font-weight: 900; 
+    }
+    ion-icon[name=arrow-forward] {
+      padding-left: 5px;
+    }
+    .badge-image {
+      width: 60px;
+      height: 60px; 
+    }
+    p {
+      display: flex;
+      align-items: center; 
+      word-break: break-all;
     }
   }
 }
-
+// ranking details page stylings
+rankings-details-page {
+  padding: 0 6pt;
+  .ranking-details {
+    .scroll-content {
+      bottom: 0px !important;
+    }
+  }
+  .ranking-detail-item {
+    padding: 2pt 0;
+    border-bottom: 1px solid color($colors, border, base);
+  }
+  .points-display {
+    padding: 2pt 0;
+    display: flex;
+    border-bottom: 1px solid color($colors, border, base);
+  }
+}
 // landscape activity list view
 @media screen and (min-width: 500px) {
   .score-board {

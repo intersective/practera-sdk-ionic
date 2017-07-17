@@ -3,9 +3,36 @@
     <ion-title>Ranking Details</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content class="rankings">
-  <div>&nbsp;</div>
+<ion-content class="rankings ranking-details">
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+	</ion-refresher>
   <ion-list>
-    <p>Hi, there</p>
+    <ion-col>
+      <div class="points-display">
+        <p col-10>Points(Monthly) </p>
+        <p col-2>{{ monthlyPoints || 0 }}</p>
+      </div>
+    </ion-col>
+  </ion-list>
+  <ion-list>
+    <ion-col>
+      <div class="points-display">
+        <p col-10>Points(Total)</p>
+        <p col-2>{{ totalPoints || 0 }}</p>
+      </div>
+    </ion-col>
+  </ion-list>
+  <ion-list>
+    <ion-col *ngFor="let eachAchievement of userAchievementsData">
+      <div class="ranking-item ranking-detail-item" (click)="goToBadgeDetailsPage(eachAchievement)">
+        <img class="badge-image" col-2 src="{{ eachAchievement.badge || achievementBadgeImage }}" alt="Badge Image" />
+        <p col-8>{{ eachAchievement.name || achievementName }}</p>
+        <p col-2>{{ eachAchievement.points || achievementPoint }} <ion-icon name="arrow-forward"></ion-icon></p>
+      </div>
+    </ion-col>
   </ion-list>
 </ion-content>

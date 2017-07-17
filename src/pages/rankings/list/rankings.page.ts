@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 import * as _ from 'lodash';
@@ -71,13 +71,14 @@ export class RankingsPage {
   public foundData: any;
   public userScore: number;
   public userRanking: number; 
-  public loginLoadingMessages: any = loadingMessages.Login.login;
+  public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
+  public emptyErrorMessage: any = errMessages.General.loading.load;
   constructor(private navCtrl: NavController,
               private loadingCtrl: LoadingController,
+              private alertCtrl: AlertController,
               private authService: AuthService,){
-    this.findMyRankingData();
-  }
-  
+                this.findMyRankingData();
+              }
   doRefresh(e) {
     // this.loadEvents()
     // .then(() => {
@@ -91,7 +92,12 @@ export class RankingsPage {
   findMyRankingData(){
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
-      content: this.loginLoadingMessages
+      content: this.loadingMessages
+    });
+    const emptyDataAlert = this.alertCtrl.create({
+      title: 'Sorry, No data has been found',
+      message: this.emptyErrorMessage,
+      buttons: ['Close']
     });
     loading.present();
     this.authService.getUser()
@@ -107,12 +113,17 @@ export class RankingsPage {
                 this.userRanking = _.indexOf(this.rankingsFakeData, this.foundData) + 1;
               });
             }else {
-              this.currentUserName = 'User';
+              loading.dismiss().then(() => {
+                this.currentUserName = 'User';
+              });
             }
-            console.log(this.currentUserName);
+            console.log("Current User Name: ", this.currentUserName);
           },
           err => {
-            console.log(err);
+            loading.dismiss().then(() => {
+              emptyDataAlert.present();
+              console.log(err);
+            });
           }
         );
   }
