@@ -6,10 +6,16 @@ import {
   Navbar,
   LoadingController
 } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
 
+import { AssessmentsGroupPage } from './group/assessments-group.page'
+
 import * as _ from 'lodash';
+
+import { TranslationService } from '../../shared/translation/translation.service';
+import { confirmMessages } from '../../app/messages'; 
 
 @Component({
   selector: 'assessments-page',
@@ -17,6 +23,8 @@ import * as _ from 'lodash';
 })
 export class AssessmentsPage {
   @ViewChild(Navbar) navbar: Navbar;
+
+  // @Input() activity: any;
 
   activity: any = {};
   answers: any = {};
@@ -26,13 +34,17 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: any = true;
 
+  // confirm message variables
+  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    public translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
     console.log('this.activity', this.activity);
@@ -47,29 +59,80 @@ export class AssessmentsPage {
 
   loadQuestions(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.assessmentService.getAll({
-        search: {
-          assessment_id: this.activity.sequences[0]['Assess.Assessment'].id
-        }
-      }).subscribe(assessmentData => {
-        console.log('assessmentData', assessmentData);
-        this.assessment = assessmentData[0].Assessment;
-        this.assessmentGroups = assessmentData[0].AssessmentGroup;
-        this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
 
-        _.forEach(this.assessmentQuestions, (question, key) => {
-          // Inject answers
-          if (this.answers[question.id]) {
-            this.assessmentQuestions[key].answer = this.answers[question.id];
-          } else {
-            // Set allowSubmit to false when some assessment no answer
-            this.allowSubmit = false;
-            this.assessmentQuestions[key].answer = null;
+      let getQuestion = (assessmentId) => {
+        return this.assessmentService.getAll({
+          search: {
+            assessment_id: assessmentId
           }
         });
+      };
 
-        return resolve();
-      }, reject);
+      let tasks = [];
+      _.forEach(this.activity.ActivitySequence, (assessment) => {
+        if (
+          assessment.model === 'Assess.Assessment' &&
+          assessment.is_locked === false &&
+          assessment.model_id
+        ) {
+          return tasks.push(getQuestion(assessment.model_id));
+        }
+      });
+
+      // let reflect = (promise) => {
+      //   return promise
+      //     .then(
+      //       (v) => { return {v:v, status: "resolved" }},
+      //       (e) => { return {e:e, status: "rejected" }}
+      //     );
+      // }
+
+      console.log('tasks', tasks);
+
+      Observable.forkJoin(tasks)
+        .subscribe(
+          t => console.log('t', t),
+          e => console.log('e', e),
+          () => console.log('completed')
+        );
+
+      // Promise.all(tasks.map(reflect)).then(results => {
+      //   console.log('values', results);
+      // });
+
+
+      // this.assessmentService.getAll({
+      //   search: {
+      //     assessment_id: this.activity.Activity.id
+      //   }
+      // }).subscribe(assessmentData => {
+      //   console.log('assessmentData', assessmentData);
+      //   this.assessment = assessmentData.assessments[0].Assessment;
+      //   // this.assessmentGroups = assessmentData.Assessments[0].AssessmentGroup;
+      //   this.assessmentQuestions = assessmentData.assessments[0].AssessmentQuestion;
+      //
+      //   console.log('this.assessmentGroups', this.assessmentGroups);
+      //   console.log('this.assessmentQuestions', this.assessmentQuestions);
+      //
+      //   _.forEach(this.assessmentQuestions, (question, key) => {
+      //
+      //     // @TODO Check question one by one
+      //     let idx = `assessment.group.${question.assessment_id}`;
+      //     let exists = this.cache.getLocalObject(idx);
+      //
+      //     if (exists.AssessmentSubmissionAnswer) {
+      //       if (_.isString(exists.AssessmentSubmissionAnswer)) {
+      //         this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer;
+      //       } else {
+      //         this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer[0].answer;
+      //       }
+      //     } else {
+      //       this.allowSubmit = false;
+      //       this.assessmentQuestions[key].answer = null;
+      //     }
+      //   });
+      //   return resolve();
+      // }, reject);
     });
   }
 
@@ -101,7 +164,7 @@ export class AssessmentsPage {
     // No data will send to server
     const confirm = this.alertCtrl.create({
       title: 'Discard all change',
-      message: 'Do you really want to discard all your change?',
+      message: this.discardConfirmMessage,
       buttons: [
         {
           text: 'Okay',
@@ -128,7 +191,7 @@ export class AssessmentsPage {
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Submit evidence',
-      message: 'Do you really want to submit this evidence?',
+      message: this.submitConfirmMessage,
       buttons: [
         {
           text: 'Okay',
@@ -147,38 +210,42 @@ export class AssessmentsPage {
     confirm.present();
   }
 
-  // @TODO: Remove it later...
-  clickFillAllAnswers() {
-    _.forEach(this.assessmentQuestions, (question, key) => {
-      console.log('q', question);
-      if (question.question_type === 'file') {
-        this.answers[question.id] = {
-          type: 'file',
-          files: [
-            {
-              mime: 'image/jpeg',
-              url: 'https://placeimg.com/100/100/nature/grayscale'
-            },
-            {
-              mime: 'image/jpeg',
-              url: 'https://placeimg.com/100/100/nature/grayscale'
-            }
-          ]
-        };
-      }
-
-      if (question.question_type === 'oneof') {
-        this.answers[question.id] = {
-          type: 'file',
-          answers: [
-            {
-              context: 'This is answer for ' + question.assessment_id
-            }
-          ]
-        };
-      }
-
-      this.loadQuestions();
-    });
+  gotoAssessment(group) {
+    this.navCtrl.push(AssessmentsGroupPage, { group });
   }
+
+  // @TODO: Remove it later...
+  // clickFillAllAnswers() {
+  //   _.forEach(this.assessmentQuestions, (question, key) => {
+  //     console.log('q', question);
+  //     if (question.question_type === 'file') {
+  //       this.answers[question.id] = {
+  //         type: 'file',
+  //         files: [
+  //           {
+  //             mime: 'image/jpeg',
+  //             url: 'https://placeimg.com/100/100/nature/grayscale'
+  //           },
+  //           {
+  //             mime: 'image/jpeg',
+  //             url: 'https://placeimg.com/100/100/nature/grayscale'
+  //           }
+  //         ]
+  //       };
+  //     }
+  //
+  //     if (question.question_type === 'oneof') {
+  //       this.answers[question.id] = {
+  //         type: 'file',
+  //         answers: [
+  //           {
+  //             context: 'This is answer for ' + question.assessment_id
+  //           }
+  //         ]
+  //       };
+  //     }
+  //
+  //     this.loadQuestions();
+  //   });
+  // }
 }

@@ -1,32 +1,34 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
-
-import { ActivityService } from '../../../services/activity.service';
-import { EventService } from '../../../services/event.service';
-import { EventsViewPage } from '../view/events-view.page';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
+import { TranslationService } from '../../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../../app/messages'; 
+// services
+import { ActivityService } from '../../../services/activity.service';
+import { EventService } from '../../../services/event.service';
+// pages
+import { EventsViewPage } from '../view/events-view.page';
 @Component({
   selector: 'events-list-page',
   templateUrl: 'list.html'
 })
 export class EventsListPage {
-
+  // loading & error message variables
+  private emptyFilterErrMessage = errMessages.Events.filter.empty;
+  private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
     public activityService: ActivityService,
     public loadingCtrl: LoadingController,
-  ) {
-  }
-
+    public translationService: TranslationService
+  ) {}
   loadedEvents = [];
   events = [];
   noEvents = false;
   filter = 'browses';
-
-
   /**
    * @name filterEvents
    * @description filter and group events into 3 catergories (attended, my-bookings, browses)
@@ -56,29 +58,22 @@ export class EventsListPage {
         }), 'start', 'asc');
         break;
     }
-
     if (this.events.length === 0) {
       this.noEvents = true;
     }
-
     return this.events;
   }
-
   // Called when tap on filter tab
   selected(filter) {
     this.filter = filter;
     this.events = this.filterEvents();
   }
-
   // Check total of events, return "true" when 0 found
   showNoEventMessage() {
     return (this.noEvents);
   }
-
-
   loadEvents(): Promise<any> {
     return new Promise((resolve, reject) => {
-
       // Get activities IDs
       this.activityService.getList()
       .toPromise()
@@ -87,7 +82,6 @@ export class EventsListPage {
         _.forEach(activities, (act) => {
           activityIDs.push(act.Activity.id);
         });
-
         // Get event by activityIDs
         this.eventService.getEvents({
           search: {
@@ -103,17 +97,14 @@ export class EventsListPage {
           this.loadedEvents = this._injectCover(
             this._mapWithActivity(events, activities)
           );
-
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
-
           this.filterEvents();
           return resolve();
         }, reject);
       }, reject);
     });
   }
-
   ionViewDidEnter() {
     let loader = this.loadingCtrl.create();
 
@@ -128,7 +119,6 @@ export class EventsListPage {
       });
     });
   }
-
   doRefresh(e) {
     this.loadEvents()
     .then(() => {
@@ -139,7 +129,6 @@ export class EventsListPage {
       e.complete();
     });
   }
-
   /**
    * @TODO: remove this once we decided to remove hardcoded images, big size picture is ruining UX because it induces long download time
    *
@@ -157,7 +146,6 @@ export class EventsListPage {
 
     return events;
   }
-
   private _mapWithActivity(events, activities) {
     let result = [];
 
@@ -174,13 +162,11 @@ export class EventsListPage {
 
     return result;
   }
-
   // Check event allow to check-in
   allowCheckIn(event) {
     console.log('event', event);
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
   }
-
   view(event) {
     /*if (this.allowCheckIn(event)) {
       alert('Going to check-in page...');
