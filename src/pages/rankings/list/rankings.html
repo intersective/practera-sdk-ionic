@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Monthly Ranking</ion-title>
+    <ion-title>{{ 'RANKING.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings">
@@ -26,7 +26,7 @@
     <ion-row>
       <div class="ranking-item">
         <p col-1>{{ userRanking }}</p>
-        <p col-8>Me</p>
+        <p col-8>{{ 'RANKING.ME' | translate }}</p>
         <p col-3>{{ userScore }} <ion-icon name="arrow-forward"></ion-icon></p>
       </div>
     </ion-row>

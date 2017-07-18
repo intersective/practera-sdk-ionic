@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Ranking Details</ion-title>
+    <ion-title>{{ 'RANKING.DETAIL' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings ranking-details">
@@ -13,7 +13,7 @@
   <ion-list>
     <ion-col>
       <div class="points-display">
-        <p col-10>Points(Monthly) </p>
+        <p col-10>{{ 'RANKING.MONTHLYPOINTS' | translate }}</p>
         <p col-2>{{ monthlyPoints || 0 }}</p>
       </div>
     </ion-col>
@@ -21,7 +21,7 @@
   <ion-list>
     <ion-col>
       <div class="points-display">
-        <p col-10>Points(Total)</p>
+        <p col-10>{{ 'RANKING.TOTALPOINTS' | translate }}</p>
         <p col-2>{{ totalPoints || 0 }}</p>
       </div>
     </ion-col>
