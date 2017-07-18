@@ -55,8 +55,6 @@ import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
 import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
-import { ActivitiesClassicViewModalPage } from '../pages/activities-classic/view/activities-classic-view-modal.page';
-import { ActivitiesClassicViewPage } from '../pages/activities-classic/view/activities-classic-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
@@ -101,8 +99,6 @@ export function HttpLoaderFactory(http: Http) {
   declarations: [
     AchievementsViewPage,
     ActivitiesClassicListPage,
-    ActivitiesClassicViewModalPage,
-    ActivitiesClassicViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -210,8 +206,6 @@ export function HttpLoaderFactory(http: Http) {
   entryComponents: [
     AchievementsViewPage,
     ActivitiesClassicListPage,
-    ActivitiesClassicViewModalPage,
-    ActivitiesClassicViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
