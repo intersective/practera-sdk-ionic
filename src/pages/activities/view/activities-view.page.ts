@@ -36,6 +36,17 @@ export class ActivitiesViewPage {
     this.activity = this.normaliseActivity(this.navParams.get('activity') || {});
     this.assessment = this.activity.sequence;
 
+    this.submissions = [];
+    this.submissionService.getSubmissions({
+      search: { context_id: this.assessment.context_id }
+    }).subscribe(response => {
+      if (response.length > 0) {
+        console.log(this.submissions);
+        this.submissions = response.map(submission => this.submissionService.normalise(response));
+        console.log(this.submissions);
+      }
+    });
+
     // @TODO: badges images implementation
     this.activity.badges = [
       {
@@ -52,40 +63,14 @@ export class ActivitiesViewPage {
       },
     ];
 
-    let submission = [];
-    this.submissionService.getSubmissions({
-      search: { context_id: this.assessment.context_id }
-    }).subscribe(response => {
-      if (response.length > 0) {
-        console.log(this.submissions);
-        this.submissions = response.map(submission => this.submissionService.normalise(submission));
-        console.log(this.submissions);
+    this.activity.badges.map((badge, index) => {
+      if ((this.activity.id % 3) != 0) {
+        badge.disabled = false;
+      } else {
+        badge.disabled = true;
       }
     });
 
-    if (this.activity.Activity.name === 'Workshop-2') {
-      submission.push({
-        title: 'Submission 1',
-        submittedOn: 'Thu Jun 19 2017 17:37:08',
-        status: 'Pending Review'
-      });
-      this.activity.badges.map((badge, index) => {
-        if (index === 1 || index === 0) {
-          badge.disabled = false;
-        } else {
-          badge.disabled = true;
-        }
-      });
-    } else {
-      submission.push({
-        title: 'Submission 1',
-        submittedOn: '',
-        status: 'Do Now'
-      });
-    }
-
-    this.submissions = submission;
-    console.log(this.activity);
   }
 
   /**
