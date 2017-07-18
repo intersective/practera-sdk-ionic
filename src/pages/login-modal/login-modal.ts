@@ -95,6 +95,8 @@ export class LoginModalPage {
           this.authService.getUser()
               .subscribe(
                 data => {
+                  self.cacheService.setLocalObject('name', data.User.name);
+                  self.cacheService.setLocalObject('email', data.User.email);
                   self.cacheService.setLocalObject('program_id', data.User.program_id);
                   self.cacheService.setLocalObject('project_id', data.User.project_id);
                 },

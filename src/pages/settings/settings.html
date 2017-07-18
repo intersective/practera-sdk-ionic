@@ -14,9 +14,12 @@
     <button ion-item (click)="goToTermConditions()">
       <ion-icon name="clipboard" item-left></ion-icon> {{ 'SETTINGS.TERMS' | translate }}
     </button>
-    <!--<button ion-item>
+    <!-- <button ion-item>
       <ion-icon name="swap" item-left></ion-icon> {{ 'SETTINGS.SWITCHER' | translate }}
-    </button>-->
+    </button> -->
+    <button ion-item (click)="goLeaderBoardSettings()">
+      <ion-icon name="swap" item-left></ion-icon> {{ 'SETTINGS.LEADERBOARD' | translate }}
+    </button>
   </ion-list>
   <ion-list no-lines>
     <ion-list-header>
