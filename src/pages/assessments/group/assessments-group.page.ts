@@ -12,7 +12,6 @@ import * as _ from 'lodash';
 export class AssessmentsGroupPage {
   questions = [];
   formGroup;
-  temp;
 
   //@TODO: decide which one to use
   activity: any;
@@ -36,13 +35,13 @@ export class AssessmentsGroupPage {
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submissions = this.navParams.get('submissions') || {};
 
-    console.log('this.submissions', this.submissions);
-    console.log('this.assessmentGroup', this.assessmentGroup);
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
-    console.log('this.questions', this.questions);
-
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
+
+    // console.log('this.submissions', this.submissions);
+    // console.log('this.assessmentGroup', this.assessmentGroup);
+    // console.log('this.questions', this.questions);
   }
 
   /**
@@ -53,7 +52,7 @@ export class AssessmentsGroupPage {
     let result: any = {};
 
     this.questions.forEach(question => {
-      let currentAnswer = question.answer;
+      let currentAnswer = question.answer || {};
       let group = {
         answer: question.required ?
           new FormControl(currentAnswer.answer || '', Validators.required) : new FormControl(currentAnswer.answer || ''),
