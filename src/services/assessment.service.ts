@@ -3,7 +3,8 @@ import { RequestService } from '../shared/request/request.service';
 
 class Assessment {
   id: number;
-  activity_id: number;
+  context_id: number;
+  in_progress?: Boolean;
 }
 
 class Answer {
@@ -43,6 +44,7 @@ export class QuestionBase<T> {
 
 export class Submission {
   Assessment: Assessment;
+  AssessmentSubmission?: any;
   AssessmentSubmissionAnswer: Object;
 }
 
@@ -80,7 +82,7 @@ export class AssessmentService {
   public save(assessmentAnswer) {
     assessmentAnswer.Assessment.in_progress = true; // force in_progress
     console.log(assessmentAnswer);
-    // return this.post(assessmentAnswer);
+    return this.post(assessmentAnswer);
   }
 
   /*

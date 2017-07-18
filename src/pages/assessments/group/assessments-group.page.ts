@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController } from 'ionic-angular';
+import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
@@ -25,7 +25,9 @@ export class AssessmentsGroupPage {
     private navCtrl: NavController,
     private fb: FormBuilder,
     private cache: CacheService,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
   ) {
   }
 
@@ -34,7 +36,6 @@ export class AssessmentsGroupPage {
     this.assessment = this.navParams.get('assessment') || {};
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submissions = this.navParams.get('submissions') || {};
-
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
@@ -175,12 +176,12 @@ export class AssessmentsGroupPage {
     let submission = {
       Assessment: {
           id: assessmentId,
-          activity_id: this.activity.id || 'temporary_fake_activity_id'
+          context_id: this.activity.id || 'temporary_fake_activity_id'
       },
+      AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
       AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
-    console.log(this.submission);
     this.cache.setLocal(`assessment.group.${assessmentId}`, JSON.stringify(submission));
     return submission;
   };
@@ -263,8 +264,6 @@ export class AssessmentsGroupPage {
     ]
    */
   private normaliseQuestions = (questions) => {
-    console.log('questions', questions)
-
     let result = [];
 
     questions.forEach((question) => {
@@ -340,7 +339,21 @@ export class AssessmentsGroupPage {
    * @description initiate save progress and return to previous page/navigation stack
    */
   save() {
-    this.assessmentService.save(this.storeProgress());
-    this.navCtrl.pop();
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
+
+    loading.present().then(() => {
+      this.assessmentService.save(this.storeProgress()).subscribe(
+        response => {
+          loading.dismiss().then(() => {
+            this.navCtrl.pop();
+          });
+        },
+        reject => {
+          console.log('Unable to save', reject);
+        }
+      );
+    })
   }
 }
