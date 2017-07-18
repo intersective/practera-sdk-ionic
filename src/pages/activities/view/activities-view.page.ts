@@ -42,7 +42,9 @@ export class ActivitiesViewPage {
     }).subscribe(response => {
       if (response.length > 0) {
         console.log(this.submissions);
-        this.submissions = response.map(submission => this.submissionService.normalise(response));
+        this.submissions = response.map(submission => {
+          return this.submissionService.normalise(submission);
+        });
         console.log(this.submissions);
       }
     });
