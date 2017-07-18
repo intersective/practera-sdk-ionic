@@ -57,7 +57,9 @@ export class ActivitiesViewPage {
       search: { context_id: this.assessment.context_id }
     }).subscribe(response => {
       if (response.length > 0) {
-        this.submissions = response;
+        console.log(this.submissions);
+        this.submissions = response.map(submission => this.submissionService.normalise(submission));
+        console.log(this.submissions);
       }
     });
 
@@ -265,6 +267,10 @@ export class ActivitiesViewPage {
    *                          activities respond from get_activities API
    */
   goAssessment(activity) {
-    this.navCtrl.push(AssessmentsPage, {activity, assessment: this.assessment});
+    this.navCtrl.push(AssessmentsPage, {
+      activity,
+      assessment: this.assessment,
+      submissions: this.submissions
+    });
   }
 }

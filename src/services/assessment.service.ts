@@ -30,10 +30,7 @@ export class QuestionBase<T> {
   file_type?: string;
   audience: Array<any>;
   choices?: ChoiceBase<any>[];
-  answers?: {
-    submitter: Answer[],
-    reviewer: Answer[],
-  };
+  answer?: any;
   required?: boolean;
 
   constructor(id, assessment_id, name, type) {

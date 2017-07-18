@@ -15,18 +15,18 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 
 import * as _ from 'lodash';
 
-export class ActivityBase {
+class ActivityBase {
   id: number;
   name: string;
   description: string;
 }
 
-export class ReferenceAssessmentBase {
+class ReferenceAssessmentBase {
   id: number;
   name: string;
 }
 
-export class ReferenceBase {
+class ReferenceBase {
   context_id: number;
   Assessment: ReferenceAssessmentBase
 }
@@ -55,7 +55,11 @@ export class AssessmentsPage {
     private assessmentService: AssessmentService,
     private submissionService: SubmissionService
   ) {
-    this.activity = this.navParams.get('activity') || {};
+    this.activity = this.navParams.get('activity');
+    if (!this.activity) {
+      throw "Fatal Error: Activity not available";
+    }
+
     this.activity = this.normaliseActivity(this.activity);
     console.log('this.activity', this.activity);
   }
@@ -69,7 +73,7 @@ export class AssessmentsPage {
 
   /*
   Turn Activity object from:
-  {
+    {
       "Activity": {
         "id": 14,
         "name": "Warm-up Round",
@@ -114,7 +118,7 @@ export class AssessmentsPage {
     });
 
     return activity;
-  }
+  };
 
   /**
    * @description mapping assessments and submissions
@@ -162,6 +166,7 @@ export class AssessmentsPage {
   loadQuestions(): Promise<any> {
     return new Promise((resolve, reject) => {
 
+      // get_assessments request with "assessment_id" & "structured"
       let getAssessment = (assessmentId) => {
         return this.assessmentService.getAll({
           search: {
@@ -171,6 +176,7 @@ export class AssessmentsPage {
         });
       };
 
+      // Congregation of assessment ids to fulfill get_assessments API's param requirement
       let tasks = [];
       _.forEach(this.activity.References, (reference) => {
         if (
@@ -181,6 +187,7 @@ export class AssessmentsPage {
         }
       });
 
+      // get_submissions API to retrieve submitted answer
       let getSubmissions = (contextId) => {
         return this.submissionService.getSubmissions({
           search: {
@@ -189,6 +196,7 @@ export class AssessmentsPage {
         });
       };
 
+      // Congregation of get_submissions API Observable with different context_id
       let submissionTasks = [];
       _.forEach(this.activity.References, (reference) => {
         if (reference.context_id) {
@@ -196,6 +204,7 @@ export class AssessmentsPage {
         }
       });
 
+      // first batch API requests (get_assessments)
       Observable.forkJoin(tasks)
         .subscribe(
           (assessments: any) => {
@@ -203,13 +212,14 @@ export class AssessmentsPage {
 
             console.log('this.assessmentGroups', this.assessmentGroups);
 
-            // This use in tittle of the page.
-            // In normal case, we only have one assessment in this page.
+            // Required in page title.
+            // @TODO: to be confirmed, we only have one assessment in this page.
             if (assessments) {
               this.assessment = _.head(assessments).Assessment || {};
               console.log('this.assessment', this.assessment)
             }
 
+            // 2nd batch API requests (get_submissions)
             Observable.forkJoin(submissionTasks)
               .subscribe((allSubmissions) => {
                 console.log('allSubmissions', allSubmissions);
@@ -237,9 +247,6 @@ export class AssessmentsPage {
               (err) => {
                 console.log('err', err);
                 reject();
-              },
-              () => {
-                console.log('completed')
               });
           },
           (e) => {
@@ -248,7 +255,6 @@ export class AssessmentsPage {
           }
         );
     });
-
   }
 
   ionViewWillEnter() {
@@ -256,7 +262,6 @@ export class AssessmentsPage {
     this.answers = this.cache.getLocalObject('answers') || {};
 
     let loader = this.loadingCtrl.create();
-
     loader.present().then(() => {
       this.loadQuestions()
       .then(() => {
@@ -269,11 +274,19 @@ export class AssessmentsPage {
     });
   }
 
-  doDiscard() {
+  /**
+   * @name doDiscard
+   * @description clear assessment & submission localStorage
+   */
+  doDiscard(): void {
     this.cache.setLocalObject('answers', {});
   }
 
-  clickDiscard() {
+  /**
+   * @name clickDiscard
+   * @description inject click event to ionic native back button
+   */
+  clickDiscard(): void {
     // Send alert to user before user click back page
     // If user click okay will remove all answers in local storage
     // No data will send to server
@@ -299,6 +312,10 @@ export class AssessmentsPage {
     confirm.present();
   }
 
+  /**
+   * @TODO: implementation required
+   * @name doSubmit
+   */
   doSubmit() {
     console.log('Okay');
   }
@@ -326,9 +343,12 @@ export class AssessmentsPage {
   }
 
   gotoAssessment(assessmentGroup, assessment, activity) {
-    console.log('assessmentGroup', assessmentGroup);
-    console.log('assessment', assessment);
     console.log('activity', activity);
-    this.navCtrl.push(AssessmentsGroupPage, { assessmentGroup, assessment });
+    this.navCtrl.push(AssessmentsGroupPage, {
+      activity,
+      assessment,
+      assessmentGroup,
+      submissions: this.navParams.get('submissions')
+    });
   }
 }
