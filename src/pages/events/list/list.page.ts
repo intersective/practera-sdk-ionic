@@ -18,14 +18,12 @@ export class EventsListPage {
     public eventService: EventService,
     public activityService: ActivityService,
     public loadingCtrl: LoadingController,
-  ) {
-  }
+  ) {}
 
   loadedEvents = [];
   events = [];
   noEvents = false;
   filter = 'browses';
-
 
   /**
    * @name filterEvents
@@ -83,6 +81,8 @@ export class EventsListPage {
       this.activityService.getList()
       .toPromise()
       .then((activities) => {
+        console.log('activities', activities);
+
         let activityIDs = [];
         _.forEach(activities, (act) => {
           activityIDs.push(act.Activity.id);
@@ -91,10 +91,12 @@ export class EventsListPage {
         // Get event by activityIDs
         this.eventService.getEvents({
           search: {
-            activity_id: '[' + _.toString(activityIDs) + ']'
+            activity_id: '[' + _.toString(activityIDs) + ']',
+            type: 'session'
           }
         })
         .then((events) => {
+          console.log('events', events);
           // After map event with activities,
           // assign events to 'events' and 'loadedEvents'
 
