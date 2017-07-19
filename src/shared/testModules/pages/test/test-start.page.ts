@@ -19,6 +19,146 @@ const PAGES = [
     name: 'Multiple Choice Questions',
     page: AssessmentsGroupPage,
     params: {
+      assessmentGroup: {
+        AssessmentGroupQuestion: [
+            {
+              "id": 140,
+              "assessment_group_id": 42,
+              "assessment_question_id": 140,
+              "order": null,
+              "AssessmentQuestion": {
+                "id": 140,
+                "assessment_id": 37,
+                "name": "1st Multitple Question",
+                "description": "",
+                "hint": "",
+                "score": "1",
+                "question_type": "multiple",
+                "has_comment": false,
+                "is_required": false,
+                "audience": "[\"reviewer\",\"submitter\"]",
+                "answer": null,
+                "file_type": null,
+                "AssessmentQuestionChoice": [
+                  {
+                    "id": 283,
+                    "assessment_question_id": 140,
+                    "assessment_choice_id": 283,
+                    "order": 1,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                      "id": 283,
+                      "name": "New Choice 1",
+                      "description": ""
+                    }
+                  },
+                  {
+                    "id": 284,
+                    "assessment_question_id": 140,
+                    "assessment_choice_id": 284,
+                    "order": 2,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                      "id": 284,
+                      "name": "New Choice 2",
+                      "description": ""
+                    }
+                  },
+                  {
+                    "id": 285,
+                    "assessment_question_id": 140,
+                    "assessment_choice_id": 285,
+                    "order": 3,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                      "id": 285,
+                      "name": "New Choice 3",
+                      "description": ""
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "id": 141,
+              "assessment_group_id": 42,
+              "assessment_question_id": 141,
+              "order": null,
+              "AssessmentQuestion": {
+                  "id": 141,
+                  "assessment_id": 37,
+                  "name": "2nd Multi Question",
+                  "description": "",
+                  "hint": "",
+                  "score": "1",
+                  "question_type": "multiple",
+                  "has_comment": false,
+                  "is_required": false,
+                  "audience": "[\"reviewer\",\"submitter\"]",
+                  "answer": null,
+                  "file_type": null,
+                  "AssessmentQuestionChoice": [
+                      {
+                          "id": 286,
+                          "assessment_question_id": 141,
+                          "assessment_choice_id": 286,
+                          "order": 1,
+                          "weight": "1",
+                          "explanation": null,
+                          "AssessmentChoice": {
+                              "id": 286,
+                              "name": "One of the first",
+                              "description": ""
+                          }
+                      },
+                      {
+                          "id": 287,
+                          "assessment_question_id": 141,
+                          "assessment_choice_id": 287,
+                          "order": 2,
+                          "weight": "1",
+                          "explanation": null,
+                          "AssessmentChoice": {
+                              "id": 287,
+                              "name": "2nd ",
+                              "description": ""
+                          }
+                      },
+                      {
+                          "id": 288,
+                          "assessment_question_id": 141,
+                          "assessment_choice_id": 288,
+                          "order": 3,
+                          "weight": "1",
+                          "explanation": null,
+                          "AssessmentChoice": {
+                              "id": 288,
+                              "name": "3rd Choice",
+                              "description": ""
+                          }
+                      },
+                      {
+                          "id": 289,
+                          "assessment_question_id": 141,
+                          "assessment_choice_id": 289,
+                          "order": 4,
+                          "weight": "0",
+                          "explanation": null,
+                          "AssessmentChoice": {
+                              "id": 289,
+                              "name": "Select me too!",
+                              "description": ""
+                          }
+                      }
+                  ]
+              }
+            }
+
+          ]
+        },
       assessment: {
         "Assessment": {
             "id": 37,
@@ -276,7 +416,8 @@ const PAGES = [
                 }
               ]
             }
-        ]
+        ],
+
       }
     }
   },
@@ -284,157 +425,172 @@ const PAGES = [
     name: 'Assorted Assessments Questions',
     page: AssessmentsGroupPage,
     params: {
+      assessmentGroup: {
+        AssessmentGroupQuestion: [
+          {
+            AssessmentQuestion: {
+              id: 4,
+              question_type: 'file',
+              audience: "[\"reviewer\",\"submitter\"]",
+              file_type: 'image',
+              AssessmentQuestionChoice: [],
+              answers: {
+                submitter: [],
+                reviewer: [],
+              },
+              name: 'TASK: What was actually required of me in that situation?',
+              required: true
+            }
+          },
+          {
+            AssessmentQuestion: {
+              id: 5,
+              question_type: 'multiple',
+              audience: "[\"reviewer\",\"submitter\"]",
+              file_type: null,
+              AssessmentQuestionChoice: [
+                {
+                    "id": 1,
+                    "assessment_question_id": 5,
+                    "assessment_choice_id": 1,
+                    "order": 1,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                        "id": 1,
+                        "name": "Test 1",
+                        "description": ""
+                    }
+                },
+                {
+                    "id": 2,
+                    "assessment_question_id": 5,
+                    "assessment_choice_id": 2,
+                    "order": 2,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                        "id": 2,
+                        "name": "Test 2",
+                        "description": ""
+                    }
+                },
+                {
+                    "id": 3,
+                    "assessment_question_id": 5,
+                    "assessment_choice_id": 3,
+                    "order": 3,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                        "id": 3,
+                        "name": "Test 3",
+                        "description": ""
+                    }
+                }
+              ],
+              answers: {
+                submitter: [],
+                reviewer: [],
+              },
+              name: 'Multiple: 3 choices Questions',
+              required: true
+            }
+          },
+
+          {
+            AssessmentQuestion: {
+
+              id: 1,
+              question_type: 'oneof',
+              audience: "[\"reviewer\",\"submitter\"]",
+              file_type: null,
+              AssessmentQuestionChoice: [
+                {
+                    "id": 1,
+                    "assessment_question_id": 5,
+                    "assessment_choice_id": 1,
+                    "order": 1,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                        "id": 1,
+                        "name": "Test 1",
+                        "description": ""
+                    }
+                },
+                {
+                    "id": 2,
+                    "assessment_question_id": 5,
+                    "assessment_choice_id": 2,
+                    "order": 2,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                        "id": 2,
+                        "name": "Test 2",
+                        "description": ""
+                    }
+                },
+                {
+                    "id": 3,
+                    "assessment_question_id": 5,
+                    "assessment_choice_id": 3,
+                    "order": 3,
+                    "weight": "1",
+                    "explanation": null,
+                    "AssessmentChoice": {
+                        "id": 3,
+                        "name": "Test 3",
+                        "description": ""
+                    }
+                }
+              ],
+              answers: {
+                submitter: [],
+                reviewer: [],
+              },
+              name: 'SITUATION: The context in which this experience took place',
+              required: true
+            }
+          },
+          {
+            AssessmentQuestion: {
+              id: 2,
+              question_type: 'text',
+              audience: "[\"reviewer\",\"submitter\"]",
+              file_type: null,
+              AssessmentQuestionChoice: [],
+              answers: {
+                submitter: [],
+                reviewer: [],
+              },
+              name: 'TASK: What was actually required of me in that situation?',
+              required: true
+            }
+          },
+          {
+            AssessmentQuestion: {
+              id: 3,
+              question_type: 'text',
+              audience: "[\"reviewer\",\"submitter\"]",
+              file_type: null,
+              AssessmentQuestionChoice: [],
+              answers: {
+                submitter: [],
+                reviewer: [],
+              },
+              name: 'ACTION: What did I do given the situation and the task?',
+              required: true
+            }
+          }
+        ]
+      },
       assessment: {
         Assessment: {
           id:'temporary_fake_id'
         },
-        AssessmentQuestion: [
-          {
-            id: 4,
-            question_type: 'file',
-            audience: "[\"reviewer\",\"submitter\"]",
-            file_type: 'image',
-            AssessmentQuestionChoice: [],
-            answers: {
-              submitter: [],
-              reviewer: [],
-            },
-            name: 'TASK: What was actually required of me in that situation?',
-            required: true
-          },
-          {
-            id: 5,
-            question_type: 'multiple',
-            audience: "[\"reviewer\",\"submitter\"]",
-            file_type: null,
-            AssessmentQuestionChoice: [
-              {
-                  "id": 1,
-                  "assessment_question_id": 5,
-                  "assessment_choice_id": 1,
-                  "order": 1,
-                  "weight": "1",
-                  "explanation": null,
-                  "AssessmentChoice": {
-                      "id": 1,
-                      "name": "Test 1",
-                      "description": ""
-                  }
-              },
-              {
-                  "id": 2,
-                  "assessment_question_id": 5,
-                  "assessment_choice_id": 2,
-                  "order": 2,
-                  "weight": "1",
-                  "explanation": null,
-                  "AssessmentChoice": {
-                      "id": 2,
-                      "name": "Test 2",
-                      "description": ""
-                  }
-              },
-              {
-                  "id": 3,
-                  "assessment_question_id": 5,
-                  "assessment_choice_id": 3,
-                  "order": 3,
-                  "weight": "1",
-                  "explanation": null,
-                  "AssessmentChoice": {
-                      "id": 3,
-                      "name": "Test 3",
-                      "description": ""
-                  }
-              }
-            ],
-            answers: {
-              submitter: [],
-              reviewer: [],
-            },
-            name: 'Multiple: 3 choices Questions',
-            required: true
-          },
-          {
-            id: 1,
-            question_type: 'oneof',
-            audience: "[\"reviewer\",\"submitter\"]",
-            file_type: null,
-            AssessmentQuestionChoice: [
-              {
-                  "id": 1,
-                  "assessment_question_id": 5,
-                  "assessment_choice_id": 1,
-                  "order": 1,
-                  "weight": "1",
-                  "explanation": null,
-                  "AssessmentChoice": {
-                      "id": 1,
-                      "name": "Test 1",
-                      "description": ""
-                  }
-              },
-              {
-                  "id": 2,
-                  "assessment_question_id": 5,
-                  "assessment_choice_id": 2,
-                  "order": 2,
-                  "weight": "1",
-                  "explanation": null,
-                  "AssessmentChoice": {
-                      "id": 2,
-                      "name": "Test 2",
-                      "description": ""
-                  }
-              },
-              {
-                  "id": 3,
-                  "assessment_question_id": 5,
-                  "assessment_choice_id": 3,
-                  "order": 3,
-                  "weight": "1",
-                  "explanation": null,
-                  "AssessmentChoice": {
-                      "id": 3,
-                      "name": "Test 3",
-                      "description": ""
-                  }
-              }
-            ],
-            answers: {
-              submitter: [],
-              reviewer: [],
-            },
-            name: 'SITUATION: The context in which this experience took place',
-            required: true
-          },
-          {
-            id: 2,
-            question_type: 'text',
-            audience: "[\"reviewer\",\"submitter\"]",
-            file_type: null,
-            AssessmentQuestionChoice: [],
-            answers: {
-              submitter: [],
-              reviewer: [],
-            },
-            name: 'TASK: What was actually required of me in that situation?',
-            required: true
-          },
-          {
-            id: 3,
-            question_type: 'text',
-            audience: "[\"reviewer\",\"submitter\"]",
-            file_type: null,
-            AssessmentQuestionChoice: [],
-            answers: {
-              submitter: [],
-              reviewer: [],
-            },
-            name: 'ACTION: What did I do given the situation and the task?',
-            required: true
-          }
-        ]
+        AssessmentGroupQuestion: []
 
       }
     }

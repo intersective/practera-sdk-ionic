@@ -39,10 +39,6 @@ export class AssessmentsGroupPage {
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
-
-    // console.log('this.submissions', this.submissions);
-    // console.log('this.assessmentGroup', this.assessmentGroup);
-    // console.log('this.questions', this.questions);
   }
 
   /**
@@ -263,10 +259,10 @@ export class AssessmentsGroupPage {
       ...
     ]
    */
-  private normaliseQuestions = (questions) => {
+  private normaliseQuestions = (questions: any[]) => {
     let result = [];
 
-    questions.forEach((question) => {
+    (questions || []).forEach((question) => {
       let assessmentQuestion = question.AssessmentQuestion;
       let choices = assessmentQuestion.AssessmentQuestionChoice || [];
       if (choices.length > 0) {
