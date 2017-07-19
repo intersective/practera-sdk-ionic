@@ -41,7 +41,7 @@ export class AssessmentsPage {
   activity: any = {};
   answers: any = {};
 
-  assessment: any = {};
+  // assessment: any = {};
   assessmentGroups: any = [];
   assessmentQuestions: any = [];
   allowSubmit: any = true;
@@ -205,10 +205,10 @@ export class AssessmentsPage {
 
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
-            if (assessments) {
-              this.assessment = _.head(assessments).Assessment || {};
-              console.log('this.assessment', this.assessment)
-            }
+            // if (assessments) {
+            //   this.assessment = _.head(assessments).Assessment || {};
+            //   console.log('this.assessment', this.assessment)
+            // }
 
             Observable.forkJoin(submissionTasks)
               .subscribe((allSubmissions) => {
