@@ -1,9 +1,6 @@
 <div [formGroup]="form">
 
 <ion-list radio-group formControlName="answer">
-
-  <ion-list-header [innerHtml]="question.name"></ion-list-header>
-
   <ion-item class="choice" *ngFor="let choice of question.choices">
     <ion-label>{{choice.name}}</ion-label>
     <ion-radio [value]="choice.id"></ion-radio>
