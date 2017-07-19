@@ -90,6 +90,7 @@ import { TestPage } from '../pages/tabs/test.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { TruncatePipe } from '../pipes/truncate.pipe';
+import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -155,7 +156,7 @@ export function HttpLoaderFactory(http: Http) {
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
-    TruncatePipe,
+    EscapeHtmlPipe,
   ],
   imports: [
     BrowserModule,
