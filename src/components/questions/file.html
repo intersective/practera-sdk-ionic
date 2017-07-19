@@ -1,10 +1,10 @@
 <ion-list no-line>
-  <ion-item *ngFor="let file of uploaded">
-    <ion-icon name="{{file.icon}}" class="fa" item-left></ion-icon>
-    {{ file.filename }}
+  <ion-item *ngIf="uploaded">
+    <ion-icon name="{{uploaded.icon}}" class="fa" item-left></ion-icon>
+    {{ uploaded.filename }}
   </ion-item>
 
-  <ion-item *ngIf="uploaded.length === 0">
+  <ion-item *ngIf="!uploaded">
     No uploaded files available.
   </ion-item>
 
