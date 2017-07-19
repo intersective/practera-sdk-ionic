@@ -35,7 +35,7 @@ const PAGES = [
                 "score": "1",
                 "question_type": "multiple",
                 "has_comment": false,
-                "is_required": false,
+                "is_required": true,
                 "audience": "[\"reviewer\",\"submitter\"]",
                 "answer": null,
                 "file_type": null,
@@ -96,7 +96,7 @@ const PAGES = [
                   "score": "1",
                   "question_type": "multiple",
                   "has_comment": false,
-                  "is_required": false,
+                  "is_required": true,
                   "audience": "[\"reviewer\",\"submitter\"]",
                   "answer": null,
                   "file_type": null,
@@ -293,7 +293,7 @@ const PAGES = [
                   "score": "1",
                   "question_type": "multiple",
                   "has_comment": false,
-                  "is_required": false,
+                  "is_required": true,
                   "audience": "[\"reviewer\",\"submitter\"]",
                   "answer": null,
                   "file_type": null,
@@ -354,7 +354,7 @@ const PAGES = [
                       "score": "1",
                       "question_type": "multiple",
                       "has_comment": false,
-                      "is_required": false,
+                      "is_required": true,
                       "audience": "[\"reviewer\",\"submitter\"]",
                       "answer": null,
                       "file_type": null,
@@ -439,7 +439,7 @@ const PAGES = [
                 reviewer: [],
               },
               name: 'TASK: What was actually required of me in that situation?',
-              required: true
+              is_required: true
             }
           },
           {
@@ -494,7 +494,7 @@ const PAGES = [
                 reviewer: [],
               },
               name: 'Multiple: 3 choices Questions',
-              required: true
+              is_required: true
             }
           },
 
@@ -551,7 +551,7 @@ const PAGES = [
                 reviewer: [],
               },
               name: 'SITUATION: The context in which this experience took place',
-              required: true
+              is_required: true
             }
           },
           {
@@ -566,7 +566,7 @@ const PAGES = [
                 reviewer: [],
               },
               name: 'TASK: What was actually required of me in that situation?',
-              required: true
+              is_required: true
             }
           },
           {
@@ -581,7 +581,7 @@ const PAGES = [
                 reviewer: [],
               },
               name: 'ACTION: What did I do given the situation and the task?',
-              required: true
+              is_required: true
             }
           }
         ]

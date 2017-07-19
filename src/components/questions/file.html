@@ -1,15 +1,11 @@
 <ion-list no-line>
-  <ion-list>
-    {{question.name}} <span red>*</span>
-  </ion-list>
-
-  <ion-item text-wrap *ngIf="question.description">
-    <p [innerHtml]="question.description"></p>
-  </ion-item>
-
   <ion-item *ngFor="let file of uploaded">
     <ion-icon name="{{file.icon}}" class="fa" item-left></ion-icon>
     {{ file.filename }}
+  </ion-item>
+
+  <ion-item *ngIf="uploaded.length === 0">
+    No uploaded files available.
   </ion-item>
 
   <button ion-button round color="purple" (click)="upload($event)">Upload</button>

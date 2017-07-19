@@ -8,7 +8,18 @@
 </ion-header>
 
 <ion-content class="groups-question" padding>
-  <div *ngFor="let question of questions" [ngSwitch]="question.type">
+  <div *ngFor="let question of questions; let i = index;"
+    [ngSwitch]="question.type"
+    [ngClass]="{'hr': (i > 0 && i < questions.length)}">
+
+    <ion-list text-wrap>
+      <span class="strong">{{question.name}}</span>
+      <span *ngIf="question.required" class="red">*</span>
+    </ion-list>
+
+    <ion-item text-wrap *ngIf="question.description">
+      <p [innerHtml]="question.description"></p>
+    </ion-item>
 
     <!-- type: oneOf -->
     <oneof-question
@@ -24,14 +35,14 @@
 
     <!-- type: file -->
     <file-question
-      *ngSwitchCase="'file'"
+      [question]="question"
       [form]="formGroup[question.id]"
-      [question]="question"></file-question>
+      *ngSwitchCase="'file'"></file-question>
 
     <!-- type: text -->
     <text-question
-      *ngSwitchCase="'text'"
+      [question]="question"
       [form]="formGroup[question.id]"
-      [question]="question"></text-question>
+      *ngSwitchCase="'text'"></text-question>
   </div>
 </ion-content>
