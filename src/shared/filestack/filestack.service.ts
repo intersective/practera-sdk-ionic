@@ -36,7 +36,7 @@ export class FilestackService {
   pick(config?): Promise<any> {
     if (!config) {
       config = {
-        maxFiles: 1, // default by max 1 files
+        maxFiles: 5, // default by max 5 files
         storeTo: {
           location: 's3'
         }
