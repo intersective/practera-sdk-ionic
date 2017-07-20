@@ -164,6 +164,7 @@ export class AssessmentsPage {
   }
 
   loadQuestions(): Promise<any> {
+    let self = this;
     return new Promise((resolve, reject) => {
 
       // get_assessments request with "assessment_id" & "structured"
@@ -212,11 +213,10 @@ export class AssessmentsPage {
 
             console.log('this.assessmentGroups', this.assessmentGroups);
 
-            // Required in page title.
-            // @TODO: to be confirmed, we only have one assessment in this page.
-            if (assessments) {
-              this.assessment = _.head(assessments).Assessment || {};
-              console.log('this.assessment', this.assessment)
+            // @TODO: to be confirmed, we only need one assessment in this page.
+            console.log('this.assessment', self.assessment)
+            if (_.isEmpty(self.assessment) && assessments) {
+              self.assessment = _.head(assessments).Assessment || {};
             }
 
             // 2nd batch API requests (get_submissions)
@@ -258,6 +258,8 @@ export class AssessmentsPage {
   }
 
   ionViewWillEnter() {
+    this.assessment = this.navParams.get('assessment');
+
     // Hardcoded answers for now
     this.answers = this.cache.getLocalObject('answers') || {};
 
@@ -342,12 +344,12 @@ export class AssessmentsPage {
     confirm.present();
   }
 
-  gotoAssessment(assessmentGroup, assessment, activity) {
+  gotoAssessment(assessmentGroup, activity) {
     console.log('activity', activity);
     this.navCtrl.push(AssessmentsGroupPage, {
-      activity,
-      assessment,
       assessmentGroup,
+      activity,
+      assessment: this.assessment, // use back the one back from ActivityViewPage
       submissions: this.navParams.get('submissions')
     });
   }
