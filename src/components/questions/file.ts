@@ -46,6 +46,10 @@ export class FileQuestionComponent implements OnInit {
         if (uploaded.filesUploaded.length > 0) {
           let file = uploaded.filesUploaded.shift();
           file.icon = self.util.getIcon(file.mimetype);
+
+          // post_assessment_submission API requirement "key"
+          file.key = file.handle;
+
           self.uploaded = file;
           this.form.controls.answer.setValue(self.uploaded);
         }
