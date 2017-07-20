@@ -16,19 +16,19 @@ export class RankingsPage {
   rankingsFakeData: any = [
     {
       "name": "Tom",
-      "score": "100"
+      "score": "100000"
     },
     {
       "name": "Jerry",
-      "score": "90"
+      "score": "90000"
     },
     {
       "name": "Erica",
-      "score": "80"
+      "score": "8000"
     },
     {
       "name": "Erlich",
-      "score": "70"
+      "score": "700"
     },
     {
       "name": "Richard",

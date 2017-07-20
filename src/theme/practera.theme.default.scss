@@ -483,7 +483,12 @@ event {
     padding: 0px;
   }
   .ranking-list {
-    
+    .user-score {
+      b {
+        font-weight: normal;
+        max-width: 70px;
+      }
+    }
   }
   .my-ranking {
     border-top: 1px solid color($colors, border, base);
@@ -492,6 +497,15 @@ event {
     height: 54px;
     width: 100%;
     background: color($colors, secondary, base);
+    .ranking-item {
+      p {
+        border: none;
+        b {
+          font-weight: normal;
+          max-width: 50px;
+        }
+      }
+    }
   }
   ion-list.my-ranking.list.list-md {
     bottom: 55px;
@@ -499,15 +513,15 @@ event {
   .ranking-item {
     width: 100%;
     display: flex;
-    p:first-child {
-      margin-left: 12pt;
-    }
     ion-icon {
       font-size: 10pt;
       font-weight: 900; 
     }
     ion-icon[name=arrow-forward] {
-      padding-left: 5px;
+      font-weight: normal;
+      font-size: 18pt;
+      padding-left: 8pt;
+      color: #bbb;
     }
     .badge-image {
       width: 60px;
@@ -517,6 +531,15 @@ event {
       display: flex;
       align-items: center; 
       word-break: break-all;
+      margin: 0px;
+      padding: 15px 0pt;      
+      border-bottom: 1px solid color($colors, border, base); 
+    }
+    p:first-child{
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
@@ -526,6 +549,11 @@ rankings-details-page {
   .ranking-details {
     .scroll-content {
       bottom: 0px !important;
+    }
+  }
+  .ranking-item {
+    p {
+      border: none !important;
     }
   }
   .ranking-detail-item {

@@ -13,21 +13,23 @@
   <ion-list class="ranking-list">
     <ion-col *ngFor="let listData of rankingsFakeData; let i = index">
       <div class="ranking-item">
-        <p col-1 *ngIf="i == 0"><ion-icon name="beer"></ion-icon></p>
+        <!-- <p col-1 *ngIf="i == 0"><ion-icon name="beer"></ion-icon></p>
         <p col-1 *ngIf="i == 1"><ion-icon name="logo-bitcoin"></ion-icon></p>
-        <p col-1 *ngIf="i == 2"><ion-icon name="book"></ion-icon></p>
-        <p col-1 *ngIf="i > 2">{{ i+1 }}</p>
-        <p col-8>{{ listData.name }}</p>
-        <p col-3>{{ listData.score }}</p>
+        <p col-1 *ngIf="i == 2"><ion-icon name="book"></ion-icon></p> 
+        <p col-1 *ngIf="i > 2">{{ i+1 }}</p>  -->
+        <!-- please keep it for future usage -->
+        <p col-2>{{ i+1 }}</p>
+        <p col-7>{{ listData.name }}</p>
+        <p col-3 class="user-score"><b>{{ listData.score }}</b></p>
       </div>
     </ion-col>
   </ion-list>
   <ion-list class="my-ranking" (click)="goRankingDetail()">
     <ion-row>
       <div class="ranking-item">
-        <p col-1>{{ userRanking }}</p>
-        <p col-8>{{ 'RANKING.ME' | translate }}</p>
-        <p col-3>{{ userScore }} <ion-icon name="arrow-forward"></ion-icon></p>
+        <p col-2>{{ userRanking }}</p>
+        <p col-7>{{ 'RANKING.ME' | translate }}</p>
+        <p col-3><b>{{ userScore }}</b> <ion-icon name="arrow-forward"></ion-icon></p> 
       </div>
     </ion-row>
   </ion-list>

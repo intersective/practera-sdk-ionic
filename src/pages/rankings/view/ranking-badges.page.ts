@@ -13,7 +13,7 @@ import { RankingDetailsPage } from '../view/ranking-details.page';
 })
 export class RankingBadgesPage {
   public currentAchievement: any = null;
-  public badgeUrl: string = 'https://www.filepicker.io/api/file/PIYV4zfRtmAgCPyPLdeJ';
+  public badgeUrl: string = '../assets/img/default/default-badge.png';
   public description: string = "No Description Yet ..";
   public points: number = 0;
   public achievementName: string = "Achievement";

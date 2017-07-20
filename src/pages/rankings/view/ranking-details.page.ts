@@ -14,7 +14,7 @@ import { RankingBadgesPage } from './ranking-badges.page';
 })
 export class RankingDetailsPage {
   public userAchievementsData: any = [];
-  public achievementBadgeImage = 'https://www.filepicker.io/api/file/PIYV4zfRtmAgCPyPLdeJ';
+  public achievementBadgeImage = '../assets/img/default/default-badge.png';
   public achievementName = 'Achievement';
   public achievementPoint = 0;
   public totalPoints = 0;
@@ -54,11 +54,17 @@ export class RankingDetailsPage {
         .subscribe(
           data => {
             if(data.Achievement){
+              console.log("total data: ", data);
               this.monthlyPoints = 0; 
               this.totalPoints = 0; 
-              // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.   
-              this.userAchievementsData = data.Achievement;
-              let currentMonth
+              // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.  
+              // this.userAchievementsData = data.Achievement; 
+              data.Achievement.forEach(element => {
+                if(element.visibility !== 2){
+                  this.userAchievementsData.push(element);
+                  console.log("total filtered data: ", this.userAchievementsData);
+                }
+              });
               loading.dismiss().then(() => {
                 this.userAchievementsData.forEach(element => {
                   this.totalPoints += element.points;
