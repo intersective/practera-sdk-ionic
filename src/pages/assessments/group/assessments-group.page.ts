@@ -274,6 +274,12 @@ export class AssessmentsGroupPage {
       content: 'Loading...'
     });
 
+    // Error handling for all kind of non-specific API respond error code
+    let alert = this.alertCtrl.create({
+      title: 'Fail to submit',
+      buttons: ["Ok"]
+    });
+
     loading.present().then(() => {
       this.assessmentService.save(this.storeProgress()).subscribe(
         response => {
@@ -282,7 +288,11 @@ export class AssessmentsGroupPage {
           });
         },
         reject => {
-          console.log('Unable to save', reject);
+          loading.dismiss().then(() => {
+            alert.present().then(() => {
+              console.log('Unable to save', reject);
+            });
+          });
         }
       );
     })
