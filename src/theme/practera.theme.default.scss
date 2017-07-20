@@ -484,9 +484,11 @@ event {
   }
   .ranking-list {
     .user-score {
+      text-align: right;
       b {
         font-weight: normal;
-        max-width: 70px;
+        width: 100%;
+        text-align: right;
       }
     }
   }
@@ -502,7 +504,8 @@ event {
         border: none;
         b {
           font-weight: normal;
-          max-width: 50px;
+          width: 100%;
+          text-align: right;
         }
       }
     }

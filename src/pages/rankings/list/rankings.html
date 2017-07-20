@@ -20,7 +20,8 @@
         <!-- please keep it for future usage -->
         <p col-2>{{ i+1 }}</p>
         <p col-7>{{ listData.name }}</p>
-        <p col-3 class="user-score"><b>{{ listData.score }}</b></p>
+        <p col-2 class="user-score"><b>{{ listData.score }}</b></p>
+        <p col-1></p> 
       </div>
     </ion-col>
   </ion-list>
@@ -29,7 +30,8 @@
       <div class="ranking-item">
         <p col-2>{{ userRanking }}</p>
         <p col-7>{{ 'RANKING.ME' | translate }}</p>
-        <p col-3><b>{{ userScore }}</b> <ion-icon name="arrow-forward"></ion-icon></p> 
+        <p col-2><b>{{ userScore }}</b></p>
+        <p col-1><ion-icon name="arrow-forward"></ion-icon></p> 
       </div>
     </ion-row>
   </ion-list>
