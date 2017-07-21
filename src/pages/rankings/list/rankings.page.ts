@@ -13,7 +13,7 @@ import { RankingDetailsPage } from '../view/ranking-details.page';
 })
 export class RankingsPage {
   // fake data and later will be replaced by all user points api call 
-  rankingsFakeData: any = [
+  public rankingsFakeData: any = [
     {
       "name": "Tom",
       "score": "100000"
@@ -70,7 +70,7 @@ export class RankingsPage {
   private currentUserName: string = "User";
   public foundData: any;
   public userScore: number;
-  public userRanking: number; 
+  public userRanking: string; 
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
   constructor(private navCtrl: NavController,
@@ -91,7 +91,6 @@ export class RankingsPage {
   }
   findMyRankingData(){
     const loading = this.loadingCtrl.create({
-      dismissOnPageChange: true,
       content: this.loadingMessages
     });
     const emptyDataAlert = this.alertCtrl.create({
@@ -109,8 +108,13 @@ export class RankingsPage {
                 this.foundData = _.find(this.rankingsFakeData, (data) => {
                   return data.name == this.currentUserName;
                 });
-                this.userScore = this.foundData.score;
-                this.userRanking = _.indexOf(this.rankingsFakeData, this.foundData) + 1;
+                if(this.foundData){
+                  this.userScore = this.foundData.score;
+                  this.userRanking = _.indexOf(this.rankingsFakeData, this.foundData) + 1;
+                }else {
+                  this.userScore = 0;
+                  this.userRanking = '--';
+                }
               });
             }else {
               loading.dismiss().then(() => {

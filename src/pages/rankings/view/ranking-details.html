@@ -29,7 +29,7 @@
   <ion-list>
     <ion-col *ngFor="let eachAchievement of userAchievementsData">
       <div class="ranking-item ranking-detail-item" (click)="goToBadgeDetailsPage(eachAchievement)">
-         <img class="badge-image" col-2 src="{{ eachAchievement.badge || achievementBadgeImage }}" alt="Badge Image" /> 
+        <img class="badge-image" col-2 src="{{ eachAchievement.badge || achievementBadgeImage }}" alt="Badge Image" /> 
         <p col-8>{{ eachAchievement.name || achievementName }}</p>
         <p col-2>{{ eachAchievement.points || achievementPoint }} <ion-icon name="arrow-forward"></ion-icon></p>
       </div>

@@ -41,15 +41,15 @@ export class RankingDetailsPage {
     // });
   }
   getUserAchievementData(){
-    const loading = this.loadingCtrl.create({
-      content: this.loadingMessages
-    });
+    // const loading = this.loadingCtrl.create({
+    //   content: this.loadingMessages
+    // });
     const emptyDataAlert = this.alertCtrl.create({
       title: 'Oops! No data has been found',
       message: this.emptyErrorMessage,
       buttons: ['Close']
     });
-    loading.present();
+    // loading.present();
     this.achievementService.getAchievements()
         .subscribe(
           data => {
@@ -65,7 +65,7 @@ export class RankingDetailsPage {
                   console.log("total filtered data: ", this.userAchievementsData);
                 }
               });
-              loading.dismiss().then(() => {
+              // loading.dismiss().then(() => {
                 this.userAchievementsData.forEach(element => {
                   this.totalPoints += element.points;
                 });
@@ -81,21 +81,21 @@ export class RankingDetailsPage {
                 }
                 console.log('Monthly Data: ', this.currentMonthData);
                 console.log('Monthly Data Total Points: ', this.monthlyPoints);
-              });
+              // });
             }else {
-              loading.dismiss().then(() => {
+              // loading.dismiss().then(() => {
                 this.monthlyPoints = 0;
                 this.totalPoints = 0; // if data arary (data.Achievement) is empty
-              });
+              // });
             }
           },
           err => {
-            loading.dismiss().then(() => {
+            // loading.dismiss().then(() => {
               this.monthlyPoints = 0;
               this.totalPoints = 0; // if data arary (data.Achievement) loading connection error occurred 
               emptyDataAlert.present();
               console.log(err);
-            });
+            // });
           }
         );
   }
