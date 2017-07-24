@@ -8,7 +8,7 @@ import { AchievementService } from '../../../services/achievement.service';
 // pages
 import { RankingDetailsPage } from '../view/ranking-details.page';
 @Component({
-  selector: 'ranking-badges-page',
+  selector: 'ranking-badges',
   templateUrl: 'ranking-badges.html'
 })
 export class RankingBadgesPage {
@@ -29,7 +29,8 @@ export class RankingBadgesPage {
                 this.currentAchievement = this.navParams.get('achievement');
                 console.log("currentAchievement: ", this.currentAchievement);
               }
-  ionViewWillEnter(){
-    
+  // close disbaled activity popup
+  closeModal() {
+    this.viewCtrl.dismiss();
   }
 }

@@ -4,7 +4,7 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 import * as _ from 'lodash';
 // services
-import { AuthService } from '../../../services/auth.service';
+import { RankingService } from '../../../services/ranking.service';
 // pages
 import { RankingDetailsPage } from '../view/ranking-details.page';
 @Component({
@@ -12,84 +12,22 @@ import { RankingDetailsPage } from '../view/ranking-details.page';
   templateUrl: 'rankings.html'
 })
 export class RankingsPage {
-  // fake data and later will be replaced by all user points api call 
-  public rankingsFakeData: any = [
-    {
-      "name": "Tom",
-      "score": "100000"
-    },
-    {
-      "name": "Jerry",
-      "score": "90000"
-    },
-    {
-      "name": "Erica",
-      "score": "8000"
-    },
-    {
-      "name": "Erlich",
-      "score": "700"
-    },
-    {
-      "name": "Richard",
-      "score": "60"
-    },
-    {
-      "name": "Hoffman",
-      "score": "50"
-    },
-    {
-      "name": "Kerry",
-      "score": "40"
-    },
-    {
-      "name": "Emily",
-      "score": "30"
-    },
-    {
-      "name": "wahaha",
-      "score": "20"
-    },
-    {
-      "name": "Larry",
-      "score": "10"
-    },
-    {
-      "name": "Joseph",
-      "score": "0"
-    },
-    {
-      "name": "Austin",
-      "score": "0"
-    },
-    {
-      "name": "Ben",
-      "score": "0"
-    }
-  ];
-  private currentUserName: string = "User";
-  public foundData: any;
-  public userScore: number;
-  public userRanking: string; 
+  public totalData: any = [];
+  public rankingData: any = [];
+  public myRankingData: any = [];
+  public listRankingData: any = [];
+  public isEmptyList: boolean = false;
+  public rankingListEmpty: any = errMessages.General.empty.empty;
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
   constructor(private navCtrl: NavController,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private authService: AuthService,){
-                this.findMyRankingData();
-              }
-  doRefresh(e) {
-    // this.loadEvents()
-    // .then(() => {
-    //   e.complete();
-    // })
-    // .catch((err) => {
-    //   console.log('err', err);
-    //   e.complete();
-    // });
+              private rankingService: RankingService){}
+  ionViewWillEnter(){
+    this.RankingData();
   }
-  findMyRankingData(){
+  RankingData(){
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });
@@ -99,37 +37,35 @@ export class RankingsPage {
       buttons: ['Close']
     });
     loading.present();
-    this.authService.getUser()
-        .subscribe(
-          data => {
-            if(data.User.name){
-              this.currentUserName = data.User.name;
-              loading.dismiss().then(() => {
-                this.foundData = _.find(this.rankingsFakeData, (data) => {
-                  return data.name == this.currentUserName;
-                });
-                if(this.foundData){
-                  this.userScore = this.foundData.score;
-                  this.userRanking = _.indexOf(this.rankingsFakeData, this.foundData) + 1;
-                }else {
-                  this.userScore = 0;
-                  this.userRanking = '--';
-                }
-              });
-            }else {
-              loading.dismiss().then(() => {
-                this.currentUserName = 'User';
-              });
+    let getRankingList = this.rankingService.getRankings();   
+    getRankingList.subscribe(
+      results => {
+        loading.dismiss().then(() => {
+          this.totalData = results;
+          this.rankingData = this.totalData;
+          this.myRankingData = this.totalData.Me;
+          this.listRankingData = this.totalData.Characters;
+          // console.log(this.myRankingData);
+          // console.log(this.listRankingData);
+          _.forEach(this.listRankingData, (element, index) => {
+            if(element.meta != null && element.meta.indexOf('true') > -1){
+              // element.name = "User"+(index+1);
+              element.name = "Hidden Name";
+              // console.log("Hidden Name: ", element.name);
             }
-            console.log("Current User Name: ", this.currentUserName);
-          },
-          err => {
-            loading.dismiss().then(() => {
-              emptyDataAlert.present();
-              console.log(err);
-            });
-          }
-        );
+            this.isEmptyList = false;
+          });
+        });
+      },
+      err => {
+        loading.dismiss().then(() => {
+          this.isEmptyList = true;
+          // this.rankingListEmpty = err.msg;
+          console.log("Error: ", err.msg);
+          emptyDataAlert.present();
+        });
+      }
+    );
   }
   goRankingDetail(){
     this.navCtrl.push(RankingDetailsPage);

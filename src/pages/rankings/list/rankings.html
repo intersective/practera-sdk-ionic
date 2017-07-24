@@ -4,35 +4,32 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles">
-    </ion-refresher-content>
-	</ion-refresher>
   <ion-list class="ranking-list">
-    <ion-col *ngFor="let listData of rankingsFakeData; let i = index">
-      <div class="ranking-item">
+    <ion-col *ngFor="let listData of listRankingData">
+      <div class="ranking-item" *ngIf="isEmptyList === false">
         <!-- <p col-1 *ngIf="i == 0"><ion-icon name="beer"></ion-icon></p>
         <p col-1 *ngIf="i == 1"><ion-icon name="logo-bitcoin"></ion-icon></p>
         <p col-1 *ngIf="i == 2"><ion-icon name="book"></ion-icon></p> 
         <p col-1 *ngIf="i > 2">{{ i+1 }}</p>  -->
         <!-- please keep it for future usage -->
-        <p col-2>{{ i+1 }}</p>
-        <p col-7>{{ listData.name }}</p>
-         <p col-2 class="user-score"><b>{{ listData.score }}</b></p> 
+        <p col-2>{{ listData.rank }}</p>
+        <p col-7 [ngClass]="listData.name === 'Hidden Name' ? 'blur-hidden-text' : ''">{{ listData.name }}</p>
+        <p col-2 class="user-score"><b>{{ listData.experience }}</b></p> 
         <p col-1></p> 
       </div>
     </ion-col>
+    <ion-col>
+      <div class="error-message" *ngIf="isEmptyList === true">{{ rankingListEmpty }}</div>
+    </ion-col>
   </ion-list>
-  <ion-list class="my-ranking" (click)="goRankingDetail()">
+  <ion-list class="my-ranking" (click)="goRankingDetail()" *ngIf="isEmptyList === false"> 
     <ion-row>
-      <div class="ranking-item">
-        <p col-2>{{ userRanking }}</p>
+      <ion-col class="ranking-item">
+        <p col-2>{{ myRankingData.rank }}</p>
         <p col-7>{{ 'RANKING.ME' | translate }}</p>
-        <p col-2><b>{{ userScore }}</b></p>
+        <p col-2><b>{{ myRankingData.experience }}</b></p>
         <p col-1><ion-icon name="arrow-forward"></ion-icon></p> 
-      </div>
+      </ion-col>
     </ion-row>
-  </ion-list>
+  </ion-list> 
 </ion-content>
