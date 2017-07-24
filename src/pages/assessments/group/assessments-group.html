@@ -1,0 +1,48 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Assessment Group</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()">Save</button>
+    </ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="groups-question" padding>
+  <div *ngFor="let question of questions; let i = index;"
+    [ngSwitch]="question.type"
+    [ngClass]="{'hr': (i > 0 && i < questions.length)}">
+
+    <ion-list text-wrap>
+      <span class="strong">{{question.name}}</span>
+      <span *ngIf="question.required" class="red">*</span>
+    </ion-list>
+
+    <ion-item text-wrap *ngIf="question.description">
+      <p [innerHtml]="question.description"></p>
+    </ion-item>
+
+    <!-- type: oneOf -->
+    <oneof-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'oneof'"></oneof-question>
+
+    <!-- type: oneOf -->
+    <multiple-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'multiple'"></multiple-question>
+
+    <!-- type: file -->
+    <file-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'file'"></file-question>
+
+    <!-- type: text -->
+    <text-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'text'"></text-question>
+  </div>
+</ion-content>

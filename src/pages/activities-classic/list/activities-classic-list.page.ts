@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
-import { ActivitiesViewPage } from '../view/activities-view.page';
+import { ActivitiesViewPage } from '../../activities/view/activities-view.page';
 import { ActivityService } from '../../../services/activity.service';
 
 declare var _: any;
@@ -9,7 +9,7 @@ declare var _: any;
 @Component({
   templateUrl: './list.html'
 })
-export class ActivitiesListPage {
+export class ActivitiesClassicListPage {
   private activities: Array<any> = [];
 
   constructor(

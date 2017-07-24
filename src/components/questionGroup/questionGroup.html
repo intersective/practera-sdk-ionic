@@ -6,25 +6,10 @@
           <ion-icon name="ios-arrow-forward-outline" color="primary-light"></ion-icon>
         </button>
 
-        <span class="title" [innerHTML]="questionGroup.name"></span>
-      </div>
-
-      <div class="answer">
-        This is answer hardcoded and display in row.
-        <div *ngIf="questionGroup.answer">
-          <div *ngIf="questionGroup.answer.type === 'file'">
-            <div *ngIf="questionGroup.answer.files.length === 1">
-              {{ questionGroup.answer.files.length + ' file uploaded.' }}
-            </div>
-            <div *ngIf="question.answer.files.length !== 1">
-              {{ questionGroup.answer.files.length + ' files uploaded.' }}
-            </div>
-          </div>
-
-          <div *ngIf="questionGroup.answer.type === 'oneof'">
-            {{ questionGroup.answer.answers[0].context | truncate: 150 }}
-          </div>
-        </div>
+        <span class="title">{{ group.name }}</span>
+        <div class="description" [innerHTML]="group.description | keepHtml"></div>
+        <div class="status completed" *ngIf="group.answeredQuestions == group.totalQuestions">Completed</div>
+        <div class="status incomplete" *ngIf="group.answeredQuestions !== group.totalQuestions">Incomplete</div>
       </div>
     </ion-card-content>
   </ion-card>
