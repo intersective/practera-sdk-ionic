@@ -27,8 +27,8 @@ export class EventsViewPage {
   public booked_text: string = 'Booked';
 
   constructor(
-    private params: NavParams,
-    private nav: NavController,
+    private navParams: NavParams,
+    private navCtrl: NavController,
     private cache: CacheService,
     private eventService: EventService,
     private alertCtrl: AlertController,
@@ -37,7 +37,7 @@ export class EventsViewPage {
     private toastCtrl: ToastController,
     private tab: Tabs
   ) {
-    this.event = params.get('event');
+    this.event = navParams.get('event');
   }
 
   private availability(event): string {
@@ -45,7 +45,7 @@ export class EventsViewPage {
   }
 
   ionViewDidEnter() {
-    this.event = this.params.get('event');
+    this.event = this.navParams.get('event');
     console.log('ionViewDidEnter', this.event);
     if (this.event) {
       this.bookingStatus = this.availability(this.event);
@@ -56,7 +56,7 @@ export class EventsViewPage {
    * Push Download page to ionic nav stack (navigate to attachment download page)
    */
   gotoDownload(event) {
-    this.nav.push(EventsDownloadPage, {event});
+    this.navCtrl.push(EventsDownloadPage, {event});
   }
 
   /**
@@ -112,7 +112,7 @@ export class EventsViewPage {
                       this.booked_text;
                     }
                     bookLoading.dismiss().then(() => {
-                      this.nav.popToRoot(EventsListPage);
+                      this.navCtrl.popToRoot(EventsListPage);
                     });
                   },
                   err => {
@@ -145,7 +145,7 @@ export class EventsViewPage {
    */
   checkin(event) {
     console.log('event', event)
-    this.nav.push(AssessmentsPage, {activity: event});
+    this.navCtrl.push(AssessmentsPage, {activity: event});
   }
 
   /**
@@ -173,7 +173,7 @@ export class EventsViewPage {
                 .subscribe(
                   data => {
                     cancelLoading.dismiss().then(() => {
-                     this.nav.popToRoot(EventsListPage);
+                     this.navCtrl.popToRoot(EventsListPage);
                     });
                   },
                   err => {

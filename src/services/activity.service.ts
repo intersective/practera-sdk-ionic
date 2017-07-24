@@ -8,6 +8,8 @@ import { RequestService } from '../shared/request/request.service';
 
 @Injectable()
 export class ActivityService {
+  private cachedActivites = {};
+
   public milestoneID = this.cacheService.getLocalObject('milestone_id');
   constructor(
     private request: RequestService,
@@ -15,13 +17,20 @@ export class ActivityService {
   ) {}
 
   public getList(options?) {
+    let mid = this.cacheService.getLocal('milestone_id');
+
     options = options || {
       search: {
         milestone_id: this.cacheService.getLocal('milestone_id')
       }
     };
 
-    return this.request.get('api/activities.json', options);
+    if (!this.cachedActivites[mid]) {
+      this.cachedActivites[mid] = this.request.get('api/activities.json', options);
+      return this.request.get('api/activities.json', options);
+    }
+
+    return this.cachedActivites[mid];
   }
 
   public getLevels = (options?: any) => {
@@ -45,7 +54,13 @@ export class ActivityService {
         return this.getList(options).toPromise();
       });
   }
-  normalise(activity, index) {
+
+  /*
+   // commented out - seems not using in any part of the code
+   // it was built for currentActivities component in HomePage,
+   // no longer using it now
+
+   normalise(activity, index) {
     // session
     activity.enabledRSVP = true;
     // survey
@@ -64,5 +79,31 @@ export class ActivityService {
     // if sorting is not available, use index instead
     activity.order = activity.Activity.order || index;
     return activity;
+  }*/
+
+
+  /**
+   * normalise activities
+   */
+  public normaliseActivities(activities): Array<any> {
+    let result = [];
+
+    activities.forEach((act, index) => {
+      result[index] = this.normaliseActivity(act);
+    });
+    return result;
+  }
+
+  /**
+   * normalise single activity object
+   */
+  public normaliseActivity(activity) {
+    return _.merge(activity.Activity, {
+      activity: activity.Activity,
+      sequences: activity.ActivitySequence,
+      Activity: activity.Activity,
+      ActivitySequence: activity.ActivitySequence,
+      References: activity.References
+    });
   }
 }

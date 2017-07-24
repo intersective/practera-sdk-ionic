@@ -20,6 +20,7 @@ export class EventsListPage {
     public loadingCtrl: LoadingController,
   ) {}
 
+  activities = [];
   loadedEvents = [];
   events = [];
   noEvents = false;
@@ -78,10 +79,10 @@ export class EventsListPage {
     return new Promise((resolve, reject) => {
 
       // Get activities IDs
-      this.activityService.getList()
-      .toPromise()
+      this.activityService.getList().toPromise()
       .then((activities) => {
         console.log('activities', activities);
+        this.activities = activities;
 
         let activityIDs = [];
         _.forEach(activities, (act) => {
@@ -190,6 +191,9 @@ export class EventsListPage {
       alert('This event not allow to check-in...');
     }*/
     console.log(event);
-    this.navCtrl.push(EventsViewPage, {event: event});
+    this.navCtrl.push(EventsViewPage, {
+      activities: this.activities,
+      event: event
+    });
   }
 }
