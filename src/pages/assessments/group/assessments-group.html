@@ -1,0 +1,36 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Assessment Group</ion-title>
+    <ion-buttons end>
+      <button ion-button outline (click)="save()">Save</button>
+    </ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="groups-question" padding>
+  <div *ngFor="let question of questions" [ngSwitch]="question.type">
+    <!-- type: oneOf -->
+    <oneof-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'oneof'"></oneof-question>
+
+    <!-- type: oneOf -->
+    <multiple-question
+      [question]="question"
+      [form]="formGroup[question.id]"
+      *ngSwitchCase="'multiple'"></multiple-question>
+
+    <!-- type: file -->
+    <file-question
+      *ngSwitchCase="'file'"
+      [form]="formGroup[question.id]"
+      [question]="question"></file-question>
+
+    <!-- type: text -->
+    <text-question
+      *ngSwitchCase="'text'"
+      [form]="formGroup[question.id]"
+      [question]="question"></text-question>
+  </div>
+</ion-content>

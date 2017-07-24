@@ -6,7 +6,7 @@ import { CacheService } from '../shared/cache/cache.service';
 export class AchievementService {
   private target_id = this.cacheService.getLocalObject('program_id');
   private target_model = 'program';
-  private getMaximumPointsUrl = 'api/maximum_points.json?target_model=' + this.target_model + '&target_id=' + this.target_id;
+  private getMaximumPointsUrl = `api/maximum_points.json?target_model=${this.target_model}&target_id=${this.target_id}`;
   private userAchievementUrl = 'api/user_achievements.json';
   private totalAchievementUrl = 'api/achievements.json';
   constructor(private request: RequestService,
