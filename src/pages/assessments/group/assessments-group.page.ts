@@ -1,46 +1,10 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController } from 'ionic-angular';
+import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
-import { AssessmentService } from '../../../services/assessment.service';
+import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
 
 import * as _ from 'lodash';
-
-export class ChoiceBase<T> {
-  id: number;
-  name: string;
-}
-
-export class AnswerBase<T> {
-  answer: string;
-  url: string;
-  mimetype: string;
-}
-
-export class QuestionBase<T> {
-  id: number;
-  assessment_id: number;
-  name: string;
-  type: string;
-  file_type?: string;
-  audience: Array<any>;
-  choices?: ChoiceBase<any>[];
-  answers?: {
-    submitter: AnswerBase<any>[],
-    reviewer: AnswerBase<any>[],
-  };
-  required?: boolean;
-}
-
-export class Choices<T> {
-  id: number;
-  value: number; // or choice id, usually same as "id" above
-  name: string;
-  description?: string;
-  explanation?: string;
-  order?: number;
-  weight?: number;
-}
 
 @Component({
   templateUrl: './assessments-group.html',
@@ -48,10 +12,11 @@ export class Choices<T> {
 export class AssessmentsGroupPage {
   questions = [];
   formGroup;
-  temp;
 
   //@TODO: decide which one to use
   activity: any;
+  submission: Submission;
+  submissions: any;
   assessment: any;
   assessmentGroup: any;
 
@@ -60,7 +25,9 @@ export class AssessmentsGroupPage {
     private navCtrl: NavController,
     private fb: FormBuilder,
     private cache: CacheService,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
   ) {
   }
 
@@ -68,12 +35,9 @@ export class AssessmentsGroupPage {
     this.activity = this.navParams.get('activity') || {};
     this.assessment = this.navParams.get('assessment') || {};
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
-
-    console.log('this.assessmentGroup', this.assessmentGroup);
+    this.submissions = this.navParams.get('submissions') || {};
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
-    console.log('this.questions', this.questions);
-
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
   }
 
@@ -85,9 +49,12 @@ export class AssessmentsGroupPage {
     let result: any = {};
 
     this.questions.forEach(question => {
+      let currentAnswer = question.answer || {};
       let group = {
-        answer: question.required ? new FormControl(question.answer || '', Validators.required) : new FormControl(question.answer || ''),
-        comment: question.required ? new FormControl(question.comment || '', Validators.required) : new FormControl(question.comment || '')
+        answer: question.required ?
+          new FormControl(currentAnswer.answer || '', Validators.required) : new FormControl(currentAnswer.answer || ''),
+        comment: question.required ?
+          new FormControl(currentAnswer.comment || '', Validators.required) : new FormControl(currentAnswer.comment || '')
       };
 
       // render choices' FormGroup
@@ -123,43 +90,48 @@ export class AssessmentsGroupPage {
   storeProgress = () => {
     let answers = {};
     _.forEach(this.formGroup, (question, id) => {
-      let values = question.getRawValue();
-      answers[id] = {
-        assessment_question_id: id,
-        answer: values.answer || values.comment,
-      };
+      let values = question.getRawValue(),
+          answer = {
+            assessment_question_id: id,
+            answer: values.answer || values.comment,
 
-      // store it if choice answer is available or skip
-      if (values.choices) {
-        answers[id].choices = values.choices;
-      }
+            // store it if choice answer is available or skip
+            choices: (!_.isEmpty(values.choices)) ? values.choices : null
+          };
+
+
+      answers[id] = answer;
     });
 
     // final step - save to localstorage
-    let assessmentId = this.assessment.Assessment.id;
     let submission = {
       Assessment: {
-          id: assessmentId,
-          activity_id: this.activity.id || 'temporary_fake_activity_id'
+          id: this.assessment.id,
+          context_id: this.assessment.context_id || 'temporary_fake_activity_id'
       },
-      AssessmentSubmissionAnswer: answers || {}
+      // AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
+      AssessmentSubmissionAnswer: answers
     };
-    console.log(submission);
-    this.cache.setLocal(`assessment.group.${assessmentId}`, JSON.stringify(submission));
+    this.submission = submission;
+    this.cache.setLocal(`assessment.group.${this.assessment.id}`, JSON.stringify(submission));
+    return submission;
   };
 
   /**
    * @description retrieve saved progress from localStorage
    */
   retrieveProgress = (questions: Array<any>) => {
-    let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.Assessment.id}`);
+    let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.id}`);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
 
     if (!_.isEmpty(savedProgress)) {
+
+      // index "id" is set as question.id in @Function buildFormGroup above
       _.forEach(newQuestions, (question, id) => {
-        if (savedProgress[id]) {
+        // check integrity of saved answer (question might get updated)
+        if (savedProgress[id] && savedProgress[id].assessment_question_id == id) {
           newQuestions[id] = this.setValueWith(question, savedProgress[id]);
         }
       });
@@ -168,14 +140,14 @@ export class AssessmentsGroupPage {
   };
 
   /**
-   * @description set value to each FormControl for different answer field
+   * @description set value to each FormControl differently based on type:
    *              - "text", "oneof" & "file" using just "answer" field
    *              - "multiple" answer is stored into "choices" FormControl instead
    * @param {FormGroup} question FormGroup for a question
    * @param {Object} answers answer [choices object || string answer]
    */
   private setValueWith(question, answers) {
-    if (answers.choices) {
+    if (!_.isEmpty(answers.choices)) {
       question.controls.choices.setValue(answers.choices);
     } else {
       question.controls.answer.setValue(answers.answer || '');
@@ -222,27 +194,26 @@ export class AssessmentsGroupPage {
       ...
     ]
    */
-  private normaliseQuestions = (questions) => {
-    console.log('questions', questions)
-
+  private normaliseQuestions = (questions: any[]) => {
     let result = [];
 
-    questions.forEach((question) => {
-      // let thisQuestion = question['Assess.Assessment'];
-
-      let choices = (question.AssessmentQuestion.AssessmentQuestionChoice) ?
-        this.normaliseChoices(question.AssessmentQuestion.AssessmentQuestionChoice) :
-        [];
+    (questions || []).forEach((question) => {
+      let assessmentQuestion = question.AssessmentQuestion;
+      let choices = assessmentQuestion.AssessmentQuestionChoice || [];
+      if (choices.length > 0) {
+        choices = this.normaliseChoices(choices);
+      }
 
       let normalised: QuestionBase<any> = {
-        id: question.AssessmentQuestion.id,
+        id: assessmentQuestion.id,
         assessment_id: question.assessment_group_id,
-        name: question.AssessmentQuestion.name,
-        type: question.AssessmentQuestion.question_type,
-        audience: question.AssessmentQuestion.audience,
-        file_type: question.AssessmentQuestion.file_type,
-        required: question.AssessmentQuestion.is_required || false,
-        choices: choices
+        name: assessmentQuestion.name,
+        type: assessmentQuestion.question_type,
+        audience: assessmentQuestion.audience,
+        file_type: assessmentQuestion.file_type,
+        required: assessmentQuestion.is_required,
+        choices: choices,
+        answer: assessmentQuestion.answer
       };
 
       result.push(normalised);
@@ -278,12 +249,12 @@ export class AssessmentsGroupPage {
     }
    */
   private normaliseChoices = (assessmentQuestionChoice) => {
-    let results: Choices<any>[] = [];
+    let results: ChoiceBase<any>[] = [];
     assessmentQuestionChoice.forEach(choice => {
       let assessmentChoice = choice.AssessmentChoice;
       results.push({
         id: choice.id,
-        value: choice.assessment_choice_id, // or choice id
+        value: choice.assessment_choice_id, // or choice.id (similar id used as "assessment_choice_id")
         name: assessmentChoice.name,
         description: assessmentChoice.description,
         explanation: choice.explanation,
@@ -299,7 +270,31 @@ export class AssessmentsGroupPage {
    * @description initiate save progress and return to previous page/navigation stack
    */
   save() {
-    this.storeProgress();
-    this.navCtrl.pop();
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
+
+    // Error handling for all kind of non-specific API respond error code
+    let alert = this.alertCtrl.create({
+      title: 'Fail to submit',
+      buttons: ["Ok"]
+    });
+
+    loading.present().then(() => {
+      this.assessmentService.save(this.storeProgress()).subscribe(
+        response => {
+          loading.dismiss().then(() => {
+            this.navCtrl.pop();
+          });
+        },
+        reject => {
+          loading.dismiss().then(() => {
+            alert.present().then(() => {
+              console.log('Unable to save', reject);
+            });
+          });
+        }
+      );
+    })
   }
 }

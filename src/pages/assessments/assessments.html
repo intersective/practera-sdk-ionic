@@ -23,7 +23,7 @@
       <questionGroup
         *ngFor="let group of assessment.AssessmentGroup; let q = index"
         [group]="group"
-        (click)="gotoAssessment(group, assessment, activity)"
+        (click)="gotoAssessment(group, activity)"
       >
       </questionGroup>
     </div>

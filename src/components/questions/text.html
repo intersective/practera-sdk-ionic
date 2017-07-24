@@ -1,11 +1,9 @@
 <div [formGroup]="form">
   <ion-list class="text">
-    <ion-list-header [innerHtml]="question.name"></ion-list-header>
-
     <ion-textarea
       formControlName="answer"
       style="width: 100%; padding: 1em; resize:none;"
-      placeholder="Required"
+      placeholder="Enter answer here..."
       rows="8">
     </ion-textarea>
   </ion-list>
