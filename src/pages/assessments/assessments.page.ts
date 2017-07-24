@@ -206,10 +206,11 @@ export class AssessmentsPage {
 
             console.log('this.assessmentGroups', this.assessmentGroups);
 
-            // @TODO: to be confirmed, we only need one assessment in this page.
-            console.log('this.assessment', self.assessment)
-            if (_.isEmpty(self.assessment) && assessments) {
-              self.assessment = _.head(assessments).Assessment || {};
+            // This use in tittle of the page.
+            // In normal case, we only have one assessment in this page.
+            if (assessments) {
+              this.assessment = _.head(assessments).Assessment || {};
+              console.log('this.assessment', this.assessment)
             }
 
             // 2nd batch API requests (get_submissions)

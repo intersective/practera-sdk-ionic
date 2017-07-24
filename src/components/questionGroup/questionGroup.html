@@ -6,8 +6,8 @@
           <ion-icon name="ios-arrow-forward-outline" color="primary-light"></ion-icon>
         </button>
 
-        <span class="title" [innerHTML]="group.name"></span>
-        <div [innerHTML]="group.description"></div>
+        <span class="title">{{ group.name }}</span>
+        <div class="description" [innerHTML]="group.description | keepHtml"></div>
         <div class="status completed" *ngIf="group.answeredQuestions == group.totalQuestions">Completed</div>
         <div class="status incomplete" *ngIf="group.answeredQuestions !== group.totalQuestions">Incomplete</div>
       </div>
