@@ -42,6 +42,20 @@ export class AssessmentsGroupPage {
   }
 
   /**
+   * check the questions was answered
+   * @return {boolen} passed all check
+   */
+  isAllQuestionsAnswered = () => {
+    let passed = true;
+    _.forEach(this.formGroup, (fg) => {
+      if (fg.value.answer === '') {
+        passed = false;
+      }
+    });
+    return passed;
+  }
+
+  /**
    * turn a collection of questions into angular's FormGroup to share among components
    * @param {array} questions list of questions from a question group (Assessment group)
    */
@@ -344,21 +358,47 @@ export class AssessmentsGroupPage {
       buttons: ["Ok"]
     });
 
-    loading.present().then(() => {
-      this.assessmentService.save(this.storeProgress()).subscribe(
-        response => {
-          loading.dismiss().then(() => {
-            this.navCtrl.pop();
-          });
-        },
-        reject => {
-          loading.dismiss().then(() => {
-            alert.present().then(() => {
-              console.log('Unable to save', reject);
+    let saveProgress = () => {
+      loading.present().then(() => {
+        this.assessmentService.save(this.storeProgress()).subscribe(
+          response => {
+            loading.dismiss().then(() => {
+              this.navCtrl.pop();
             });
-          });
+          },
+          reject => {
+            loading.dismiss().then(() => {
+              alert.present().then(() => {
+                console.log('Unable to save', reject);
+              });
+            });
+          }
+        );
+      });
+    };
+
+    let confirmBox = this.alertCtrl.create({
+      message: 'You have not completed all required questions. Do you still wish to Save?',
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            saveProgress();
+          }
+        },
+        {
+          text: 'No',
+          handler: () => {
+            //return false;
+          }
         }
-      );
-    })
+      ]
+    });
+
+    if (!this.isAllQuestionsAnswered()) {
+      confirmBox.present();
+    } else {
+      saveProgress();
+    }
   }
 }
