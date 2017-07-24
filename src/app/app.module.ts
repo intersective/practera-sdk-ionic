@@ -19,6 +19,7 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
+import { GameService } from '../services/game.service';
 import { SessionService } from '../services/session.service';
 import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
@@ -261,6 +262,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
+    GameService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })
