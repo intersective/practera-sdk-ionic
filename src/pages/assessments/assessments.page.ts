@@ -209,10 +209,10 @@ export class AssessmentsPage {
 
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
-            if (assessments) {
-              this.assessment = _.head(_.head(assessments)).Assessment || {};
-              console.log('this.assessment', this.assessment)
-            }
+            // if (assessments) {
+            //   this.assessment = _.head(_.head(assessments)).Assessment || {};
+            //   console.log('this.assessment', this.assessment)
+            // }
 
             // 2nd batch API requests (get_submissions)
             Observable.forkJoin(submissionTasks)
