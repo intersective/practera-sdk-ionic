@@ -8,8 +8,12 @@ import {
 } from 'ionic-angular';
 import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
+import { AssessmentsGroupPage } from './group/assessments-group.page';
 
 import * as _ from 'lodash';
+
+import { TranslationService } from '../../shared/translation/translation.service';
+import { confirmMessages } from '../../app/messages'; 
 
 @Component({
   selector: 'assessments-page',
@@ -26,13 +30,17 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: any = true;
 
+  // confirm message variables
+  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private cache: CacheService,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private assessmentService: AssessmentService
+    private assessmentService: AssessmentService,
+    public translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
     console.log('this.activity', this.activity);
@@ -58,14 +66,29 @@ export class AssessmentsPage {
         this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
 
         _.forEach(this.assessmentQuestions, (question, key) => {
-          // Inject answers
-          if (this.answers[question.id]) {
-            this.assessmentQuestions[key].answer = this.answers[question.id];
+
+          let idx = `assessment.group.${question.assessment_id}`;
+          let exists = this.cache.getLocalObject(idx);
+
+          if (exists.AssessmentSubmissionAnswer) {
+            if (_.isString(exists.AssessmentSubmissionAnswer)) {
+              this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer;
+            } else {
+              this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer[0].answer;
+            }
           } else {
-            // Set allowSubmit to false when some assessment no answer
             this.allowSubmit = false;
             this.assessmentQuestions[key].answer = null;
           }
+
+          // // Inject answers
+          // if (this.answers[question.id]) {
+          //   this.assessmentQuestions[key].answer = this.answers[question.id];
+          // } else {
+          //   // Set allowSubmit to false when some assessment no answer
+          //   this.allowSubmit = false;
+          //   this.assessmentQuestions[key].answer = null;
+          // }
         });
 
         return resolve();
@@ -101,7 +124,7 @@ export class AssessmentsPage {
     // No data will send to server
     const confirm = this.alertCtrl.create({
       title: 'Discard all change',
-      message: 'Do you really want to discard all your change?',
+      message: this.discardConfirmMessage,
       buttons: [
         {
           text: 'Okay',
@@ -128,7 +151,7 @@ export class AssessmentsPage {
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Submit evidence',
-      message: 'Do you really want to submit this evidence?',
+      message: this.submitConfirmMessage,
       buttons: [
         {
           text: 'Okay',
@@ -180,5 +203,9 @@ export class AssessmentsPage {
 
       this.loadQuestions();
     });
+  }
+
+  doAssessment(question) {
+    this.navCtrl.push(AssessmentsGroupPage, {activity: this.activity, assessment: question});
   }
 }

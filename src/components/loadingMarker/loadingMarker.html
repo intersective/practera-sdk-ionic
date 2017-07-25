@@ -1,5 +1,5 @@
 <div>
-  <div class="list text-center" ng-if="loading">
+  <div class="list text-center" *ngIf="loading">
     <ion-spinner icon="spiral" color="button"></ion-spinner>
   </div>
   <div *ngIf="!loading">
