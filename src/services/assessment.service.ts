@@ -87,6 +87,14 @@ export class AssessmentService {
     return this.post(assessmentAnswer);
   }
 
+  /**
+   * submit using "post" function AssessmentService.post()
+   * @param {Object} assessmentAnswer
+   */
+  public submit(assessmentAnswer) {
+    return this.post(assessmentAnswer);
+  }
+
   /*
     Turn API format from:
     {
