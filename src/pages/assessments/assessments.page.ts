@@ -210,7 +210,7 @@ export class AssessmentsPage {
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
             if (assessments) {
-              this.assessment = _.head(assessments).Assessment || {};
+              this.assessment = _.head(_.head(assessments)).Assessment || {};
               console.log('this.assessment', this.assessment)
             }
 
@@ -233,6 +233,15 @@ export class AssessmentsPage {
                         this.allowSubmit = false;
                       }
                     });
+                  });
+                });
+
+                // Set submit button to false since submission was done
+                _.forEach(this.submissions, (submission, i) => {
+                  _.forEach(submission, (subm) => {
+                    if (subm.AssessmentSubmission.status === 'done') {
+                      this.allowSubmit = false;
+                    }
                   });
                 });
 
@@ -324,6 +333,7 @@ export class AssessmentsPage {
           (assessments: any) => {
             loading.dismiss().then(() => {
               console.log('assessments', assessments);
+              this.allowSubmit = false;
               this.navCtrl.pop();
             });
           },
