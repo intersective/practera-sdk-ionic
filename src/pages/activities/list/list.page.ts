@@ -15,6 +15,7 @@ import 'rxjs/add/operator/map';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
+import { CharactersService } from '../../../services/characters.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
@@ -37,6 +38,8 @@ export class ActivitiesListPage implements OnInit {
   public totalAchievements: any = [];
   public currentPoints: number = 0;
   public maxPoints: number = 0;
+  public characterData: any = [];
+  public characterCurrentExperience: number = 0;
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
   public returnError: boolean = false;
@@ -49,6 +52,7 @@ export class ActivitiesListPage implements OnInit {
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
+    public charactersService: CharactersService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -69,35 +73,39 @@ export class ActivitiesListPage implements OnInit {
       duration: 4000,
       position: 'bottom'
     });
-    let getUserAchievements = this.achievementService.getAchievements();
-    let getAllAchievements = this.achievementService.getAllAchievements();
-    let getMaxPoints = this.achievementService.getMaxPoints();
-    Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
-              .subscribe(results => {
-                this.totalAchievements = results;
-                // console.log(this.totalAchievements);
-                // console.log("Max Points: ", results[2].max_achievable_points);
-                this.maxPoints = results[2].max_achievable_points;
-                this.currentPoints = results[0].total_points;
-                if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
-                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
-                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
-                }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
-                  this.pointPercentage = 100; 
-                }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
-                  this.currentPoints = 0; 
-                  this.maxPoints = 0;
-                  this.pointPercentage = 0;
-                }
-              },
-              err => {
-                this.currentPoints = 0;
-                this.maxPoints = 0;
-                this.pointPercentage = 0;
-                if (ACTIVATE_TOAST) {
-                  loadingFailed.present();
-                }
-              }
+    // let getUserAchievements = this.achievementService.getAchievements();
+    // let getAllAchievements = this.achievementService.getAllAchievements();
+    // let getMaxPoints = this.achievementService.getMaxPoints();
+    let getCharacter = this.charactersService.getCharacter();
+    // Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints, getCharacter])
+    getCharacter.subscribe(results => {
+      this.totalAchievements = results;
+      // console.log(this.totalAchievements);
+      // console.log("Max Points: ", results[2].max_achievable_points);
+      // this.maxPoints = results[2].max_achievable_points;
+      // this.currentPoints = results[0].total_points;
+      this.characterData = results.Character;
+      this.characterCurrentExperience = this.characterData.experience;
+      console.log("Experience: ", this.characterCurrentExperience);
+      // if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
+      //   this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
+      //   (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
+      // }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
+      //   this.pointPercentage = 100; 
+      // }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
+      //   this.currentPoints = 0; 
+      //   this.maxPoints = 0;
+      //   this.pointPercentage = 0;
+      // }
+      },
+      err => {
+        // this.currentPoints = 0;
+        // this.maxPoints = 0;
+        // this.pointPercentage = 0;
+        if (ACTIVATE_TOAST) {
+          loadingFailed.present();
+        }
+      }
     );
   }
   // loading activity list data

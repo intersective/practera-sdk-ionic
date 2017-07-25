@@ -20,6 +20,7 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
+import { CharactersService } from '../services/characters.service';
 import { SessionService } from '../services/session.service';
 import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
@@ -245,6 +246,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
+    { provide: CharactersService, useClass: CharactersService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
     { provide: LevelService, useClass: LevelService },
