@@ -17,6 +17,9 @@ $font-secondary: 'Raleway';
   background-color: color($colors, primary, base);
   color: color($colors, secondary, base);
 }
+.flex-display {
+  display: flex;
+}
 // 4. General Text styling
 .app-title {
   font-family: $font-primary;
@@ -38,6 +41,13 @@ $font-secondary: 'Raleway';
 // 5. General Button Styling
 .general-button {
   background-color: color($colors, button, base);
+}
+.close {
+  font-size: 2.7rem;
+  float: right;
+  background-color: transparent;
+  color: color($colors, secondary, base);
+  display: inline-block;
 }
 // 6. General Pages Styling
 // 6.1 Default Theme Settings Start
@@ -87,10 +97,7 @@ $font-secondary: 'Raleway';
   .toolbar-title-ios {
     color: color($colors, secondary, base);
   }
-  .toolbar-title-md {
-    font-size: 1.7rem;
-    padding-top: 3px;
-  }
+  .toolbar-title-md,
   .toolbar-title-ios {
     font-size: 1.7rem;
   }
@@ -439,7 +446,7 @@ event {
     }
   }
 }
-// achievement page styling 
+// 10. Achievement page styling 
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -459,6 +466,68 @@ event {
         float: right;
       }
     }
+  }
+}
+// 11. Settings & Tutorial page stylings
+.settings {
+  .list-header-md {
+    border: none;
+  }
+}
+tutorial-page {
+  .header-md::after, 
+  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before, 
+  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+    background-image: none;
+  }
+}
+.tutorial-slides {
+  h1 {
+    padding-bottom: 20pt;
+  }
+  p {
+    padding: 0 36pt;
+    margin-top: -12pt;
+  }
+  img {
+    width: 36%;
+  }
+  button.general-circle-btn {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .swiper-pagination {
+    bottom: 16pt;
+  }
+} 
+.skip-button {
+  border: none;
+  float: right;
+} 
+.slides-button {
+  .toolbar-background {
+    background-color: color($colors, secondary, base);
+    border: none;
+  }
+  .next-button,
+  .skip-button {
+    float: right;
+  }
+  .prev-button,
+  .next-button,
+  .skip-button {
+    background-color: color($colors, secondary, base) !important;
+    color: color($colors, primary, base);
+    box-shadow: none;
+  }
+}
+// 14.leaderboard settings page styling
+.leaderboard-settings {
+  .hide-settings {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
   }
 }
 // landscape activity list view

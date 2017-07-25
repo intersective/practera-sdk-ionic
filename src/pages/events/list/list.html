@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Events</ion-title>
+    <ion-title>{{ 'EVENTS.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="events">
@@ -16,13 +16,13 @@
       <ion-col col-12>
         <ion-segment [(ngModel)]="filter">
           <ion-segment-button value="browses" (ionSelect)="selected('browses')">
-            Browse
+            {{ 'EVENTS.BROWSE' | translate }}
           </ion-segment-button>
           <ion-segment-button value="my-bookings" (ionSelect)="selected('my-bookings')">
-            My Bookings
+            {{ 'EVENTS.MYBOOKINGS' | translate }}
           </ion-segment-button>
           <ion-segment-button value="attended" (ionSelect)="selected('attended')">
-            Attended
+            {{ 'EVENTS.ATTENDED' | translate }}
           </ion-segment-button>
         </ion-segment>
       </ion-col>
@@ -31,13 +31,13 @@
   <ion-list>
     <ion-card *ngIf="showNoEventMessage()">
       <ion-card-content *ngIf="(filter === 'browses')">
-        There are no scheduled events available. Please check back later.
+        {{ emptyFilterErrMessage }}
       </ion-card-content>
       <ion-card-content *ngIf="(filter === 'my-bookings')">
-        You have no bookings. Tap on "Browse" and book an event now to enhance your skills.
+        {{ noBookingsFilterErrMessage }}
       </ion-card-content>
       <ion-card-content *ngIf="(filter === 'attended')">
-        You have not attended any events yet.
+        {{ noAttendedFilterErrMessage }}
       </ion-card-content>
     </ion-card>
     <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>

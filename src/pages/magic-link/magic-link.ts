@@ -8,6 +8,7 @@ import 'rxjs/Rx';
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
@@ -19,6 +20,9 @@ export class MagicLinkPage {
   private verifySuccess = null;
   private auth_token: string;
   public milestone_id: string;
+  // loading & error messages variables
+  private loginLoadingMessage: any = loadingMessages.Login.login;
+  private misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -40,7 +44,7 @@ export class MagicLinkPage {
     let observable = this.authService.magicLinkLogin(this.auth_token);
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
-      content: 'Logging in ..'
+      content: this.loginLoadingMessage
     });
     loading.present();
     observable.subscribe(data => {
@@ -54,6 +58,8 @@ export class MagicLinkPage {
       this.authService.getUser()
         .subscribe(
           data => {
+            this.cacheService.setLocalObject('name', data.User.name);
+            this.cacheService.setLocalObject('email', data.User.email);
             this.cacheService.setLocalObject('program_id', data.User.program_id);
             this.cacheService.setLocalObject('project_id', data.User.project_id);
           },
@@ -84,8 +90,8 @@ export class MagicLinkPage {
       err => {
       const failAlert = this.alertCtrl.create({
         title: 'Magic did NOT happen',
-        message: 'please login by typing email and password',
-        buttons: ['OK']
+        message: this.misMatchTokenErrMessage,
+        buttons: ['Close']
       });
       failAlert.present();
         this.navCtrl.push(LoginPage).then(() => {

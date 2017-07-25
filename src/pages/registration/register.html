@@ -1,25 +1,23 @@
 <ion-content class="login-module">
   <ion-grid class="default-center-container">
     <ion-row>
-      <ion-col>
+      <ion-col col-12>
         <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
         <p>
-          Great - you are almost there! Just one more thing...
+          {{ 'REGISTRATION.HEADER' | translate }}
         </p>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col width-10></ion-col>
-      <ion-col width-80 class="login-container">
+      <ion-col col-10 offset-1 class="login-container">
         <button class="general-circle-btn"
                 ion-button
                 block
                 color="button"
                 (click)="popRegistrationModal()">
-          SET PASSWORD
+          {{ 'REGISTRATION.PAGETITLE' | translate }}
         </button>
       </ion-col>
-      <ion-col width-10></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
@@ -27,7 +25,7 @@
   <div class="mode-warn-sms">
     <div class="mode-text-container">
       <span>
-        Sorry, verification failed, please resend your email and password.
+        {{ verifyFailedErrMessage }}
       </span>
     </div>
   </div>

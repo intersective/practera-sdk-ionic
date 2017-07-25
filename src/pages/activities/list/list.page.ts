@@ -2,8 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from '../../../app/i18n-en'; 
+import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages'; 
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
@@ -27,6 +26,8 @@ export class ActivitiesListPage implements OnInit {
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
   public returnError: boolean = false;
+  // public shiftLang: boolean = false;
+  // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
   constructor(
@@ -37,13 +38,12 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translate: TranslateService
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
-                
+    public translationService: TranslationService
+  ) {}
+  // shiftLanguageTrial(){
+  //   this.shiftLang = !this.shiftLang;
+  //   this.translationService.isTranslated(this.shiftLang);
+  // }               
   ngOnInit(){ 
     this.loadingAchievements();
   }
@@ -60,17 +60,17 @@ export class ActivitiesListPage implements OnInit {
     Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
               .subscribe(results => {
                 this.totalAchievements = results;
-                console.log(this.totalAchievements);
-                console.log("Max Points: ", results[2].max_achievable_points);
+                // console.log(this.totalAchievements);
+                // console.log("Max Points: ", results[2].max_achievable_points);
                 this.maxPoints = results[2].max_achievable_points;
                 this.currentPoints = results[0].total_points;
                 if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
-                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
-                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
-                }else if(this.currentPoints > this.maxPoints){
-                  this.pointPercentage = 100;
-                }else {
-                  this.currentPoints = 0;
+                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
+                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
+                }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
+                  this.pointPercentage = 100; 
+                }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
+                  this.currentPoints = 0; 
                   this.maxPoints = 0;
                   this.pointPercentage = 0;
                 }

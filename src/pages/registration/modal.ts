@@ -2,6 +2,8 @@ import { Component, ViewChild, NgZone, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { TranslationService } from '../../shared/translation/translation.service';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
@@ -15,7 +17,7 @@ import { LoginPage } from '../login/login';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 
-const supportEmail = 'help@support.com';
+const supportEmail = generalVariableMessages.helpMail.email;
 
 @Component({
   selector: 'page-registration-modal',
@@ -40,6 +42,15 @@ export class RegistrationModalPage {
   private milestone_id: string;
   private password: string;
   private verify_password: string;
+  // loading & error messages variables
+  private successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
+  private passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  private registrationErrMessage: any = errMessages.Registration.error.error;
+  private invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  private noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  private registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
     public navCtrl: NavController,
@@ -50,6 +61,7 @@ export class RegistrationModalPage {
     private loading: LoadingController,
     private authService: AuthService,
     private cache: CacheService,
+    public translationService: TranslationService,
     private milestone: MilestoneService,
     private ngZone:NgZone,
   ) {
@@ -59,6 +71,7 @@ export class RegistrationModalPage {
       verify_password: ['', [Validators.minLength(8), Validators.required]],
     });
   }
+
   public displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Test',
@@ -66,9 +79,7 @@ export class RegistrationModalPage {
       buttons: ['OK']
     });
   }
-  ionViewDidLoad() {
-    console.log(this.regForm);
-  }
+
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
@@ -76,17 +87,17 @@ export class RegistrationModalPage {
       if (err.frontendErrorCode === 'SERVER_ERROR') {
         throw 'API endpoint error';
       }
-      let message = `Something went wrong, please contact ${supportEmail}`;
+      let message = this.registrationErrMessage + `${supportEmail}`;
       if (err && err.data && err.data.msg) {
         switch (err.data.msg) {
           case 'Invalid user':
-            message = `Account not found, please contact ${supportEmail}`;
+            message = this.invalidUserErrMessage + `${supportEmail}`;
           break;
           case 'No password':
-            message = "Unable to register, invalid password";
+            message = this.noPasswordErrMessage;
           break;
           case 'User already registered':
-            message = "Your account is already registered, please log in";
+            message = this.registeredErrMessage;
           break;
         }
       }
@@ -101,13 +112,13 @@ export class RegistrationModalPage {
     if (this.user.password !== this.user.verify_password) {
       this.notificationService.alert({
         title: 'Incorrect Password',
-        subTitle: 'The passwords entered do not match.',
-        buttons: ['OK']
+        subTitle: this.passwordMismatchErrMessage,
+        buttons: ['Close']
       });
     } else {
       const loading = this.loading.create({
         dismissOnPageChange: true,
-        content: 'Your password has been successfully set. You will now be logged in.'
+        content: this.successRegistrationLoading
       });
       // registration api call: to let user set password and complete registration process
       loading.present();
@@ -156,6 +167,7 @@ export class RegistrationModalPage {
       }, onRegError, onFinally);
     }
   }
+
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
