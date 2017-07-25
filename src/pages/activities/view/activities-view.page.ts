@@ -54,7 +54,7 @@ export class ActivitiesViewPage {
       }
     });
 
-    // @TODO: badges images implementation
+    // @TODO: badges images implementation (using get_achievement API)
     this.activity.badges = [
       {
         url: 'http://leevibe.com/images/category_thumbs/video/19.jpg',
@@ -78,40 +78,6 @@ export class ActivitiesViewPage {
       }
     });
 
-  }
-
-  /*
-    turns:
-    [
-      {
-        "context_id": 25,
-        "Assessment": {
-          "id": 19,
-          "name": "Check-In Workshop 1"
-        }
-      },
-      {
-        "context_id": 26,
-        "Assessment": {
-          "id": 20,
-          "name": "Check-In Workshop 2"
-        }
-      },
-      ...
-    ]
-
-    into:
-    {
-      19: 25,
-      20: 26
-    }
-   */
-  private rebuildReferences(references) {
-    let result = {};
-    references.forEach(ref => {
-      result[ref.Assessment.id] = ref.context_id;
-    });
-    return result;
   }
 
   /*
@@ -199,7 +165,7 @@ export class ActivitiesViewPage {
     }
    */
   private mergeReferenceToSequence(activity) {
-    let refs = this.rebuildReferences(activity.References);
+    let refs = this.activityService.rebuildReferences(activity.References);
 
     // @NOTE: first "[0]" sequence is the assessment of an activity
     let sequence = activity.ActivitySequence[0] || {};

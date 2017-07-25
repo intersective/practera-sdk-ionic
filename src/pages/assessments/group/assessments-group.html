@@ -8,6 +8,11 @@
 </ion-header>
 
 <ion-content class="groups-question" padding>
+  <ion-list text-wrap *ngIf="assessmentGroup">
+    <h6 class="strong center">{{assessmentGroup.name}}</h6>
+    <p [innerHTML]="assessment.description"></p>
+  </ion-list>
+
   <div *ngFor="let question of questions; let i = index;"
     [ngSwitch]="question.type"
     [ngClass]="{'hr': (i > 0 && i < questions.length)}">
