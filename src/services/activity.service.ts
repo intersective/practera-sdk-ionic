@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { URLSearchParams } from '@angular/http';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 // services
@@ -8,20 +8,31 @@ import { RequestService } from '../shared/request/request.service';
 
 @Injectable()
 export class ActivityService {
+  private cachedActivites = {};
+
   public milestoneID = this.cacheService.getLocalObject('milestone_id');
-  public activityAPIEndPoint = 'api/activities.json';
   constructor(
     private request: RequestService,
     private cacheService: CacheService,
-    private http: Http
   ) {}
-  public getList() {
-    return this.request.get(this.activityAPIEndPoint, {
+
+  public getList(options?) {
+    let mid = this.cacheService.getLocal('milestone_id');
+
+    options = options || {
       search: {
         milestone_id: this.cacheService.getLocal('milestone_id')
       }
-    });
+    };
+
+    if (!this.cachedActivites[mid]) {
+      this.cachedActivites[mid] = this.request.get('api/activities.json', options);
+      return this.request.get('api/activities.json', options);
+    }
+
+    return this.cachedActivites[mid];
   }
+
   public getLevels = (options?: any) => {
     let params: URLSearchParams = new URLSearchParams();
     if (options.search) {
@@ -40,11 +51,16 @@ export class ActivityService {
           params.set('project_id', data.user.project_id);
           options.search = params;
         }
-        return this.request.get(this.activityAPIEndPoint, options)
-          .toPromise();
+        return this.getList(options).toPromise();
       });
   }
-  normalise(activity, index) {
+
+  /*
+   // commented out - seems not using in any part of the code
+   // it was built for currentActivities component in HomePage,
+   // no longer using it now
+
+   normalise(activity, index) {
     // session
     activity.enabledRSVP = true;
     // survey
@@ -63,9 +79,248 @@ export class ActivityService {
     // if sorting is not available, use index instead
     activity.order = activity.Activity.order || index;
     return activity;
+  }*/
+
+
+  /**
+   * normalise activities
+   */
+  public normaliseActivities(activities): Array<any> {
+    let result = [];
+
+    activities.forEach((act, index) => {
+      result[index] = this.normaliseActivity(act);
+    });
+    return result;
   }
-  // another way of get activity data list
-  public getActivities(){
-    return this.request.get(this.activityAPIEndPoint);
+
+  /**
+   * normalise single activity object
+   */
+  public normaliseActivity(activity) {
+    let thisActivity = activity.Activity,
+        sequence = this.mergeReferenceToSequence(activity);
+
+    return _.merge(thisActivity, {
+      activity: activity.Activity,
+      sequence: sequence,
+      assessment: this.extractAssessment(sequence),
+      Activity: activity.Activity,
+      ActivitySequence: activity.ActivitySequence,
+      References: activity.References
+    });
+  }
+
+  /*
+    turns:
+    [
+      {
+        "context_id": 25,
+        "Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1"
+        }
+      },
+      {
+        "context_id": 26,
+        "Assessment": {
+          "id": 20,
+          "name": "Check-In Workshop 2"
+        }
+      },
+      ...
+    ]
+
+    into:
+    {
+      19: 25,
+      20: 26
+    }
+   */
+  public rebuildReferences(references) {
+    let result = {};
+    references.forEach(ref => {
+      result[ref.Assessment.id] = ref.context_id;
+    });
+    return result;
+  }
+
+  /*
+    @name mergeReferenceToSequence
+
+    turns:
+    [
+      {
+        "id": 52,
+        "activity_id": 22,
+        "model": "Assess.Assessment",
+        "model_id": 19,
+        "order": 0,
+        "is_locked": false,
+        "Assess.Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1",
+          "description": "Check in to your first workshop here<br>",
+          "assessment_type": "checkin",
+          "is_live": true,
+          "is_team": false,
+          "score_type": "numeric",
+          "experience_id": 2,
+          "program_id": 4,
+          "deleted": false,
+          "deleted_date": null,
+          "comparison_group_size": 3,
+          "comparison_group_points": 10,
+          "review_period": 72,
+          "review_scope": "assessment",
+          "review_scope_id": null,
+          "created": "2016-02-01 04:45:21.573033",
+          "modified": "2016-10-25 23:54:22",
+          "review_instructions": null,
+          "is_repeatable": false,
+          "num_reviews": null,
+          "review_type": null,
+          "review_role": null,
+          "auto_assign_reviewers": null,
+          "parent_id": null,
+          "auto_publish_reviews": false
+        }
+      }
+    ]
+
+    into:
+    {
+      "19": {
+        "id": 52,
+        "activity_id": 22,
+        "model": "Assess.Assessment",
+        "model_id": 19,
+        "order": 0,
+        "is_locked": false,
+        "Assess.Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1",
+          "description": "Check in to your first workshop here<br>",
+          "assessment_type": "checkin",
+          "is_live": true,
+          "is_team": false,
+          "score_type": "numeric",
+          "experience_id": 2,
+          "program_id": 4,
+          "deleted": false,
+          "deleted_date": null,
+          "comparison_group_size": 3,
+          "comparison_group_points": 10,
+          "review_period": 72,
+          "review_scope": "assessment",
+          "review_scope_id": null,
+          "created": "2016-02-01 04:45:21.573033",
+          "modified": "2016-10-25 23:54:22",
+          "review_instructions": null,
+          "is_repeatable": false,
+          "num_reviews": null,
+          "review_type": null,
+          "review_role": null,
+          "auto_assign_reviewers": null,
+          "parent_id": null,
+          "auto_publish_reviews": false
+        },
+        "context_id": 25
+      }
+    }
+   */
+  private mergeReferenceToSequence(activity) {
+    let refs = this.rebuildReferences(activity.References);
+
+    // @NOTE: first "[0]" sequence is the assessment of an activity
+    let sequence = activity.ActivitySequence[0] || {};
+
+    if (!_.isEmpty(sequence)) {
+      // activity.ActivitySequence.forEach(seq => {
+        let modelId = sequence.model_id;
+        sequence.context_id = refs[modelId];
+      // });
+    }
+    return sequence;
+  }
+
+  /*
+  turns:
+    {
+      "id": 52,
+      "activity_id": 22,
+      "model": "Assess.Assessment",
+      "model_id": 19,
+      "order": 0,
+      "is_locked": false,
+      "Assess.Assessment": {
+        "id": 19,
+        "name": "Check-In Workshop 1",
+        "description": "Check in to your first workshop here<br>",
+        "assessment_type": "checkin",
+        "is_live": true,
+        "is_team": false,
+        "score_type": "numeric",
+        "experience_id": 2,
+        "program_id": 4,
+        "deleted": false,
+        "deleted_date": null,
+        "comparison_group_size": 3,
+        "comparison_group_points": 10,
+        "review_period": 72,
+        "review_scope": "assessment",
+        "review_scope_id": null,
+        "created": "2016-02-01 04:45:21.573033",
+        "modified": "2016-10-25 23:54:22",
+        "review_instructions": null,
+        "is_repeatable": false,
+        "num_reviews": null,
+        "review_type": null,
+        "review_role": null,
+        "auto_assign_reviewers": null,
+        "parent_id": null,
+        "auto_publish_reviews": false
+      },
+      "context_id": 25
+    }
+
+    into:
+    {
+      "id": 19,
+      "context_id": 25,
+      "name": "Check-In Workshop 1",
+      "description": "Check in to your first workshop here<br>",
+      "assessment_type": "checkin",
+      "is_live": true,
+      "is_team": false,
+      "score_type": "numeric",
+      "experience_id": 2,
+      "program_id": 4,
+      "deleted": false,
+      "deleted_date": null,
+      "comparison_group_size": 3,
+      "comparison_group_points": 10,
+      "review_period": 72,
+      "review_scope": "assessment",
+      "review_scope_id": null,
+      "created": "2016-02-01 04:45:21.573033",
+      "modified": "2016-10-25 23:54:22",
+      "review_instructions": null,
+      "is_repeatable": false,
+      "num_reviews": null,
+      "review_type": null,
+      "review_role": null,
+      "auto_assign_reviewers": null,
+      "parent_id": null,
+      "auto_publish_reviews": false
+    }
+   */
+  private extractAssessment(sequence) {
+    let assessment: any = {};
+    if (sequence['Assess.Assessment']) {
+      assessment = sequence['Assess.Assessment'];
+      assessment.context_id = sequence.context_id;
+    }
+    return assessment;
   }
 }

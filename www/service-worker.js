@@ -14,6 +14,8 @@ self.toolbox.options.cache = {
 // pre-cache our key assets
 self.toolbox.precache(
   [
+    './assets/js/filestack.js',
+    './assets/js/filestack-0.6.2.js',
     './build/main.js',
     './build/main.css',
     './build/polyfills.js',

@@ -70,7 +70,7 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     let getUserAchievements = this.achievementService.getAchievements();
-    let getAllAchievements = this.achievementService.getAllAchievements();
+    let getAllAchievements = this.achievementService.getAll();
     let getMaxPoints = this.achievementService.getMaxPoints();
     Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
               .subscribe(results => {
@@ -111,25 +111,25 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     loadingActivities.present();
-    this.activityService.getActivities()
-        .subscribe(
-          data => {
-            this.activities = data;
-            if(this.activities.length == 0){
-              this.returnError = true;
-            }
-            loadingActivities.dismiss().then(() => {
-              console.log("Activities: ", this.activities);
-            });
-          },
-          err => {
-            loadingActivities.dismiss().then(() => {
-              if (ACTIVATE_TOAST) {
-                loadingFailed.present();
-              }
-            });
+    this.activityService.getList()
+      .subscribe(
+        data => {
+          this.activities = data;
+          if(this.activities.length == 0){
+            this.returnError = true;
           }
-        )
+          loadingActivities.dismiss().then(() => {
+            console.log("Activities: ", this.activities);
+          });
+        },
+        err => {
+          loadingActivities.dismiss().then(() => {
+            if (ACTIVATE_TOAST) {
+              loadingFailed.present();
+            }
+          });
+        }
+      )
   }
 
   /**

@@ -19,6 +19,7 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
+import { GameService } from '../services/game.service';
 import { SessionService } from '../services/session.service';
 import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
@@ -35,8 +36,6 @@ import { GroupEmitterService } from '../components/questions/group-emitter.servi
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
-import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
-import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
@@ -67,7 +66,6 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
-import { HomePage } from '../pages/home/home';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
@@ -107,8 +105,6 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CurrentActivitiesComponent,
-    CurrentLevelsComponent,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -119,7 +115,6 @@ export function HttpLoaderFactory(http: Http) {
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
-    HomePage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
@@ -256,6 +251,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
+    GameService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })
