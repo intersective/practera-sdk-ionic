@@ -70,7 +70,7 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     let getUserAchievements = this.achievementService.getAchievements();
-    let getAllAchievements = this.achievementService.getAllAchievements();
+    let getAllAchievements = this.achievementService.getAll();
     let getMaxPoints = this.achievementService.getMaxPoints();
     Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
               .subscribe(results => {

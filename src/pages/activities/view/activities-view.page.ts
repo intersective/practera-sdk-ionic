@@ -4,6 +4,7 @@ import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
+import { AchievementService } from '../../../services/achievement.service';
 
 import * as _ from 'lodash';
 
@@ -22,7 +23,8 @@ export class ActivitiesViewPage {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private activityService: ActivityService,
-    private submissionService: SubmissionService
+    private submissionService: SubmissionService,
+    private achievementService: AchievementService
   ) {
   }
 
