@@ -7,7 +7,6 @@ import {
   LoadingController
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { SubmissionService } from '../../services/submission.service';
 
@@ -49,7 +48,6 @@ export class AssessmentsPage {
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
-    private cache: CacheService,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
@@ -64,12 +62,7 @@ export class AssessmentsPage {
     console.log('this.activity', this.activity);
   }
 
-  ionViewDidLoad() {
-    // Custom back button on page
-    this.navbar.backButtonClick = (e: UIEvent) => {
-      this.clickDiscard();
-    }
-  }
+  ionViewDidLoad() {}
 
   /*
   Turn Activity object from:
@@ -226,10 +219,11 @@ export class AssessmentsPage {
 
             console.log('this.assessmentGroups', this.assessmentGroups);
 
-            // @TODO: to be confirmed, we only need one assessment in this page.
-            console.log('this.assessment', self.assessment)
-            if (_.isEmpty(self.assessment) && assessments) {
-              self.assessment = _.head(assessments).Assessment || {};
+            // This use in tittle of the page.
+            // In normal case, we only have one assessment in this page.
+            if (assessments) {
+              this.assessment = _.head(assessments).Assessment || {};
+              console.log('this.assessment', this.assessment)
             }
 
             // 2nd batch API requests (get_submissions)
@@ -273,9 +267,6 @@ export class AssessmentsPage {
   ionViewWillEnter() {
     this.assessment = this.navParams.get('assessment');
 
-    // Hardcoded answers for now
-    this.answers = this.cache.getLocalObject('answers') || {};
-
     let loader = this.loadingCtrl.create();
     loader.present().then(() => {
       this.loadQuestions()
@@ -287,44 +278,6 @@ export class AssessmentsPage {
         loader.dismiss();
       });
     });
-  }
-
-  /**
-   * @name doDiscard
-   * @description clear assessment & submission localStorage
-   */
-  doDiscard(): void {
-    this.cache.setLocalObject('answers', {});
-  }
-
-  /**
-   * @name clickDiscard
-   * @description inject click event to ionic native back button
-   */
-  clickDiscard(): void {
-    // Send alert to user before user click back page
-    // If user click okay will remove all answers in local storage
-    // No data will send to server
-    const confirm = this.alertCtrl.create({
-      title: 'Discard all change',
-      message: 'Do you really want to discard all your change?',
-      buttons: [
-        {
-          text: 'Okay',
-          handler: () => {
-            this.doDiscard();
-            this.navCtrl.pop();
-          }
-        },
-        {
-          text: 'Cancel',
-          handler: () => {
-            console.log('Discard cancelled');
-          }
-        }
-      ]
-    });
-    confirm.present();
   }
 
   /**
