@@ -13,6 +13,9 @@ export class AssessmentsGroupPage {
   questions = [];
   formGroup;
 
+  // used when navigate from event view page
+  event: any;
+
   //@TODO: decide which one to use
   activity: any;
   submissions: any;
@@ -32,13 +35,36 @@ export class AssessmentsGroupPage {
   }
 
   ionViewDidEnter() {
+    // navigate from activity page
     this.activity = this.navParams.get('activity') || {};
-    this.assessment = this.navParams.get('assessment') || {};
+
+    // navigate from event page
+    this.event = this.navParams.get('event') || {};
+    this.activity = this.event.activity;
+
+    this.assessment = this.activity.assessment;
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submissions = this.navParams.get('submissions') || {};
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
+  }
+
+  /**
+   * @description use proper context id based on situation
+   *       event's checkin, use event context_id (reference array in get_event)
+   *       assessment submission, use context_id from get_activity
+   *
+   * @type {number}
+   */
+  private getSubmissionContext = ():Number => {
+    // if event object is available
+    if (this.event) {
+      return this.event.context_id;
+    }
+
+    // if "event" not available, use assessment instead
+    return this.assessment.context_id;
   }
 
   /**
@@ -185,7 +211,7 @@ export class AssessmentsGroupPage {
     let submission = {
       Assessment: {
           id: this.assessment.id,
-          context_id: this.assessment.context_id || 'temporary_fake_activity_id'
+          context_id: this.getSubmissionContext()
       },
       // AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
       AssessmentSubmissionAnswer: answers
