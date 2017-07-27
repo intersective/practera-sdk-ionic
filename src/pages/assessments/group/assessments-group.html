@@ -49,5 +49,8 @@
       [question]="question"
       [form]="formGroup[question.id]"
       *ngSwitchCase="'text'"></text-question>
+
+    <!-- Reviewer's answer and comment -->
+    <feedback [question]="question" *ngIf="question.review_answer"></feedback>
   </div>
 </ion-content>
