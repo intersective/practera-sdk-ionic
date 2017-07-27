@@ -57,7 +57,7 @@ export class AssessmentsGroupPage {
    *
    * @type {number}
    */
-  private getSubmissionContext = ():Number => {
+  private getSubmissionContext = ():number => {
     // if event object is available
     if (this.event) {
       return this.event.context_id;
