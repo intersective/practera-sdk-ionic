@@ -214,6 +214,7 @@ export class EventsViewPage {
         structured: true
       }
     }).subscribe(assessments => {
+      cb();
       let assessment = assessments[0],
           assessmentGroup = assessment.AssessmentGroup[0];
 
@@ -222,11 +223,7 @@ export class EventsViewPage {
         assessment: assessment.Assessment,
         assessmentGroup: assessmentGroup
       });
-      cb();
-    }, err => {
-      console.log(err);
-      cb();
-    });
+    }, err => { cb(); }
   }
 
   /**
