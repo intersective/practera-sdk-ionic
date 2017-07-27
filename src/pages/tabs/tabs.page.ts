@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-
+import { TranslationService } from '../../shared/translation/translation.service';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { SettingsPage } from '../settings/settings.page';
 import { TestPage } from './test.page';
 import { EventsListPage } from '../events/list/list.page';
-
 @Component({
   templateUrl: 'tabs.html',
   providers: []
@@ -16,6 +15,5 @@ export class TabsPage {
   dashboard: any = ActivitiesListPage;
   settings: any = SettingsPage;
   events: any = EventsListPage;
-
-  constructor() {}
+  constructor(public translationService: TranslationService) {}
 }

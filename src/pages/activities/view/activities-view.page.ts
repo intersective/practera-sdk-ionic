@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController } from 'ionic-angular';
+// pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
+// import { AssessmentsPage } from '../../assessments/assessment.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
-import { AchievementService } from '../../../services/achievement.service';
 
 import * as _ from 'lodash';
-
 @Component({
   templateUrl: './view.html'
 })
-
 export class ActivitiesViewPage {
   activity: any = {};
   assessment: any = {};
@@ -28,8 +27,7 @@ export class ActivitiesViewPage {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private activityService: ActivityService,
-    private submissionService: SubmissionService,
-    private achievementService: AchievementService
+    private submissionService: SubmissionService
   ) {
   }
 
@@ -114,7 +112,6 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
-
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity

@@ -21,18 +21,19 @@ export class ActivityListPopupPage {
   public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
   public achievementsLoadingErr: any = errMessages.General.loading.load;
   public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
-  constructor(private viewCtrl: ViewController,
-              private navParams: NavParams,
-              private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController,
-              private achievementService: AchievementService,
-              private translate: TranslateService){
-                this.unlock_id = this.navParams.get('unlock_id');
-                console.log('Unlock id value: ', this.unlock_id);
-                translate.addLangs(["en"]);
-                translate.setDefaultLang('en');
-                translate.use('en');
-              }
+
+  constructor(
+    private viewCtrl: ViewController,
+    private navParams: NavParams,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private achievementService: AchievementService,
+    public translationService: TranslateService
+  ) {
+    this.unlock_id = this.navParams.get('unlock_id');
+    // console.log('Unlock id value: ', this.unlock_id);
+  }
+
   ionViewWillEnter(){
     let loader = this.loadingCtrl.create({
       content: this.loadingMessage

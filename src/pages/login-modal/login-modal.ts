@@ -8,19 +8,20 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
-
 // directives
 import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { LoginPage } from '../../pages/login/login';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
-import * as _ from 'lodash';
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login-modal',
@@ -35,6 +36,8 @@ export class LoginModalPage {
   milestone_id: string;
   loginFormGroup: any;
   forgetpasswordPage = ForgetPasswordPage;
+  public loginLoadingMessages: any = loadingMessages.Login.login;
+  public invalidLoginMessage: any = errMessages.Login.login;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -43,6 +46,7 @@ export class LoginModalPage {
     private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private authService: AuthService,
+    public translationService: TranslationService,
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
@@ -75,7 +79,7 @@ export class LoginModalPage {
       // add loading effect during login process
       const loading = this.loadingCtrl.create({
         dismissOnPageChange: true,
-        content: 'Logging in ..'
+        content: this.loginLoadingMessages
       });
       loading.present();
       // This part is calling post_auth() API from backend
@@ -106,7 +110,10 @@ export class LoginModalPage {
                   this.milestone_id = data.data[0].id;
                   self.cacheService.setLocalObject('milestone_id', data.data[0].id);
                   console.log("milestone id: " + data.data[0].id);
-                  this.navCtrl.push(TabsPage);
+                  this.navCtrl.push(TabsPage).then(() => {
+                    window.history.replaceState({}, '', window.location.origin);
+                    // console.log("url changed?");
+                  });
                 },
                 err => {
                   console.log(err);
@@ -166,7 +173,7 @@ export class LoginModalPage {
   logError(error) {
     const alert = this.alertCtrl.create({
       title: 'Login Failed ..',
-      message: 'Invalid email or password, please type it again',
+      message: this.invalidLoginMessage,
       buttons: ['Close']
     });
     alert.present();

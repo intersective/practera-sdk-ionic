@@ -12,6 +12,9 @@ import { SubmissionService } from '../../services/submission.service';
 
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 
+import { TranslationService } from '../../shared/translation/translation.service';
+import { confirmMessages } from '../../app/messages';
+
 import * as _ from 'lodash';
 
 class ActivityBase {
@@ -44,14 +47,19 @@ export class AssessmentsPage {
   assessmentGroups: any = [];
   assessmentQuestions: any = [];
   allowSubmit: any = true;
+  submissions: any = [];
 
+  // confirm message variables
+  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
-    private submissionService: SubmissionService
+    private submissionService: SubmissionService,
+    private translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
     if (!this.activity) {
@@ -221,15 +229,16 @@ export class AssessmentsPage {
 
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
-            if (assessments) {
-              this.assessment = _.head(assessments).Assessment || {};
-              console.log('this.assessment', this.assessment)
-            }
+            // if (assessments) {
+            //   this.assessment = _.head(_.head(assessments)).Assessment || {};
+            //   console.log('this.assessment', this.assessment)
+            // }
 
             // 2nd batch API requests (get_submissions)
             Observable.forkJoin(submissionTasks)
               .subscribe((allSubmissions) => {
                 console.log('allSubmissions', allSubmissions);
+                this.submissions = allSubmissions;
 
                 this.assessmentGroups = this.mapAssessmentsAndSubmissions(
                   this.assessmentGroups,
@@ -244,6 +253,15 @@ export class AssessmentsPage {
                         this.allowSubmit = false;
                       }
                     });
+                  });
+                });
+
+                // Set submit button to false since submission was done
+                _.forEach(this.submissions, (submission, i) => {
+                  _.forEach(submission, (subm) => {
+                    if (subm.AssessmentSubmission.status === 'done') {
+                      this.allowSubmit = false;
+                    }
                   });
                 });
 
@@ -281,17 +299,79 @@ export class AssessmentsPage {
   }
 
   /**
-   * @TODO: implementation required
-   * @name doSubmit
+   * submit answer and change submission status to done
    */
   doSubmit() {
-    console.log('Okay');
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    });
+
+    let alert = this.alertCtrl.create({
+      title: 'Fail to submit',
+      buttons: ["Ok"]
+    });
+
+    loading.present().then(() => {
+      let tasks = [];
+      _.forEach(this.submissions, (submission) => {
+        console.log('submission', submission);
+
+        _.forEach(submission, (subm) => {
+          if (
+            subm.AssessmentSubmission &&
+            subm.AssessmentSubmission.assessment_id &&
+            subm.AssessmentSubmission.context_id &&
+            subm.AssessmentSubmission.id
+          ) {
+            tasks.push(this.assessmentService.submit({
+              Assessment: {
+                id: subm.AssessmentSubmission.assessment_id,
+                context_id: subm.AssessmentSubmission.context_id,
+                in_progress: false
+              },
+              AssessmentSubmission: {
+                id: subm.AssessmentSubmission.id
+              },
+              AssessmentSubmissionAnswer: _.map(subm.AssessmentSubmissionAnswer, (answ) => {
+                if (answ && answ.assessment_question_id && answ.answer) {
+                  return {
+                    assessment_question_id: answ.assessment_question_id,
+                    answer: answ.answer
+                  }
+                }
+              })
+            }));
+          }
+        });
+      });
+
+      console.log('tasks', tasks);
+
+      Observable
+        .forkJoin(tasks)
+        .subscribe(
+          (assessments: any) => {
+            loading.dismiss().then(() => {
+              console.log('assessments', assessments);
+              this.allowSubmit = false;
+              this.navCtrl.pop();
+            });
+          },
+          (e) => {
+            loading.dismiss().then(() => {
+              alert.present();
+              console.log('e', e);
+            });
+
+          }
+        );
+    });
   }
 
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Submit evidence',
-      message: 'Do you really want to submit this evidence?',
+      message: this.submitConfirmMessage,
       buttons: [
         {
           text: 'Okay',

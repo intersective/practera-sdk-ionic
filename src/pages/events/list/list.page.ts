@@ -1,18 +1,22 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
-
-import { ActivityService } from '../../../services/activity.service';
-import { EventService } from '../../../services/event.service';
-import { EventsViewPage } from '../view/events-view.page';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
+import { loadingMessages, errMessages } from '../../../app/messages';
+// services
+import { ActivityService } from '../../../services/activity.service';
+import { EventService } from '../../../services/event.service';
+// pages
+import { EventsViewPage } from '../view/events-view.page';
 @Component({
   selector: 'events-list-page',
   templateUrl: 'list.html'
 })
 export class EventsListPage {
-
+  // loading & error message variables
+  private emptyFilterErrMessage = errMessages.Events.filter.empty;
+  private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
@@ -55,20 +59,16 @@ export class EventsListPage {
         }), 'start', 'asc');
         break;
     }
-
     if (this.events.length === 0) {
       this.noEvents = true;
     }
-
     return this.events;
   }
-
   // Called when tap on filter tab
   selected(filter) {
     this.filter = filter;
     this.events = this.filterEvents();
   }
-
   // Check total of events, return "true" when 0 found
   showNoEventMessage() {
     return (this.noEvents);
@@ -76,7 +76,6 @@ export class EventsListPage {
 
   loadEvents(): Promise<any> {
     return new Promise((resolve, reject) => {
-
       // Get activities IDs
       this.activityService.getList().toPromise()
       .then((activities) => {
@@ -88,9 +87,7 @@ export class EventsListPage {
           this.activities[act.Activity.id] = this.activityService.normaliseActivity(act);
           activityIDs.push(act.Activity.id);
         });
-
-        // Try to get event by all extracted activityIDs
-        // activity_id which has event returns event based on activity_id
+        // Get event by activityIDs
         this.eventService.getEvents({
           search: {
             activity_id: '[' + _.toString(activityIDs) + ']',
@@ -99,23 +96,18 @@ export class EventsListPage {
         })
         .then((events) => {
           console.log('events', events);
-          // After map event with activities,
-          // assign events to 'events' and 'loadedEvents'
-
           // loadedEvents will never change (private use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
 
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
-
           this.filterEvents();
           return resolve();
         }, reject);
       }, reject);
     });
   }
-
   ionViewDidEnter() {
     let loader = this.loadingCtrl.create();
 
@@ -129,7 +121,6 @@ export class EventsListPage {
       });
     });
   }
-
   doRefresh(e) {
     this.loadEvents().then(() => {
       e.complete();
@@ -139,7 +130,6 @@ export class EventsListPage {
       e.complete();
     });
   }
-
   /**
    * @TODO: remove this once we decided to remove hardcoded images, big size picture is ruining UX because it induces long download time
    *
@@ -175,13 +165,11 @@ export class EventsListPage {
 
     return result;
   }
-
   // Check event allow to check-in
   allowCheckIn(event) {
     console.log('event', event);
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
   }
-
   view(event) {
     /*if (this.allowCheckIn(event)) {
       alert('Going to check-in page...');

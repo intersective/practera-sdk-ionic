@@ -2,15 +2,9 @@
   <ion-navbar>
     <ion-grid>
       <ion-row>
-        <ion-col width-90>
-          <ion-title>Set Password</ion-title>
-        </ion-col>
-        <ion-col width-10 *ngIf="changeContent == false">
-          <div (click)="closeModal()">
-            <span class="close-btn">
-              &times;
-            </span>
-          </div>
+        <ion-col col-12 class="flex-display">
+          <ion-title>{{ 'REGISTRATION.PAGETITLE' | translate }}</ion-title>
+          <button (click)="closeModal()" class="close" menuClose="right" *ngIf="changeContent == false">&times;</button>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -31,17 +25,17 @@
       color="button"
       class="general-circle-btn"
       [disabled]="password!=verify_password || regForm.invalid">
-      DONE
+      {{ 'GENERAL.DONE' | translate }}
     </button>
     <div *ngIf="verifyPwd == true">
       <div *ngIf="pwdMatchCheck()" class="error-hint">
         <small class="text-danger">
-         Password Mismatch ..
+         {{ passwordMismatchMessage }}
         </small>
       </div>
       <div *ngIf="checkMinLength() == true" class="error-hint">
         <small class="text-danger">
-         Password minimum length is 8 characters ..
+         {{ passwordMinlengthMessage }}
         </small>
       </div>
     </div>

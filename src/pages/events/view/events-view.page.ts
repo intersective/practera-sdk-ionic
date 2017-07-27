@@ -1,5 +1,7 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Tabs, NavParams, NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
+import { loadingMessages, errMessages } from '../../../app/messages';
+import { TranslationService } from '../../../shared/translation/translation.service';
 // services
 import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
@@ -27,12 +29,14 @@ export class EventsViewPage {
   public bookingStatus: string = '';
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
-
+  public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
+  public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
     private cache: CacheService,
     private eventService: EventService,
+    public translationService: TranslationService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController,
@@ -108,8 +112,8 @@ export class EventsViewPage {
       content: 'Booking ..'
     });
     let bookFailed = this.toastCtrl.create({
-      message: 'Sorry, book event process is failed, please try it again later.',
-      duration: 4000,
+      message: this.bookEventErrMessage,
+      duration: 5000,
       position: 'bottom'
     });
     let bookPopup = this.actionSheetCtrl.create({
@@ -204,8 +208,8 @@ export class EventsViewPage {
       content: 'Cancel Booking ..'
     });
     let cancelFailed = this.toastCtrl.create({
-      message: 'Sorry, cancel event process is failed, please try it again later.',
-      duration: 4000,
+      message: this.cancelBookingErrMessage,
+      duration: 5000,
       position: 'bottom'
     });
     let cancelBooking = this.actionSheetCtrl.create({
@@ -235,7 +239,7 @@ export class EventsViewPage {
           text: 'Close',
           role: 'cancel',
           handler: () => {
-            console.log('Close this window ..');
+            // console.log('Close this window ..');
           }
         }
       ]
