@@ -17,6 +17,11 @@ export class ActivitiesViewPage {
   assessment: any = {};
   assessments: any = {};
   submissions: Array<any> = [];
+  achievements: any = {
+    available: [],
+    obtained: {},
+    maxPoints: {}
+  };
 
   constructor(
     private navParams: NavParams,
@@ -38,6 +43,10 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
+    // badges
+    this.achievements = this.navParams.get('achievements');
+    console.log('achivements', this.achievements);
+
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
 
@@ -57,7 +66,7 @@ export class ActivitiesViewPage {
     });
 
     // @TODO: badges images implementation (using get_achievement API)
-    this.activity.badges = [
+    let badges = [
       {
         url: 'http://leevibe.com/images/category_thumbs/video/19.jpg',
         disabled: true,
@@ -69,8 +78,9 @@ export class ActivitiesViewPage {
       {
         url: 'http://americanredcross.3sidedcube.com/media/45334/fire-large.png',
         disabled: false,
-      },
+      }
     ];
+    this.activity.badges = [...this.extractBadges(), ...badges];
 
     this.activity.badges.map((badge, index) => {
       if ((this.activity.id % 3) != 0) {
@@ -79,8 +89,23 @@ export class ActivitiesViewPage {
         badge.disabled = true;
       }
     });
-
   }
+
+  private extractBadges(): Array<any> {
+    let result = [];
+    if (this.achievements.available && this.achievements.available.length > 0) {
+      this.achievements.available.forEach(achievement => {
+        if (achievement.Achievement.badge) {
+          result.push({
+            url: achievement.Achievement.badge,
+            disabled: false
+          });
+        }
+      });
+    }
+    return result;
+  }
+
 
   /**
    * @description display activity detail modal page

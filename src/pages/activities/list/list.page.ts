@@ -43,6 +43,14 @@ export class ActivitiesListPage implements OnInit {
   public returnError: boolean = false;
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+
+  // Achievements
+  private achievements = {
+    maxPoint: {},
+    obtained: {},
+    available: []
+  };
+
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -59,47 +67,57 @@ export class ActivitiesListPage implements OnInit {
     translate.use('en');
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadingAchievements();
   }
+
   // display user achievemnt statistics score points
-  loadingAchievements(){
+  loadingAchievements() {
     let loadingFailed = this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
-    let getUserAchievements = this.achievementService.getAchievements();
-    let getAllAchievements = this.achievementService.getAll();
-    let getMaxPoints = this.achievementService.getMaxPoints();
-    Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
-              .subscribe(results => {
-                this.totalAchievements = results;
-                console.log(this.totalAchievements);
-                console.log("Max Points: ", results[2].max_achievable_points);
-                this.maxPoints = results[2].max_achievable_points;
-                this.currentPoints = results[0].total_points;
-                if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
-                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
-                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
-                }else if(this.currentPoints > this.maxPoints){
-                  this.pointPercentage = 100;
-                }else {
-                  this.currentPoints = 0;
-                  this.maxPoints = 0;
-                  this.pointPercentage = 0;
-                }
-              },
-              err => {
-                this.currentPoints = 0;
-                this.maxPoints = 0;
-                this.pointPercentage = 0;
-                if (ACTIVATE_TOAST) {
-                  loadingFailed.present();
-                }
-              }
+
+    Observable.forkJoin([
+      this.achievementService.getAchievements(),
+      this.achievementService.getAll(),
+      this.achievementService.getMaxPoints()
+    ]).subscribe(
+        results => {
+          this.totalAchievements = results;
+          this.achievements = {
+            obtained: results[0],
+            available: results[1],
+            maxPoint: results[2],
+          };
+
+          console.log(this.totalAchievements);
+          console.log("Max Points: ", results[2].max_achievable_points);
+          this.maxPoints = results[2].max_achievable_points;
+          this.currentPoints = results[0].total_points;
+          if (this.currentPoints >= 0 && this.currentPoints <= this.maxPoints) {
+            this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
+            (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
+          } else if(this.currentPoints > this.maxPoints){
+            this.pointPercentage = 100;
+          } else {
+            this.currentPoints = 0;
+            this.maxPoints = 0;
+            this.pointPercentage = 0;
+          }
+        },
+        err => {
+          this.currentPoints = 0;
+          this.maxPoints = 0;
+          this.pointPercentage = 0;
+          if (ACTIVATE_TOAST) {
+            loadingFailed.present();
+          }
+        }
     );
   }
+
   // loading activity list data
   loadingActivities = () => {
     let loadingActivities = this.loadingCtrl.create({
@@ -161,15 +179,21 @@ export class ActivitiesListPage implements OnInit {
   ionViewWillEnter() {
     this.promptSkipLoading(this.loadingActivities);
   }
+
   // refresher activities
   doRefresh(e) {
     this.loadingActivities()
     e.complete();
   }
+
   // redirect to activity detail page
   goToDetail(activity: any, id: any){
-    this.navCtrl.push(ActivitiesViewPage, { activity: activity, id: id });
+    this.navCtrl.push(ActivitiesViewPage, {
+      achievements: this.achievements,
+      activity: activity
+    });
   }
+
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
