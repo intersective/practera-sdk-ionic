@@ -1,0 +1,13 @@
+<ion-card *ngIf="question.type !== 'oneof' && question.review_answer.answer">
+  <ion-card-content>
+    <h3>Reviewer Answer</h3>
+    {{ question.review_answer.answer }}
+  </ion-card-content>
+</ion-card>
+
+<ion-card *ngIf="question.review_answer.comment">
+  <ion-card-content>
+    <h3>Reviewer Comments</h3>
+    {{ question.review_answer.comment }}
+  </ion-card-content>
+</ion-card>
