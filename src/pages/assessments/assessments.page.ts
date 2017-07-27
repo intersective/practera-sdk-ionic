@@ -395,7 +395,7 @@ export class AssessmentsPage {
       assessmentGroup,
       activity,
       assessment: this.assessment, // use back the one back from ActivityViewPage
-      submissions: this.navParams.get('submissions')
+      submissions: this.submissions
     });
   }
 

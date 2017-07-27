@@ -49,7 +49,51 @@ export class AssessmentsGroupPage {
     this.submissions = this.navParams.get('submissions') || {};
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
+    this.questions = this.mapQuestionsFeedback(this.questions, this.submissions);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
+
+    console.log('this.questions', this.questions);
+  }
+
+  /**
+   * @description use proper context id based on situation
+   *
+   * @type {array}
+   */
+  private mapQuestionsFeedback = (questions, submissions):any => {
+    _.forEach(submissions, (submission) => {
+      _.forEach(submission, (subm) => {
+        _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
+          _.forEach(questions, (question, idx) => {
+
+            if (reviewAnswer.assessment_question_id === question.id) {
+              // text type
+              if (question.type === 'text') {
+                questions[idx].review_answer = reviewAnswer;
+              }
+
+              // oneof type
+              if (question.type === 'oneof') {
+                questions[idx].review_answer = reviewAnswer;
+                _.forEach(question.choices, (choice, key) => {
+                  if (choice.id == reviewAnswer.answer && choice.id == question.answer.answer) {
+                    questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+                  }
+                  if (choice.id != reviewAnswer.answer && choice.id == question.answer.answer) {
+                    questions[idx].choices[key].name = choice.name + ' (you)';
+                  }
+                  if (choice.id == reviewAnswer.answer && choice.id != question.answer.answer) {
+                    questions[idx].choices[key].name = choice.name + ' (reviewer)';
+                  }
+                });
+              }
+            }
+
+          });
+        });
+      });
+    });
+    return questions;
   }
 
   /**
