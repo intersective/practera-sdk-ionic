@@ -62,11 +62,7 @@ export class ActivitiesListPage implements OnInit {
     public modalCtrl: ModalController,
     public translationService: TranslationService,
     public alertCtrl: AlertController
-  ) {
-    translate.addLangs(["en"]);
-    translate.setDefaultLang('en');
-    translate.use('en');
-  }
+  ) {}
 
   // shiftLanguageTrial(){
   //   this.shiftLang = !this.shiftLang;
