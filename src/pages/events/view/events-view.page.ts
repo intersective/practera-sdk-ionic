@@ -6,6 +6,7 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
 import { AssessmentService } from '../../../services/assessment.service';
+import { SubmissionService } from '../../../services/submission.service';
 
 // pages
 import { EventsListPage } from '../list/list.page';
@@ -42,7 +43,7 @@ export class EventsViewPage {
     private actionSheetCtrl: ActionSheetController,
     private toastCtrl: ToastController,
     private assessmentService: AssessmentService,
-    private tab: Tabs
+    private submissionService: SubmissionService
   ) {
     this.event = navParams.get('event');
   }
@@ -64,6 +65,18 @@ export class EventsViewPage {
     if (this.event) {
       this.bookingStatus = this.availability(this.event);
     }
+
+    this.submissionService.getSubmissions({
+      search: {
+        context_id: this.event.context_id
+      }
+    }).subscribe(res => {
+      res.forEach(submission => {
+        console.log(this.submissionService.normalise(submission));
+      });
+    }, err => {
+      console.log(err);
+    });
   }
 
   /**
