@@ -34,13 +34,19 @@
 <ion-footer class="events">
   <ion-toolbar>
     <p class="lighter spacer-left">{{ bookingStatus }}</p>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="loadings.checkin">
+      <ion-spinner></ion-spinner>
+    </ion-buttons>
+
+    <ion-buttons end *ngIf="!loadings.checkin">
       <button ion-button *ngIf="!event.isBooked" class="book-btn" (click)="book(event)">
         {{ 'EVENTS.BOOK' | translate }}
       </button>
+
       <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="checkin-btn" (click)="checkin(event)">
         Check-in
       </button>
+
       <button ion-button *ngIf="bookingStatus !== 'Booked' && event.isBooked && allowCheckIn(event)" class="cancel-btn" outline (click)="cancelBooking(event)">
         Cancel Booking
       </button>

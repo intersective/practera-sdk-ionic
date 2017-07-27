@@ -64,23 +64,7 @@ export class ActivitiesViewPage {
       }
     });
 
-    // @TODO: badges images implementation (using get_achievement API)
-    let badges = [
-      {
-        url: 'http://leevibe.com/images/category_thumbs/video/19.jpg',
-        disabled: true,
-      },
-      {
-        url: 'http://mobileapp.redcross.org.uk/achievements/heart-icon.png',
-        disabled: true,
-      },
-      {
-        url: 'http://americanredcross.3sidedcube.com/media/45334/fire-large.png',
-        disabled: false,
-      }
-    ];
-    this.activity.badges = [...this.extractBadges(), ...badges];
-
+    this.activity.badges = this.extractBadges();
     this.activity.badges.map((badge, index) => {
       if ((this.activity.id % 3) != 0) {
         badge.disabled = false;
