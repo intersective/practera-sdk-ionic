@@ -37,7 +37,7 @@ export class SubmissionService {
   }
 
 /*
-  [
+  Turns:
     {
       "AssessmentSubmission": {
         "id": 4,
@@ -163,7 +163,11 @@ export class SubmissionService {
       ],
       "AssessmentReviewAnswer": []
     }
-  ]
+
+  into:
+  {
+
+  }
  */
   public normalise(respond) {
     let submission = respond['AssessmentSubmission'];

@@ -13,6 +13,7 @@ import { EventsListPage } from '../list/list.page';
 import { EventsDownloadPage } from '../download/events-download.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { AssessmentsGroupPage } from '../../assessments/group/assessments-group.page';
+import { EventCheckinPage } from '../checkin/event-checkin.page';
 
 // We no need custom page for checkin anymore
 // import { EventCheckinPage } from '../checkin/event-checkin.page';
@@ -26,12 +27,16 @@ const terms = {
   templateUrl: './events-view.html'
 })
 export class EventsViewPage {
+  public loadings = {
+    checkin: true
+  };
   public event: any;
   public bookingStatus: string = '';
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
   public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
   public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
+  private submissions: Array<any> = [];
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -52,11 +57,8 @@ export class EventsViewPage {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
   }
 
-  ionViewDidEnter() {
-    console.log(this.navCtrl.getPrevious());
-
-    this.event = this.navParams.get('event');
-
+  ionViewWillEnter() {
+    this.loadings.checkin = true;
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
     }
@@ -65,16 +67,20 @@ export class EventsViewPage {
     if (this.event) {
       this.bookingStatus = this.availability(this.event);
     }
+  }
 
+  ionViewDidEnter() {
     this.submissionService.getSubmissions({
       search: {
         context_id: this.event.context_id
       }
     }).subscribe(res => {
+      this.loadings.checkin = false;
       res.forEach(submission => {
-        console.log(this.submissionService.normalise(submission));
+        this.submissions.push(this.submissionService.normalise(submission));
       });
     }, err => {
+      this.loadings.checkin = false;
       console.log(err);
     });
   }
@@ -183,33 +189,44 @@ export class EventsViewPage {
 
   /**
    * Event checkin action
-   * @param
+   * @param {Object} event single event object return from get_event API
    */
   checkin(event) {
     let loading = this.loadingCtrl.create({
       content: 'loading checkin...'
     });
     loading.present().then(() => {
-      this.assessmentService.getAll({
-        search: {
-          assessment_id: this.event.assessment.id,
-          structured: true
-        }
-      }).subscribe(assessments => {
+      // if submission exist
+      console.log(this.submissions);
+      if (this.submissions.length > 0) {
         loading.dismiss();
-        let assessment = assessments[0],
-            assessmentGroup = assessment.AssessmentGroup[0];
-
-        this.navCtrl.push(AssessmentsGroupPage, {
-          event,
-          assessment: assessment.Assessment,
-          assessmentGroup: assessmentGroup
-        });
-      }, err => {
-        console.log(err);
-        loading.dismiss();
-      });
+        this.navCtrl.push(EventCheckinPage, {event: this.event});
+      } else { // get assessment and go checkin
+        this.doCheckin(loading.dismiss);
+      }
     })
+  }
+
+  private doCheckin(cb: Function) {
+    this.assessmentService.getAll({
+      search: {
+        assessment_id: this.event.assessment.id,
+        structured: true
+      }
+    }).subscribe(assessments => {
+      let assessment = assessments[0],
+          assessmentGroup = assessment.AssessmentGroup[0];
+
+      this.navCtrl.push(AssessmentsGroupPage, {
+        event,
+        assessment: assessment.Assessment,
+        assessmentGroup: assessmentGroup
+      });
+      cb();
+    }, err => {
+      console.log(err);
+      cb();
+    });
   }
 
   /**
