@@ -40,7 +40,9 @@ export class AssessmentsGroupPage {
 
     // navigate from event page
     this.event = this.navParams.get('event') || {};
-    this.activity = this.event.activity;
+    if (!_.isEmpty(this.event)) {
+      this.activity = this.event.activity;
+    }
 
     this.assessment = this.activity.assessment;
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
