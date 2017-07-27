@@ -12,6 +12,9 @@ import { SubmissionService } from '../../services/submission.service';
 
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 
+import { TranslationService } from '../../shared/translation/translation.service';
+import { confirmMessages } from '../../app/messages';
+
 import * as _ from 'lodash';
 
 class ActivityBase {
@@ -46,13 +49,17 @@ export class AssessmentsPage {
   allowSubmit: any = true;
   submissions: any = [];
 
+  // confirm message variables
+  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
-    private submissionService: SubmissionService
+    private submissionService: SubmissionService,
+    private translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
     if (!this.activity) {
@@ -364,7 +371,7 @@ export class AssessmentsPage {
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Submit evidence',
-      message: 'Do you really want to submit this evidence?',
+      message: this.submitConfirmMessage,
       buttons: [
         {
           text: 'Okay',

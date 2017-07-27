@@ -13,7 +13,8 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from '../../../app/i18n-en';
+import { i18nData } from './assets/i18n-en'; 
+import { TranslationModule } from '../shared/translation/translation.module';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -32,7 +33,6 @@ import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
 import { GroupEmitterService } from '../components/questions/group-emitter.service';
-
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -47,8 +47,6 @@ import { FileQuestionComponent } from '../components/questions/file';
 import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
-
-
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -81,7 +79,6 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
-
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { TruncatePipe } from '../pipes/truncate.pipe';
@@ -89,7 +86,6 @@ import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
-
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
     return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
@@ -167,6 +163,7 @@ export function HttpLoaderFactory(http: Http) {
         deps: [Http]
       }
     }),
+    TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
        links: [
         {
