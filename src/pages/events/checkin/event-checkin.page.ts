@@ -12,6 +12,8 @@ import * as moment from 'moment';
 })
 export class EventCheckinPage {
   public event: any;
+  public submissions: any;
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -20,9 +22,11 @@ export class EventCheckinPage {
     private loadingCtrl: LoadingController
   ) {
       this.event = navParams.get('event');
+      this.submissions = navParams.get('submissions');
   }
 
   ionViewDidEnter() {
-    this.event = this.navParams.get('event');
+    console.log(this.event);
+    console.log(this.submissions);
   }
 }

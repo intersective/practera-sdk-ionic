@@ -199,28 +199,33 @@ export class EventsViewPage {
     loading.present().then(() => {
       // if submission exist
       console.log(this.submissions);
-      if (this.submissions.length > 0) {
-        loading.dismiss();
-        this.navCtrl.push(EventCheckinPage, {event: this.event});
-      } else { // get assessment and go checkin
-        this.assessmentService.getAll({
-          search: {
-            assessment_id: this.event.assessment.id,
-            structured: true
-          }
-        }).subscribe(assessments => {
-          let assessment = assessments[0],
-              assessmentGroup = assessment.AssessmentGroup[0];
+      this.assessmentService.getAll({
+        search: {
+          assessment_id: this.event.assessment.id,
+          structured: true
+        }
+      }).subscribe(assessments => {
+        let assessment = assessments[0],
+            assessmentGroup = assessment.AssessmentGroup[0];
 
-          loading.dismiss().then(() => {
+        loading.dismiss().then(() => {
+          if (this.submissions.length > 0) {
+            loading.dismiss();
+            this.navCtrl.push(EventCheckinPage, {
+              event,
+              submissions: this.submissions,
+              assessment: assessment.Assessment,
+              assessmentGroup: assessmentGroup
+            });
+          } else { // get assessment and go checkin
             this.navCtrl.push(AssessmentsGroupPage, {
               event,
               assessment: assessment.Assessment,
               assessmentGroup: assessmentGroup
             })
-          });
-        }, err => { loading.dismiss(); });
-      }
+          }
+        });
+      }, err => { loading.dismiss(); });
     })
   }
 

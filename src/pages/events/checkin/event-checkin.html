@@ -3,6 +3,7 @@
     <ion-title>Check-in</ion-title>
   </ion-navbar>
 </ion-header>
+
 <ion-content class="checkin">
   <ion-list class="selfie">
     <span>
@@ -26,5 +27,11 @@
     <span>
       Upload a on-minute video describing your experience and what skill you feel you have developed.
     </span>
+  </ion-list>
+
+  <ion-list>
+    <pre>
+      {{event | json}}
+    </pre>
   </ion-list>
 </ion-content>

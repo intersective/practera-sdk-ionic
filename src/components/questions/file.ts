@@ -33,7 +33,6 @@ export class FileQuestionComponent implements OnInit {
    * @description Upload file and trigger ngzone to update this.uploaded variable
    */
   upload(event) {
-    console.log(event);
     let self = this;
 
     this.fs.pick({

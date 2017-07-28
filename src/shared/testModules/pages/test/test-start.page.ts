@@ -12,9 +12,376 @@ import { LevelsListPage } from '../../../../pages/levels/list/list';
 import { LoginPage } from '../../../../pages/login/login';
 import { RegistrationPage } from '../../../../pages/registration/registration.page';
 import { SettingsPage } from '../../../../pages/settings/settings.page';
+import { EventCheckinPage } from '../../../../pages/events/checkin/event-checkin.page';
 import { TeamPage } from '../../../../pages/team/team';
 
 const PAGES = [
+  {
+    name: 'Check-in',
+    page: EventCheckinPage,
+    params: {
+      event: {
+        "id": 132,
+        "activity_id": 35,
+        "start": "2017-04-01 08:15:00",
+        "end": "2018-03-16 09:15:00",
+        "location": "location",
+        "title": "Year long",
+        "description": "Test",
+        "capacity": 40,
+        "remaining_capacity_percentage": 95,
+        "remaining_capacity": 38,
+        "isBooked": true,
+        "files": [],
+        "References": [
+          {
+            "context_id": 44,
+            "Assessment": {
+              "id": 37,
+              "name": "Event Assessment 1",
+              "context_id": 44
+            }
+          }
+        ],
+        "isAttended": false,
+        "startDisplay": "Saturday, Apr 1 at 4:15 PM",
+        "activity": {
+          "id": 35,
+          "milestone_id": 9,
+          "name": "Test Event",
+          "description": "",
+          "lead_image": null,
+          "video_url": "",
+          "order": null,
+          "instructions": "",
+          "is_locked": false,
+          "start": "2016-10-22 13:00:01",
+          "end": "2019-07-18 13:59:59",
+          "deadline": "2019-07-18 13:59:59",
+          "activity": {
+            "id": 35,
+            "milestone_id": 9,
+            "name": "Test Event",
+            "description": "",
+            "lead_image": null,
+            "video_url": "",
+            "order": null,
+            "instructions": "",
+            "is_locked": false,
+            "start": "2016-10-22 13:00:01",
+            "end": "2019-07-18 13:59:59",
+            "deadline": "2019-07-18 13:59:59"
+          },
+          "sequence": {
+            "id": 77,
+            "activity_id": 35,
+            "model": "Assess.Assessment",
+            "model_id": 37,
+            "order": 0,
+            "is_locked": false,
+            "Assess.Assessment": {
+              "id": 37,
+              "name": "Event Assessment 1",
+              "description": "Needs a description...",
+              "assessment_type": "checkin",
+              "is_live": true,
+              "is_team": false,
+              "score_type": "numeric",
+              "experience_id": 2,
+              "program_id": 4,
+              "deleted": false,
+              "deleted_date": null,
+              "comparison_group_size": 3,
+              "comparison_group_points": 10,
+              "review_period": 72,
+              "review_scope": "team",
+              "review_scope_id": null,
+              "created": "2016-06-23 06:07:39.681326",
+              "modified": "2017-07-25 16:20:27",
+              "review_instructions": null,
+              "is_repeatable": false,
+              "num_reviews": 1,
+              "review_type": "single",
+              "review_role": "mentor",
+              "auto_assign_reviewers": null,
+              "parent_id": null,
+              "auto_publish_reviews": false,
+              "context_id": 43
+            },
+            "context_id": 43
+          },
+          "assessment": {
+            "id": 37,
+            "name": "Event Assessment 1",
+            "description": "Needs a description...",
+            "assessment_type": "checkin",
+            "is_live": true,
+            "is_team": false,
+            "score_type": "numeric",
+            "experience_id": 2,
+            "program_id": 4,
+            "deleted": false,
+            "deleted_date": null,
+            "comparison_group_size": 3,
+            "comparison_group_points": 10,
+            "review_period": 72,
+            "review_scope": "team",
+            "review_scope_id": null,
+            "created": "2016-06-23 06:07:39.681326",
+            "modified": "2017-07-25 16:20:27",
+            "review_instructions": null,
+            "is_repeatable": false,
+            "num_reviews": 1,
+            "review_type": "single",
+            "review_role": "mentor",
+            "auto_assign_reviewers": null,
+            "parent_id": null,
+            "auto_publish_reviews": false,
+            "context_id": 43
+          },
+          "Activity": {
+            "id": 35,
+            "milestone_id": 9,
+            "name": "Test Event",
+            "description": "",
+            "lead_image": null,
+            "video_url": "",
+            "order": null,
+            "instructions": "",
+            "is_locked": false,
+            "start": "2016-10-22 13:00:01",
+            "end": "2019-07-18 13:59:59",
+            "deadline": "2019-07-18 13:59:59",
+            "activity": {
+              "id": 35,
+              "milestone_id": 9,
+              "name": "Test Event",
+              "description": "",
+              "lead_image": null,
+              "video_url": "",
+              "order": null,
+              "instructions": "",
+              "is_locked": false,
+              "start": "2016-10-22 13:00:01",
+              "end": "2019-07-18 13:59:59",
+              "deadline": "2019-07-18 13:59:59"
+            },
+            "sequence": {
+              "id": 77,
+              "activity_id": 35,
+              "model": "Assess.Assessment",
+              "model_id": 37,
+              "order": 0,
+              "is_locked": false,
+              "Assess.Assessment": {
+                "id": 37,
+                "name": "Event Assessment 1",
+                "description": "Needs a description...",
+                "assessment_type": "checkin",
+                "is_live": true,
+                "is_team": false,
+                "score_type": "numeric",
+                "experience_id": 2,
+                "program_id": 4,
+                "deleted": false,
+                "deleted_date": null,
+                "comparison_group_size": 3,
+                "comparison_group_points": 10,
+                "review_period": 72,
+                "review_scope": "team",
+                "review_scope_id": null,
+                "created": "2016-06-23 06:07:39.681326",
+                "modified": "2017-07-25 16:20:27",
+                "review_instructions": null,
+                "is_repeatable": false,
+                "num_reviews": 1,
+                "review_type": "single",
+                "review_role": "mentor",
+                "auto_assign_reviewers": null,
+                "parent_id": null,
+                "auto_publish_reviews": false,
+                "context_id": 43
+              },
+              "context_id": 43
+            },
+            "assessment": {
+              "id": 37,
+              "name": "Event Assessment 1",
+              "description": "Needs a description...",
+              "assessment_type": "checkin",
+              "is_live": true,
+              "is_team": false,
+              "score_type": "numeric",
+              "experience_id": 2,
+              "program_id": 4,
+              "deleted": false,
+              "deleted_date": null,
+              "comparison_group_size": 3,
+              "comparison_group_points": 10,
+              "review_period": 72,
+              "review_scope": "team",
+              "review_scope_id": null,
+              "created": "2016-06-23 06:07:39.681326",
+              "modified": "2017-07-25 16:20:27",
+              "review_instructions": null,
+              "is_repeatable": false,
+              "num_reviews": 1,
+              "review_type": "single",
+              "review_role": "mentor",
+              "auto_assign_reviewers": null,
+              "parent_id": null,
+              "auto_publish_reviews": false,
+              "context_id": 43
+            }
+          },
+          "ActivitySequence": [
+            {
+              "id": 77,
+              "activity_id": 35,
+              "model": "Assess.Assessment",
+              "model_id": 37,
+              "order": 0,
+              "is_locked": false,
+              "Assess.Assessment": {
+                "id": 37,
+                "name": "Event Assessment 1",
+                "description": "Needs a description...",
+                "assessment_type": "checkin",
+                "is_live": true,
+                "is_team": false,
+                "score_type": "numeric",
+                "experience_id": 2,
+                "program_id": 4,
+                "deleted": false,
+                "deleted_date": null,
+                "comparison_group_size": 3,
+                "comparison_group_points": 10,
+                "review_period": 72,
+                "review_scope": "team",
+                "review_scope_id": null,
+                "created": "2016-06-23 06:07:39.681326",
+                "modified": "2017-07-25 16:20:27",
+                "review_instructions": null,
+                "is_repeatable": false,
+                "num_reviews": 1,
+                "review_type": "single",
+                "review_role": "mentor",
+                "auto_assign_reviewers": null,
+                "parent_id": null,
+                "auto_publish_reviews": false,
+                "context_id": 43
+              },
+              "context_id": 43
+            }
+          ],
+          "References": [
+            {
+              "context_id": 43,
+              "Assessment": {
+                "id": 37,
+                "name": "Event Assessment 1"
+              }
+            }
+          ]
+        },
+        "coverUrl": "/assets/img/static/event-cover-3.jpg",
+        "assessment": {
+          "id": 37,
+          "name": "Event Assessment 1",
+          "context_id": 44
+        },
+        "context_id": 44
+      },
+      submissions: [
+        {
+          "id": 20,
+          "submitter_id": 20,
+          "created": "2017-07-28 03:05:36",
+          "modified": "2017-07-28 03:05:38",
+          "status": "in progress",
+          "assessment_id": 37,
+          "order": null,
+          "submitted": null,
+          "team_id": null,
+          "program_id": 4,
+          "activity_id": 132,
+          "score": null,
+          "moderated_score": "0",
+          "publish_date": null,
+          "review_score": "0",
+          "timeline_id": 5,
+          "context_id": 44,
+          "assessment": {
+            "id": 37,
+            "name": "Event Assessment 1",
+            "description": "Needs a description...",
+            "assessment_type": "checkin",
+            "is_live": true,
+            "is_team": false,
+            "score_type": "numeric",
+            "experience_id": 2,
+            "program_id": 4,
+            "deleted": false,
+            "deleted_date": null,
+            "comparison_group_size": 3,
+            "comparison_group_points": 10,
+            "review_period": 72,
+            "review_scope": "team",
+            "review_scope_id": null,
+            "created": "2016-06-23 06:07:39.681326",
+            "modified": "2017-07-25 16:20:27",
+            "review_instructions": null,
+            "is_repeatable": false,
+            "num_reviews": 1,
+            "review_type": "single",
+            "review_role": "mentor",
+            "visibility": {
+              "guest": false,
+              "participant": true,
+              "mentor": true,
+              "coordinator": true,
+              "admin": false,
+              "team": false,
+              "sysadmin": false
+            },
+            "auto_assign_reviewers": null,
+            "parent_id": null,
+            "auto_publish_reviews": false
+          },
+          "answer": [
+            {
+              "id": 75,
+              "assessment_submission_id": 20,
+              "comment": null,
+              "assessment_question_id": 129,
+              "answer": 284,
+              "score": "0"
+            },
+            {
+              "id": 76,
+              "assessment_submission_id": 20,
+              "comment": null,
+              "assessment_question_id": 132,
+              "answer": {
+                "filename": "stuckhere.png",
+                "handle": "iALqct8jRSuKhVs3NB8C",
+                "mimetype": "image/png",
+                "originalPath": "stuckhere.png",
+                "size": 195280,
+                "source": "local_file_system",
+                "url": "https://cdn.filestackcontent.com/iALqct8jRSuKhVs3NB8C",
+                "status": "Stored",
+                "icon": "fa-image",
+                "key": "iALqct8jRSuKhVs3NB8C"
+              },
+              "score": "0"
+            }
+          ],
+          "review": []
+        }
+      ]
+    }
+  },
   {
     name: 'Multiple Choice Questions',
     page: AssessmentsGroupPage,
@@ -634,7 +1001,7 @@ const PAGES = [
   {
     name: 'Achievement View',
     page: AchievementsViewPage
-  },
+  }
 ];
 
 @Component({

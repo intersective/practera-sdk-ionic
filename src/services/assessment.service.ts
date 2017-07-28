@@ -25,6 +25,8 @@ export class ChoiceBase<T> {
 
 export class QuestionBase<T> {
   id: number;
+  question_id: number;
+  group_id: number;
   assessment_id: number;
   name: string;
   type: string;
@@ -33,6 +35,7 @@ export class QuestionBase<T> {
   choices?: ChoiceBase<any>[];
   answer?: any;
   required?: boolean;
+  order?: string | number;
 
   constructor(id, assessment_id, name, type) {
     this.id = id;
@@ -253,9 +256,9 @@ export class AssessmentService {
 
     return {
       id: group.id,
+      assessment_id: group.assessment_id,
       name: group.name,
       description: group.description,
-      assessment_id: group.assessment_id,
       questions: thisQuestions,
       order: group.order,
     }
@@ -295,24 +298,25 @@ export class AssessmentService {
       "order": null,
     }
    */
-  public normaliseQuestion(question) {
+  public normaliseQuestion(question): QuestionBase<any> {
     let thisQuestion = question.AssessmentQuestion;
-    let thisChoices = thisQuestion.AssessmentQuestionChoice;
+    let choices = thisQuestion.AssessmentQuestionChoice;
 
-    thisChoices = thisChoices.map(choice => {
+    choices = choices.map(choice => {
       return this.normaliseChoice(choice);
     });
 
     return {
       id: question.id,
-      assessment_question_id: question.assessment_question_id,
-      assessment_group_id: question.assessment_group_id,
+      assessment_id: question.assessment_question_id,
+      question_id: question.assessment_question_id,
+      group_id: question.assessment_group_id,
       name: thisQuestion.name,
-      question_type: thisQuestion.question_type,
-      file_type: thisQuestion.file_type,
-      is_required: thisQuestion.is_required,
+      type: thisQuestion.question_type,
       audience: thisQuestion.audience,
-      choices: thisChoices,
+      file_type: thisQuestion.file_type,
+      required: thisQuestion.is_required,
+      choices: choices,
       order: question.order
     };
   }
@@ -320,12 +324,12 @@ export class AssessmentService {
   /*
     turn "AssessmentQuestionChoice" array format from:
     {
+      "id": 275,
+      "assessment_question_id": 104,
+      "assessment_choice_id": 275,
       "order": 1,
       "weight": "1",
       "explanation": null,
-      "assessment_choice_id": 275,
-      "id": 275,
-      "assessment_question_id": 104,
       "AssessmentChoice": {
         "id": 275,
         "name": "New Choice 1",
@@ -344,12 +348,12 @@ export class AssessmentService {
       "weight": "1",
     }
    */
-  public normaliseChoice(choice) {
+  public normaliseChoice(choice): ChoiceBase<any> {
     return {
       id: choice.id, // same as assessment_choice_id & AssessmentChoice.id & id
-      value: choice.assessment_choice_id,
-      name: choice.name,
-      description: choice.description,
+      value: choice.assessment_choice_id, // or choice.id (similar id used as "assessment_choice_id")
+      name: choice.AssessmentChoice.name,
+      description: choice.AssessmentChoice.description,
       explanation: choice.explanation,
       order: choice.order,
       weight: choice.weight
