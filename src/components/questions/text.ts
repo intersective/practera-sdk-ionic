@@ -13,7 +13,5 @@ export class TextQuestionComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {
-    console.log(this.form);
-  }
+  ngOnInit() {}
 }

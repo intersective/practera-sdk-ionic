@@ -13,12 +13,8 @@ export class OneofQuestionComponent implements OnInit {
 
   constructor() {}
   change(e) {
-    console.log(e);
-    console.log(this.question);
     this.oneofForm.emit(e);
   }
 
-  ngOnInit() {
-    console.log(this.form);
-  }
+  ngOnInit() {}
 }
