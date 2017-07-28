@@ -84,11 +84,11 @@ export class ActivitiesListPage implements OnInit {
     let getCharacter = this.charactersService.getCharacter();
     let getSubmission = this.submissionService.getSubmissions();
     Observable.forkJoin([getSubmission, getCharacter])
+    // Observable.forkJoin([getSubmission]) // this line will be removed when ISDK-57 is merged
               .subscribe(results => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
                     if(element.AssessmentSubmission.status == 'published'){
-                      // console.log("published score: ", element.AssessmentSubmission.moderated_score);
                       this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
                     }
                   });
