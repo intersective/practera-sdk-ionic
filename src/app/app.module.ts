@@ -13,7 +13,7 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from './assets/i18n-en'; 
+import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 // services
 import { AchievementService } from '../services/achievement.service';
@@ -81,6 +81,7 @@ import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
+import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 
@@ -140,6 +141,7 @@ export function HttpLoaderFactory(http: Http) {
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
+    UcfirstPipe,
     EscapeHtmlPipe,
   ],
   imports: [
