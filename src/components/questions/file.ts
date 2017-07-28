@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 })
 export class FileQuestionComponent implements OnInit {
   @Input() question;
+  @Input() disabled;
   @Input() form: FormGroup;
 
   uploaded: any; // uploaded file (support single only)
