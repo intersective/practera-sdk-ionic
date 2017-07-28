@@ -23,6 +23,7 @@ export class AssessmentsGroupPage {
   assessment: any;
   assessmentGroup: any;
   cacheKey: any; // to render & display stored
+  canUpdateInput: boolean = false;
 
   constructor(
     private navParams: NavParams,
@@ -52,13 +53,39 @@ export class AssessmentsGroupPage {
     this.submissions = this.navParams.get('submissions') || {};
 
     // preset key used for caching later (locally and remote data)
-
+    this.canUpdateInput = this.isInputEditable();
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
     this.questions = this.mapQuestionsFeedback(this.questions, this.submissions);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
 
+    console.log('this.submissions', this.submissions);
+    console.log('this.assessment', this.assessment);
     console.log('this.questions', this.questions);
   }
+
+  /**
+   * @description check answers are editable
+   *    Must define submissions first
+   * @type {boolen}
+   */
+   private isInputEditable = ():boolean => {
+     let editable = false;
+     if (!this.submission) {
+       return true;
+     }
+
+     _.forEach(this.submissions, (submission) => {
+       _.forEach(submission, (subm) => {
+         if (
+           subm.AssessmentSubmission &&
+           subm.AssessmentSubmission.status === 'in progress'
+         ) {
+           editable = true;
+         }
+       });
+     });
+     return editable;
+   }
 
   /**
    * @description use proper context id based on situation
