@@ -36,5 +36,8 @@ export class SubmissionService {
 
     return photos;
   }
-
+  // get user submissions data
+  public getSubmissionsData() {
+    return this.request.get(this.targetUrl);
+  }
 }
