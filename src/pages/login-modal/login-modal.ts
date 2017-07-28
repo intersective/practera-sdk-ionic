@@ -10,7 +10,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
@@ -97,11 +97,13 @@ export class LoginModalPage {
                 data => {
                   self.cacheService.setLocalObject('program_id', data.User.program_id);
                   self.cacheService.setLocalObject('project_id', data.User.project_id);
+                  self.cacheService.setLocalObject('user', data.User);
                 },
                 err => {
                   console.log(err);
                 }
               );
+
           // get milestone data after login
           this.milestoneService.getMilestones()
               .subscribe(
