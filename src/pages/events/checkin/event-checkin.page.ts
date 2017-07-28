@@ -24,6 +24,5 @@ export class EventCheckinPage {
 
   ionViewDidEnter() {
     this.event = this.navParams.get('event');
-    // console.log("Event Data:", this.event);
   }
 }

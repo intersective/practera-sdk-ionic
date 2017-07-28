@@ -22,6 +22,7 @@ export class AssessmentsGroupPage {
   submissions: any;
   assessment: any;
   assessmentGroup: any;
+  cacheKey: any; // to render & display stored
 
   constructor(
     private navParams: NavParams,
@@ -41,12 +42,16 @@ export class AssessmentsGroupPage {
     // navigate from event page
     this.event = this.navParams.get('event') || {};
     if (!_.isEmpty(this.event)) {
-      this.activity = this.event.activity;
+      this.activity = this.event;
     }
 
     this.assessment = this.activity.assessment;
+    this.cacheKey = `assessment.group.${this.assessment.context_id}`;
+
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submissions = this.navParams.get('submissions') || {};
+
+    // preset key used for caching later (locally and remote data)
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
@@ -155,7 +160,9 @@ export class AssessmentsGroupPage {
       AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
-    this.cache.setLocal(`assessment.group.${this.activity.assessment.id}`, JSON.stringify(submission));
+
+    // local cache key
+    this.cache.setLocal(this.cacheKey, JSON.stringify(submission));
     return submission;
   };
 
@@ -163,7 +170,7 @@ export class AssessmentsGroupPage {
    * @description retrieve saved progress from localStorage
    */
   retrieveProgress = (questions: Array<any>) => {
-    let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.id}`);
+    let cachedProgress = this.cache.getLocalObject(this.cacheKey);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
