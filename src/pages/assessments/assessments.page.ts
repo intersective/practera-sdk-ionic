@@ -46,7 +46,7 @@ export class AssessmentsPage {
   // assessment: any = {};
   assessmentGroups: any = [];
   assessmentQuestions: any = [];
-  allowSubmit: any = true;
+  allowSubmit: boolean = false;
   submissions: any = [];
 
   // confirm message variables
@@ -144,8 +144,9 @@ export class AssessmentsPage {
 
         _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
           _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
-            // Inject empty answer
+            // Inject empty answer fields
             assessments[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
+            assessments[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.reviewerAnswer = null;
 
             // Find submission
             _.forEach(allSubmissions, (submissions) => {
@@ -153,6 +154,12 @@ export class AssessmentsPage {
                 _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
                   if (answer.assessment_question_id === question.id) {
                     this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
+                  }
+                });
+
+                _.forEach(submission.AssessmentReviewAnswer, (reviewerAnswer) => {
+                  if (reviewerAnswer.assessment_question_id === question.id) {
+                    this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.reviewerAnswer = reviewerAnswer;
                   }
                 });
               });
@@ -167,6 +174,19 @@ export class AssessmentsPage {
           _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
             if (q.AssessmentQuestion.answer !== null) {
               assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
+            }
+          });
+
+          assessments[i][j].AssessmentGroup[k].reviewerFeedback = 0;
+          _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
+            // System will not count as feedback given
+            // when the reviewer's answer and comment are empty
+            if (
+              q.AssessmentQuestion.reviewerAnswer !== null &&
+              q.AssessmentQuestion.reviewerAnswer.answer !== null &&
+              q.AssessmentQuestion.reviewerAnswer.comment !== null
+            ) {
+              assessments[i][j].AssessmentGroup[k].reviewerFeedback += 1;
             }
           });
         });

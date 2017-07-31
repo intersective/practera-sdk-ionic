@@ -8,8 +8,9 @@
 
         <span class="title">{{ group.name }}</span>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
-        <div class="status completed" *ngIf="group.answeredQuestions == group.totalQuestions">Completed</div>
-        <div class="status incomplete" *ngIf="group.answeredQuestions !== group.totalQuestions">Incomplete</div>
+        <div class="status feedback-available" *ngIf="group.reviewerFeedback > 0">Feedback Available</div>
+        <div class="status completed" *ngIf="group.reviewerFeedback === 0 && group.answeredQuestions == group.totalQuestions">Completed</div>
+        <div class="status incomplete" *ngIf="group.reviewerFeedback === 0 && group.answeredQuestions !== group.totalQuestions">Incomplete</div>
       </div>
     </ion-card-content>
   </ion-card>

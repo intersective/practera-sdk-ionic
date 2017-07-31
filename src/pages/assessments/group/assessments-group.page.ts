@@ -54,7 +54,7 @@ export class AssessmentsGroupPage {
 
     // preset key used for caching later (locally and remote data)
     this.canUpdateInput = this.isInputEditable();
-    this.published = this.isPublished();
+    this.published = this.assessmentService.isPublished(this.submissions);
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
     this.questions = this.mapQuestionsFeedback(this.questions, this.submissions);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
@@ -63,26 +63,6 @@ export class AssessmentsGroupPage {
     console.log('this.assessment', this.assessment);
     console.log('this.questions', this.questions);
   }
-
-  /**
-   * @description check feedback can show
-   *    Must define submissions first
-   * @type {boolen}
-   */
-   private isPublished = ():boolean => {
-     let published = false;
-     _.forEach(this.submissions, (submission) => {
-       _.forEach(submission, (subm) => {
-         if (
-           subm.AssessmentSubmission &&
-           subm.AssessmentSubmission.status === 'published'
-         ) {
-           published = true;
-         }
-       });
-     });
-     return published;
-   }
 
   /**
    * @description check answers are editable

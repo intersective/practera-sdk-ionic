@@ -41,6 +41,10 @@ questionGroup {
     .incomplete {
       color: $toolbar-inactive-color
     }
+
+    .feedback-available {
+      color: $soft-green
+    }
   }
 
   .answer {
