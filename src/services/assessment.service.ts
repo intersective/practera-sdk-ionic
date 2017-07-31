@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
 
+import * as _ from 'lodash';
+
 class Assessment {
   id: number;
   context_id: number;
@@ -51,6 +53,25 @@ export class Submission {
 @Injectable()
 export class AssessmentService {
   constructor(private request: RequestService) {}
+
+  /**
+   * @description check feedback can show
+   * @type {boolen}
+   */
+   public isPublished(submissions: any):boolean {
+     let published = false;
+     _.forEach(submissions, (submission) => {
+       _.forEach(submission, (subm) => {
+         if (
+           subm.AssessmentSubmission &&
+           subm.AssessmentSubmission.status === 'published'
+         ) {
+           published = true;
+         }
+       });
+     });
+     return published;
+   }
 
   // listAll()
   public getAll(options?: any) {
