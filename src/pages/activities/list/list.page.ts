@@ -3,13 +3,12 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController,
-  AlertController
+  ModalController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { loadingMessages, errMessages } from '../../../app/messages';
 import 'rxjs/add/observable/forkJoin';
 import 'rxjs/add/operator/map';
 // services
@@ -52,14 +51,13 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translationService: TranslationService,
-    public alertCtrl: AlertController
+    public translationService: TranslationService
   ) {}
   // shiftLanguageTrial(){
   //   this.shiftLang = !this.shiftLang;
   //   this.translationService.isTranslated(this.shiftLang);
-  // }               
-  ngOnInit(){ 
+  // }
+  ngOnInit(){
     this.loadingAchievements();
   }
   // display user achievemnt statistics score points
@@ -83,9 +81,9 @@ export class ActivitiesListPage implements OnInit {
                   this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
                   (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
                 }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
-                  this.pointPercentage = 100; 
+                  this.pointPercentage = 100;
                 }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
-                  this.currentPoints = 0; 
+                  this.currentPoints = 0;
                   this.maxPoints = 0;
                   this.pointPercentage = 0;
                 }
@@ -132,34 +130,9 @@ export class ActivitiesListPage implements OnInit {
         )
   }
 
-  /**
-   * @TODO: remove this feature after development near complete
-   * Prompt user to skip loading to skip forced long wait of API
-   * @param {Function} cb callback if user choose to load API call
-   */
-  promptSkipLoading(cb: Function) {
-    let prompt = this.alertCtrl.create({
-      title: "Skip loading?",
-      message: "Skip to speed up development (skip waiting).",
-      buttons: [
-        {
-          text: 'Load it',
-          handler: data => {
-            return cb();
-          }
-        },
-        {
-          text: 'Skip',
-          handler: data => console.log(data)
-        }
-      ]
-    })
-    prompt.present();
-  }
-
   // load activity data
   ionViewWillEnter() {
-    this.promptSkipLoading(this.loadingActivities);
+    this.loadingActivities();
   }
   // refresher activities
   doRefresh(e) {
