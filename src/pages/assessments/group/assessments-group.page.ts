@@ -34,8 +34,7 @@ export class AssessmentsGroupPage {
     private assessmentService: AssessmentService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
-  ) {
-  }
+  ) {}
 
   ionViewDidEnter() {
     // navigate from activity page
@@ -320,72 +319,12 @@ export class AssessmentsGroupPage {
     let result = [];
 
     (questions || []).forEach((question) => {
-      let assessmentQuestion = question.AssessmentQuestion;
-      let choices = assessmentQuestion.AssessmentQuestionChoice || [];
-      if (choices.length > 0) {
-        choices = this.normaliseChoices(choices);
-      }
-
-      let normalised: QuestionBase<any> = {
-        id: assessmentQuestion.id,
-        assessment_id: question.assessment_group_id,
-        name: assessmentQuestion.name,
-        type: assessmentQuestion.question_type,
-        audience: assessmentQuestion.audience,
-        file_type: assessmentQuestion.file_type,
-        required: assessmentQuestion.is_required,
-        choices: choices,
-        answer: assessmentQuestion.answer
-      };
+      let normalised = this.assessmentService.normaliseQuestion(question);
 
       result.push(normalised);
     });
 
     return result;
-  };
-
-  /* turn raw API respond format from:
-    {
-      "id": 123,
-      "assessment_question_id": 124,
-      "assessment_choice_id": 123,
-      "order": 1,
-      "weight": "1",
-      "explanation": null,
-      "AssessmentChoice": {
-          "id": 123,
-          "name": "Testing name",
-          "description": "Testing description"
-      }
-    }
-
-    to Choices type format:
-    {
-      "id": 123,
-      "value": 123, // or choice id
-      "name": "Testing name",
-      "description": "Testing description",
-      "explanation": null,
-      "order": 1,
-      "weight": "1"
-    }
-   */
-  private normaliseChoices = (assessmentQuestionChoice) => {
-    let results: ChoiceBase<any>[] = [];
-    assessmentQuestionChoice.forEach(choice => {
-      let assessmentChoice = choice.AssessmentChoice;
-      results.push({
-        id: choice.id,
-        value: choice.assessment_choice_id, // or choice.id (similar id used as "assessment_choice_id")
-        name: assessmentChoice.name,
-        description: assessmentChoice.description,
-        explanation: choice.explanation,
-        order: choice.order,
-        weight: choice.weight
-      });
-    });
-
-    return results;
   };
 
   /**
