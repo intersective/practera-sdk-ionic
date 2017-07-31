@@ -35,12 +35,17 @@
     "PASSWORDFORGOT": "Forget Your Password?"
   },
   "REGISTRATION": {
-    "DONE": "Done",
     "HEADER": "Great - you are almost there! Just one more thing...",
     "PAGETITLE": "Set Password"
   },
+  "RANKING": {
+    "DETAIL": "Ranking Details",
+    "ME": "Me",
+    "MONTHLYPOINTS": "Points(Monthly)",
+    "PAGETITLE": "Monthly Ranking",
+    "TOTALPOINTS": "Points(Total)"
+  },
   "RESETPASSWORD": {
-    "DONE": "Done",
     "PAGETITLE": "Reset Password"
   },
   "SETTINGS": {
