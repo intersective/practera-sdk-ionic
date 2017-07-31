@@ -177,7 +177,6 @@ export class AssessmentsPage {
   }
 
   loadQuestions(): Promise<any> {
-    let self = this;
     return new Promise((resolve, reject) => {
 
       // get_assessments request with "assessment_id" & "structured"
@@ -266,16 +265,19 @@ export class AssessmentsPage {
 
                 console.log('this.assessmentGroups', this.assessmentGroups);
                 console.log('allowSubmit', this.allowSubmit);
-                resolve();
+                resolve({
+                  assessmentGroups: this.assessmentGroups,
+                  submissions: this.submissions
+                });
               },
               (err) => {
                 console.log('err', err);
-                reject();
+                reject(err);
               });
           },
-          (e) => {
-            console.log('e', e);
-            reject();
+          (err) => {
+            console.log('e', err);
+            reject(err);
           }
         );
     });
