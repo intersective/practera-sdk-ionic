@@ -9,17 +9,6 @@ export class SubmissionService {
 
   constructor(private request: RequestService) {}
 
-  /**
-   * @description get status for submission
-   * @type {any} return false when status not found, otherwise status in text
-   */
-  public getStatus(submissions: any):any {
-    if (_.isEmpty(submissions[0][0].AssessmentSubmission)) {
-      return false;
-    }
-    return submissions[0][0].AssessmentSubmission.status;
-  }
-
   // list()
   public getSubmissions(options?: any) {
     return this.request.get(this.targetUrl, options);
