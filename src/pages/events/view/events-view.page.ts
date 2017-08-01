@@ -209,21 +209,14 @@ export class EventsViewPage {
             assessmentGroup = assessment.AssessmentGroup[0];
 
         loading.dismiss().then(() => {
-          if (this.submissions.length > 0) {
-            loading.dismiss();
-            this.navCtrl.push(EventCheckinPage, {
-              event,
-              submissions: this.submissions,
-              assessment: assessment.Assessment,
-              assessmentGroup: assessmentGroup
-            });
-          } else { // get assessment and go checkin
-            this.navCtrl.push(AssessmentsGroupPage, {
-              event,
-              assessment: assessment.Assessment,
-              assessmentGroup: assessmentGroup
-            })
-          }
+          this.navCtrl.push(AssessmentsGroupPage, {
+            event,
+            // event checkin would just accept one event submission,
+            // so here we get first one with `this.submissions[0]`
+            submission: this.submissions[0],
+            assessment: assessment.Assessment,
+            assessmentGroup: assessmentGroup
+          });
         });
       }, err => { loading.dismiss(); });
     })

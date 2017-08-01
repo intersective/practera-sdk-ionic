@@ -21,6 +21,9 @@ export class ActivitiesViewPage {
     obtained: {},
     maxPoints: {}
   };
+  loadings = {
+    submissions: false
+  };
 
   constructor(
     private navParams: NavParams,
@@ -41,15 +44,15 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
-    // badges
-    this.achievements = this.navParams.get('achievements');
-    console.log('achivements', this.achievements);
+    this.loadings.submissions = true;
 
+    // assessment
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
-
     this.assessment = this.activity.assessment;
 
+
+    // submission
     this.submissions = [];
     this.submissionService.getSubmissions({
       search: { context_id: this.assessment.context_id }
@@ -61,8 +64,12 @@ export class ActivitiesViewPage {
         });
         console.log(this.submissions);
       }
+
+      this.loadings.submissions = false;
     });
 
+    // badges
+    this.achievements = this.navParams.get('achievements');
     this.activity.badges = this.extractBadges();
     this.activity.badges.map((badge, index) => {
       if ((this.activity.id % 3) != 0) {
@@ -88,7 +95,6 @@ export class ActivitiesViewPage {
     return result;
   }
 
-
   /**
    * @description display activity detail modal page
    */
@@ -96,6 +102,7 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
+
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity
@@ -103,10 +110,13 @@ export class ActivitiesViewPage {
    *                          activities respond from get_activities API
    */
   goAssessment(activity) {
+    let inProgress = _.find(this.submissions, {status: 'in progress'});
+
     this.navCtrl.push(AssessmentsPage, {
       activity,
       assessment: this.assessment,
-      submissions: this.submissions
+      submissions: this.submissions,
+      inProgress
     });
   }
 }
