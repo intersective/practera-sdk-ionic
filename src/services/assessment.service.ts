@@ -338,7 +338,8 @@ export class AssessmentService {
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
       choices: choices,
-      order: question.order
+      order: question.order,
+      answer: thisQuestion.answer
     };
   }
 

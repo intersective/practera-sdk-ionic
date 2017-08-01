@@ -65,7 +65,8 @@ export class AssessmentsPage {
       throw "Fatal Error: Activity not available";
     }
 
-    this.activity = this.normaliseActivity(this.activity);
+    // @TODO move this to activity service
+    // this.activity = this.normaliseActivity(this.activity);
     console.log('this.activity', this.activity);
   }
 
