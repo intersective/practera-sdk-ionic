@@ -2,7 +2,9 @@
 	<ion-navbar>
 		<ion-title>Assessment Group</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="save()" disabled="{{canUpdateInput}}">Save</button>
+      <button ion-button (click)="save()" [disabled]="!canUpdateInput">
+        Save
+      </button>
     </ion-buttons>
 	</ion-navbar>
 </ion-header>
@@ -30,28 +32,28 @@
     <oneof-question
       [question]="question"
       [form]="formGroup[question.id]"
-      [disabled]="canUpdateInput"
+      [disabled]="!canUpdateInput"
       *ngSwitchCase="'oneof'"></oneof-question>
 
     <!-- type: oneOf -->
     <multiple-question
       [question]="question"
       [form]="formGroup[question.id]"
-      [disabled]="canUpdateInput"
+      [disabled]="!canUpdateInput"
       *ngSwitchCase="'multiple'"></multiple-question>
 
     <!-- type: file -->
     <file-question
       [question]="question"
       [form]="formGroup[question.id]"
-      [disabled]="canUpdateInput"
+      [disabled]="!canUpdateInput"
       *ngSwitchCase="'file'"></file-question>
 
     <!-- type: text -->
     <text-question
       [question]="question"
       [form]="formGroup[question.id]"
-      [disabled]="canUpdateInput"
+      [disabled]="!canUpdateInput"
       *ngSwitchCase="'text'"></text-question>
 
     <!-- Reviewer's answer and comment -->
