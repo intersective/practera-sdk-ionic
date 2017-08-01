@@ -9,8 +9,18 @@
         <span class="title">{{ group.name }}</span>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
         <div class="status feedback-available" *ngIf="group.reviewerFeedback > 0">Feedback Available</div>
-        <div class="status completed" *ngIf="group.reviewerFeedback === 0 && group.answeredQuestions == group.totalQuestions">Completed</div>
-        <div class="status incomplete" *ngIf="group.reviewerFeedback === 0 && group.answeredQuestions !== group.totalQuestions">Incomplete</div>
+        <div class="status completed" *ngIf="
+          group.submission &&
+          group.submission.status !== 'in progress'
+        ">
+          Completed
+        </div>
+        <div class="status incomplete" *ngIf="
+          !group.submission ||
+          group.submission.status === 'in progress'
+        ">
+          Incomplete
+        </div>
       </div>
     </ion-card-content>
   </ion-card>
