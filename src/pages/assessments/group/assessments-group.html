@@ -8,6 +8,12 @@
 </ion-header>
 
 <ion-content class="groups-question" padding>
+  <ion-list *ngIf="inProgress">
+    <ion-list-header>
+      In Progress
+    </ion-list-header>
+  </ion-list>
+
   <ion-list text-wrap *ngIf="assessmentGroup">
     <h6 class="strong center">{{assessmentGroup.name}}</h6>
     <p [innerHTML]="assessment.description"></p>

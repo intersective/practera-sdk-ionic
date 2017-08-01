@@ -23,6 +23,7 @@ export class AssessmentsGroupPage {
   assessmentGroup: any;
   cacheKey: any; // to render & display stored
   answers: any; // to render & display submitted answers
+  inProgress: boolean | any;
 
   constructor(
     private navParams: NavParams,
@@ -116,7 +117,6 @@ export class AssessmentsGroupPage {
       }
 
       result[question.id] = new FormGroup(group);
-
     });
 
     return result;
@@ -128,6 +128,10 @@ export class AssessmentsGroupPage {
    * @return {object} formatted submission answer
    */
   private formInProgressAnswer(submission) {
+    if (_.isEmpty(submission)) {
+      return false;
+    }
+
     let answers = {};
     submission.answer.forEach(ans => {
       answers[ans.assessment_question_id] = {
@@ -314,6 +318,7 @@ export class AssessmentsGroupPage {
           },
           reject => {
             loading.dismiss().then(() => {
+              failureAlert.data.title = reject.msg || failureAlert.data.title;
               failureAlert.present().then(() => {
                 console.log('Unable to save', reject);
               });

@@ -151,6 +151,14 @@ export class AssessmentsPage {
             // Find submission
             _.forEach(allSubmissions, (submissions) => {
               _.forEach(submissions, (submission) => {
+                // attach existing submission to assessment group it belongs to
+                let normalisedSubmission = this.submissionService.normalise(submission);
+                let group = this.assessmentGroups[i][j].AssessmentGroup[k];
+
+                if (group.assessment_id === normalisedSubmission.assessment_id) {
+                  this.assessmentGroups[i][j].AssessmentGroup[k].submission = normalisedSubmission;
+                }
+
                 _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
                   if (answer.assessment_question_id === question.id) {
                     this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
@@ -395,6 +403,7 @@ export class AssessmentsPage {
     this.navCtrl.push(AssessmentsGroupPage, {
       assessmentGroup,
       activity,
+      submission: assessmentGroup.submission, // use back the one back from ActivityViewPage
       assessment: this.assessment, // use back the one back from ActivityViewPage
       submissions: this.navParams.get('submissions')
     });
