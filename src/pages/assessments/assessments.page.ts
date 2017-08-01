@@ -64,59 +64,71 @@ export class AssessmentsPage {
     _.forEach(assessments, (group, i) => {
       _.forEach(group, (assessment, j) => {
 
-        _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
-          _.forEach(assessmentGroup.AssessmentGroupQuestion, (question, l) => {
-            // Inject empty answer fields
-            assessments[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = null;
-            assessments[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.reviewerAnswer = null;
+        // normalise
+        assessments[i][j] = assessment = this.assessmentService.normalise(assessment);
+        console.log('assessment', assessment);
 
-            // Find submission
+        _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
+          _.forEach(assessmentGroup.questions, (question, l) => {
+            // Inject empty answer fields
+            assessments[i][j].AssessmentGroup[k].questions[l].answer = {};
+            assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = {};
+
+            // find submission
             _.forEach(allSubmissions, (submissions) => {
               _.forEach(submissions, (submission) => {
-                // found user answer
+                // find user answer
                 _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
                   if (answer.assessment_question_id === question.id) {
-                    this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
+                    assessments[i][j].AssessmentGroup[k].questions[l].answer = answer;
                   }
                 });
 
-                // found reviewer feedback
+                // find reviewer feedback
                 _.forEach(submission.AssessmentReviewAnswer, (reviewerAnswer) => {
                   if (reviewerAnswer.assessment_question_id === question.id) {
-                    this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.reviewerAnswer = reviewerAnswer;
+                    assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = reviewerAnswer;
                   }
                 });
               });
             });
+
           });
 
           // Summarise basic answer information
           // get total number of questions
-          assessments[i][j].AssessmentGroup[k].totalQuestions =
-            _.size(assessmentGroup.AssessmentGroupQuestion);
+          assessments[i][j].AssessmentGroup[k].totalRequiredQuestions = 0;
+          _.forEach(assessmentGroup.questions, (q) => {
+            if (q.required) {
+              assessments[i][j].AssessmentGroup[k].totalRequiredQuestions += 1;
+            }
+          });
 
           // get total number of answered questions
           assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
-          _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
-            if (q.AssessmentQuestion.answer !== null) {
+          _.forEach(assessmentGroup.questions, (q) => {
+            if (!_.isEmpty(q.answer)) {
               assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
             }
           });
 
           // get total number of feedback
           assessments[i][j].AssessmentGroup[k].reviewerFeedback = 0;
-          _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
+          _.forEach(assessmentGroup.questions, (q) => {
             // If API response, the reviewer's answer and comment are empty,
             // front-end don't consider it as a feedback
             if (
-              q.AssessmentQuestion.reviewerAnswer !== null &&
-              q.AssessmentQuestion.reviewerAnswer.answer !== null &&
-              q.AssessmentQuestion.reviewerAnswer.comment !== null
+              !_.isEmpty(q.reviewerAnswer) &&
+              !_.isEmpty(q.reviewerAnswer.answer) &&
+              !_.isEmpty(q.reviewerAnswer.comment)
             ) {
               assessments[i][j].AssessmentGroup[k].reviewerFeedback += 1;
             }
           });
+
         });
+
+        console.log('assessment 2', assessment);
       });
     });
 
@@ -182,12 +194,12 @@ export class AssessmentsPage {
                   this.assessmentGroups
                 );
 
-                // Check all questions have submitted
+                // Check all questions have submitted (except is_required question)
                 _.forEach(this.assessmentGroups, (group, i) => {
                   _.forEach(group, (assessment, j) => {
                     let groupWithAnswers = 0;
                     _.forEach(assessment.AssessmentGroup, (g) => {
-                      if (g.answeredQuestions >= g.totalQuestions) {
+                      if (g.answeredQuestions >= g.totalRequiredQuestions) {
                         groupWithAnswers += 1;
                       }
                     });

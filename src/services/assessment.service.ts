@@ -204,12 +204,12 @@ export class AssessmentService {
     });
 
     return {
-      id: assessment.id,
-      name: assessment.name,
-      description: assessment.description,
-      assessment_type: assessment.assessment_type,
-      is_team: assessment.is_team,
-      is_repeatable: assessment.is_repeatable,
+      id: result.id,
+      name: result.name,
+      description: result.description,
+      assessment_type: result.assessment_type,
+      is_team: result.is_team,
+      is_repeatable: result.is_repeatable,
       AssessmentGroup: thisGroups
     };
   }
