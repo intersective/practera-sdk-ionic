@@ -15,5 +15,7 @@ export class OneofQuestionComponent implements OnInit {
     this.oneofForm.emit(e);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.question);
+  }
 }

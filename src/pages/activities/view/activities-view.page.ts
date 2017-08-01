@@ -41,9 +41,6 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
-    // badges
-    this.achievements = this.navParams.get('achievements');
-    console.log('achivements', this.achievements);
 
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
@@ -63,6 +60,8 @@ export class ActivitiesViewPage {
       }
     });
 
+    // badges
+    this.achievements = this.navParams.get('achievements');
     this.activity.badges = this.extractBadges();
     this.activity.badges.map((badge, index) => {
       if ((this.activity.id % 3) != 0) {
@@ -88,7 +87,6 @@ export class ActivitiesViewPage {
     return result;
   }
 
-
   /**
    * @description display activity detail modal page
    */
@@ -96,6 +94,7 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
+
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity
@@ -103,10 +102,13 @@ export class ActivitiesViewPage {
    *                          activities respond from get_activities API
    */
   goAssessment(activity) {
+    let inProgress = _.find(this.submissions, {status: 'in progress'});
+
     this.navCtrl.push(AssessmentsPage, {
       activity,
       assessment: this.assessment,
-      submissions: this.submissions
+      submissions: this.submissions,
+      inProgress
     });
   }
 }

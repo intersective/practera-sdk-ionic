@@ -26,6 +26,10 @@
       <p [innerHtml]="question.description"></p>
     </ion-item>
 
+    <div *ngFor="let submission of submissions">
+      <pre>{{ submission | json }}</pre>
+    </div>
+
     <!-- type: oneOf -->
     <oneof-question
       [question]="question"
@@ -49,5 +53,6 @@
       [question]="question"
       [form]="formGroup[question.id]"
       *ngSwitchCase="'text'"></text-question>
+
   </div>
 </ion-content>
