@@ -51,10 +51,13 @@ export class AssessmentsGroupPage {
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submissions = this.navParams.get('submissions') || {};
 
+    console.log('this.assessmentGroup', this.assessmentGroup);
+
     // preset key used for caching later (locally and remote data)
     this.canUpdateInput = this.isInputEditable();
+    console.log('this.canUpdateInput', this.canUpdateInput)
     this.published = this.assessmentService.isPublished(this.submissions);
-    this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
+    this.questions = this.assessmentGroup.questions;
     this.questions = this.mapQuestionsFeedback(this.questions, this.submissions);
     this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
 
@@ -70,19 +73,20 @@ export class AssessmentsGroupPage {
    */
    private isInputEditable = ():boolean => {
      let editable = false;
-     if (!this.submission) {
-       return true;
-     }
 
      _.forEach(this.submissions, (submission) => {
-       _.forEach(submission, (subm) => {
-         if (
-           subm.AssessmentSubmission &&
-           subm.AssessmentSubmission.status === 'in progress'
-         ) {
-           editable = true;
-         }
-       });
+       if (_.isEmpty(submission)) {
+         editable = true;
+       } else {
+         _.forEach(submission, (subm) => {
+           if (
+             subm.AssessmentSubmission &&
+             subm.AssessmentSubmission.status === 'in progress'
+           ) {
+             editable = true;
+           }
+         });
+       }
      });
      return editable;
    }
@@ -95,6 +99,7 @@ export class AssessmentsGroupPage {
   private mapQuestionsFeedback = (questions, submissions):any => {
     _.forEach(submissions, (submission) => {
       _.forEach(submission, (subm) => {
+
         _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
           _.forEach(questions, (question, idx) => {
 
@@ -338,57 +343,6 @@ export class AssessmentsGroupPage {
     }
     return question;
   }
-
-
-  /*
-    Turn AssessmentQuestion object from:
-    {
-      Assessment: {
-        id: 123
-      },
-      AssessmentQuestion: [
-        {
-          id: 234,
-          question_type: 'file',
-          audience: "[\"reviewer\",\"submitter\"]",
-          file_type: 'image',
-          choices: [],
-          answers: {
-            submitter: [],
-            reviewer: [],
-          },
-          name: 'Question 234',
-          required: true
-        }
-        ...
-      ]
-    }
-
-    to:
-    [
-      {
-        id: 234,
-        assessment_id: 123
-        name: 'Question 234',
-        type: 'file',
-        audience: "[\"reviewer\",\"submitter\"]",
-        file_type: 'image',
-        choices: []
-      },
-      ...
-    ]
-   */
-  private normaliseQuestions = (questions: any[]) => {
-    let result = [];
-
-    (questions || []).forEach((question) => {
-      let normalised = this.assessmentService.normaliseQuestion(question);
-
-      result.push(normalised);
-    });
-
-    return result;
-  };
 
   /**
    * @description initiate save progress and return to previous page/navigation stack
