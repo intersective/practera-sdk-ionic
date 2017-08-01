@@ -72,12 +72,14 @@ export class AssessmentsPage {
             // Find submission
             _.forEach(allSubmissions, (submissions) => {
               _.forEach(submissions, (submission) => {
+                // found user answer
                 _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
                   if (answer.assessment_question_id === question.id) {
                     this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.answer = answer;
                   }
                 });
 
+                // found reviewer feedback
                 _.forEach(submission.AssessmentReviewAnswer, (reviewerAnswer) => {
                   if (reviewerAnswer.assessment_question_id === question.id) {
                     this.assessmentGroups[i][j].AssessmentGroup[k].AssessmentGroupQuestion[l].AssessmentQuestion.reviewerAnswer = reviewerAnswer;
@@ -88,9 +90,11 @@ export class AssessmentsPage {
           });
 
           // Summarise basic answer information
+          // get total number of questions
           assessments[i][j].AssessmentGroup[k].totalQuestions =
             _.size(assessmentGroup.AssessmentGroupQuestion);
 
+          // get total number of answered questions
           assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
           _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
             if (q.AssessmentQuestion.answer !== null) {
@@ -98,10 +102,11 @@ export class AssessmentsPage {
             }
           });
 
+          // get total number of feedback
           assessments[i][j].AssessmentGroup[k].reviewerFeedback = 0;
           _.forEach(assessmentGroup.AssessmentGroupQuestion, (q) => {
-            // System will not count as feedback given
-            // when the reviewer's answer and comment are empty
+            // If API response, the reviewer's answer and comment are empty,
+            // front-end don't consider it as a feedback
             if (
               q.AssessmentQuestion.reviewerAnswer !== null &&
               q.AssessmentQuestion.reviewerAnswer.answer !== null &&
@@ -163,7 +168,6 @@ export class AssessmentsPage {
         .subscribe(
           (assessments: any) => {
             this.assessmentGroups = assessments;
-
             console.log('this.assessmentGroups', this.assessmentGroups);
 
             // 2nd batch API requests (get_submissions)
@@ -173,22 +177,27 @@ export class AssessmentsPage {
                 console.log('this.submissions', this.submissions);
 
                 this.assessmentGroups = this.mapSubmissionsToAssessment(
-                  allSubmissions,
+                  this.submissions,
                   this.assessmentGroups
                 );
 
                 // Check all questions have submitted
                 _.forEach(this.assessmentGroups, (group, i) => {
                   _.forEach(group, (assessment, j) => {
-                    _.forEach(this.assessmentGroups[i][j].AssessmentGroup, (g) => {
-                      if (g.answeredQuestions < g.totalQuestions) {
-                        this.allowSubmit = false;
+                    let groupWithAnswers = 0;
+                    _.forEach(assessment.AssessmentGroup, (g) => {
+                      if (g.answeredQuestions >= g.totalQuestions) {
+                        groupWithAnswers += 1;
                       }
                     });
+                    if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
+                      this.allowSubmit = true;
+                    }
                   });
                 });
 
                 // Set submit button to false since submission was done
+                // (Mean already submitted and done reviewed)
                 _.forEach(this.submissions, (submission, i) => {
                   _.forEach(submission, (subm) => {
                     if (subm.AssessmentSubmission.status === 'done') {
