@@ -56,10 +56,10 @@ export class AssessmentsPage {
 
   /**
    * @description mapping assessments and submissions
-   * @param {Object} assessments assessments
    * @param {Object} submissions submissions
+   * @param {Object} assessments assessments
    */
-  mapAssessmentsAndSubmissions(assessments, allSubmissions) {
+  mapSubmissionsToAssessment(allSubmissions, assessments) {
     _.forEach(assessments, (group, i) => {
       _.forEach(group, (assessment, j) => {
 
@@ -166,22 +166,15 @@ export class AssessmentsPage {
 
             console.log('this.assessmentGroups', this.assessmentGroups);
 
-            // This use in tittle of the page.
-            // In normal case, we only have one assessment in this page.
-            // if (assessments) {
-            //   this.assessment = _.head(_.head(assessments)).Assessment || {};
-            //   console.log('this.assessment', this.assessment)
-            // }
-
             // 2nd batch API requests (get_submissions)
             Observable.forkJoin(submissionTasks)
               .subscribe((allSubmissions) => {
-                console.log('allSubmissions', allSubmissions);
                 this.submissions = allSubmissions;
+                console.log('this.submissions', this.submissions);
 
-                this.assessmentGroups = this.mapAssessmentsAndSubmissions(
-                  this.assessmentGroups,
-                  allSubmissions
+                this.assessmentGroups = this.mapSubmissionsToAssessment(
+                  allSubmissions,
+                  this.assessmentGroups
                 );
 
                 // Check all questions have submitted
@@ -217,7 +210,7 @@ export class AssessmentsPage {
               });
           },
           (err) => {
-            console.log('e', err);
+            console.log('err', err);
             reject(err);
           }
         );
@@ -287,8 +280,6 @@ export class AssessmentsPage {
         });
       });
 
-      console.log('tasks', tasks);
-
       Observable
         .forkJoin(tasks)
         .subscribe(
@@ -302,7 +293,7 @@ export class AssessmentsPage {
           (e) => {
             loading.dismiss().then(() => {
               alert.present();
-              console.log('e', e);
+              console.log('err', e);
             });
 
           }
