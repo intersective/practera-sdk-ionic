@@ -30,7 +30,7 @@ export class EventsViewPage {
   public loadings = {
     checkin: true
   };
-  public event: any;
+  public event: any = {};
   public bookingStatus: string = '';
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
@@ -58,6 +58,10 @@ export class EventsViewPage {
   }
 
   ionViewWillEnter() {
+    // this.event = this.navParams.get('event');
+    // this.event = this.mergeActivity(this.event);
+    console.log('Test', this.event);
+
     this.loadings.checkin = true;
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
@@ -83,6 +87,15 @@ export class EventsViewPage {
       console.log(err);
     });
   }
+/*
+  mergeActivity(event) {
+    if (this.event.activity) {
+      let activity = this.event.activity || {};
+
+      activity.References = this.event.References;
+      activity.assessment.context_id = this.
+    }
+  }*/
 
   /**
    * @name extractAssessment
@@ -208,14 +221,16 @@ export class EventsViewPage {
         let assessment = assessments[0],
             assessmentGroup = assessment.AssessmentGroup[0];
 
+        assessment = this.assessmentService.normalise(assessment);
         loading.dismiss().then(() => {
-          this.navCtrl.push(AssessmentsGroupPage, {
+          // this.navCtrl.push(AssessmentsGroupPage, {
+          this.navCtrl.push(AssessmentsPage, {
             event,
+            activity: event.activity,
             // event checkin would just accept one event submission,
             // so here we get first one with `this.submissions[0]`
             submission: this.submissions[0],
-            assessment: assessment.Assessment,
-            assessmentGroup: assessmentGroup
+            assessmentGroup: assessment.AssessmentGroup[0]
           });
         });
       }, err => { loading.dismiss(); });

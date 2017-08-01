@@ -10,8 +10,6 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';

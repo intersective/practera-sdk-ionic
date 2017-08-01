@@ -348,15 +348,9 @@ export class AssessmentsGroupPage {
     loading = this.loadingCtrl.create({
       content: 'Loading...'
     }),
-
-    // Error handling for all kind of non-specific API respond error code
-    failureAlert = this.displayAlert({
-      title: 'Fail to submit',
-      buttons: ["Ok"]
-    }),
-    successAlert = this.displayAlert({
-      title: 'Checkin Successful!',
-      buttons: ["Ok"]
+    // to provide a more descriptive error message (if available)
+    failAlert = this.alertCtrl.create({
+      title: 'Fail to submit.'
     });
 
     let saveProgress = () => {
@@ -370,21 +364,13 @@ export class AssessmentsGroupPage {
         save.subscribe(
           response => {
             loading.dismiss().then(() => {
-              if (!_.isEmpty(self.event)) {
-                // display checkin successful (in event submission)
-                successAlert.present().then(() => {
-                  self.navCtrl.pop();
-                });
-              } else {
-                // "in progress" save, redirect back to page
-                self.navCtrl.pop();
-              }
+              self.navCtrl.pop();
             });
           },
           reject => {
             loading.dismiss().then(() => {
-              failureAlert.data.title = reject.msg || failureAlert.data.title;
-              failureAlert.present().then(() => {
+              failAlert.data.title = reject.msg || failAlert.data.title;
+              failAlert.present().then(() => {
                 console.log('Unable to save', reject);
               });
             });
