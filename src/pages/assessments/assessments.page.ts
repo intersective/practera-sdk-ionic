@@ -201,7 +201,9 @@ export class AssessmentsPage {
                   this.assessmentGroups
                 );
 
-                // Check all questions have submitted (except is_required question)
+
+
+                // Only allow submit when all required question have answered.
                 _.forEach(this.assessmentGroups, (group, i) => {
                   _.forEach(group, (assessment, j) => {
                     let groupWithAnswers = 0;
@@ -216,11 +218,12 @@ export class AssessmentsPage {
                   });
                 });
 
-                // Set submit button to false since submission was done
-                // (Mean already submitted and done reviewed)
                 _.forEach(this.submissions, (submission, i) => {
                   _.forEach(submission, (subm) => {
-                    if (subm.AssessmentSubmission.status === 'done') {
+                    if (
+                      subm.AssessmentSubmission.status === 'pending review' ||
+                      subm.AssessmentSubmission.status === 'published'
+                    ) {
                       this.allowSubmit = false;
                     }
                   });
