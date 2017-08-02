@@ -108,7 +108,7 @@ export class AssessmentsGroupPage {
    */
    // @TODO modify
   private mapQuestionsFeedback = (questions, submission):any => {
-    if (_.isEmpty(submission)) {
+    if (_.isEmpty(submission) || _.isEmpty(submission.review) || submission.status !== 'published') {
       return questions;
     }
 

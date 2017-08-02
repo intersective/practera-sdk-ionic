@@ -8,9 +8,17 @@
 
         <span class="title">{{ group.name }}</span>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
-        <div class="status feedback-available" *ngIf="group.reviewerFeedback > 0">Feedback Available</div>
+        <div class="status feedback-available" *ngIf="
+          group.submission &&
+          group.submission.review &&
+          group.submission.status === 'published'
+        ">
+          Feedback Available
+        </div>
         <div class="status completed" *ngIf="
           group.submission &&
+          group.submission.answer &&
+          group.submission.status !== 'published' &&
           group.submission.status !== 'in progress'
         ">
           Completed
