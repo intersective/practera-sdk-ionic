@@ -105,10 +105,8 @@ export class AssessmentService {
    * save progress using "post" function AssessmentService.post()
    * @param {Object} assessmentAnswer
    */
-  public save(assessmentAnswer, options = { inProgress: true}) {
-    if (options.inProgress) {
-      assessmentAnswer.Assessment.in_progress = true; // force in_progress
-    }
+  public save(assessmentAnswer) {
+    assessmentAnswer.Assessment.in_progress = true; // force in_progress
 
     return this.post(assessmentAnswer);
   }
