@@ -270,7 +270,9 @@ export class AssessmentsGroupPage {
             choices: (!_.isEmpty(values.choices)) ? values.choices : null
           };
 
-      answers[id] = answer;
+      if (answer.answer) {
+        answers[id] = answer;
+      }
     });
 
     // final step - store submission locally
