@@ -371,6 +371,10 @@ export class AssessmentsPage {
                 });
               } else {
                 // normal submission should redirect user back to previous stack/page
+                alert.data.title = 'Submit Success!';
+                alert.present().then(() => {
+                  this.navCtrl.pop();
+                });
                 this.navCtrl.pop();
               }
             });
