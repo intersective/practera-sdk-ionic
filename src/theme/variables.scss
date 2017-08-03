@@ -86,6 +86,9 @@ $colors: (
   )
 );
 
+$item-md-detail-push-color: color($colors, primary-light, base);
+$item-wp-detail-push-color: color($colors, primary-light, base);
+$item-ios-detail-push-color: color($colors, primary-light, base);
 
 // App iOS Variables
 // --------------------------------------------------
