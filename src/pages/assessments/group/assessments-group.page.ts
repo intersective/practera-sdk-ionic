@@ -28,7 +28,6 @@ export class AssessmentsGroupPage {
   answers: any; // to render & display submitted answers
   inProgress: boolean | any;
 
-
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
