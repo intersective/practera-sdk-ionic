@@ -27,7 +27,7 @@
       {{ event.description || 'No description available.' }}
     </ion-item>
   </ion-list>
-  <ion-list inset class="download">
+  <ion-list inset class="download" *ngIf="event.files && event.files.length > 0">
     <button ion-item (click)="gotoDownload(event)" detail-push>{{ 'GENERAL.DOWNLOAD' | translate }}</button>
   </ion-list>
 </ion-content>
