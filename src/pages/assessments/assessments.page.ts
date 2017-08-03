@@ -113,7 +113,7 @@ export class AssessmentsPage {
           // get total number of answered questions
           assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
           _.forEach(assessmentGroup.questions, (q) => {
-            if (!_.isEmpty(q.answer)) {
+            if (q.answer && q.answer !== null) {
               assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
             }
           });
@@ -124,7 +124,8 @@ export class AssessmentsPage {
             // If API response, the reviewer's answer and comment are empty,
             // front-end don't consider it as a feedback
             if (
-              !_.isEmpty(q.reviewerAnswer) &&
+              q.reviewerAnswer &&
+              q.reviewerAnswer !== null &&
               !_.isEmpty(q.reviewerAnswer.answer) &&
               !_.isEmpty(q.reviewerAnswer.comment)
             ) {
