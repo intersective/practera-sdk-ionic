@@ -8,13 +8,14 @@ import {
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { AssessmentService } from '../../services/assessment.service';
+import { CacheService } from '../../shared/cache/cache.service';
+import { CharactersService } from '../../services/characters.service';
 import { SubmissionService } from '../../services/submission.service';
 
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 
 import { TranslationService } from '../../shared/translation/translation.service';
-import { confirmMessages } from '../../app/messages';
-
+import { confirmMessages, errMessages, loadingMessages } from '../../app/messages'; 
 import * as _ from 'lodash';
 
 class ActivityBase {
@@ -48,7 +49,14 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: any = true;
   submissions: any = [];
-
+  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  initialItemsCount: any = {};
+  newItemsCount: any = {};
+  newItemsData: any = [];
+  totalItems: any = [];
+  allItemsData: any = [];
+  combinedItems: any = [];
+  public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   // confirm message variables
   private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
@@ -58,6 +66,8 @@ export class AssessmentsPage {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
+    private charactersService: CharactersService,
+    private cacheService: CacheService,
     private submissionService: SubmissionService,
     private translationService: TranslationService
   ) {
@@ -376,7 +386,8 @@ export class AssessmentsPage {
         {
           text: 'Okay',
           handler: () => {
-            this.doSubmit();
+            // this.doSubmit();
+            this.popupAfterSubmit();
           }
         },
         {
@@ -388,6 +399,112 @@ export class AssessmentsPage {
       ]
     });
     confirm.present();
+  }
+
+  // items popup 
+  popupAfterSubmit(){
+    const loading = this.loadingCtrl.create({
+      content: this.loadingMessages
+    });
+    // after submit assessment successfully, popup with a item achieved window 
+    const popupItems = this.alertCtrl.create({
+      title: 'Total Items',
+      message: `
+        <div *ngIf="allItemsData">
+          <div class="assessments-items-popup" *ngFor="let item of allItemsData">
+            <img class="item-popup-img" src={{ item.meta.img }} alt="item"/>
+            <p class="item-popup-text">
+              {{ item.name }} <span> X {{ item.count[0].count) }}</span>
+            </p>
+          </div>
+        </div>
+        <div *ngIf="allItemsData">
+          <div>
+            <p>No items earned</p>
+          </div>
+        </div>
+      `,
+      buttons: [
+        {
+          text: 'Okay',
+          handler: () => {
+            console.log("Okay");
+          }
+        },
+        {
+          text: 'Close',
+          handler: () => {
+            console.log("Close Window");
+          }
+        },
+      ]
+    });
+    // get initial items 
+    console.log('Inital Items: ', this.getInitialItems);
+    _.forEach(this.getInitialItems, element => {
+      let id = element.id;
+      console.log("id value: ", id);
+      if(!this.initialItemsCount[id]){
+        this.initialItemsCount[id] = 0;
+      }
+      this.initialItemsCount[id]++;
+    });
+    console.log("Count for initial Items: ", this.initialItemsCount);
+    // get latest updated items data api call 
+    loading.present();
+    this.charactersService.getCharacter()
+        .subscribe(
+          data => {
+            // console.log("Items: ", data.Items);
+            this.newItemsData = data.Items;
+            _.forEach(data.Items, (element, index) => {
+              let id = element.id;
+              console.log("id value: ", id);
+              if(!this.newItemsCount[id]){
+                this.newItemsCount[id] = 0;
+              }
+              this.newItemsCount[id]++;
+            });
+            console.log("Count for final Items: ", this.newItemsCount);
+            // compare with previous get_characters() results and generate final index value array result
+            _.forEach(this.newItemsCount, (element, id) => {
+              if(!this.initialItemsCount[id]){
+                this.totalItems.push({ "count": element, "id": id });
+              }else {
+                let diffCountVal = element - this.initialItemsCount[id];
+                if(diffCountVal > 0){
+                  this.totalItems.push({ "count": diffCountVal, "id": id });
+                }
+              }
+            });
+            console.log("New compared items: ", this.newItemsData);
+            // if(!this.totalItems){
+              _.forEach(this.totalItems, (element, index) => {
+                element.id = parseInt(element.id);
+              });
+              console.log("Count for new total Items: ", this.totalItems);
+              this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
+              console.log("Final items object data: ", this.allItemsData);
+            // }
+            // get the final object with item occurance count value
+            let groupData = _.groupBy(this.totalItems, 'id');
+            console.log("Group?? ", groupData);
+            _.map(this.allItemsData, function(ele) {
+              // this.combinedItems.push(_.extend({count: _.groupBy(this.totalItems, 'id')[ele.id] || []}, ele));
+              this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
+              console.log("Final Combined results: ", this.combinedItems);
+              console.log("Final Combined results count value: ", this.combinedItems.count[0].count);
+            });
+            loading.dismiss().then(() => {
+              popupItems.present();
+            });
+          },
+          err => {
+            loading.dismiss().then(() => {
+              console.log("Err: ", err);
+            });
+          }
+        );    
   }
 
   gotoAssessment(assessmentGroup, activity) {
