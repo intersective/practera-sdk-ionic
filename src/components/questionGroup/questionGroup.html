@@ -8,25 +8,13 @@
 
         <span class="title">{{ group.name }}</span>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
-        <div class="status feedback-available" *ngIf="
-          group.submission &&
-          group.submission.review &&
-          group.submission.status === 'published'
-        ">
+        <div class="status feedback-available" *ngIf="group.status === 'reviewed'">
           Feedback Available
         </div>
-        <div class="status completed" *ngIf="
-          group.submission &&
-          group.submission.answer &&
-          group.submission.status !== 'published' &&
-          group.submission.status !== 'in progress'
-        ">
+        <div class="status completed" *ngIf="group.status === 'completed'">
           Completed
         </div>
-        <div class="status incomplete" *ngIf="
-          !group.submission ||
-          group.submission.status === 'in progress'
-        ">
+        <div class="status incomplete" *ngIf="group.status === 'incomplete'">
           Incomplete
         </div>
       </div>

@@ -139,7 +139,11 @@ export class AssessmentsPage {
           let questionsStatus = [];
           _.forEach(assessmentGroup.questions, (q) => {
             if (q.required && q.answer !== null) {
-              if (q.reviewerAnswer !== null && (q.reviewerAnswer.answer || q.reviewerAnswer.comment)) {
+              if (
+                q.reviewerAnswer !== null &&
+                assessmentGroup.submission.status !== 'pending approval' &&
+                (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+              ) {
                 questionsStatus.push('reviewed');
               } else {
                 questionsStatus.push('completed');
@@ -147,7 +151,11 @@ export class AssessmentsPage {
             }
 
             if (!q.required && q.answer !== null) {
-              if (q.reviewerAnswer !== null && (q.reviewerAnswer.answer || q.reviewerAnswer.comment)) {
+              if (
+                q.reviewerAnswer !== null &&
+                assessmentGroup.submission.status !== 'pending approval' &&
+                (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+              ) {
                 questionsStatus.push('reviewed');
               } else {
                 questionsStatus.push('completed');
@@ -238,8 +246,6 @@ export class AssessmentsPage {
                   this.assessmentGroups
                 );
 
-
-
                 // Only allow submit when all required question have answered.
                 _.forEach(this.assessmentGroups, (group, i) => {
                   _.forEach(group, (assessment, j) => {
@@ -259,6 +265,7 @@ export class AssessmentsPage {
                   _.forEach(submission, (subm) => {
                     if (
                       subm.AssessmentSubmission.status === 'pending review' ||
+                      subm.AssessmentSubmission.status === 'pending approval' ||
                       subm.AssessmentSubmission.status === 'published'
                     ) {
                       this.allowSubmit = false;
