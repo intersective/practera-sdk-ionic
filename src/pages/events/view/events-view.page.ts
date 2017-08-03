@@ -36,7 +36,9 @@ export class EventsViewPage {
   public booked_text: string = 'Booked';
   public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
   public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
+  public completedSubmissions: boolean = false;
   private submissions: Array<any> = [];
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -58,10 +60,6 @@ export class EventsViewPage {
   }
 
   ionViewWillEnter() {
-    // this.event = this.navParams.get('event');
-    // this.event = this.mergeActivity(this.event);
-    console.log('Test', this.event);
-
     this.loadings.checkin = true;
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
@@ -81,21 +79,15 @@ export class EventsViewPage {
       this.loadings.checkin = false;
       res.forEach(submission => {
         this.submissions.push(this.submissionService.normalise(submission));
+        if (submission.status === 'completed') {
+          this.completedSubmissions = true;
+        }
       });
     }, err => {
       this.loadings.checkin = false;
       console.log(err);
     });
   }
-/*
-  mergeActivity(event) {
-    if (this.event.activity) {
-      let activity = this.event.activity || {};
-
-      activity.References = this.event.References;
-      activity.assessment.context_id = this.
-    }
-  }*/
 
   /**
    * @name extractAssessment
