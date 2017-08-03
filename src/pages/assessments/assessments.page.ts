@@ -71,8 +71,9 @@ export class AssessmentsPage {
         _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
           _.forEach(assessmentGroup.questions, (question, l) => {
             // Inject empty answer fields
-            assessments[i][j].AssessmentGroup[k].questions[l].answer = {};
-            assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = {};
+            // We will know thare are no submission when it is null
+            assessments[i][j].AssessmentGroup[k].questions[l].answer = null;
+            assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = null;
 
             // find submission
             _.forEach(allSubmissions, (submissions) => {
@@ -133,6 +134,50 @@ export class AssessmentsPage {
             }
           });
 
+          // Set status
+          // let status = assessments[i][j].AssessmentGroup[k].status = 'incomplete';
+          let questionsStatus = [];
+          _.forEach(assessmentGroup.questions, (q) => {
+            if (q.required && q.answer !== null) {
+              if (
+                q.reviewerAnswer !== null &&
+                assessmentGroup.submission.status !== 'pending approval' &&
+                (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+              ) {
+                questionsStatus.push('reviewed');
+              } else {
+                questionsStatus.push('completed');
+              }
+            }
+
+            if (!q.required && q.answer !== null) {
+              if (
+                q.reviewerAnswer !== null &&
+                assessmentGroup.submission.status !== 'pending approval' &&
+                (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+              ) {
+                questionsStatus.push('reviewed');
+              } else {
+                questionsStatus.push('completed');
+              }
+            }
+
+            if (q.answer === null) {
+              questionsStatus.push('incomplete');
+            }
+          });
+
+          console.log('questionsStatus', questionsStatus);
+
+          assessments[i][j].AssessmentGroup[k].status = 'incomplete';
+          if (_.every(questionsStatus, (v) => {
+            return (v === 'completed');
+          })) {
+            assessments[i][j].AssessmentGroup[k].status = 'completed';
+          }
+          if (_.includes(questionsStatus, 'reviewed')) {
+            assessments[i][j].AssessmentGroup[k].status = 'reviewed';
+          }
         });
 
         console.log('assessment 2', assessment);
@@ -201,7 +246,7 @@ export class AssessmentsPage {
                   this.assessmentGroups
                 );
 
-                // Check all questions have submitted (except is_required question)
+                // Only allow submit when all required question have answered.
                 _.forEach(this.assessmentGroups, (group, i) => {
                   _.forEach(group, (assessment, j) => {
                     let groupWithAnswers = 0;
@@ -216,11 +261,13 @@ export class AssessmentsPage {
                   });
                 });
 
-                // Set submit button to false since submission was done
-                // (Mean already submitted and done reviewed)
                 _.forEach(this.submissions, (submission, i) => {
                   _.forEach(submission, (subm) => {
-                    if (subm.AssessmentSubmission.status === 'done') {
+                    if (
+                      subm.AssessmentSubmission.status === 'pending review' ||
+                      subm.AssessmentSubmission.status === 'pending approval' ||
+                      subm.AssessmentSubmission.status === 'published'
+                    ) {
                       this.allowSubmit = false;
                     }
                   });

@@ -8,17 +8,13 @@
     <ion-row class="header">
       <ion-col text-right>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
-        <div class="status feedback-available" *ngIf="group.reviewerFeedback > 0">Feedback Available</div>
-        <div class="status completed" *ngIf="
-          group.submission &&
-          group.submission.status !== 'in progress'
-        ">
+        <div class="status feedback-available" *ngIf="group.status === 'reviewed'">
+          Feedback Available
+        </div>
+        <div class="status completed" *ngIf="group.status === 'completed'">
           Completed
         </div>
-        <div class="status incomplete" *ngIf="
-          !group.submission ||
-          group.submission.status === 'in progress'
-        ">
+        <div class="status incomplete" *ngIf="group.status === 'incomplete'">
           Incomplete
         </div>
       </ion-col>
