@@ -71,6 +71,7 @@ export class EventsViewPage {
   }
 
   ionViewDidEnter() {
+    this.completedSubmissions = false;
     this.submissionService.getSubmissions({
       search: {
         context_id: this.event.context_id
@@ -78,8 +79,10 @@ export class EventsViewPage {
     }).subscribe(res => {
       this.loadings.checkin = false;
       res.forEach(submission => {
-        this.submissions.push(this.submissionService.normalise(submission));
-        if (submission.status === 'completed') {
+        submission = this.submissionService.normalise(submission);
+        console.log(submission);
+        this.submissions.push(submission);
+        if (submission.status === 'done') {
           this.completedSubmissions = true;
         }
       });
