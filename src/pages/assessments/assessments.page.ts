@@ -70,8 +70,9 @@ export class AssessmentsPage {
         _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
           _.forEach(assessmentGroup.questions, (question, l) => {
             // Inject empty answer fields
-            assessments[i][j].AssessmentGroup[k].questions[l].answer = {};
-            assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = {};
+            // We will know thare are no submission when it is null
+            assessments[i][j].AssessmentGroup[k].questions[l].answer = null;
+            assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = null;
 
             // find submission
             _.forEach(allSubmissions, (submissions) => {
@@ -131,6 +132,42 @@ export class AssessmentsPage {
             }
           });
 
+          // Set status
+          // let status = assessments[i][j].AssessmentGroup[k].status = 'incomplete';
+          let questionsStatus = [];
+          _.forEach(assessmentGroup.questions, (q) => {
+            if (q.required && q.answer !== null) {
+              if (q.reviewerAnswer !== null && (q.reviewerAnswer.answer || q.reviewerAnswer.comment)) {
+                questionsStatus.push('reviewed');
+              } else {
+                questionsStatus.push('completed');
+              }
+            }
+
+            if (!q.required && q.answer !== null) {
+              if (q.reviewerAnswer !== null && (q.reviewerAnswer.answer || q.reviewerAnswer.comment)) {
+                questionsStatus.push('reviewed');
+              } else {
+                questionsStatus.push('completed');
+              }
+            }
+
+            if (q.answer === null) {
+              questionsStatus.push('incomplete');
+            }
+          });
+
+          console.log('questionsStatus', questionsStatus);
+
+          assessments[i][j].AssessmentGroup[k].status = 'incomplete';
+          if (_.every(questionsStatus, (v) => {
+            return (v === 'completed');
+          })) {
+            assessments[i][j].AssessmentGroup[k].status = 'completed';
+          }
+          if (_.includes(questionsStatus, 'reviewed')) {
+            assessments[i][j].AssessmentGroup[k].status = 'reviewed';
+          }
         });
 
         console.log('assessment 2', assessment);
