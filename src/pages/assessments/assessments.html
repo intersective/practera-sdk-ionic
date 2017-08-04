@@ -3,7 +3,7 @@
     <ion-title></ion-title>
 
     <ion-buttons end>
-      <button ion-button (click)="clickSubmit()" class="btn-submit" [disabled]="!allowSubmit">
+      <button ion-button (click)="clickSubmit()" class="btn-submit" *ngIf="allowSubmit">
         {{ 'GENERAL.SUBMIT' | translate }}
       </button>
     </ion-buttons>
