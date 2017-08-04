@@ -50,7 +50,7 @@
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
 
-    <ion-item *ngFor="let submission of submissions; let i = index;">
+    <ion-item *ngFor="let submission of submissions; let i = index;" (click)="goAssessment(activity, {hasSubmission: true})">
       <ion-row>
 
         <ion-col align-self-start>
