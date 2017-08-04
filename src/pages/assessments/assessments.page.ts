@@ -166,6 +166,14 @@ export class AssessmentsPage {
             if (q.answer === null) {
               questionsStatus.push('incomplete');
             }
+
+            // if (q.required && q.answer === null) {
+            //   questionsStatus.push('incomplete');
+            // }
+            //
+            // if (!q.required && q.answer === null) {
+            //   questionsStatus.push('completed');
+            // }
           });
 
           console.log('questionsStatus', questionsStatus);
