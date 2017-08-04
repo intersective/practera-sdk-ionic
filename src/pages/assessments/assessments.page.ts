@@ -77,10 +77,9 @@ export class AssessmentsPage {
             // find submission
             _.forEach(submissions, (submission) => {
               // attach existing submission to assessment group it belongs to
-              let normalisedSubmission = this.submissionService.normalise(submission);
               let group = this.assessmentGroups[i][j].AssessmentGroup[k];
-              if (group.assessment_id === normalisedSubmission.assessment_id) {
-                this.assessmentGroups[i][j].AssessmentGroup[k].submission = normalisedSubmission;
+              if (group.assessment_id === submission.assessment_id) {
+                this.assessmentGroups[i][j].AssessmentGroup[k].submission = submission;
               }
 
               // find user answer
@@ -270,6 +269,7 @@ export class AssessmentsPage {
       });
 
       let preprocessAssessmentSubmission = () => {
+
         this.assessmentGroups = this.mapSubmissionsToAssessment(
           this.submissions,
           this.assessmentGroups
@@ -313,7 +313,6 @@ export class AssessmentsPage {
         .subscribe(
           (assessments: any) => {
             this.assessmentGroups = assessments;
-            console.log('this.assessmentGroups', this.assessmentGroups);
 
             if (this.submissions.length === 0) {
               this.pullSubmissions().then(res => {
