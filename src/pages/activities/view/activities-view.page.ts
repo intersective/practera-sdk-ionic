@@ -36,6 +36,9 @@ export class ActivitiesViewPage {
   ) {
   }
 
+  ionViewWillEnter(): void {
+    this.loadings.submissions = true;
+  }
 
   // @TODO: use simple mock data for assessment first
   /**
@@ -46,17 +49,14 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
-    this.loadings.submissions = true;
-
     // assessment
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
 
-
     // submission
     this.submissions = [];
-    Observable.forkJoin(this.getSubmissions()).subscribe(responses => {
+    Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References)).subscribe(responses => {
       // turn nested array into single dimension array
       responses.forEach((submissions: Array<any>) => {
         if (submissions.length > 0) {
@@ -66,7 +66,6 @@ export class ActivitiesViewPage {
         }
       });
 
-      console.log(this.submissions);
       this.loadings.submissions = false;
     });
 
@@ -80,28 +79,6 @@ export class ActivitiesViewPage {
         badge.disabled = true;
       }
     });
-  }
-
-  private getSubmissions() {
-    let tasks = []; // multiple API requests
-
-    // get_submissions API to retrieve submitted answer
-    let getSubmissions = (contextId) => {
-      return this.submissionService.getSubmissions({
-        search: {
-          context_id: contextId
-        }
-      });
-    };
-
-    // Congregation of get_submissions API Observable with different context_id
-    _.forEach(this.activity.References, (reference) => {
-      if (reference.context_id) {
-        return tasks.push(getSubmissions(reference.context_id));
-      }
-    });
-
-    return tasks;
   }
 
   // extract "in progress"
