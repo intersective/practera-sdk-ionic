@@ -1,12 +1,12 @@
 <div class="questionGroup">
   <ion-card class="rounded">
-    <ion-card-content>
-      <div class="header">
-        <button ion-button icon-only small clear class="pull-right">
-          <ion-icon name="ios-arrow-forward-outline" color="primary-light"></ion-icon>
-        </button>
 
-        <span class="title">{{ group.name }}</span>
+    <ion-list>
+      <button ion-item text-wrap no-lines>{{ group.name }}</button>
+    </ion-list>
+
+    <ion-row class="header">
+      <ion-col text-right>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
         <div class="status feedback-available" *ngIf="group.status === 'reviewed'">
           Feedback Available
@@ -17,7 +17,8 @@
         <div class="status incomplete" *ngIf="group.status === 'incomplete'">
           Incomplete
         </div>
-      </div>
-    </ion-card-content>
+      </ion-col>
+    </ion-row>
+
   </ion-card>
 </div>
