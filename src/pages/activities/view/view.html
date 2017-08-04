@@ -19,7 +19,6 @@
   </ion-list>
 </ion-header>
 
-
 <ion-content padding class="activity-detail">
   <ion-fab top center-right edge *ngIf="false">
     <button ion-fab color="soft-green" mini>
@@ -27,7 +26,7 @@
     </button>
   </ion-fab>
 
-  <ion-fab top right edge>
+  <ion-fab top right edge *ngIf="!loadings.submissions">
     <button ion-fab color="soft-green" (click)="goAssessment(activity)">
       <ion-icon name="add" color="secondary"></ion-icon>
     </button>

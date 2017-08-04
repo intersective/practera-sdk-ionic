@@ -197,4 +197,26 @@ export class SubmissionService {
   public getReview(review) {
     return review;
   }
+
+  public getSubmissionsByReferences(references) {
+    let tasks = []; // multiple API requests
+
+    // get_submissions API to retrieve submitted answer
+    let getSubmissions = (contextId) => {
+      return this.getSubmissions({
+        search: {
+          context_id: contextId
+        }
+      });
+    };
+
+    // Congregation of get_submissions API Observable with different context_id
+    _.forEach(references, reference => {
+      if (reference.context_id) {
+        return tasks.push(getSubmissions(reference.context_id));
+      }
+    });
+
+    return tasks;
+  }
 }

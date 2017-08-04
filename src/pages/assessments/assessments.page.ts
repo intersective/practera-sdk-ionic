@@ -195,23 +195,6 @@ export class AssessmentsPage {
 
   private pullSubmissions(): Promise<any> {
     return new Promise((resolve, reject) => {
-      // get_submissions API to retrieve submitted answer
-      let getSubmissions = (contextId) => {
-        return this.submissionService.getSubmissions({
-          search: {
-            context_id: contextId
-          }
-        });
-      };
-
-      // Congregation of get_submissions API Observable with different context_id
-      let submissionTasks = [];
-      _.forEach(this.activity.References, (reference) => {
-        if (reference.context_id) {
-          return submissionTasks.push(getSubmissions(reference.context_id));
-        }
-      });
-
       // 2nd batch API requests (get_submissions)
       // response format: [ // context_ids
       //   [ // assessment group 1
@@ -226,7 +209,7 @@ export class AssessmentsPage {
       //   ],
       //   ...
       // ]
-      Observable.forkJoin(submissionTasks)
+      Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References))
         .subscribe((allSubmissions) => {
           let submissions = [];
           _.forEach(allSubmissions, group => {
