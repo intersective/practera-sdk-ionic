@@ -7,6 +7,7 @@ import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../.
 import * as _ from 'lodash';
 
 @Component({
+  selector: 'assessments-group-page',
   templateUrl: './assessments-group.html',
 })
 export class AssessmentsGroupPage {
