@@ -2,6 +2,7 @@
   <ion-item *ngIf="uploaded">
     <ion-icon name="{{uploaded.icon}}" class="fa" item-left></ion-icon>
     {{ uploaded.filename }}
+    <a ion-button small item-end href="{{uploaded.url}}" download>Download</a>
   </ion-item>
 
   <ion-item *ngIf="!uploaded">
