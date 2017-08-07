@@ -3,8 +3,7 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController,
-  AlertController
+  ModalController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -58,8 +57,7 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translationService: TranslationService,
-    public alertCtrl: AlertController
+    public translationService: TranslationService
   ) {}
 
   // shiftLanguageTrial(){
@@ -149,34 +147,9 @@ export class ActivitiesListPage implements OnInit {
       )
   }
 
-  /**
-   * @TODO: remove this feature after development near complete
-   * Prompt user to skip loading to skip forced long wait of API
-   * @param {Function} cb callback if user choose to load API call
-   */
-  promptSkipLoading(cb: Function) {
-    let prompt = this.alertCtrl.create({
-      title: "Skip loading?",
-      message: "Skip to speed up development (skip waiting).",
-      buttons: [
-        {
-          text: 'Load it',
-          handler: data => {
-            return cb();
-          }
-        },
-        {
-          text: 'Skip',
-          handler: data => console.log(data)
-        }
-      ]
-    })
-    prompt.present();
-  }
-
   // load activity data
   ionViewWillEnter() {
-    this.promptSkipLoading(this.loadingActivities);
+    this.loadingActivities();
   }
 
   // refresher activities
