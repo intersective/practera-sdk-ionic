@@ -74,6 +74,9 @@ export class AssessmentsPage {
     });
   }
 
+  /**
+   * track if this page need to download assessment manually (extra load)
+   */
   traceAssessmentProgress() {
     this.events.subscribe('assessment:changes', (submissionUpdated) => {
       this.submissionUpdated = true;
@@ -277,6 +280,11 @@ export class AssessmentsPage {
         }
       });
 
+      /**
+       * merging submission into question inside of assessment array objects
+       * - set question statuses (quantity of total answered)
+       * - set submission button status
+       */
       let preprocessAssessmentSubmission = () => {
         this.assessmentGroups = this.mapSubmissionsToAssessment(
           this.submissions,
@@ -309,8 +317,6 @@ export class AssessmentsPage {
           }
         });
 
-        console.log('this.assessmentGroups', this.assessmentGroups);
-        console.log('allowSubmit', this.allowSubmit);
         resolve({
           assessmentGroups: this.assessmentGroups,
           submissions: this.submissions
