@@ -35,7 +35,6 @@ export class SubmissionService {
 
     return photos;
   }
-
 /*
   Turns:
     {
@@ -218,5 +217,11 @@ export class SubmissionService {
     });
 
     return tasks;
+  }
+
+  // get user submissions data
+  // @TODO Remove it later
+  public getSubmissionsData() {
+    return this.getSubmissions()
   }
 }
