@@ -237,7 +237,7 @@ export class AssessmentsGroupPage {
    * @param {object} submission single submission object retrieve from previous page/view
    * @return {object} formatted submission answer
    */
-  private formInProgressAnswer(submission) {
+  private formInProgressAnswer(submission): boolean | Submission {
     if (_.isEmpty(submission)) {
       return false;
     }
@@ -298,7 +298,7 @@ export class AssessmentsGroupPage {
    * @description retrieve saved progress from localStorage
    */
   retrieveProgress = (questions: Array<any>, answers?) => {
-    let cachedProgress = answers || this.cache.getLocalObject(this.cacheKey);
+    let cachedProgress = answers || {}; //this.cache.getLocalObject(this.cacheKey);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
