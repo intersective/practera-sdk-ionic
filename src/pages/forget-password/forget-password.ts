@@ -7,6 +7,8 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
@@ -18,29 +20,34 @@ import {FormValidator} from '../../validators/formValidator';
 export class ForgetPasswordPage {
   email: string;
   forgotPwdFormGroup: any;
+  // loading & error message variables
+  private sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
+  private sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
+  private sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
+    public translationService: TranslationService,
     private authService: AuthService,
     private toastCtrl: ToastController,
     private formBuilder: FormBuilder) {
-    this.forgotPwdFormGroup = formBuilder.group({
-      email: ['', [FormValidator.isValidEmail,
-                   Validators.required]],
-    });
-  }
+      this.forgotPwdFormGroup = formBuilder.group({
+        email: ['', [FormValidator.isValidEmail,
+                    Validators.required]],
+      });
+    }
   ionViewDidLoad() {
     console.log('ionViewDidLoad ForgetPasswordPage');
   }
   userForgotPassword(){
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
-      content: 'Sending email to us ..'
+      content: this.sendingEmailLoadingMessage
     });
 
-    let defaultMsg = `We have sent an email to ${this.email} with a link to log into the system - please check your inbox. If you haven't received an email in a few minutes please check the address you entered and your spam folder.`;
+    let defaultMsg = this.sentEmailMessagePartOne + ` ${this.email} ` + this.sentEmailMessagePartTwo;
 
     loading.present();
     // This part is calling post_forget_password() API from backend

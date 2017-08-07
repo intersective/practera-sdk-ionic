@@ -1,0 +1,13 @@
+<div [formGroup]="form">
+
+<ion-list formGroupName="choices">
+
+  <ion-list-header [innerHtml]="question.name"></ion-list-header>
+
+  <ion-item class="choice" *ngFor="let choice of question.choices">
+    <ion-label>{{choice.name}}</ion-label>
+    <ion-checkbox formControlName="{{choice.id}}"></ion-checkbox>
+  </ion-item>
+</ion-list>
+
+</div>

@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { CacheService } from '../../shared/cache/cache.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { Observable } from 'rxjs';
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages'; 
+// services
 import { AuthService } from '../../services/auth.service';
 import { RequestService } from '../../shared/request/request.service';
 import { NotificationService } from '../../shared/notification/notification.service';
+// pages
 import { LoginPage } from '../../pages/login/login';
-import { Observable } from 'rxjs';
 @Component({
   template: `<term-condition [user]='user'></term-condition>`,
 })
@@ -18,12 +22,15 @@ export class RegistrationPage implements OnInit {
   term: String;
   content: SafeResourceUrl;
   private prefixUrl: any = this.request.getPrefixUrl();
+  // loadinbg & error message variables
+  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     public nav: NavController,
     private params: NavParams,
     private authService: AuthService,
     private sanitizer: DomSanitizer,
     private notification: NotificationService,
+    public translationService: TranslationService,
     private alertCtrl: AlertController,
     private cache: CacheService,
     private request: RequestService) {}

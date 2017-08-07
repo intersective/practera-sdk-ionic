@@ -1,7 +1,0 @@
-{
-  "name": "HelloIonic",
-  "private": "true",
-  "devDependencies": {
-    "ionic": "^2.2.0"
-  }
-}

@@ -2,6 +2,8 @@ import { Component, ViewChild, NgZone, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { LoadingController, ModalController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { CacheService } from '../../shared/cache/cache.service';
 import { AuthService } from '../../services/auth.service';
@@ -24,12 +26,15 @@ export class RegisterPage implements OnInit {
   submitted: boolean = false;
   private windowHeight: number = window.innerHeight / 3;
   private isLandscaped: boolean = false;
+  // loading & error message variables
+  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     private navParams: NavParams,
     private notificationService: NotificationService,
     private loading: LoadingController,
     private authService: AuthService,
     private cache: CacheService,
+    public translationService: TranslationService,
     private milestone: MilestoneService,
     private ngZone:NgZone,
     private modalCtrl: ModalController,
