@@ -22,7 +22,6 @@ import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
 import { GameService } from '../services/game.service';
 import { CharacterService } from '../services/character.service';
-import { CharactersService } from '../services/characters.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
 import { GroupEmitterService } from '../components/questions/group-emitter.service';
@@ -263,7 +262,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
     { provide: CharacterService, useClass: CharacterService },
-    { provide: CharactersService, useClass: CharactersService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
     { provide: FilestackService, useClass: FilestackService },

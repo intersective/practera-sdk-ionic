@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
+import { Injectable }    from '@angular/core';
+
 // services
-import { CacheService } from '../shared/cache/cache.service';
+import { RequestService } from '../shared/request/request.service';
+
 @Injectable()
 export class CharacterService {
-  constructor(private request: RequestService,
-              private cacheService: CacheService) {}
-  // Get user character data
-  getCharacters(){
-    
-  } 
+  public charactersAPIEndpoint = `api/characters.json`;
+  constructor(
+    private request: RequestService
+  ) {}
+
+  getCharacter(){
+    return this.request.get(this.charactersAPIEndpoint);
+  }
 }

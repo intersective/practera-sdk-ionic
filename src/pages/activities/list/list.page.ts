@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
-import { CharactersService } from '../../../services/characters.service';
+import { CharacterService } from '../../../services/character.service';
 import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
@@ -57,7 +57,7 @@ export class ActivitiesListPage implements OnInit {
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
-    public charactersService: CharactersService,
+    public characterService: CharacterService,
     public submissionService: SubmissionService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
@@ -80,7 +80,7 @@ export class ActivitiesListPage implements OnInit {
       duration: 4000,
       position: 'bottom'
     });
-    let getCharacter = this.charactersService.getCharacter();
+    let getCharacter = this.characterService.getCharacter();
     let getSubmission = this.submissionService.getSubmissionsData();
     Observable.forkJoin([getSubmission, getCharacter])
               .subscribe(results => {
