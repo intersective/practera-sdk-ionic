@@ -84,14 +84,14 @@ export class AssessmentsPage {
               }
 
               // find user answer
-              _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
+              _.forEach(submission.answer, (answer) => {
                 if (answer.assessment_question_id === question.id) {
                   assessments[i][j].AssessmentGroup[k].questions[l].answer = answer;
                 }
               });
 
               // find reviewer feedback
-              _.forEach(submission.AssessmentReviewAnswer, (reviewerAnswer) => {
+              _.forEach(submission.review, (reviewerAnswer) => {
                 if (reviewerAnswer.assessment_question_id === question.id) {
                   assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = reviewerAnswer;
                 }
@@ -260,11 +260,11 @@ export class AssessmentsPage {
         );
 
         // Only allow submit when all required question have answered.
-        _.forEach(this.assessmentGroups, (group, i) => {
-          _.forEach(group, (assessment, j) => {
+        _.forEach(this.assessmentGroups, (groups, i) => {
+          _.forEach(groups, (assessment, j) => {
             let groupWithAnswers = 0;
-            _.forEach(assessment.AssessmentGroup, (g) => {
-              if (g.answeredQuestions >= g.totalRequiredQuestions) {
+            _.forEach(assessment.AssessmentGroup, group => {
+              if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
@@ -278,7 +278,8 @@ export class AssessmentsPage {
           if (
             submission.status === 'pending review' ||
             submission.status === 'pending approval' ||
-            submission.status === 'published'
+            submission.status === 'published' ||
+            submission.status === 'done' // survey type
           ) {
             this.allowSubmit = false;
           }
