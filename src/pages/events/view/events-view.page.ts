@@ -61,6 +61,8 @@ export class EventsViewPage {
 
   ionViewWillEnter() {
     this.loadings.checkin = true;
+    this.submissions = []; // reset submissions
+
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
     }
