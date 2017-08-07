@@ -4,7 +4,8 @@ import {
   NavController,
   Navbar,
   LoadingController,
-  AlertController
+  AlertController,
+  Events
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { AssessmentService } from '../../services/assessment.service';
@@ -32,10 +33,12 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: boolean = false;
   submissions: any = [];
+  submissionUpdated: boolean = false; // event listener flag
 
   // confirm message variables
   private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
+
   constructor(
     private navParams: NavParams,
     private alertCtrl: AlertController,
@@ -43,7 +46,8 @@ export class AssessmentsPage {
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
     private submissionService: SubmissionService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    public events: Events
   ) {
     this.activity = this.navParams.get('activity');
     if (!this.activity) {
@@ -53,7 +57,31 @@ export class AssessmentsPage {
     console.log('this.activity', this.activity);
   }
 
-  ionViewDidLoad() {}
+  ionViewWillEnter() {
+
+    let loader = this.loadingCtrl.create();
+    loader.present().then(() => {
+      this.loadQuestions()
+      .then(() => {
+        loader.dismiss();
+      }, err => {
+        console.log('log::', err);
+      })
+      .catch((err) => {
+        console.log(err);
+        loader.dismiss();
+      });
+    });
+  }
+
+  /**
+   * track if this page need to download assessment manually (extra load)
+   */
+  traceAssessmentProgress() {
+    this.events.subscribe('assessment:changes', (submissionUpdated) => {
+      this.submissionUpdated = true;
+    });
+  }
 
   /**
    * @description mapping assessments and submissions
@@ -112,7 +140,7 @@ export class AssessmentsPage {
           // get total number of answered questions
           assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
           _.forEach(assessmentGroup.questions, (q) => {
-            if (q.answer && q.answer !== null) {
+            if (q.required && q.answer && q.answer !== null) {
               assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
             }
           });
@@ -252,8 +280,12 @@ export class AssessmentsPage {
         }
       });
 
+      /**
+       * merging submission into question inside of assessment array objects
+       * - set question statuses (quantity of total answered)
+       * - set submission button status
+       */
       let preprocessAssessmentSubmission = () => {
-
         this.assessmentGroups = this.mapSubmissionsToAssessment(
           this.submissions,
           this.assessmentGroups
@@ -264,10 +296,13 @@ export class AssessmentsPage {
           _.forEach(groups, (assessment, j) => {
             let groupWithAnswers = 0;
             _.forEach(assessment.AssessmentGroup, group => {
+              console.log('group.answeredQuestions', group.answeredQuestions);
+              console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
               if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
+            console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
             if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
               this.allowSubmit = true;
             }
@@ -285,8 +320,6 @@ export class AssessmentsPage {
           }
         });
 
-        console.log('this.assessmentGroups', this.assessmentGroups);
-        console.log('allowSubmit', this.allowSubmit);
         resolve({
           assessmentGroups: this.assessmentGroups,
           submissions: this.submissions
@@ -298,8 +331,9 @@ export class AssessmentsPage {
         .subscribe(
           (assessments: any) => {
             this.assessmentGroups = assessments;
+            this.submissions = this.navParams.get('submissions');
 
-            if (this.submissions.length === 0) {
+            if (this.submissionUpdated) { // pull new when submission is updated
               this.pullSubmissions().then(res => {
                 preprocessAssessmentSubmission();
               }, err => {
@@ -314,22 +348,6 @@ export class AssessmentsPage {
             reject(err);
           }
         );
-    });
-  }
-
-  ionViewWillEnter() {
-    let loader = this.loadingCtrl.create();
-    loader.present().then(() => {
-      this.loadQuestions()
-      .then(() => {
-        loader.dismiss();
-      }, err => {
-        console.log('log::', err);
-      })
-      .catch((err) => {
-        console.log(err);
-        loader.dismiss();
-      });
     });
   }
 
@@ -444,6 +462,8 @@ export class AssessmentsPage {
       submission: assessmentGroup.submission, // use back the one back from ActivityViewPage
       submissions: this.submissions,
       event: this.navParams.get('event')
+    }).then(() => {
+      this.traceAssessmentProgress();
     });
   }
 }

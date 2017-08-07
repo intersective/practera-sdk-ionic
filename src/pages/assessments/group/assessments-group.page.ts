@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
@@ -36,7 +36,8 @@ export class AssessmentsGroupPage {
     private cache: CacheService,
     private assessmentService: AssessmentService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    public events: Events
   ) {}
 
   ionViewDidEnter() {
@@ -49,7 +50,7 @@ export class AssessmentsGroupPage {
       this.activity = this.event;
     }
 
-    this.assessment = this.activity.assessment;
+    this.assessment = this.activity.assessment; // required for context_id
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
 
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
@@ -66,10 +67,12 @@ export class AssessmentsGroupPage {
       this.buildFormGroup(this.questions),
       this.formInProgressAnswer(this.submission)
     );
+  }
 
-    console.log('this.submission', this.submission);
-    console.log('this.assessment', this.assessment);
-    console.log('this.questions', this.questions);
+  updateSubmission() {
+    this.events.publish('assessment:changes', {
+      changed: true
+    });
   }
 
   /**
@@ -243,7 +246,7 @@ export class AssessmentsGroupPage {
    * @param {object} submission single submission object retrieve from previous page/view
    * @return {object} formatted submission answer
    */
-  private formInProgressAnswer(submission) {
+  private formInProgressAnswer(submission): boolean | Submission {
     if (_.isEmpty(submission)) {
       return false;
     }
@@ -304,7 +307,7 @@ export class AssessmentsGroupPage {
    * @description retrieve saved progress from localStorage
    */
   retrieveProgress = (questions: Array<any>, answers?) => {
-    let cachedProgress = answers || this.cache.getLocalObject(this.cacheKey);
+    let cachedProgress = answers || {}; //this.cache.getLocalObject(this.cacheKey);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
@@ -356,6 +359,8 @@ export class AssessmentsGroupPage {
     });
 
     let saveProgress = () => {
+      this.updateSubmission();
+
       loading.present().then(() => {
         self.assessmentService.save(self.storeProgress()).subscribe(
           response => {

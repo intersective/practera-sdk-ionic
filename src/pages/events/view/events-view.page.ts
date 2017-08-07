@@ -61,6 +61,8 @@ export class EventsViewPage {
 
   ionViewWillEnter() {
     this.loadings.checkin = true;
+    this.submissions = []; // reset submissions
+
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
     }
@@ -207,28 +209,14 @@ export class EventsViewPage {
     loading.present().then(() => {
       // if submission exist
       console.log(this.submissions);
-      this.assessmentService.getAll({
-        search: {
-          assessment_id: this.event.assessment.id,
-          structured: true
-        }
-      }).subscribe(assessments => {
-        let assessment = assessments[0],
-            assessmentGroup = assessment.AssessmentGroup[0];
-
-        assessment = this.assessmentService.normalise(assessment);
-        loading.dismiss().then(() => {
-          // this.navCtrl.push(AssessmentsGroupPage, {
-          this.navCtrl.push(AssessmentsPage, {
-            event,
-            activity: event.activity,
-            // event checkin would just accept one event submission,
-            // so here we get first one with `this.submissions[0]`
-            submission: this.submissions[0],
-            assessmentGroup: assessment.AssessmentGroup[0]
-          });
+      loading.dismiss().then(() => {
+        // this.navCtrl.push(AssessmentsGroupPage, {
+        this.navCtrl.push(AssessmentsPage, {
+          event,
+          activity: event.activity,
+          submissions: this.submissions
         });
-      }, err => { loading.dismiss(); });
+      });
     })
   }
 
