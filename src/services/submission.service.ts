@@ -10,9 +10,8 @@ export class SubmissionService {
   constructor(private request: RequestService) {}
 
   // list()
-  public getSubmissions(options? : any) {
-    return this.request.get(this.targetUrl)
-      .map(response => response.json())
+  public getSubmissions(options?: any) {
+    return this.request.get(this.targetUrl, options);
   }
 
   public extractPhotos(data) {

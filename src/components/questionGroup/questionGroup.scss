@@ -14,10 +14,32 @@ questionGroup {
       font-size: 1.3em;
     }
 
+    .description {
+      display: block;
+      text-overflow: ellipsis;
+      word-wrap: break-word;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 3.6em;
+      line-height: 1.8em;
+    }
+
     button {
       position: absolute;
       top: -7px;
       right: 0px;
+    }
+
+    .status {
+      text-align: right;
+    }
+
+    .completed {
+      color: $toolbar-active-color
+    }
+
+    .incomplete {
+      color: $toolbar-inactive-color
     }
   }
 
