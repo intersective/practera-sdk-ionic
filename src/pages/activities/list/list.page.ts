@@ -9,8 +9,6 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
@@ -43,6 +41,14 @@ export class ActivitiesListPage implements OnInit {
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+
+  // Achievements
+  private achievements = {
+    maxPoint: {},
+    obtained: {},
+    available: []
+  };
+
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -53,51 +59,62 @@ export class ActivitiesListPage implements OnInit {
     public modalCtrl: ModalController,
     public translationService: TranslationService
   ) {}
+
   // shiftLanguageTrial(){
   //   this.shiftLang = !this.shiftLang;
   //   this.translationService.isTranslated(this.shiftLang);
   // }
-  ngOnInit(){
+  ngOnInit() {
     this.loadingAchievements();
   }
+
   // display user achievemnt statistics score points
-  loadingAchievements(){
+  loadingAchievements() {
     let loadingFailed = this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
-    let getUserAchievements = this.achievementService.getAchievements();
-    let getAllAchievements = this.achievementService.getAllAchievements();
-    let getMaxPoints = this.achievementService.getMaxPoints();
-    Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
-              .subscribe(results => {
-                this.totalAchievements = results;
-                // console.log(this.totalAchievements);
-                // console.log("Max Points: ", results[2].max_achievable_points);
-                this.maxPoints = results[2].max_achievable_points;
-                this.currentPoints = results[0].total_points;
-                if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
-                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
-                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
-                }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
-                  this.pointPercentage = 100;
-                }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
-                  this.currentPoints = 0;
-                  this.maxPoints = 0;
-                  this.pointPercentage = 0;
-                }
-              },
-              err => {
-                this.currentPoints = 0;
-                this.maxPoints = 0;
-                this.pointPercentage = 0;
-                if (ACTIVATE_TOAST) {
-                  loadingFailed.present();
-                }
-              }
+
+    Observable.forkJoin([
+      this.achievementService.getAchievements(),
+      this.achievementService.getAll(),
+      this.achievementService.getMaxPoints()
+    ]).subscribe(
+        results => {
+          this.totalAchievements = results;
+          this.achievements = {
+            obtained: results[0],
+            available: results[1],
+            maxPoint: results[2],
+          };
+
+          console.log(this.totalAchievements);
+          console.log("Max Points: ", results[2].max_achievable_points);
+          this.maxPoints = results[2].max_achievable_points;
+          this.currentPoints = results[0].total_points;
+          if (this.currentPoints >= 0 && this.currentPoints <= this.maxPoints) {
+            this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
+            (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
+          } else if(this.currentPoints > this.maxPoints) { // if user achievements points larger then maximum point value, then return 100%
+            this.pointPercentage = 100;
+          } else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
+            this.currentPoints = 0;
+            this.maxPoints = 0;
+            this.pointPercentage = 0;
+          }
+        },
+        err => {
+          this.currentPoints = 0;
+          this.maxPoints = 0;
+          this.pointPercentage = 0;
+          if (ACTIVATE_TOAST) {
+            loadingFailed.present();
+          }
+        }
     );
   }
+
   // loading activity list data
   loadingActivities = () => {
     let loadingActivities = this.loadingCtrl.create({
@@ -109,40 +126,46 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     loadingActivities.present();
-    this.activityService.getActivities()
-        .subscribe(
-          data => {
-            this.activities = data;
-            if(this.activities.length == 0){
-              this.returnError = true;
-            }
-            loadingActivities.dismiss().then(() => {
-              console.log("Activities: ", this.activities);
-            });
-          },
-          err => {
-            loadingActivities.dismiss().then(() => {
-              if (ACTIVATE_TOAST) {
-                loadingFailed.present();
-              }
-            });
+    this.activityService.getList()
+      .subscribe(
+        data => {
+          this.activities = data;
+          if(this.activities.length == 0){
+            this.returnError = true;
           }
-        )
+          loadingActivities.dismiss().then(() => {
+            console.log("Activities: ", this.activities);
+          });
+        },
+        err => {
+          loadingActivities.dismiss().then(() => {
+            if (ACTIVATE_TOAST) {
+              loadingFailed.present();
+            }
+          });
+        }
+      )
   }
 
   // load activity data
   ionViewWillEnter() {
     this.loadingActivities();
   }
+
   // refresher activities
   doRefresh(e) {
     this.loadingActivities()
     e.complete();
   }
+
   // redirect to activity detail page
   goToDetail(activity: any, id: any){
-    this.navCtrl.push(ActivitiesViewPage, { activity: activity, id: id });
+    this.navCtrl.push(ActivitiesViewPage, {
+      achievements: this.achievements,
+      activity: activity
+    });
   }
+
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});

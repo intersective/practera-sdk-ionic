@@ -13,13 +13,14 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from './assets/i18n-en'; 
+import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
+import { GameService } from '../services/game.service';
 import { SessionService } from '../services/session.service';
 import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
@@ -35,8 +36,6 @@ import { GroupEmitterService } from '../components/questions/group-emitter.servi
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
-import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
-import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
@@ -48,6 +47,7 @@ import { FileQuestionComponent } from '../components/questions/file';
 import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
+import { FeedbackComponent } from '../components/questions/feedback';
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -55,8 +55,6 @@ import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
 import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
-import { ActivitiesClassicViewModalPage } from '../pages/activities-classic/view/activities-classic-view-modal.page';
-import { ActivitiesClassicViewPage } from '../pages/activities-classic/view/activities-classic-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
@@ -67,7 +65,6 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
-import { HomePage } from '../pages/home/home';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
@@ -85,6 +82,7 @@ import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
+import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 
@@ -99,16 +97,12 @@ export function HttpLoaderFactory(http: Http) {
   declarations: [
     AchievementsViewPage,
     ActivitiesClassicListPage,
-    ActivitiesClassicViewModalPage,
-    ActivitiesClassicViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CurrentActivitiesComponent,
-    CurrentLevelsComponent,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -116,10 +110,10 @@ export function HttpLoaderFactory(http: Http) {
     EventsListPage,
     EventsPreviewPage,
     EventsViewPage,
+    FeedbackComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
-    HomePage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
@@ -149,6 +143,7 @@ export function HttpLoaderFactory(http: Http) {
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
+    UcfirstPipe,
     EscapeHtmlPipe,
   ],
   imports: [
@@ -208,8 +203,6 @@ export function HttpLoaderFactory(http: Http) {
   entryComponents: [
     AchievementsViewPage,
     ActivitiesClassicListPage,
-    ActivitiesClassicViewModalPage,
-    ActivitiesClassicViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -259,6 +252,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
+    GameService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })
