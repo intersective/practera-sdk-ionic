@@ -140,7 +140,7 @@ export class AssessmentsPage {
           // get total number of answered questions
           assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
           _.forEach(assessmentGroup.questions, (q) => {
-            if (q.answer && q.answer !== null) {
+            if (q.required && q.answer && q.answer !== null) {
               assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
             }
           });
@@ -296,10 +296,13 @@ export class AssessmentsPage {
           _.forEach(groups, (assessment, j) => {
             let groupWithAnswers = 0;
             _.forEach(assessment.AssessmentGroup, group => {
+              console.log('group.answeredQuestions', group.answeredQuestions);
+              console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
               if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
+            console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
             if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
               this.allowSubmit = true;
             }
