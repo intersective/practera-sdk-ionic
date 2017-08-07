@@ -21,6 +21,7 @@ import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
 import { GameService } from '../services/game.service';
+import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
 import { GroupEmitterService } from '../components/questions/group-emitter.service';
@@ -66,6 +67,7 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
+import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
@@ -84,6 +86,7 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
+import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
@@ -118,6 +121,7 @@ export function HttpLoaderFactory(http: Http) {
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
+    LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
@@ -144,9 +148,10 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TeamPage,
+    TestPage,
+    TutorialPage,
     TermConditionPage,
     TermContentComponent,
-    TestPage,
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
@@ -224,6 +229,10 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
+    GalleryPage,
+    LeaderboardSettingsPage,
+    LevelComponent,
+    LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
     LoginModalPage,
@@ -243,14 +252,19 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TestPage,
+    TermConditionPage,
+    TutorialPage,
+    TermContentComponent,
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
+    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
+    { provide: FilestackService, useClass: FilestackService },
     { provide: LevelService, useClass: LevelService },
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
@@ -260,7 +274,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },
-    { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
     GameService,
