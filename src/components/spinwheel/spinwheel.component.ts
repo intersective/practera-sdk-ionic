@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { TweenMax } from 'gsap';
@@ -12,8 +12,8 @@ import * as Winwheel from 'Winwheel';
 export class SpinwheelComponent implements OnInit {
   canvasWheel = {
     'canvasId'        : 'spinwheel',
-    'outerRadius'     : 190,        // Set outer radius so wheel fits inside the background.
-    'innerRadius'     : 50,         // Make wheel hollow so segments don't go all way to center.
+    'outerRadius'     : 80,        // Set outer radius so wheel fits inside the background.
+    'innerRadius'     : 20,         // Make wheel hollow so segments don't go all way to center.
     'textFontSize'    : 24,         // Set default font size for the segments.
     'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
     'textAlignment'   : 'outer',    // Align text to outside of wheel.
@@ -35,10 +35,10 @@ export class SpinwheelComponent implements OnInit {
     ],
     'animation' :           // Specify the animation to use.
     {
-        'type'     : 'spinToStop',
-        'duration' : 10,     // Duration in seconds.
-        'spins'    : 3,     // Default number of complete spins.
-        'callbackFinished' : 'alertPrize()'
+      'type'     : 'spinToStop',
+      'duration' : 10,     // Duration in seconds.
+      'spins'    : 3,     // Default number of complete spins.
+      'callbackFinished' : this.alertPrize
     }
   };
   wheel: any;
@@ -55,16 +55,17 @@ export class SpinwheelComponent implements OnInit {
     public loadingCtrl: LoadingController,
     private gameService: GameService,
     private zone: NgZone,
-    private platform: Platform,
+    private platform: Platform
   ) {
   }
 
-
   ngOnInit() {
     let width = this.platform.width();
-    this.canvasWidth = width;
-    this.canvasWheel.outerRadius = width*0.35;
-    this.canvasWheel.innerRadius = width*0.1;
+    this.canvasWidth = width * 0.8;
+
+    let canvasWidth = width * 0.5;
+    this.canvasWheel.outerRadius = canvasWidth*0.75;
+    this.canvasWheel.innerRadius = canvasWidth*0.2;
     this.wheel = new Winwheel(this.canvasWheel);
     console.log(this.wheel);
   }
@@ -91,12 +92,25 @@ export class SpinwheelComponent implements OnInit {
 
   retrieve() {}
 
-  spin() {
+  draw() {
     this.zone.run(() => {
       this.wheel.draw();
+      console.log('drawn!!!');
+      console.log(this.wheel);
     });
-    console.log(this.wheel);
-    console.log('spin!!!');
+  }
+
+  spin() {
+    this.zone.run(() => {
+      let segmentNumber = 70/100;
+
+      // Get random angle inside specified segment of the wheel.
+      let stopAt = this.wheel.getRandomForSegment(segmentNumber);
+
+      // Important thing is to set the stopAngle of the animation before stating the spin.
+      this.wheel.animation.stopAngle = stopAt;
+      this.wheel.startAnimation();
+    });
   }
 
   stop() {

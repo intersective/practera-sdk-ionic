@@ -1,18 +1,21 @@
-<div>
+<div class="center">
   <div class="power_controls">
+    <button ion-button color="secondary" block (click)="draw()">
+      Draw
+    </button>
     <button ion-button color="primary" block [disabled]="statuses.spinOn" (click)="spin()">
       Spin
     </button>
     <div>
-      SPINS: <span id="spins">{{  statuses.chances }}</span>
+      SPINS: <span id="spins">{{ statuses.chances }}</span>
     </div>
     <div>
       POINTS: <span id="points">{{ statuses.value }}</span>
     </div>
   </div>
 
-  <canvas id="spinwheel" width="300" height="500">
-    <p style="{color: white}" align="center">
+  <canvas id="spinwheel" [attr.width]="canvasWidth" height="500">
+    <p align="center">
       Sorry, your browser doesn't support canvas. Please try another.
     </p>
   </canvas>
