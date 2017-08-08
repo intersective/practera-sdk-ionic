@@ -1,36 +1,72 @@
 <ion-header>
 	<ion-navbar>
-		<ion-title>Assessment Group</ion-title>
+		<ion-title>Assessment</ion-title>
     <ion-buttons end>
-      <button ion-button outline (click)="save()">Save</button>
+      <button ion-button (click)="save()" class="btn-save" [disabled]="!canUpdateInput">
+        Save
+      </button>
     </ion-buttons>
 	</ion-navbar>
 </ion-header>
 
 <ion-content class="groups-question" padding>
-  <div *ngFor="let question of questions" [ngSwitch]="question.type">
+  <ion-list *ngIf="inProgress">
+    <ion-list-header>
+      In Progress
+    </ion-list-header>
+  </ion-list>
+
+  <ion-list text-wrap *ngIf="assessmentGroup">
+    <h6 class="strong center">{{assessmentGroup.name}}</h6>
+    <p [innerHTML]="assessment.description"></p>
+  </ion-list>
+
+  <div *ngFor="let question of questions; let i = index;"
+    [ngSwitch]="question.type"
+    [ngClass]="{'hr': (i > 0 && i < questions.length)}">
+
+    <ion-list text-wrap>
+      <span class="strong">{{question.name}}</span>
+      <span *ngIf="question.required" class="red">*</span>
+    </ion-list>
+
+    <ion-item text-wrap *ngIf="question.description">
+      <p [innerHtml]="question.description"></p>
+    </ion-item>
+
+    <div *ngFor="let submission of submissions">
+      <pre>{{ submission | json }}</pre>
+    </div>
+
     <!-- type: oneOf -->
     <oneof-question
       [question]="question"
       [form]="formGroup[question.id]"
+      [disabled]="!canUpdateInput"
       *ngSwitchCase="'oneof'"></oneof-question>
 
     <!-- type: oneOf -->
     <multiple-question
       [question]="question"
       [form]="formGroup[question.id]"
+      [disabled]="!canUpdateInput"
       *ngSwitchCase="'multiple'"></multiple-question>
 
     <!-- type: file -->
     <file-question
-      *ngSwitchCase="'file'"
+      [question]="question"
       [form]="formGroup[question.id]"
-      [question]="question"></file-question>
+      [disabled]="!canUpdateInput"
+      *ngSwitchCase="'file'"></file-question>
 
     <!-- type: text -->
     <text-question
-      *ngSwitchCase="'text'"
+      [question]="question"
       [form]="formGroup[question.id]"
-      [question]="question"></text-question>
+      [disabled]="!canUpdateInput"
+      *ngSwitchCase="'text'"></text-question>
+
+    <!-- Reviewer's answer and comment -->
+    <feedback [question]="question" *ngIf="question.review_answer"></feedback>
   </div>
 </ion-content>

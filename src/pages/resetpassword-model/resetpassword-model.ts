@@ -84,6 +84,8 @@ export class ResetpasswordModelPage {
               this.authService.getUser()
                   .subscribe(
                     data => {
+                      this.cacheService.setLocalObject('name', data.User.name);
+                      this.cacheService.setLocalObject('email', data.User.email);
                       this.cacheService.setLocalObject('program_id', data.User.program_id);
                       this.cacheService.setLocalObject('project_id', data.User.project_id);
                     },

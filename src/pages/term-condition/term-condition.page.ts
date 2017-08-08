@@ -17,6 +17,7 @@ export class TermConditionPage {
   @Input('content') content?: SafeResourceUrl;
   @Input('user') user: any;
   agreed:boolean = false;
+  private checkAccessMethod: boolean = false;
   // loading & error message variables
   private helpEmailMessage = generalVariableMessages.helpMail.email;
   private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
@@ -28,6 +29,9 @@ export class TermConditionPage {
     private notificationService: NotificationService,
     public translationService: TranslationService,
   ) {}
+  private accessMethod(){
+    return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
+  }
   private displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
@@ -37,6 +41,9 @@ export class TermConditionPage {
       }]
     });
     alert.present();
+  }
+  private backToSAccountPage() {
+    this.nav.popToRoot();
   }
   ionViewDidEnter() {
     console.log(this.user);

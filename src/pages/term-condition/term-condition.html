@@ -10,14 +10,23 @@
   <!-- <ion-list *ngIf="content">
     <iframe width="100%" height="2500px" [src]="content" frameborder="0" marginwidth="0"></iframe>
   </ion-list> -->
-  <ion-list>
+  <ion-list *ngIf="accessMethod() == true">
     <!-- <button ion-item stable block (click)="signIn()">Skip (temporary)</button> -->
     <ion-item>
      <ion-label>{{ 'TERMCONDITIONS.AGREE' | translate }}</ion-label>
      <ion-checkbox [(ngModel)]="agreed" (change)="toggleAgree()" value="Agree"></ion-checkbox>
    </ion-item>
   </ion-list>
-  <ion-list class="register-next">
+  <ion-list class="register-next" *ngIf="accessMethod() == true">
     <button stable block disabled [disabled]="!agreed" (click)="agree(user)">{{ 'TERMCONDITIONS.NEXT' | translate }}</button>
+  </ion-list>
+  <ion-list *ngIf="accessMethod() != true">
+    <button class="general-circle-btn"
+      ion-button
+      block
+      color="button" 
+      (click)="backToSAccountPage()">
+      Back
+    </button>
   </ion-list>
 </ion-content>

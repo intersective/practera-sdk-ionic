@@ -14,6 +14,7 @@
     "BROWSE": "Browse",
     "CANCELBOOKING": "Cancel Booking",
     "CHECKIN": "Check-in",
+    "VIEWCHECKIN": "View Check-in",
     "DOWNLOAD": "Download",
     "MYBOOKINGS": "My Bookings",
     "PAGETITLE": "Events"
@@ -26,6 +27,9 @@
   "GENERAL": {
     "DONE": "Done",
     "DOWNLOAD": "Download",
+    "NEXT": "Next",
+    "PREV": "Prev",
+    "SKIP": "Skip",
     "SUBMIT": "Submit"
   },
   "LOGIN": {
@@ -34,18 +38,24 @@
     "PASSWORDFORGOT": "Forget Your Password?"
   },
   "REGISTRATION": {
-    "DONE": "Done",
     "HEADER": "Great - you are almost there! Just one more thing...",
     "PAGETITLE": "Set Password"
   },
+  "RANKING": {
+    "DETAIL": "Ranking Details",
+    "ME": "Me",
+    "MONTHLYPOINTS": "Points(Monthly)",
+    "PAGETITLE": "Monthly Ranking",
+    "TOTALPOINTS": "Points(Total)"
+  },
   "RESETPASSWORD": {
-    "DONE": "Done",
     "PAGETITLE": "Reset Password"
   },
   "SETTINGS": {
     "HELP": "Email Help",
+    "LEADERBOARD": "Settings",
     "LOGOUT": "Logout",
-    "PAGETITLE": "Settings",
+    "PAGETITLE": "Account",
     "PROFILE": "My Profile ",
     "SUPPORT": "Support",
     "SWITCHER": "Program Switcher",

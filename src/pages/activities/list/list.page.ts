@@ -3,20 +3,17 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController,
-  AlertController
+  ModalController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
+import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
-import { CharactersService } from '../../../services/characters.service';
+import { CharacterService } from '../../../services/character.service';
 import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
@@ -36,7 +33,7 @@ const ACTIVATE_TOAST = false;
 })
 export class ActivitiesListPage implements OnInit {
   public activities = [];
-  public currentPercentage: number = 0;
+  public currentPercentage: any = 0;
   public characterData: any = [];
   public submissionData: any = [];
   public characterCurrentExperience: number = 0;
@@ -47,37 +44,45 @@ export class ActivitiesListPage implements OnInit {
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+
+  // Achievements
+  private achievements = {
+    maxPoint: {},
+    obtained: {},
+    available: []
+  };
+
   constructor(
     public navCtrl: NavController,
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
-    public charactersService: CharactersService,
+    public characterService: CharacterService,
     public submissionService: SubmissionService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translationService: TranslationService,
-    public alertCtrl: AlertController
+    public translationService: TranslationService
   ) {}
+
   // shiftLanguageTrial(){
   //   this.shiftLang = !this.shiftLang;
   //   this.translationService.isTranslated(this.shiftLang);
-  // }               
-  ngOnInit(){ 
+  // }
+  ngOnInit() {
     this.loadingAchievements();
   }
+
   // display user achievemnt statistics score points
-  loadingAchievements(){
+  loadingAchievements() {
     let loadingFailed = this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
-    let getCharacter = this.charactersService.getCharacter();
+    let getCharacter = this.characterService.getCharacter();
     let getSubmission = this.submissionService.getSubmissionsData();
     Observable.forkJoin([getSubmission, getCharacter])
-    // Observable.forkJoin([getSubmission]) // this line will be removed when ISDK-57 is merged
               .subscribe(results => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
@@ -85,9 +90,9 @@ export class ActivitiesListPage implements OnInit {
                       this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
                     }
                   });
-                  this.percentageValue = this.submissionPoints/this.submissionData.length;
-                  this.currentPercentage = parseFloat(this.percentageValue.toFixed(4))*100; 
-                  console.log("percent: ", this.currentPercentage);
+                  this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
+                  this.currentPercentage = this.percentageValue.toFixed(2);
+                  console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Character;
                   this.characterCurrentExperience = this.characterData.experience;
                   console.log("Experience: ", this.characterCurrentExperience);
@@ -99,6 +104,7 @@ export class ActivitiesListPage implements OnInit {
                 }
               );
   }
+
   // loading activity list data
   loadingActivities = () => {
     let loadingActivities = this.loadingCtrl.create({
@@ -110,65 +116,46 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     loadingActivities.present();
-    this.activityService.getActivities()
-        .subscribe(
-          data => {
-            this.activities = data;
-            if(this.activities.length == 0){
-              this.returnError = true;
-            }
-            loadingActivities.dismiss().then(() => {
-              console.log("Activities: ", this.activities);
-            });
-          },
-          err => {
-            loadingActivities.dismiss().then(() => {
-              if (ACTIVATE_TOAST) {
-                loadingFailed.present();
-              }
-            });
+    this.activityService.getList()
+      .subscribe(
+        data => {
+          this.activities = data;
+          if(this.activities.length == 0){
+            this.returnError = true;
           }
-        )
-  }
-
-  /**
-   * @TODO: remove this feature after development near complete
-   * Prompt user to skip loading to skip forced long wait of API
-   * @param {Function} cb callback if user choose to load API call
-   */
-  promptSkipLoading(cb: Function) {
-    let prompt = this.alertCtrl.create({
-      title: "Skip loading?",
-      message: "Skip to speed up development (skip waiting).",
-      buttons: [
-        {
-          text: 'Load it',
-          handler: data => {
-            return cb();
-          }
+          loadingActivities.dismiss().then(() => {
+            console.log("Activities: ", this.activities);
+          });
         },
-        {
-          text: 'Skip',
-          handler: data => console.log(data)
+        err => {
+          loadingActivities.dismiss().then(() => {
+            if (ACTIVATE_TOAST) {
+              loadingFailed.present();
+            }
+          });
         }
-      ]
-    })
-    prompt.present();
+      )
   }
 
   // load activity data
   ionViewWillEnter() {
-    this.promptSkipLoading(this.loadingActivities);
+    this.loadingActivities();
   }
+
   // refresher activities
   doRefresh(e) {
     this.loadingActivities()
     e.complete();
   }
+
   // redirect to activity detail page
   goToDetail(activity: any, id: any){
-    this.navCtrl.push(ActivitiesViewPage, { activity: activity, id: id });
+    this.navCtrl.push(ActivitiesViewPage, {
+      achievements: this.achievements,
+      activity: activity
+    });
   }
+
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});

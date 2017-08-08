@@ -13,31 +13,31 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from './assets/i18n-en'; 
+import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { CharactersService } from '../services/characters.service';
-import { SessionService } from '../services/session.service';
-import { RequestModule } from '../shared/request/request.module';
-import { ResponsiveService } from '../services/responsive.service';
+import { GameService } from '../services/game.service';
+import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
+import { GroupEmitterService } from '../components/questions/group-emitter.service';
 import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
+import { RankingService } from '../services/ranking.service';
+import { RequestModule } from '../shared/request/request.module';
+import { ResponsiveService } from '../services/responsive.service';
+import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
-import { GroupEmitterService } from '../components/questions/group-emitter.service';
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
-import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
-import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
@@ -49,6 +49,7 @@ import { FileQuestionComponent } from '../components/questions/file';
 import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
+import { FeedbackComponent } from '../components/questions/feedback';
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -56,8 +57,6 @@ import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
 import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
-import { ActivitiesClassicViewModalPage } from '../pages/activities-classic/view/activities-classic-view-modal.page';
-import { ActivitiesClassicViewPage } from '../pages/activities-classic/view/activities-classic-view.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
@@ -68,11 +67,14 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
-import { HomePage } from '../pages/home/home';
+import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
+import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
+import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
 import { RegistrationModalPage } from '../pages/registration/modal';
 import { RegistrationPage } from '../pages/registration/registration.page';
@@ -84,31 +86,30 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
+import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
+import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
+import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
-    return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
+  return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
 @NgModule({
   declarations: [
     AchievementsViewPage,
     ActivitiesClassicListPage,
-    ActivitiesClassicViewModalPage,
-    ActivitiesClassicViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CurrentActivitiesComponent,
-    CurrentLevelsComponent,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -116,10 +117,11 @@ export function HttpLoaderFactory(http: Http) {
     EventsListPage,
     EventsPreviewPage,
     EventsViewPage,
+    FeedbackComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
-    HomePage,
+    LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
@@ -134,6 +136,9 @@ export function HttpLoaderFactory(http: Http) {
     OneofQuestionComponent,
     PhotoComponent,
     QuestionGroupComponent,
+    RankingBadgesPage,
+    RankingDetailsPage,
+    RankingsPage,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,
@@ -143,13 +148,15 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TeamPage,
+    TestPage,
+    TutorialPage,
     TermConditionPage,
     TermContentComponent,
-    TestPage,
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
-    TruncatePipe,
+    UcfirstPipe,
+    EscapeHtmlPipe,
   ],
   imports: [
     BrowserModule,
@@ -208,8 +215,6 @@ export function HttpLoaderFactory(http: Http) {
   entryComponents: [
     AchievementsViewPage,
     ActivitiesClassicListPage,
-    ActivitiesClassicViewModalPage,
-    ActivitiesClassicViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -224,6 +229,10 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
+    GalleryPage,
+    LeaderboardSettingsPage,
+    LevelComponent,
+    LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
     LoginModalPage,
@@ -231,6 +240,9 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
+    RankingBadgesPage,
+    RankingDetailsPage,
+    RankingsPage,
     RegisterPage,
     RegistrationModalPage,
     RegistrationPage,
@@ -240,26 +252,31 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TestPage,
+    TermConditionPage,
+    TutorialPage,
+    TermContentComponent,
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
-    { provide: CharactersService, useClass: CharactersService },
+    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
+    { provide: FilestackService, useClass: FilestackService },
     { provide: LevelService, useClass: LevelService },
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
     { provide: NotificationService, useClass: NotificationService },
+    { provide: RankingService, useClass: RankingService },
     { provide: ResponsiveService, useClass: ResponsiveService },
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },
-    { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
+    GameService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })

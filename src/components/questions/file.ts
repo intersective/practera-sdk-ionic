@@ -2,6 +2,7 @@ import { Component, Input, OnInit, NgZone } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FilestackService, FilestackUpload } from '../../shared/filestack/filestack.service';
 import { UtilsService } from '../../shared/utils/utils.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'file-question',
@@ -9,9 +10,11 @@ import { UtilsService } from '../../shared/utils/utils.service';
 })
 export class FileQuestionComponent implements OnInit {
   @Input() question;
+  @Input() disabled;
   @Input() form: FormGroup;
 
-  uploaded: Array<any> = []; // uploaded files
+  uploaded: any; // uploaded file (support single only)
+  // uploaded: Array<any> = []; // uploaded files
 
   constructor(
     private fs: FilestackService,
@@ -24,29 +27,47 @@ export class FileQuestionComponent implements OnInit {
    * uploaded files is retrieved from cached form  (if available)
    */
   ngOnInit() {
-    this.uploaded = this.form.controls.answer.value || [];
+    this.uploaded = _.isEmpty(this.form.controls.answer.value) ? false : this.form.controls.answer.value;
   }
 
   /**
    * @description Upload file and trigger ngzone to update this.uploaded variable
    */
   upload(event) {
-    console.log(event);
     let self = this;
 
     this.fs.pick({
-      maxFiles: 5,
+      maxFiles: 1,
       storeTo: {
         location: 's3'
       }
     }).then((uploaded: FilestackUpload) => {
       self.zone.run(() => {
-        uploaded.filesUploaded.forEach((file, index) => {
+        if (uploaded.filesUploaded.length > 0) {
+          let file = uploaded.filesUploaded.shift();
           file.icon = self.util.getIcon(file.mimetype);
-          self.uploaded.push(file);
-        });
-        this.form.controls.answer.setValue(self.uploaded);
+
+          // post_assessment_submission API requirement "key"
+          file.key = file.handle;
+
+          self.uploaded = file;
+          this.form.controls.answer.setValue(self.uploaded);
+        }
+
+        if (uploaded.filesFailed.length > 0) {
+          console.log(uploaded.filesFailed.length, ' file(s) not uploaded.');
+        }
       });
     });
   }
+
+  private injectIcon = (files: any[]) => {
+    let result = [];
+    files.forEach((file, index) => {
+      file.icon = this.util.getIcon(file.mimetype);
+      result.push(file);
+    });
+
+    return result;
+  };
 }

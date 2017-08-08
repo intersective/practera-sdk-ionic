@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
-import { ActivitiesClassicViewPage } from '../view/activities-classic-view.page';
+import { ActivitiesViewPage } from '../../activities/view/activities-view.page';
 import { ActivityService } from '../../../services/activity.service';
 
 declare var _: any;
@@ -117,6 +117,6 @@ export class ActivitiesClassicListPage {
 
   public gotoActivity(activity) {
     console.log(activity);
-    this.navCtrl.push(ActivitiesClassicViewPage, {activity});
+    this.navCtrl.push(ActivitiesViewPage, {activity});
   }
 }
