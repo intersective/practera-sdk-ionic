@@ -4,7 +4,7 @@ build:
     steps:
       - npm-install
       - script:
-        name: run ionic build browser --prod
+        name: run ionic build
         code: ionic build
         
 deploy:
@@ -14,7 +14,7 @@ deploy:
             key_id: $AWS_ACCESS_KEY_ID
             key_secret: $AWS_SECRET_ACCESS_KEY
             bucket_url: $AWS_BUCKET_URL
-            source_dir: platforms/browser/www
+            source_dir: www/
             opts: $AWS_CACHE_OPTS
         # –recursive --acl-public --add-header=Cache-Control:max-age=21600,public
 
