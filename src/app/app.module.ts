@@ -50,6 +50,11 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+// unused but necessary for build
+import { AssessmentsComponent } from '../components/assessments/assessments.component';
+import { LevelsComponent } from '../components/levels/levels';
+import { QuestionComponent } from '../components/question/question.component';
+
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -62,6 +67,7 @@ import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-gro
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
+import { EventsBookingPage } from '../pages/events/booking/booking.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
@@ -92,6 +98,11 @@ import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
+// unused but needed for build
+import { CalendarPipe } from '../pipes/CalendarPipe';
+import { DateFormatPipe } from '../pipes/DateFormat';
+import { OrderByPipe } from '../pipes/OrderBy';
+import { UrlFilterPipe } from '../pipes/urlfilter.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -108,8 +119,11 @@ export function HttpLoaderFactory(http: Http) {
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     ActivityListPopupPage,
+    AssessmentsComponent,
     AssessmentsGroupPage,
     AssessmentsPage,
+    CalendarPipe,
+    DateFormatPipe,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -117,12 +131,14 @@ export function HttpLoaderFactory(http: Http) {
     EventsListPage,
     EventsPreviewPage,
     EventsViewPage,
+    EventsBookingPage,
     FeedbackComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
     LeaderboardSettingsPage,
     LevelComponent,
+    LevelsComponent,
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
@@ -133,8 +149,10 @@ export function HttpLoaderFactory(http: Http) {
     ModalComponent,
     MultipleQuestionComponent,
     MyApp,
+    OrderByPipe,
     OneofQuestionComponent,
     PhotoComponent,
+    QuestionComponent,
     QuestionGroupComponent,
     RankingBadgesPage,
     RankingDetailsPage,
@@ -156,6 +174,7 @@ export function HttpLoaderFactory(http: Http) {
     TimeAgoPipe,
     TruncatePipe,
     UcfirstPipe,
+    UrlFilterPipe,
     EscapeHtmlPipe,
   ],
   imports: [
