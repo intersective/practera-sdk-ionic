@@ -5,7 +5,7 @@ build:
       - npm-install
       - script:
         name: run ionic build
-        code: ionic build browse --prod --release
+        code: ionic build browser --prod --release
         
 deploy:
     steps:
