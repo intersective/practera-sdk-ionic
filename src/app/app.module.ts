@@ -35,6 +35,7 @@ import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -50,6 +51,8 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+import { SpinwheelComponent } from '../components/spinwheel/spinwheel.component';
+
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -146,6 +149,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelComponent,
     TabsPage,
     TeamPage,
     TestPage,
@@ -205,6 +209,12 @@ export function HttpLoaderFactory(http: Http) {
           name: 'Registration',
           segment: 'registration',
           defaultHistory: [ RegistrationPage ]
+        },
+        {
+          component: TestPage,
+          name: 'Testing',
+          segment: 'testing',
+          defaultHistory: [ TestPage ]
         }
       ]
     })
