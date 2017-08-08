@@ -13,9 +13,9 @@ export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
   ranking: any = RankingsPage;
-  // ranking: any = TestPage;
   dashboard: any = ActivitiesListPage;
   settings: any = SettingsPage;
   events: any = EventsListPage;
+  spinner: any = EventsListPage;
   constructor(public translationService: TranslationService) {}
 }
