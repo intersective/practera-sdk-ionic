@@ -24,6 +24,9 @@
     "PAGETITLE": "Forgot Password",
     "SENDBUTTON": "Send to Mailbox"
   },
+  "GAME": {
+    "PAGETITLE": "Spinner Wheel"
+  },
   "GENERAL": {
     "DONE": "Done",
     "DOWNLOAD": "Download",

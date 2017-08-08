@@ -89,6 +89,7 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
+import { SpinnerPage } from '../pages/spinner/spinner.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
@@ -149,6 +150,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinnerPage,
     SpinwheelComponent,
     TabsPage,
     TeamPage,
@@ -260,6 +262,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinnerPage,
     TabsPage,
     TestPage,
     TermConditionPage,

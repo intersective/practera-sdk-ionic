@@ -9,6 +9,7 @@ import { SidenavPage } from '../pages/sidenav/sidenav';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { RegistrationPage } from '../pages/registration/registration.page';
+import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 @Component({
@@ -19,6 +20,7 @@ export class MyApp implements OnInit {
   rootPage: any;
   urlParameters: Array<any> = [];
   do = {
+    'testing': TestPage,
     'registration': RegistrationPage,
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
