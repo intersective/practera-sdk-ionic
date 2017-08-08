@@ -1,47 +1,48 @@
-import { Component, NgZone } from '@angular/core';
-import { LoadingController } from 'ionic-angular';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { TweenMax } from 'gsap';
 
 import * as Winwheel from 'Winwheel';
 
-const WHEEL = {
-  'outerRadius'     : 212,        // Set outer radius so wheel fits inside the background.
-  'innerRadius'     : 75,         // Make wheel hollow so segments don't go all way to center.
-  'textFontSize'    : 24,         // Set default font size for the segments.
-  'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
-  'textAlignment'   : 'outer',    // Align text to outside of wheel.
-  'numSegments'     : 12,         // Specify number of segments.
-  'segments'        :             // Define segments including colour and text.
-  [                               // font size and test colour overridden on backrupt segments.
-     {'fillStyle' : '#97ACD9', 'text' : '100'},
-     {'fillStyle' : '#ABE0F9', 'text' : '200'},
-     {'fillStyle' : '#96D5D2', 'text' : '300'},
-     {'fillStyle' : '#C4DF9F', 'text' : '400'},
-     {'fillStyle' : '#97ACD9', 'text' : '100'},
-     {'fillStyle' : '#ABE0F9', 'text' : '200'},
-     {'fillStyle' : '#96D5D2', 'text' : '300'},
-     {'fillStyle' : '#C4DF9F', 'text' : '400'},
-     {'fillStyle' : '#97ACD9', 'text' : '100'},
-     {'fillStyle' : '#ABE0F9', 'text' : '200'},
-     {'fillStyle' : '#96D5D2', 'text' : '300'},
-     {'fillStyle' : '#C4DF9F', 'text' : '400'}
-  ],
-  'animation' :           // Specify the animation to use.
-  {
-      'type'     : 'spinToStop',
-      'duration' : 10,     // Duration in seconds.
-      'spins'    : 3,     // Default number of complete spins.
-      'callbackFinished' : 'alertPrize()'
-  }
-};
-
 @Component({
   selector: 'spinwheel',
   templateUrl: './spinwheel.html'
 })
-export class SpinwheelComponent {
+export class SpinwheelComponent implements OnInit {
+  canvasWheel = {
+    'canvasId'        : 'spinwheel',
+    'outerRadius'     : 190,        // Set outer radius so wheel fits inside the background.
+    'innerRadius'     : 50,         // Make wheel hollow so segments don't go all way to center.
+    'textFontSize'    : 24,         // Set default font size for the segments.
+    'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
+    'textAlignment'   : 'outer',    // Align text to outside of wheel.
+    'numSegments'     : 12,         // Specify number of segments.
+    'segments'        :             // Define segments including colour and text.
+    [                               // font size and test colour overridden on backrupt segments.
+       {'fillStyle' : '#97ACD9', 'text' : '100'},
+       {'fillStyle' : '#ABE0F9', 'text' : '200'},
+       {'fillStyle' : '#96D5D2', 'text' : '300'},
+       {'fillStyle' : '#C4DF9F', 'text' : '400'},
+       {'fillStyle' : '#97ACD9', 'text' : '100'},
+       {'fillStyle' : '#ABE0F9', 'text' : '200'},
+       {'fillStyle' : '#96D5D2', 'text' : '300'},
+       {'fillStyle' : '#C4DF9F', 'text' : '400'},
+       {'fillStyle' : '#97ACD9', 'text' : '100'},
+       {'fillStyle' : '#ABE0F9', 'text' : '200'},
+       {'fillStyle' : '#96D5D2', 'text' : '300'},
+       {'fillStyle' : '#C4DF9F', 'text' : '400'}
+    ],
+    'animation' :           // Specify the animation to use.
+    {
+        'type'     : 'spinToStop',
+        'duration' : 10,     // Duration in seconds.
+        'spins'    : 3,     // Default number of complete spins.
+        'callbackFinished' : 'alertPrize()'
+    }
+  };
   wheel: any;
+  canvasWidth: number = 300;
   statuses = {
     chances: 0,
     spinning: false,
@@ -53,8 +54,19 @@ export class SpinwheelComponent {
   constructor(
     public loadingCtrl: LoadingController,
     private gameService: GameService,
-    private zone: NgZone
+    private zone: NgZone,
+    private platform: Platform,
   ) {
+  }
+
+
+  ngOnInit() {
+    let width = this.platform.width();
+    this.canvasWidth = width;
+    this.canvasWheel.outerRadius = width*0.35;
+    this.canvasWheel.innerRadius = width*0.1;
+    this.wheel = new Winwheel(this.canvasWheel);
+    console.log(this.wheel);
   }
 
   ionViewWillEnter() {
@@ -71,8 +83,6 @@ export class SpinwheelComponent {
   }
 
   ionViewDidEnter() {
-    let wheel = new Winwheel(WHEEL);
-    console.log(wheel);
   }
 
   alertPrize() {
@@ -82,6 +92,10 @@ export class SpinwheelComponent {
   retrieve() {}
 
   spin() {
+    this.zone.run(() => {
+      this.wheel.draw();
+    });
+    console.log(this.wheel);
     console.log('spin!!!');
   }
 

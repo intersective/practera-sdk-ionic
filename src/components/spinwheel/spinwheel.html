@@ -1,6 +1,6 @@
 <div>
   <div class="power_controls">
-    <button ion-button color="primary" block [disabled]="statuses.spinOn">
+    <button ion-button color="primary" block [disabled]="statuses.spinOn" (click)="spin()">
       Spin
     </button>
     <div>
@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <canvas id="spinwheel" width="434" height="434">
+  <canvas id="spinwheel" width="300" height="500">
     <p style="{color: white}" align="center">
       Sorry, your browser doesn't support canvas. Please try another.
     </p>
