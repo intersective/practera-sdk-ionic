@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-navbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12 class="flex-display">
+          <ion-title>New items</ion-title>
+          <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-navbar>
+</ion-header>
+<ion-content id="itemsPopup">
+  <div *ngIf="isEmpty == true">
+    <p>No Items earned ..</p>
+  </div>
+  <div *ngIf="isEmpty == false">
+    <div class="assessments-items-popup" *ngFor="let item of combinedData">
+      <img class="item-popup-img" src="{{ item.meta.img }}" alt="item"/>
+        <p class="item-popup-text">
+        {{ item.name }} <span> x{{ item.count[0].count }}</span>
+      </p> 
+    </div>
+  </div>
+  <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
+</ion-content>

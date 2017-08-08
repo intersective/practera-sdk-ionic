@@ -197,4 +197,8 @@ export class SubmissionService {
   public getReview(review) {
     return review;
   }
+  // get user submissions data
+  public getSubmissionsData() {
+    return this.request.get(this.targetUrl);
+  }
 }
