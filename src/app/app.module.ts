@@ -20,7 +20,7 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { CharactersService } from '../services/characters.service';
+import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
 import { GameService } from '../services/game.service';
@@ -49,6 +49,7 @@ import { FileQuestionComponent } from '../components/questions/file';
 import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
+import { FeedbackComponent } from '../components/questions/feedback';
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -67,12 +68,13 @@ import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
 import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
+import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
-import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page'; 
+import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
 import { RegistrationModalPage } from '../pages/registration/modal';
@@ -85,6 +87,7 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
+import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
@@ -115,10 +118,12 @@ export function HttpLoaderFactory(http: Http) {
     EventsListPage,
     EventsPreviewPage,
     EventsViewPage,
+    FeedbackComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
     ItemsPopupPage,
+    LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
@@ -145,9 +150,10 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TeamPage,
+    TestPage,
+    TutorialPage,
     TermConditionPage,
     TermContentComponent,
-    TestPage,
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
@@ -226,6 +232,10 @@ export function HttpLoaderFactory(http: Http) {
     EventsViewPage,
     ForgetPasswordPage,
     ItemsPopupPage,
+    GalleryPage,
+    LeaderboardSettingsPage,
+    LevelComponent,
+    LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
     LoginModalPage,
@@ -245,15 +255,19 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TestPage,
+    TermConditionPage,
+    TutorialPage,
+    TermContentComponent,
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
-    { provide: CharactersService, useClass: CharactersService },
+    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
+    { provide: FilestackService, useClass: FilestackService },
     { provide: LevelService, useClass: LevelService },
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
@@ -263,7 +277,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },
-    { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
     GameService,

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ModalController, NavParams, NavController } from 'ionic-angular';
+import { ModalController, NavParams, NavController, AlertController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 // pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
-// import { AssessmentsPage } from '../../assessments/assessment.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
@@ -21,16 +21,23 @@ export class ActivitiesViewPage {
     obtained: {},
     maxPoints: {}
   };
+  loadings = {
+    submissions: false
+  };
 
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private activityService: ActivityService,
-    private submissionService: SubmissionService
+    private submissionService: SubmissionService,
+    private alertCtrl: AlertController
   ) {
   }
 
+  ionViewWillEnter(): void {
+    this.loadings.submissions = true;
+  }
 
   // @TODO: use simple mock data for assessment first
   /**
@@ -41,28 +48,28 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
-    // badges
-    this.achievements = this.navParams.get('achievements');
-    console.log('achivements', this.achievements);
-
+    // assessment
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
-
     this.assessment = this.activity.assessment;
 
+    // submission
     this.submissions = [];
-    this.submissionService.getSubmissions({
-      search: { context_id: this.assessment.context_id }
-    }).subscribe(response => {
-      if (response.length > 0) {
-        console.log(this.submissions);
-        this.submissions = response.map(submission => {
-          return this.submissionService.normalise(submission);
-        });
-        console.log(this.submissions);
-      }
+    Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References)).subscribe(responses => {
+      // turn nested array into single dimension array
+      responses.forEach((submissions: Array<any>) => {
+        if (submissions.length > 0) {
+          this.submissions = submissions.map(submission => {
+            return this.submissionService.normalise(submission);
+          });
+        }
+      });
+
+      this.loadings.submissions = false;
     });
 
+    // badges
+    this.achievements = this.navParams.get('achievements');
     this.activity.badges = this.extractBadges();
     this.activity.badges.map((badge, index) => {
       if ((this.activity.id % 3) != 0) {
@@ -71,6 +78,17 @@ export class ActivitiesViewPage {
         badge.disabled = true;
       }
     });
+  }
+
+  // extract "in progress"
+  inProgressSubmission() {
+    let result = [];
+    (this.submissions || []).forEach(submission => {
+      if (submission.status === 'in progress') {
+        result.push(submission);
+      }
+    });
+    return result;
   }
 
   private extractBadges(): Array<any> {
@@ -88,7 +106,6 @@ export class ActivitiesViewPage {
     return result;
   }
 
-
   /**
    * @description display activity detail modal page
    */
@@ -96,17 +113,37 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
+
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity
    * @param {Object} activity single activity object from the list of
    *                          activities respond from get_activities API
+   * @param {Object} opts optional object with
+   *                 - hasSubmission: to indicateif user is accessing a in
+   *                   progress assessment
    */
-  goAssessment(activity) {
-    this.navCtrl.push(AssessmentsPage, {
-      activity,
-      assessment: this.assessment,
-      submissions: this.submissions
-    });
+  goAssessment(activity, opts = { hasSubmission: false }) {
+    if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
+      let alert = this.alertCtrl.create({
+        title: 'You have a submission in progress.',
+        buttons: ["Ok"]
+      });
+      alert.present();
+    } else if (opts.hasSubmission === true) {
+      let inProgress = _.find(this.submissions, {status: 'in progress'});
+
+      this.navCtrl.push(AssessmentsPage, {
+        activity,
+        assessment: this.assessment,
+        submissions: this.submissions,
+        inProgress
+      });
+    } else {
+      this.navCtrl.push(AssessmentsPage, {
+        activity,
+        assessment: this.assessment
+      });
+    }
   }
 }

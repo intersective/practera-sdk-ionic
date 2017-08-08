@@ -30,13 +30,15 @@ export class EventsViewPage {
   public loadings = {
     checkin: true
   };
-  public event: any;
+  public event: any = {};
   public bookingStatus: string = '';
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
   public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
   public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
+  public completedSubmissions: boolean = false;
   private submissions: Array<any> = [];
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -59,6 +61,8 @@ export class EventsViewPage {
 
   ionViewWillEnter() {
     this.loadings.checkin = true;
+    this.submissions = []; // reset submissions
+
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
     }
@@ -69,6 +73,7 @@ export class EventsViewPage {
   }
 
   ionViewDidEnter() {
+    this.completedSubmissions = false;
     this.submissionService.getSubmissions({
       search: {
         context_id: this.event.context_id
@@ -76,7 +81,12 @@ export class EventsViewPage {
     }).subscribe(res => {
       this.loadings.checkin = false;
       res.forEach(submission => {
-        this.submissions.push(this.submissionService.normalise(submission));
+        submission = this.submissionService.normalise(submission);
+        console.log(submission);
+        this.submissions.push(submission);
+        if (submission.status === 'done') {
+          this.completedSubmissions = true;
+        }
       });
     }, err => {
       this.loadings.checkin = false;
@@ -199,33 +209,14 @@ export class EventsViewPage {
     loading.present().then(() => {
       // if submission exist
       console.log(this.submissions);
-      this.assessmentService.getAll({
-        search: {
-          assessment_id: this.event.assessment.id,
-          structured: true
-        }
-      }).subscribe(assessments => {
-        let assessment = assessments[0],
-            assessmentGroup = assessment.AssessmentGroup[0];
-
-        loading.dismiss().then(() => {
-          if (this.submissions.length > 0) {
-            loading.dismiss();
-            this.navCtrl.push(EventCheckinPage, {
-              event,
-              submissions: this.submissions,
-              assessment: assessment.Assessment,
-              assessmentGroup: assessmentGroup
-            });
-          } else { // get assessment and go checkin
-            this.navCtrl.push(AssessmentsGroupPage, {
-              event,
-              assessment: assessment.Assessment,
-              assessmentGroup: assessmentGroup
-            })
-          }
+      loading.dismiss().then(() => {
+        // this.navCtrl.push(AssessmentsGroupPage, {
+        this.navCtrl.push(AssessmentsPage, {
+          event,
+          activity: event.activity,
+          submissions: this.submissions
         });
-      }, err => { loading.dismiss(); });
+      });
     })
   }
 

@@ -3,21 +3,18 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController,
-  AlertController
+  ModalController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
 import { CacheService } from '../../../shared/cache/cache.service';
-import { CharactersService } from '../../../services/characters.service';
+import { CharacterService } from '../../../services/character.service';
 import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
@@ -66,13 +63,12 @@ export class ActivitiesListPage implements OnInit {
     public activityService: ActivityService,
     public achievementService: AchievementService,
     public cacheService: CacheService,
-    public charactersService: CharactersService,
+    public characterService: CharacterService,
     public submissionService: SubmissionService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translationService: TranslationService,
-    public alertCtrl: AlertController
+    public translationService: TranslationService
   ) {}
 
   // shiftLanguageTrial(){
@@ -90,7 +86,7 @@ export class ActivitiesListPage implements OnInit {
       duration: 4000,
       position: 'bottom'
     });
-    let getCharacter = this.charactersService.getCharacter();
+    let getCharacter = this.characterService.getCharacter();
     let getSubmission = this.submissionService.getSubmissionsData();
     Observable.forkJoin([getSubmission, getCharacter])
               .subscribe(results => {
@@ -101,7 +97,7 @@ export class ActivitiesListPage implements OnInit {
                     }
                   });
                   this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
-                  this.currentPercentage = this.percentageValue.toFixed(2); 
+                  this.currentPercentage = this.percentageValue.toFixed(2);
                   console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Character;
                   this.initialItems = results[1].Items;
@@ -149,34 +145,9 @@ export class ActivitiesListPage implements OnInit {
       )
   }
 
-  /**
-   * @TODO: remove this feature after development near complete
-   * Prompt user to skip loading to skip forced long wait of API
-   * @param {Function} cb callback if user choose to load API call
-   */
-  promptSkipLoading(cb: Function) {
-    let prompt = this.alertCtrl.create({
-      title: "Skip loading?",
-      message: "Skip to speed up development (skip waiting).",
-      buttons: [
-        {
-          text: 'Load it',
-          handler: data => {
-            return cb();
-          }
-        },
-        {
-          text: 'Skip',
-          handler: data => console.log(data)
-        }
-      ]
-    })
-    prompt.present();
-  }
-
   // load activity data
   ionViewWillEnter() {
-    this.promptSkipLoading(this.loadingActivities);
+    this.loadingActivities();
   }
 
   // refresher activities

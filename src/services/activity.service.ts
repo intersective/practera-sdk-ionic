@@ -6,6 +6,22 @@ import * as _ from 'lodash';
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
 
+class ActivityBase {
+  id: number;
+  name: string;
+  description: string;
+}
+
+class ReferenceAssessmentBase {
+  id: number;
+  name: string;
+}
+
+class ReferenceBase {
+  context_id: number;
+  Assessment: ReferenceAssessmentBase
+}
+
 @Injectable()
 export class ActivityService {
   private cachedActivites = {};
@@ -99,9 +115,10 @@ export class ActivityService {
    */
   public normaliseActivity(activity) {
     let thisActivity = activity.Activity,
+        normalisedActivity: ActivityBase,
         sequence = this.mergeReferenceToSequence(activity);
 
-    return _.merge(thisActivity, {
+    activity =  _.merge(thisActivity, {
       activity: activity.Activity,
       sequence: sequence,
       assessment: this.extractAssessment(sequence),
@@ -109,6 +126,40 @@ export class ActivityService {
       ActivitySequence: activity.ActivitySequence,
       References: activity.References
     });
+
+    if (activity.Activity) {
+      normalisedActivity = {
+        id: activity.Activity.id,
+        name: activity.Activity.name,
+        description: activity.Activity.description
+      }
+    }
+
+    // Not all the API return activity data in capital-case
+    if (activity.activity) {
+      normalisedActivity = {
+        id: activity.activity.id,
+        name: activity.activity.name,
+        description: activity.activity.description
+      }
+    }
+
+    activity.Activity = normalisedActivity;
+
+    // Normalise activity reference
+    activity.References.forEach((reference, idx) => {
+      let referenceAssessment: ReferenceAssessmentBase = {
+        id: reference.Assessment.id,
+        name: reference.Assessment.name,
+      }
+      let normalisedReference: ReferenceBase = {
+        context_id: reference.context_id,
+        Assessment: referenceAssessment
+      };
+      activity.References[idx] = normalisedReference;
+    });
+
+    return activity;
   }
 
   /*
@@ -139,7 +190,7 @@ export class ActivityService {
    */
   public rebuildReferences(references) {
     let result = {};
-    references.forEach(ref => {
+    (references || []).forEach(ref => {
       result[ref.Assessment.id] = ref.context_id;
     });
     return result;

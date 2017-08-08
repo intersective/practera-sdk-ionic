@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 export class OneofQuestionComponent implements OnInit {
   @Input() question;
   @Input() form: FormGroup;
+  @Input() disabled;
   @Output() oneofForm = new EventEmitter();
 
   constructor() {}
@@ -15,5 +16,7 @@ export class OneofQuestionComponent implements OnInit {
     this.oneofForm.emit(e);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    // console.log(this.question);
+  }
 }

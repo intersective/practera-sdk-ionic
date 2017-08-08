@@ -8,6 +8,7 @@ import { FormGroup } from '@angular/forms';
 })
 export class TextQuestionComponent implements OnInit {
   @Input() question;
+  @Input() disabled;
   @Input() form: FormGroup;
 
   constructor() {}

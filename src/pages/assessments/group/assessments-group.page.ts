@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, AlertController, LoadingController } from 'ionic-angular';
+import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
@@ -7,6 +7,7 @@ import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../.
 import * as _ from 'lodash';
 
 @Component({
+  selector: 'assessments-group-page',
   templateUrl: './assessments-group.html',
 })
 export class AssessmentsGroupPage {
@@ -19,10 +20,14 @@ export class AssessmentsGroupPage {
   //@TODO: decide which one to use
   activity: any;
   submission: Submission;
-  submissions: any;
   assessment: any;
   assessmentGroup: any;
   cacheKey: any; // to render & display stored
+
+  canUpdateInput: boolean = false;
+  published: boolean = false;
+  answers: any; // to render & display submitted answers
+  inProgress: boolean | any;
 
   constructor(
     private navParams: NavParams,
@@ -31,7 +36,8 @@ export class AssessmentsGroupPage {
     private cache: CacheService,
     private assessmentService: AssessmentService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    public events: Events
   ) {}
 
   ionViewDidEnter() {
@@ -44,16 +50,132 @@ export class AssessmentsGroupPage {
       this.activity = this.event;
     }
 
-    this.assessment = this.activity.assessment;
+    this.assessment = this.activity.assessment; // required for context_id
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
 
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
-    this.submissions = this.navParams.get('submissions') || {};
+    this.submission = this.navParams.get('submission') || {};
+
+    console.log('this.assessmentGroup', this.assessmentGroup);
 
     // preset key used for caching later (locally and remote data)
+    this.canUpdateInput = this.isInputEditable(this.submission);
+    // this.published = this.assessmentService.isPublished(this.submissions);
+    this.questions = this.assessmentGroup.questions;
+    this.questions = this.mapQuestionsFeedback(this.questions, this.submission);
+    this.formGroup = this.retrieveProgress(
+      this.buildFormGroup(this.questions),
+      this.formInProgressAnswer(this.submission)
+    );
+  }
 
-    this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
-    this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
+  updateSubmission() {
+    this.events.publish('assessment:changes', {
+      changed: true
+    });
+  }
+
+  /**
+   * @description check answers are editable
+   *    Must define submissions first
+   * @type {boolen}
+   */
+   // @TODO modify needed
+   private isInputEditable = (submission):boolean => {
+     if (_.isEmpty(submission) || submission.status === 'in progress') {
+       return true;
+     }
+     return false;
+    //  let editable = false;
+    //  _.forEach(this.submissions, (submission) => {
+    //    if (_.isEmpty(submission)) {
+    //      editable = true;
+    //    } else {
+    //      _.forEach(submission, (subm) => {
+    //        if (
+    //          subm.AssessmentSubmission &&
+    //          subm.AssessmentSubmission.status === 'in progress'
+    //        ) {
+    //          editable = true;
+    //        }
+    //      });
+    //    }
+    //  });
+    //  return editable;
+   }
+
+  /**
+   * @description use proper context id based on situation
+   *
+   * @type {array}
+   */
+   // @TODO modify
+  private mapQuestionsFeedback = (questions, submission):any => {
+    if (_.isEmpty(submission) || _.isEmpty(submission.review) || submission.status !== 'published') {
+      return questions;
+    }
+
+    _.forEach(submission.review, (review) => {
+      _.forEach(questions, (question, idx) => {
+        if (review.assessment_question_id === question.id) {
+          // text type
+          if (question.type === 'text') {
+            questions[idx].review_answer = review;
+          }
+
+          // oneof type
+          if (question.type === 'oneof') {
+            questions[idx].review_answer = review;
+            _.forEach(question.choices, (choice, key) => {
+              if (choice.id == review.answer && choice.id == question.answer.answer) {
+                questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+              }
+              if (choice.id != review.answer && choice.id == question.answer.answer) {
+                questions[idx].choices[key].name = choice.name + ' (you)';
+              }
+              if (choice.id == review.answer && choice.id != question.answer.answer) {
+                questions[idx].choices[key].name = choice.name + ' (reviewer)';
+              }
+            });
+          }
+        }
+      });
+    });
+
+    // _.forEach(submissions, (submission) => {
+    //   _.forEach(submission, (subm) => {
+    //
+    //     _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
+    //       _.forEach(questions, (question, idx) => {
+    //
+    //         if (reviewAnswer.assessment_question_id === question.id) {
+    //           // text type
+    //           if (question.type === 'text') {
+    //             questions[idx].review_answer = reviewAnswer;
+    //           }
+    //
+    //           // oneof type
+    //           if (question.type === 'oneof') {
+    //             questions[idx].review_answer = reviewAnswer;
+    //             _.forEach(question.choices, (choice, key) => {
+    //               if (choice.id == reviewAnswer.answer && choice.id == question.answer.answer) {
+    //                 questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+    //               }
+    //               if (choice.id != reviewAnswer.answer && choice.id == question.answer.answer) {
+    //                 questions[idx].choices[key].name = choice.name + ' (you)';
+    //               }
+    //               if (choice.id == reviewAnswer.answer && choice.id != question.answer.answer) {
+    //                 questions[idx].choices[key].name = choice.name + ' (reviewer)';
+    //               }
+    //             });
+    //           }
+    //         }
+    //
+    //       });
+    //     });
+    //   });
+    // });
+    return questions;
   }
 
   /**
@@ -114,20 +236,36 @@ export class AssessmentsGroupPage {
       }
 
       result[question.id] = new FormGroup(group);
-
     });
 
     return result;
   };
 
   /**
-   * @TODO: confirm with backend how checkbox value submission is handled
-   * @description format checkbox value before post back to server
+   * turn answer into answer submission format (which is formatted for POST to post_assessment API)
+   * @param {object} submission single submission object retrieve from previous page/view
+   * @return {object} formatted submission answer
    */
-  getCheckboxValues(choices) {
-    let result = {};
-    // choices
-    return result;
+  private formInProgressAnswer(submission): boolean | Submission {
+    if (_.isEmpty(submission)) {
+      return false;
+    }
+
+    let answers = {};
+    submission.answer.forEach(ans => {
+      answers[ans.assessment_question_id] = {
+        assessment_question_id: ans.assessment_question_id,
+        answer: ans.comment || ans.answer
+      }
+    });
+
+    return {
+      Assessment: {
+          id: submission.assessment_id,
+          context_id: this.getSubmissionContext()
+      },
+      AssessmentSubmissionAnswer: answers
+    };
   }
 
   /**
@@ -145,17 +283,17 @@ export class AssessmentsGroupPage {
             choices: (!_.isEmpty(values.choices)) ? values.choices : null
           };
 
-
-      answers[id] = answer;
+      if (answer.answer) {
+        answers[id] = answer;
+      }
     });
 
-    // final step - save to localstorage
+    // final step - store submission locally
     let submission = {
       Assessment: {
           id: this.activity.assessment.id,
           context_id: this.activity.assessment.context_id
       },
-      // AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
       AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
@@ -168,8 +306,8 @@ export class AssessmentsGroupPage {
   /**
    * @description retrieve saved progress from localStorage
    */
-  retrieveProgress = (questions: Array<any>) => {
-    let cachedProgress = this.cache.getLocalObject(this.cacheKey);
+  retrieveProgress = (questions: Array<any>, answers?) => {
+    let cachedProgress = answers || {}; //this.cache.getLocalObject(this.cacheKey);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
@@ -203,86 +341,37 @@ export class AssessmentsGroupPage {
     return question;
   }
 
-
-  /*
-    Turn AssessmentQuestion object from:
-    {
-      Assessment: {
-        id: 123
-      },
-      AssessmentQuestion: [
-        {
-          id: 234,
-          question_type: 'file',
-          audience: "[\"reviewer\",\"submitter\"]",
-          file_type: 'image',
-          choices: [],
-          answers: {
-            submitter: [],
-            reviewer: [],
-          },
-          name: 'Question 234',
-          required: true
-        }
-        ...
-      ]
-    }
-
-    to:
-    [
-      {
-        id: 234,
-        assessment_id: 123
-        name: 'Question 234',
-        type: 'file',
-        audience: "[\"reviewer\",\"submitter\"]",
-        file_type: 'image',
-        choices: []
-      },
-      ...
-    ]
-   */
-  private normaliseQuestions = (questions: any[]) => {
-    let result = [];
-
-    (questions || []).forEach((question) => {
-      let normalised = this.assessmentService.normaliseQuestion(question);
-
-      result.push(normalised);
-    });
-
-    return result;
-  };
+  displayAlert(opts) {
+    return this.alertCtrl.create(opts);
+  }
 
   /**
    * @description initiate save progress and return to previous page/navigation stack
    */
   save() {
-    let loading = this.loadingCtrl.create({
+    let self = this,
+    loading = this.loadingCtrl.create({
       content: 'Loading...'
-    });
-
-    // Error handling for all kind of non-specific API respond error code
-    let alert = this.alertCtrl.create({
-      title: 'Fail to submit',
-      buttons: ["Ok"]
+    }),
+    // to provide a more descriptive error message (if available)
+    failAlert = this.alertCtrl.create({
+      title: 'Fail to submit.'
     });
 
     let saveProgress = () => {
-      let save = this.assessmentService.save(this.storeProgress());
+      this.updateSubmission();
+
       loading.present().then(() => {
-        if (_.isEmpty(this.event)) { // if event then submit directly
-          save = this.assessmentService.save(this.storeProgress(), {inProgress: false});
-        }
-        save.subscribe(
+        self.assessmentService.save(self.storeProgress()).subscribe(
           response => {
             loading.dismiss().then(() => {
-              this.navCtrl.pop();
+              self.navCtrl.pop();
             });
           },
           reject => {
             loading.dismiss().then(() => {
-              alert.present().then(() => {
+              failAlert.data.title = reject.msg || failAlert.data.title;
+              failAlert.present().then(() => {
                 console.log('Unable to save', reject);
               });
             });

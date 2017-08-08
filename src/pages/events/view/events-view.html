@@ -27,7 +27,7 @@
       {{ event.description || 'No description available.' }}
     </ion-item>
   </ion-list>
-  <ion-list inset class="download">
+  <ion-list inset class="download" *ngIf="event.files && event.files.length > 0">
     <button ion-item (click)="gotoDownload(event)" detail-push>{{ 'GENERAL.DOWNLOAD' | translate }}</button>
   </ion-list>
 </ion-content>
@@ -44,10 +44,10 @@
       </button>
 
       <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="checkin-btn" (click)="checkin(event)">
-        <span *ngIf="submissions.length > 0">
+        <span *ngIf="completedSubmissions">
           {{ 'EVENTS.VIEWCHECKIN' | translate }}
         </span>
-        <span *ngIf="submissions.length === 0">
+        <span *ngIf="!completedSubmissions">
           {{ 'EVENTS.CHECKIN' | translate }}
         </span>
       </button>

@@ -2,13 +2,14 @@
   <ion-item *ngIf="uploaded">
     <ion-icon name="{{uploaded.icon}}" class="fa" item-left></ion-icon>
     {{ uploaded.filename }}
+    <a ion-button small item-end href="{{uploaded.url}}" download>Download</a>
   </ion-item>
 
   <ion-item *ngIf="!uploaded">
     No uploaded files available.
   </ion-item>
 
-  <button ion-button round color="purple" (click)="upload($event)">Upload</button>
+  <button ion-button round color="purple" (click)="upload($event)" [disabled]="disabled">Upload</button>
 
   <ion-item text-wrap>
     <p>

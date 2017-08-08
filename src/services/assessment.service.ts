@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
 
+import * as _ from 'lodash';
+
 class Assessment {
   id: number;
   context_id: number;
@@ -55,6 +57,25 @@ export class Submission {
 export class AssessmentService {
   constructor(private request: RequestService) {}
 
+  /**
+   * @description check feedback can show
+   * @type {boolen}
+   */
+   public isPublished(submissions: any):boolean {
+     let published = false;
+     _.forEach(submissions, (submission) => {
+       _.forEach(submission, (subm) => {
+         if (
+           subm.AssessmentSubmission &&
+           subm.AssessmentSubmission.status === 'published'
+         ) {
+           published = true;
+         }
+       });
+     });
+     return published;
+   }
+
   // listAll()
   public getAll(options?: any) {
     return this.request.get('api/assessments.json', options);
@@ -84,10 +105,8 @@ export class AssessmentService {
    * save progress using "post" function AssessmentService.post()
    * @param {Object} assessmentAnswer
    */
-  public save(assessmentAnswer, options = { inProgress: true}) {
-    if (options.inProgress) {
-      assessmentAnswer.Assessment.in_progress = true; // force in_progress
-    }
+  public save(assessmentAnswer) {
+    assessmentAnswer.Assessment.in_progress = true; // force in_progress
 
     return this.post(assessmentAnswer);
   }
@@ -183,12 +202,12 @@ export class AssessmentService {
     });
 
     return {
-      id: assessment.id,
-      name: assessment.name,
-      description: assessment.description,
-      assessment_type: assessment.assessment_type,
-      is_team: assessment.is_team,
-      is_repeatable: assessment.is_repeatable,
+      id: result.id,
+      name: result.name,
+      description: result.description,
+      assessment_type: result.assessment_type,
+      is_team: result.is_team,
+      is_repeatable: result.is_repeatable,
       AssessmentGroup: thisGroups
     };
   }
@@ -317,7 +336,8 @@ export class AssessmentService {
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
       choices: choices,
-      order: question.order
+      order: question.order,
+      answer: thisQuestion.answer
     };
   }
 

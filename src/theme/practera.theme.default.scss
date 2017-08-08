@@ -405,7 +405,7 @@ event {
             height: 40%;
             font-size: 28pt;
             font-weight: bold;
-            
+
           }
         }
       }
@@ -449,7 +449,7 @@ event {
     }
   }
 }
-// 10. Achievement page styling 
+// 10. Achievement page styling
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -537,7 +537,7 @@ event {
     }
     ion-icon {
       font-size: 10pt;
-      font-weight: 900; 
+      font-weight: 900;
     }
     ion-icon[name=arrow-forward] {
       font-weight: normal;
@@ -547,15 +547,15 @@ event {
     }
     .badge-image {
       width: 60px;
-      height: 60px; 
+      height: 60px;
     }
     p {
       display: flex;
-      align-items: center; 
+      align-items: center;
       word-break: break-all;
       margin: 0px;
-      padding: 15px 0pt;      
-      border-bottom: 1px solid color($colors, border, base); 
+      padding: 15px 0pt;
+      border-bottom: 1px solid color($colors, border, base);
     }
     p:first-child{
       border: none;
@@ -588,6 +588,68 @@ rankings-details-page {
     border-bottom: 1px solid color($colors, border, base);
   }
 }
+// 11. Settings & Tutorial page stylings
+.settings {
+  .list-header-md {
+    border: none;
+  }
+}
+tutorial-page {
+  .header-md::after,
+  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before,
+  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+    background-image: none;
+  }
+}
+.tutorial-slides {
+  h1 {
+    padding-bottom: 20pt;
+  }
+  p {
+    padding: 0 36pt;
+    margin-top: -12pt;
+  }
+  img {
+    width: 36%;
+  }
+  button.general-circle-btn {
+    width: 80%;
+    margin: 0 auto;
+  }
+  .swiper-pagination {
+    bottom: 16pt;
+  }
+}
+.skip-button {
+  border: none;
+  float: right;
+}
+.slides-button {
+  .toolbar-background {
+    background-color: color($colors, secondary, base);
+    border: none;
+  }
+  .next-button,
+  .skip-button {
+    float: right;
+  }
+  .prev-button,
+  .next-button,
+  .skip-button {
+    background-color: color($colors, secondary, base) !important;
+    color: color($colors, primary, base);
+    box-shadow: none;
+  }
+}
+// 14.leaderboard settings page styling
+.leaderboard-settings {
+  .hide-settings {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+}
 // landscape activity list view
 @media screen and (min-width: 500px) {
   .score-board {
@@ -606,4 +668,3 @@ rankings-details-page {
     }
   }
 }
-
