@@ -79,37 +79,13 @@
     ws "1.1.1"
     xml2js "0.4.17"
 
-"@ionic/cli-plugin-ionic-angular@1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@ionic/cli-plugin-ionic-angular/-/cli-plugin-ionic-angular-1.4.0.tgz#aa793121b2f0a271ea20e53c4f312aba299c0dfc"
+"@ionic/cli-plugin-ionic-angular@1.4.1":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@ionic/cli-plugin-ionic-angular/-/cli-plugin-ionic-angular-1.4.1.tgz#bb94b7ad61c2f79757b2dff041c0b7e2151777ec"
   dependencies:
-    "@ionic/cli-utils" "1.6.0"
+    "@ionic/cli-utils" "1.7.0"
     chalk "^2.0.0"
     tslib "^1.7.1"
-
-"@ionic/cli-utils@1.6.0":
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/@ionic/cli-utils/-/cli-utils-1.6.0.tgz#33909ec8bdbb086121aac6fcf5c2db951e204e7d"
-  dependencies:
-    archiver "^1.3.0"
-    chalk "^2.0.0"
-    ci-info "^1.0.0"
-    cross-spawn "^4.0.2"
-    dargs "^5.1.0"
-    dev-null "^0.1.1"
-    inquirer "^3.0.6"
-    leek "0.0.24"
-    lodash "^4.17.4"
-    minimist "^1.2.0"
-    ncp "^2.0.0"
-    semver "^5.3.0"
-    slice-ansi "^1.0.0"
-    string-width "^2.1.0"
-    strip-ansi "^4.0.0"
-    superagent "^3.5.2"
-    tslib "^1.7.1"
-    uuid "^3.0.1"
-    wrap-ansi "^2.1.0"
 
 "@ionic/cli-utils@1.7.0":
   version "1.7.0"
@@ -320,20 +296,6 @@ archiver-utils@^1.3.0:
     lodash "^4.8.0"
     normalize-path "^2.0.0"
     readable-stream "^2.0.0"
-
-archiver@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/archiver/-/archiver-1.3.0.tgz#4f2194d6d8f99df3f531e6881f14f15d55faaf22"
-  dependencies:
-    archiver-utils "^1.3.0"
-    async "^2.0.0"
-    buffer-crc32 "^0.2.1"
-    glob "^7.0.0"
-    lodash "^4.8.0"
-    readable-stream "^2.0.0"
-    tar-stream "^1.5.0"
-    walkdir "^0.0.11"
-    zip-stream "^1.1.0"
 
 archiver@^2.0.0:
   version "2.0.0"
@@ -1363,13 +1325,6 @@ cross-spawn@^3.0.0:
     lru-cache "^4.0.1"
     which "^1.2.9"
 
-cross-spawn@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-4.0.2.tgz#7b9247621c23adfdd3856004a823cbe397424d41"
-  dependencies:
-    lru-cache "^4.0.1"
-    which "^1.2.9"
-
 cryptiles@2.x.x:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/cryptiles/-/cryptiles-2.0.5.tgz#3bdfecdc608147c1c67202fa291e7dca59eaa3b8"
@@ -2215,6 +2170,10 @@ graceful-fs@^4.1.0, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
+gsap@^1.20.2:
+  version "1.20.2"
+  resolved "https://registry.yarnpkg.com/gsap/-/gsap-1.20.2.tgz#c78abd906c32ee21964c1b90f921b5110180c65a"
+
 har-schema@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/har-schema/-/har-schema-1.0.5.tgz#d263135f43307c02c602afc8fe95970c0151369e"
@@ -2422,7 +2381,7 @@ inline-process-browser@^1.0.0:
     falafel "^1.0.1"
     through2 "^0.6.5"
 
-inquirer@^3.0.6, inquirer@^3.2.1:
+inquirer@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-3.2.1.tgz#06ceb0f540f45ca548c17d6840959878265fa175"
   dependencies:
@@ -5103,7 +5062,7 @@ wordwrap@~0.0.2:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
 
-wrap-ansi@^2.0.0, wrap-ansi@^2.1.0:
+wrap-ansi@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-2.1.0.tgz#d8fc3d284dd05794fe84973caecdd1cf824fdd85"
   dependencies:
@@ -5276,7 +5235,7 @@ yn@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/yn/-/yn-2.0.0.tgz#e5adabc8acf408f6385fc76495684c88e6af689a"
 
-zip-stream@^1.1.0, zip-stream@^1.2.0:
+zip-stream@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/zip-stream/-/zip-stream-1.2.0.tgz#a8bc45f4c1b49699c6b90198baacaacdbcd4ba04"
   dependencies:

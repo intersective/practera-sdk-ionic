@@ -1,23 +1,19 @@
-<table cellpadding="0" cellspacing="0" border="0">
-  <tr>
-   <td>
-      <div class="power_controls">
-        <img id="spin_button" src="./assets/img/static/spin_on.png" alt="Spin" onClick="calculatePrizeOnServer();" />
-        <div>
-          SPINS: <span id="spins">5</span>
-        </div>
-        <div>
-          POINTS: <span id="points">0</span>
-        </div>
-       </div>
-    </td>
+<div>
+  <div class="power_controls">
+    <button ion-button color="primary" block [disabled]="statuses.spinOn">
+      Spin
+    </button>
+    <div>
+      SPINS: <span id="spins">{{  statuses.chances }}</span>
+    </div>
+    <div>
+      POINTS: <span id="points">{{ statuses.value }}</span>
+    </div>
+  </div>
 
-    <td width="438" height="582" class="the_wheel" align="center" valign="center">
-      <canvas id="canvas" width="434" height="434">
-        <p style="{color: white}" align="center">
-          Sorry, your browser doesn't support canvas. Please try another.
-        </p>
-      </canvas>
-    </td>
-  </tr>
-</table>
+  <canvas id="spinwheel" width="434" height="434">
+    <p style="{color: white}" align="center">
+      Sorry, your browser doesn't support canvas. Please try another.
+    </p>
+  </canvas>
+</div>
