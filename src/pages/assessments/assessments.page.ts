@@ -52,8 +52,7 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: boolean = false;
   submissions: any = [];
-  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
-  // getInitialItems: any = [];
+  getInitialItems: any = this.cacheService.getLocal('initialItems') == 'undefined' ? [] : this.cacheService.getLocal('initialItems');
   initialItemsCount: any = {};
   newItemsCount: any = {};
   newItemsData: any = [];
@@ -494,7 +493,7 @@ export class AssessmentsPage {
       content: this.loadingMessages
     });
     // get initial items 
-    // console.log('Inital Items: ', this.getInitialItems);
+    console.log('Inital Items: ', this.getInitialItems);
     _.forEach(this.getInitialItems, element => {
       let id = element.id;
       console.log("id value: ", id);
@@ -503,13 +502,13 @@ export class AssessmentsPage {
       }
       this.initialItemsCount[id]++;
     });
-    // console.log("Count for initial Items: ", this.initialItemsCount);
+    console.log("Count for initial Items: ", this.initialItemsCount);
     // get latest updated items data api call 
     loading.present();
     this.characterService.getCharacter()
         .subscribe(
           data => {
-            // console.log("Items: ", data.Items);
+            console.log("Items: ", data.Items);
             this.newItemsData = data.Items;
             _.forEach(data.Items, (element, index) => {
               let id = element.id;
@@ -531,19 +530,19 @@ export class AssessmentsPage {
                 }
               }
             });
-            // console.log("New compared items: ", this.newItemsData);
+            console.log("New compared items: ", this.newItemsData);
             _.forEach(this.totalItems, (element, index) => {
               element.id = parseInt(element.id);
             });
-            // console.log("Count for new total Items: ", this.totalItems);
+            console.log("Count for new total Items: ", this.totalItems);
             this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
-            // console.log("Final items object data: ", this.allItemsData);
+            console.log("Final items object data: ", this.allItemsData);
             // get the final object with item occurance count value
             let groupData = _.groupBy(this.totalItems, 'id');
             console.log("Group?? ", groupData);
             _.map(this.allItemsData, (ele) => {
               this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
-              // console.log("Final Combined results: ", this.combinedItems);    
+              console.log("Final Combined results: ", this.combinedItems);    
             });
             loading.dismiss().then(() => {
               let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems});
