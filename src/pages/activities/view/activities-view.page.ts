@@ -123,7 +123,7 @@ export class ActivitiesViewPage {
    *                 - hasSubmission: to indicateif user is accessing a in
    *                   progress assessment
    */
-  goAssessment(activity, opts = { hasSubmission: false }) {
+  goAssessment(submission?, opts = { hasSubmission: false }) {
     if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
       let alert = this.alertCtrl.create({
         title: 'You have a submission in progress.',
@@ -131,17 +131,15 @@ export class ActivitiesViewPage {
       });
       alert.present();
     } else if (opts.hasSubmission === true) {
-      let inProgress = _.find(this.submissions, {status: 'in progress'});
-
       this.navCtrl.push(AssessmentsPage, {
-        activity,
+        activity: this.activity,
         assessment: this.assessment,
         submissions: this.submissions,
-        inProgress
+        currentSubmission: submission
       });
     } else {
       this.navCtrl.push(AssessmentsPage, {
-        activity,
+        activity: this.activity,
         assessment: this.assessment
       });
     }

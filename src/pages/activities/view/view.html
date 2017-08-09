@@ -27,7 +27,7 @@
   </ion-fab>
 
   <ion-fab top right edge *ngIf="!loadings.submissions">
-    <button ion-fab color="soft-green" (click)="goAssessment(activity)">
+    <button ion-fab color="soft-green" (click)="goAssessment()">
       <ion-icon name="add" color="secondary"></ion-icon>
     </button>
   </ion-fab>
@@ -49,7 +49,7 @@
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
 
-    <ion-item *ngFor="let submission of submissions; let i = index;" (click)="goAssessment(activity, {hasSubmission: true})">
+    <ion-item *ngFor="let submission of submissions; let i = index;" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row>
 
         <ion-col align-self-start>

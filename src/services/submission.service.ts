@@ -197,6 +197,10 @@ export class SubmissionService {
     return review;
   }
 
+  /**
+   * extract reference IDs and prepare Observables to retrieve submissions
+   * @param {array} references References array responded with get_activities() api
+   */
   public getSubmissionsByReferences(references) {
     let tasks = []; // multiple API requests
 
