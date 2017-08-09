@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
+import { Component, NgZone, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { TweenMax } from 'gsap';
@@ -7,7 +7,8 @@ import * as Winwheel from 'Winwheel';
 
 @Component({
   selector: 'spinwheel',
-  templateUrl: './spinwheel.html'
+  templateUrl: './spinwheel.html',
+  styleUrls: ['./spinwheel.scss']
 })
 export class SpinwheelComponent implements OnInit {
   canvasWheel = {
@@ -55,6 +56,8 @@ export class SpinwheelComponent implements OnInit {
     public loadingCtrl: LoadingController,
     private gameService: GameService,
     private zone: NgZone,
+    private renderer: Renderer2,
+    private el: ElementRef,
     private platform: Platform
   ) {
   }
@@ -123,5 +126,63 @@ export class SpinwheelComponent implements OnInit {
     } else {
       this.statuses.spinOn = false;
     }
+  }
+
+  slices = [
+    {}
+  ];
+
+  createSlice() {
+    let result = `
+      <div>
+        <h2>Daylights<i class="fa fa-lightbulb-o"></i></h2>
+      </div>
+    `;
+  }
+
+  spin2() {
+    var duration = Math.floor(Math.random() * 4) + 1;
+    var degrees = 360 * (Math.random() * 10);
+
+    // $('#outcome-icon').removeClass('fa-hand-' + selectedOutcome.toLowerCase()  + '-o');
+    // $('#outcome-name').text('');
+    let el = this.renderer.selectRootElement('.wheelContainer .gameWheel');
+    let slices = [
+      {id: 'rock', class: 'slide1', text: 'RockS'},
+      {id: 'paper', class: 'slide2', text: 'PaperS'},
+      {id: 'scissors', class: 'slide3', text: 'ScissorsS'},
+      {id: 'lizard', class: 'slide4', text: 'LizardS'}
+    ];
+
+console.log(el);
+    slices.forEach((slice) => {
+      let newSlice = this.renderer.createElement('div');
+      this.renderer.addClass(newSlice, 'slice');
+      this.renderer.addClass(newSlice, slice.class);
+      this.renderer.setProperty(newSlice, 'id', slice.id);
+
+      let newSliceChild = this.renderer.createElement('h2');
+      this.renderer.setValue(newSliceChild, slice.text);
+      let test2 = this.renderer.appendChild(newSlice, newSliceChild);
+
+      let test = this.renderer.appendChild(el, newSlice);
+      console.log(newSlice, test);
+    });
+
+    /*TweenMax.to('.gameWheel', duration,  {rotation: degrees}).eventCallback("onComplete", function(){
+      for (var i = 0; i < slices.length; i++) {
+        var $slice = $(slices[i]);
+        var topPosition = $slice.position().top;
+
+        if (topPosition < 0.3) {
+          break;
+        }
+
+        if (topPosition < 5) {
+          $slice.addClass('selected');
+          break;
+        }
+      }
+    });*/
   }
 }
