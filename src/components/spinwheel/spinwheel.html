@@ -6,11 +6,20 @@
     <button ion-button color="primary" block [disabled]="statuses.spinOn" (click)="spin()">
       Spin
     </button>
+    <button ion-button color="primary" block (click)="spin2()">
+      Add slices
+    </button>
     <div>
       SPINS: <span id="spins">{{ statuses.chances }}</span>
     </div>
     <div>
       POINTS: <span id="points">{{ statuses.value }}</span>
+    </div>
+  </div>
+
+  <div class="wheelContainer">
+    <div class="pointer"></div>
+    <div class="gameWheel">
     </div>
   </div>
 

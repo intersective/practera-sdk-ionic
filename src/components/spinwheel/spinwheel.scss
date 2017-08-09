@@ -1,7 +1,155 @@
-#spins {
+#spins {}
 
+#points {}
+
+$size: 450px;
+$border: #4c4c4c;
+$evenSlices: #85aac4;
+$oddSlices: #4a6e89;
+$selected: #fff;
+
+.wheelContainer, .gameWheel {
+  position: relative;
 }
 
-#points {
+.wheelContainer {
+  display: inline-block;
+    margin: 30px auto;
+}
 
+.gameWheel {
+  height: $size;
+  width: $size;
+  border: 10px solid $border;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #000;
+}
+
+.pointer {
+  position: absolute;
+  left: 49.5%;
+  z-index: 5;
+  height: 50px;
+  border: 4px solid $border;
+}
+
+.gameWheel .slice {
+  width: $size/2;
+  height: $size/2;
+  position: absolute;
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -webkit-align-items: center;
+}
+
+.slice:hover {
+  background: #bada55;
+}
+
+.slice:nth-child(even) {
+  background: $evenSlices;
+  color: darken($evenSlices, 20%);
+}
+
+.slice:nth-child(odd) {
+  background: $oddSlices;
+  color: darken($oddSlices, 20%);
+}
+
+.slice1 {
+ right: 0;
+}
+
+.slice2 {
+  right: 0;
+  bottom: 0;
+}
+
+.slice3 {
+  bottom: 0;
+}
+
+.slice4 {
+  top: 0;
+  left: 0;
+}
+
+.slice h2 {
+  position: relative;
+  font-size: 30px;
+}
+
+.slice1 i, .slice4 i {
+  top: 10px;
+}
+
+.slice2 i, .slice3 i {
+  top: -10px;
+}
+
+#rock h2 {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+#paper h2 {
+  -webkit-transform: rotate(135deg);
+  -moz-transform: rotate(135deg);
+  -ms-transform: rotate(135deg);
+  -o-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+#scissors h2 {
+  -webkit-transform: rotate(225deg);
+  -moz-transform: rotate(225deg);
+  -ms-transform: rotate(225deg);
+  -o-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
+#lizard h2 {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.outcome {
+    width: 60%;
+    margin: 20px auto 0;
+    font-size: 60px;
+  h2 {
+    display: inline-block;
+    margin-left: 10px;
+  }
+}
+
+.gameWheel .selected {
+  background: $selected;
+  color: #213f54;
+}
+
+button.spin {
+  display: block;
+  margin: 0 auto;
+  padding: 10px 15px;
+  width: 150px;
+  box-shadow: none;
+  border: none;
+  border-radius: 10px;
+  background: #213f54;
+  font-size: 24px;
+  color: #fff;
+  &:hover {
+    cursor: pointer;
+  }
 }
