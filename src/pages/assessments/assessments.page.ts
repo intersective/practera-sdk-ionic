@@ -284,15 +284,25 @@ export class AssessmentsPage {
           // check if a submission is specified
           let currentSubmission = this.navParams.get('currentSubmission');
           let filteredSubmissions = [];
+
           submissions.forEach(subm => {
-            if (!currentSubmission) {
-              filteredSubmissions.push(subm);
-            } else if (currentSubmission && currentSubmission.id === subm.id) {
+            if (currentSubmission && currentSubmission.id === subm.id) {
               filteredSubmissions.push(subm);
             }
           });
+          let hasInProgress = _.find(submissions, {status: 'in progress'}); // "in progress" never > 1
+          let isNew = (!currentSubmission && (filteredSubmissions.length === 0 || !_.isEmpty(hasInProgress)));
 
-          this.submissions = filteredSubmissions;
+          if (isNew) { // new submission
+            this.submissions = !_.isEmpty(hasInProgress) ? [hasInProgress] : [];
+          } else if (!isNew && hasInProgress) { // resume "in progress"
+            filteredSubmissions.push(hasInProgress);
+            this.submissions = filteredSubmissions;
+          } else if (currentSubmission) { // display current submission
+            filteredSubmissions.push(currentSubmission);
+            this.submissions = filteredSubmissions;
+          }
+
           console.log('this.submissions', this.submissions);
           resolve(submissions);
         }, err => {
@@ -386,7 +396,8 @@ export class AssessmentsPage {
               console.log(this.navParams.get('currentSubmission'), this.submissions);
             }
 
-            if (this.submissionUpdated) { // pull new when submission is updated
+            // pull new when submission is updated or currentSubmission is empty
+            if (this.submissionUpdated || !currentSubmission) {
               this.pullSubmissions().then(res => {
                 preprocessAssessmentSubmission();
               }, err => {
