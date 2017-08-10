@@ -14,6 +14,8 @@
     "BROWSE": "Browse",
     "CANCELBOOKING": "Cancel Booking",
     "CHECKIN": "Check-in",
+    "VIEWCHECKIN": "View Check-in",
+    "DOWNLOAD": "Download",
     "MYBOOKINGS": "My Bookings",
     "PAGETITLE": "Events"
   },
@@ -25,6 +27,9 @@
   "GENERAL": {
     "DONE": "Done",
     "DOWNLOAD": "Download",
+    "NEXT": "Next",
+    "PREV": "Prev",
+    "SKIP": "Skip",
     "SUBMIT": "Submit"
   },
   "LOGIN": {
@@ -48,8 +53,9 @@
   },
   "SETTINGS": {
     "HELP": "Email Help",
+    "LEADERBOARD": "Settings",
     "LOGOUT": "Logout",
-    "PAGETITLE": "Settings",
+    "PAGETITLE": "Account",
     "PROFILE": "My Profile ",
     "SUPPORT": "Support",
     "SWITCHER": "Program Switcher",

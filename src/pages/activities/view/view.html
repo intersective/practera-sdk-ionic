@@ -7,6 +7,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+
   <ion-list class="header-content">
     <ion-grid>
       <ion-row>
@@ -17,17 +18,20 @@
     </ion-grid>
   </ion-list>
 </ion-header>
+
 <ion-content padding class="activity-detail">
   <ion-fab top center-right edge *ngIf="false">
     <button ion-fab color="soft-green" mini>
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab top right edge>
+
+  <ion-fab top right edge *ngIf="!loadings.submissions">
     <button ion-fab color="soft-green" (click)="goAssessment(activity)">
       <ion-icon name="add" color="secondary"></ion-icon>
     </button>
   </ion-fab>
+
   <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
     <ion-slides pager>
       <ion-slide *ngFor="let badge of activity.badges" [ngClass]="{'disabled': badge.disabled }">
@@ -35,23 +39,33 @@
       </ion-slide>
     </ion-slides>
   </ion-list>
+
   <ion-list class="submissions">
     <ion-list-header>
       {{ 'ACTIVITY.SUBMISSION' | translate }}
     </ion-list-header>
-    <ion-item *ngFor="let submission of submissions">
+
+    <ion-item *ngIf="loadings.submissions" class="center">
+      <ion-spinner>Loading submissions...</ion-spinner>
+    </ion-item>
+
+    <ion-item *ngFor="let submission of submissions; let i = index;" (click)="goAssessment(activity, {hasSubmission: true})">
       <ion-row>
+
         <ion-col align-self-start>
           <div>
-            <h2>{{ submission.title }}</h2>
-            <p>{{ submission.submittedOn | timeago }}</p>
+            <h2>{{ "Submission " + (i + 1) }}</h2>
+            <p>{{ submission.submitted | timeago }}</p>
           </div>
         </ion-col>
+
         <ion-col align-self-end class="note">
           <ion-note>{{ submission.status }}</ion-note>
         </ion-col>
+
       </ion-row>
     </ion-item>
   </ion-list>
+
 </ion-content>
 

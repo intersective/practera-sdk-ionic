@@ -24,6 +24,7 @@ export class MyApp implements OnInit {
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage,
   };
+
   @ViewChild('appNav') nav: NavController;
   constructor(
     platform: Platform,
@@ -36,10 +37,12 @@ export class MyApp implements OnInit {
       // ionic-native is removed, as we dont need to use cordova
     });
   }
+
   ngOnInit() {
     let category = [];
     let page;
     let navParams = {};
+
     if (document.URL.indexOf("?") !== -1) {
       let splitURL = document.URL.split("?");
       let splitParams = splitURL[1].split("&");
@@ -56,6 +59,7 @@ export class MyApp implements OnInit {
         navParams[singleURLParam[0]] = singleURLParam[1];
       });
     }
+
     if (page) {
       this.nav.setRoot(page, navParams);
     } else {
@@ -66,4 +70,5 @@ export class MyApp implements OnInit {
       }
     }
   }
+
 }

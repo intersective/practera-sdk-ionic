@@ -3,24 +3,23 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController,
-  AlertController
+  ModalController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
+import { loadingMessages, errMessages } from '../../../app/messages';
+import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
+import { CharacterService } from '../../../services/character.service';
+import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
-
 /**
  * @TODO: remove after development is complete
  * flag to tell whether should UI popup toast error message at the bottom
@@ -34,72 +33,78 @@ const ACTIVATE_TOAST = false;
 })
 export class ActivitiesListPage implements OnInit {
   public activities = [];
-  public totalAchievements: any = [];
-  public currentPoints: number = 0;
-  public maxPoints: number = 0;
-  public pointPercentage: number = 0;
-  public percentageValue: any = 0;
+  public currentPercentage: any = 0;
+  public characterData: any = [];
+  public submissionData: any = [];
+  public characterCurrentExperience: number = 0;
+  public percentageValue: number = 0;
+  public submissionPoints: number = 0;
   public returnError: boolean = false;
   // public shiftLang: boolean = false;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+
+  // Achievements
+  private achievements = {
+    maxPoint: {},
+    obtained: {},
+    available: []
+  };
+
   constructor(
     public navCtrl: NavController,
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
+    public characterService: CharacterService,
+    public submissionService: SubmissionService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    public translationService: TranslationService,
-    public alertCtrl: AlertController
+    public translationService: TranslationService
   ) {}
+
   // shiftLanguageTrial(){
   //   this.shiftLang = !this.shiftLang;
   //   this.translationService.isTranslated(this.shiftLang);
-  // }               
-  ngOnInit(){ 
+  // }
+  ngOnInit() {
     this.loadingAchievements();
   }
+
   // display user achievemnt statistics score points
-  loadingAchievements(){
+  loadingAchievements() {
     let loadingFailed = this.toastCtrl.create({
       message: this.activitiesLoadingErr,
       duration: 4000,
       position: 'bottom'
     });
-    let getUserAchievements = this.achievementService.getAchievements();
-    let getAllAchievements = this.achievementService.getAllAchievements();
-    let getMaxPoints = this.achievementService.getMaxPoints();
-    Observable.forkJoin([getUserAchievements, getAllAchievements, getMaxPoints])
+    let getCharacter = this.characterService.getCharacter();
+    let getSubmission = this.submissionService.getSubmissionsData();
+    Observable.forkJoin([getSubmission, getCharacter])
               .subscribe(results => {
-                this.totalAchievements = results;
-                // console.log(this.totalAchievements);
-                // console.log("Max Points: ", results[2].max_achievable_points);
-                this.maxPoints = results[2].max_achievable_points;
-                this.currentPoints = results[0].total_points;
-                if(this.currentPoints >= 0 && this.currentPoints <= this.maxPoints){
-                  this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10); // The formula to calculate progress percentage
-                  (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1); // to keep one decimal place with percentage value
-                }else if(this.currentPoints > this.maxPoints){ // if user achievements points larger then maximum point value, then return 100%
-                  this.pointPercentage = 100; 
-                }else { // else for unexpected siuations to return as 0 (eg: if maximum point value is 0)
-                  this.currentPoints = 0; 
-                  this.maxPoints = 0;
-                  this.pointPercentage = 0;
+                  this.submissionData = results[0];
+                  _.forEach(this.submissionData, element => {
+                    if(element.AssessmentSubmission.status == 'published'){
+                      this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
+                    }
+                  });
+                  this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
+                  this.currentPercentage = this.percentageValue.toFixed(2);
+                  console.log("Percent: ", this.currentPercentage); // display as string format
+                  this.characterData = results[1].Character;
+                  this.characterCurrentExperience = this.characterData.experience;
+                  console.log("Experience: ", this.characterCurrentExperience);
+                },
+                err => {
+                  if (ACTIVATE_TOAST) {
+                    loadingFailed.present();
+                  }
                 }
-              },
-              err => {
-                this.currentPoints = 0;
-                this.maxPoints = 0;
-                this.pointPercentage = 0;
-                if (ACTIVATE_TOAST) {
-                  loadingFailed.present();
-                }
-              }
-    );
+              );
   }
+
   // loading activity list data
   loadingActivities = () => {
     let loadingActivities = this.loadingCtrl.create({
@@ -111,65 +116,46 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     loadingActivities.present();
-    this.activityService.getActivities()
-        .subscribe(
-          data => {
-            this.activities = data;
-            if(this.activities.length == 0){
-              this.returnError = true;
-            }
-            loadingActivities.dismiss().then(() => {
-              console.log("Activities: ", this.activities);
-            });
-          },
-          err => {
-            loadingActivities.dismiss().then(() => {
-              if (ACTIVATE_TOAST) {
-                loadingFailed.present();
-              }
-            });
+    this.activityService.getList()
+      .subscribe(
+        data => {
+          this.activities = data;
+          if(this.activities.length == 0){
+            this.returnError = true;
           }
-        )
-  }
-
-  /**
-   * @TODO: remove this feature after development near complete
-   * Prompt user to skip loading to skip forced long wait of API
-   * @param {Function} cb callback if user choose to load API call
-   */
-  promptSkipLoading(cb: Function) {
-    let prompt = this.alertCtrl.create({
-      title: "Skip loading?",
-      message: "Skip to speed up development (skip waiting).",
-      buttons: [
-        {
-          text: 'Load it',
-          handler: data => {
-            return cb();
-          }
+          loadingActivities.dismiss().then(() => {
+            console.log("Activities: ", this.activities);
+          });
         },
-        {
-          text: 'Skip',
-          handler: data => console.log(data)
+        err => {
+          loadingActivities.dismiss().then(() => {
+            if (ACTIVATE_TOAST) {
+              loadingFailed.present();
+            }
+          });
         }
-      ]
-    })
-    prompt.present();
+      )
   }
 
   // load activity data
   ionViewWillEnter() {
-    this.promptSkipLoading(this.loadingActivities);
+    this.loadingActivities();
   }
+
   // refresher activities
   doRefresh(e) {
     this.loadingActivities()
     e.complete();
   }
+
   // redirect to activity detail page
   goToDetail(activity: any, id: any){
-    this.navCtrl.push(ActivitiesViewPage, { activity: activity, id: id });
+    this.navCtrl.push(ActivitiesViewPage, {
+      achievements: this.achievements,
+      activity: activity
+    });
   }
+
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
