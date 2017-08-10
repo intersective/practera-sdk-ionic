@@ -283,9 +283,9 @@ export class AssessmentsGroupPage {
             choices: (!_.isEmpty(values.choices)) ? values.choices : null
           };
 
-      if (answer.answer) {
-        answers[id] = answer;
-      }
+      // set empty string to remove answer
+      answer.answer = (answer.answer) ? answer.answer : '';
+      answers[id] = answer;
     });
 
     // final step - store submission locally
