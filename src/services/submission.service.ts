@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Injectable()
 export class SubmissionService {
@@ -173,6 +174,15 @@ export class SubmissionService {
     let assessment = respond['Assessment'];
     let answer = respond['AssessmentSubmissionAnswer'];
     let review = respond['AssessmentReviewAnswer'];
+
+    // preprocess date
+    submission.created = moment.utc(submission.created);
+    submission.modified = moment.utc(submission.modified);
+
+    // submitted
+    if (submission.submitted) {
+      submission.submitted = moment.utc(submission.submitted);
+    }
 
     return _.merge(submission, {
       assessment,
