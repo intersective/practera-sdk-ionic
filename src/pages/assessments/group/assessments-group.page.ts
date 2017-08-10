@@ -201,13 +201,14 @@ export class AssessmentsGroupPage {
    */
   isAllQuestionsAnswered = () => {
     let passed = true;
-    _.forEach(this.formGroup, (fg) => {
-      if (fg.value.answer === '') {
+    _.forEach(this.formGroup, fg => {
+      // check formGroup.validation & each field (answer & comment) validity
+      if (!fg.valid && (!fg.controls.answer.valid && !fg.controls.comment.valid)) {
         passed = false;
       }
     });
     return passed;
-  }
+  };
 
   /**
    * turn a collection of questions into angular's FormGroup to share among components
