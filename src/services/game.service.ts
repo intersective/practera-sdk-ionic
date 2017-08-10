@@ -8,4 +8,8 @@ export class GameService {
   public getAchievements(options) {
     return this.request.get('api/achievements', options);
   }
+  // get games
+  public getGames(){
+    return this.request.get('api/games');
+  }
 }

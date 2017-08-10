@@ -4,11 +4,13 @@ import { NavController,
          LoadingController,
          AlertController } from 'ionic-angular';
 import 'rxjs/Rx';
+import * as _ from 'lodash';
+import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
-import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { GameService } from '../../services/game.service';
+import { MilestoneService } from '../../services/milestone.service';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
@@ -30,7 +32,8 @@ export class MagicLinkPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private milestoneService: MilestoneService,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private gameService: GameService
   ) {}
 
   ionViewDidLoad() {
@@ -54,6 +57,20 @@ export class MagicLinkPage {
       this.cacheService.setLocalObject('apikey', data.apikey);
       this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
       this.cacheService.setLocalObject('teams', data.Teams);
+      // get game_id data after login 
+      this.gameService.getGames()
+          .subscribe(
+            data => {
+              console.log("game data: ", data);
+              _.map(data, (element) => {
+                console.log("game id: ", element[0].id);
+                this.cacheService.setLocal('game_id', element[0].id);
+              });
+            },
+            err => {
+              console.log("game err: ", err);
+            }
+          );
       // get milestone data after login
       this.authService.getUser()
         .subscribe(
