@@ -6,9 +6,11 @@ import { loadingMessages, errMessages, generalVariableMessages } from '../../app
 import { TranslationService } from '../../shared/translation/translation.service';
 // services
 import { AuthService } from '../../services/auth.service';
+import { CacheService } from '../../shared/cache/cache.service';
+import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
-import { CacheService } from '../../shared/cache/cache.service';
+
 // directives
 import { FormValidator } from '../../validators/formValidator';
 // pages
@@ -61,6 +63,7 @@ export class RegistrationModalPage {
     private loading: LoadingController,
     private authService: AuthService,
     private cache: CacheService,
+    private gameService: GameService,
     public translationService: TranslationService,
     private milestone: MilestoneService,
     private ngZone:NgZone,
@@ -136,6 +139,20 @@ export class RegistrationModalPage {
         this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
             .subscribe(
               data => {
+                // get game_id data after login 
+                this.gameService.getGames()
+                    .subscribe(
+                      data => {
+                        console.log("game data: ", data);
+                        _.map(data, (element) => {
+                          console.log("game id: ", element[0].id);
+                          this.cache.setLocal('game_id', element[0].id);
+                        });
+                      },
+                      err => {
+                        console.log("game err: ", err);
+                      }
+                    );
                 // get user data after registration and login
                 self.authService.getUser()
                     .subscribe(
