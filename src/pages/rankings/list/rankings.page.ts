@@ -5,6 +5,7 @@ import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
 // services
 import { GameService } from '../../../services/game.service';
+import { CacheService } from '../../../shared/cache/cache.service';
 // pages
 import { RankingDetailsPage } from '../view/ranking-details.page';
 @Component({
@@ -23,7 +24,8 @@ export class RankingsPage {
   constructor(private navCtrl: NavController,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
-              private gameService: GameService){}
+              private gameService: GameService,
+              private cacheService: CacheService){}
   ionViewWillEnter(){
     this.RankingData();
   }
@@ -38,26 +40,40 @@ export class RankingsPage {
     });
     loading.present();
     // @TODO remove later
-    let getRankingList = this.gameService.getRanking(1, 1);
-    getRankingList.subscribe(
-      results => {
-        loading.dismiss().then(() => {
-          console.log(results);
-          this.totalData = results;
-          this.rankingData = this.totalData;
-          this.myRankingData = this.totalData.My_Character;
-          this.listRankingData = this.totalData.Characters;
-          console.log(this.myRankingData);
-          console.log(this.listRankingData);
-          _.forEach(this.listRankingData, (element, idx) => {
-            if(element.meta && element.meta.private === 1) {
-              // element.name = "User"+(index+1);
-              this.listRankingData[idx].name = 'Hidden Name';
-              // console.log("Hidden Name: ", element.name);
+    let gameId = this.cacheService.getLocalObject('game_id');
+    this.gameService.getCharacters(gameId)
+      .subscribe((characters) => {
+        let me = characters.Characters[0];
+        this.gameService.getRanking(gameId, me.id)
+          .subscribe(
+            results => {
+              loading.dismiss().then(() => {
+                console.log(results);
+                this.totalData = results;
+                this.rankingData = this.totalData;
+                this.myRankingData = this.totalData.My_Character;
+                this.listRankingData = this.totalData.Characters;
+                console.log(this.myRankingData);
+                console.log(this.listRankingData);
+                _.forEach(this.listRankingData, (element, idx) => {
+                  if(element.meta && element.meta.private === 1) {
+                    // element.name = "User"+(index+1);
+                    this.listRankingData[idx].name = 'Hidden Name';
+                    // console.log("Hidden Name: ", element.name);
+                  }
+                  this.isEmptyList = false;
+                });
+              });
+            },
+            err => {
+              loading.dismiss().then(() => {
+                this.isEmptyList = true;
+                // this.rankingListEmpty = err.msg;
+                console.log('Error: ', err.msg);
+                emptyDataAlert.present();
+              });
             }
-            this.isEmptyList = false;
-          });
-        });
+          );
       },
       err => {
         loading.dismiss().then(() => {
@@ -66,8 +82,7 @@ export class RankingsPage {
           console.log('Error: ', err.msg);
           emptyDataAlert.present();
         });
-      }
-    );
+      });
   }
   goRankingDetail(){
     this.navCtrl.push(RankingDetailsPage);
