@@ -65,7 +65,7 @@ export class RegistrationPage implements OnInit {
       }).subscribe(res => {
         this.cache.setLocal('user.email', email);
         this.cache.setLocal('user.registration_key', key);
-        this.cache.setLocal('user.id', res.User.id);
+        this.cache.setLocal('user.id', res.data.User.id);
         this.user = {
           email: email,
           key: key
@@ -73,7 +73,7 @@ export class RegistrationPage implements OnInit {
         Observable.forkJoin([
           this.cache.write('user.email', email),
           this.cache.write('user.registration_key', key),
-          this.cache.write('user.id', res.User.id)
+          this.cache.write('user.id', res.data.User.id)
         ]).subscribe(responds => {
           console.log('RespondsVerify::', responds);
         });
@@ -85,7 +85,7 @@ export class RegistrationPage implements OnInit {
   }
   ionViewDidEnter(): void {
     this.authService.getTerms().subscribe(res => {
-      console.log(res);
+      console.log("terms data: ", res);
       this.term = res.terms_description;
       this.content = this.sanitizer.bypassSecurityTrustResourceUrl(this.prefixUrl + res.terms_url);
     });

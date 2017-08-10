@@ -87,6 +87,7 @@ export class LoginModalPage {
       // This part is calling post_auth() API from backend
       this.authService.loginAuth(this.email, this.password)
         .subscribe(data => {
+          data = data.data;
           // this.getLogInData(data);
           self.cacheService.setLocalObject('apikey', data.apikey);
           // saved for 3 types of timeline id in order for later use
