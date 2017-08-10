@@ -50,6 +50,7 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+import { RankIconComponent } from '../components/rank/icon';
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -118,6 +119,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     FeedbackComponent,
+    RankIconComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
