@@ -1,10 +1,10 @@
-import { Component, Injectable } from '@angular/core';
+import { Component } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { AchievementService } from '../../../services/achievement.service';
-@Injectable()
+
 @Component({
   selector: 'activity-list-popup',
   templateUrl: 'popup.html'
