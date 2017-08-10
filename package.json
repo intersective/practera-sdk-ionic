@@ -1,7 +1,7 @@
 {
-  "name": "practera-sdk-ionic",
+  "name": "personal-edge",
   "version": "0.0.1",
-  "description": "The Practera SDK for Ionic 2 (Angular 2 or 4) allows you to quickly build mobile native apps that will connect with Practera.",
+  "description": "Evidence capturing app.",
   "config": {
     "ionic_copy": "./config/copy.config.js",
     "ionic_sass": "./config/sass.config.js"
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "2.0.0",
-    "@ionic/cli-plugin-ionic-angular": "1.4.0",
+    "@ionic/cli-plugin-ionic-angular": "1.4.1",
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.13",
     "angular2-template-loader": "^0.6.2",

@@ -1,11 +1,25 @@
 <ion-content class="login-module">
   <ion-grid class="default-center-container">
-    <ion-row>
+    <!-- <ion-row>
       <ion-col>
-        <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
+         <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
         <h3>
           {{ 'LOGIN.HEADER' | translate }}
+        </h3> 
+      </ion-col>
+    </ion-row> -->
+    <ion-row class="login-bgs">
+      <img col-offset-3 col-6 col-offset-3 src="./assets/img/main/bg32.png" class="left-image" />
+    </ion-row>
+    <ion-row class="main-login-text">
+      <ion-col>
+        <h3 col-offset-1 col-10 col-offset-1>
+          <!-- <span>Personal </span><span> Edge</span> -->
+          <img src="./assets/img/main/logo02.png" />
         </h3>
+        <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
+          Welcome to Personal Edge App. You may click login button to get start.
+        </p>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -18,6 +32,9 @@
           {{ 'LOGIN.PAGETITLE' | translate }}
         </button>
       </ion-col>
+    </ion-row>
+    <ion-row class="login-bgs">
+      <img col-offset-3 col-6 col-offset-3 src="./assets/img/main/bg31.png" class="right-image" />
     </ion-row>
   </ion-grid>
 </ion-content>
