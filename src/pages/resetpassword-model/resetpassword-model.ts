@@ -80,6 +80,7 @@ export class ResetpasswordModelPage {
         // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
+              data = data.data;
               this.cacheService.setLocalObject('apikey', data.apikey);
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);

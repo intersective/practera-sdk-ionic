@@ -54,6 +54,7 @@ export class MagicLinkPage {
       // localStorage.setItem('isAuthenticated', 'true');
       // this.navCtrl.push(TabsPage);
       // console.log("Successfully logged in");
+      data = data.data;
       this.cacheService.setLocalObject('apikey', data.apikey);
       this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
       this.cacheService.setLocalObject('teams', data.Teams);
