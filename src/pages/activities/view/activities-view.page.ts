@@ -62,6 +62,7 @@ export class ActivitiesViewPage {
           this.submissions = submissions.map(submission => {
             return this.submissionService.normalise(submission);
           });
+          this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
         }
       });
 
