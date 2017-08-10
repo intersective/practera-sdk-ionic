@@ -15,6 +15,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
+import { MomentModule } from 'angular2-moment';
+
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -160,10 +162,11 @@ export function HttpLoaderFactory(http: Http) {
   ],
   imports: [
     BrowserModule,
-    TestModule,
     CacheModule,
-    NotificationModule,
     FormsModule,
+    MomentModule,
+    NotificationModule,
+    TestModule,
     UtilsModule,
     RequestModule.forRoot({
       appKey: Configure.appKey,

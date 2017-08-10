@@ -54,7 +54,7 @@
 
         <ion-col align-self-start>
           <div>
-            <h2>{{ (submission.submitted || submission.created) | timeago | ucfirst }}</h2>
+            <h2>{{ (submission.submitted || submission.created) | amDateFormat:"MMM D 'YY, h:mma" }}</h2>
           </div>
         </ion-col>
 
