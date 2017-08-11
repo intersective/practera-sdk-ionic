@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 // services
 import { AchievementService } from '../../../services/achievement.service';
-// pages 
+// pages
 import { RankingBadgesPage } from './ranking-badges';
 @Component({
   selector: 'rankings-details-page',
@@ -21,7 +21,7 @@ export class RankingDetailsPage {
   public monthlyPoints = 0;
   public currentMonth = moment().month() + 1;
   public currentMonthData: any = [];
-  // public isEmpty: boolean = false; 
+  // public isEmpty: boolean = false;
   public emptyAchievementMessage = errMessages.Activities.achievements.empty;
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
@@ -34,26 +34,26 @@ export class RankingDetailsPage {
     this.userAchievements();
   }
   userAchievements(){
-    const emptyDataAlert = this.alertCtrl.create({
-      title: 'Oops! No data has been found',
-      message: this.emptyErrorMessage,
-      buttons: ['Close']
-    });
+    // const emptyDataAlert = this.alertCtrl.create({
+    //   title: 'Oops! No data has been found',
+    //   message: this.emptyErrorMessage,
+    //   buttons: ['Close']
+    // });
     this.achievementService.getAchievements()
     .subscribe(
       data => {
         console.log("Total achievemnts: ", data);
         console.log("Total achievemnts length : ", data.length);
         if(data.length === 0) {
-          emptyDataAlert.present();
+          // emptyDataAlert.present();
           // this.isEmpty = true;
-          this.monthlyPoints = 0; 
-          this.totalPoints = 0; 
+          this.monthlyPoints = 0;
+          this.totalPoints = 0;
         }else {
-          this.monthlyPoints = 0; 
-          this.totalPoints = 0; 
-          // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.  
-          // this.userAchievementsData = data.Achievement; 
+          this.monthlyPoints = 0;
+          this.totalPoints = 0;
+          // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.
+          // this.userAchievementsData = data.Achievement;
           _.forEach(data.Achievement, element => {
             if(element.visibility !== 2){
               this.userAchievementsData.push(element);
@@ -76,10 +76,10 @@ export class RankingDetailsPage {
       },
       err => {
         this.monthlyPoints = 0;
-        this.totalPoints = 0; // if data arary (data.Achievement) loading connection error occurred 
+        this.totalPoints = 0; // if data arary (data.Achievement) loading connection error occurred
         // this.isEmpty = true;
         console.log("Error: ", err);
-        emptyDataAlert.present();
+        // emptyDataAlert.present();
       }
     );
   }
