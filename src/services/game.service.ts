@@ -5,15 +5,12 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class GameService {
-  private gamesTarget = 'api/games';
-  private charactersTarget = 'api/characters';
-
   constructor(
     private request: RequestService
   ) {}
 
   public getGames(options = {}) {
-    return this.request.get(this.gamesTarget, options);
+    return this.request.get('api/games', options);
   }
 
   public getCharacters(gameId, options = {}) {
@@ -22,7 +19,7 @@ export class GameService {
         game_id: gameId
       }
     }, options);
-    return this.request.get(this.charactersTarget, options);
+    return this.request.get('api/characters', options);
   }
 
   public getRanking(gameId, characterId = null) {
@@ -32,5 +29,9 @@ export class GameService {
         character_id: characterId
       }
     });
+  }
+
+  public getItems(characterId, filters?) {
+    return this.request.get('api/items', filters);
   }
 }

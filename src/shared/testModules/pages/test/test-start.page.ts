@@ -13,13 +13,13 @@ import { LoginPage } from '../../../../pages/login/login';
 import { RegistrationPage } from '../../../../pages/registration/registration.page';
 import { SettingsPage } from '../../../../pages/settings/settings.page';
 import { EventCheckinPage } from '../../../../pages/events/checkin/event-checkin.page';
-import { SpinnerPage } from '../../../../pages/spinner/spinner.page';
+import { SpinwheelPage } from '../../../../pages/spinwheel/spinwheel.page';
 import { TeamPage } from '../../../../pages/team/team';
 
 const PAGES = [
   {
     name: 'Test',
-    page: SpinnerPage
+    page: SpinwheelPage
   },
   {
     name: 'Check-in',

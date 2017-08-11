@@ -51,7 +51,7 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
-import { SpinwheelComponent } from '../components/spinwheel/spinwheel.component';
+import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
 // unused but necessary for build
 import { AssessmentsComponent } from '../components/assessments/assessments.component';
 import { LevelsComponent } from '../components/levels/levels';
@@ -94,7 +94,6 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
-import { SpinnerPage } from '../pages/spinner/spinner.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
@@ -167,8 +166,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
-    SpinnerPage,
-    SpinwheelComponent,
+    SpinwheelPage,
     TabsPage,
     TeamPage,
     TestPage,
@@ -280,7 +278,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
-    SpinnerPage,
+    SpinwheelPage,
     TabsPage,
     TestPage,
     TermConditionPage,

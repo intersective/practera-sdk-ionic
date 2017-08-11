@@ -6,11 +6,10 @@ import { TweenMax } from 'gsap';
 import * as Winwheel from 'Winwheel';
 
 @Component({
-  selector: 'spinwheel',
   templateUrl: './spinwheel.html',
   styleUrls: ['./spinwheel.scss']
 })
-export class SpinwheelComponent implements OnInit {
+export class SpinwheelPage implements OnInit {
   canvasWheel = {
     'canvasId'        : 'spinwheel',
     'outerRadius'     : 150,        // Set outer radius so wheel fits inside the background.
@@ -69,6 +68,9 @@ export class SpinwheelComponent implements OnInit {
     this.statuses.value = 0;
     this.statuses.spinOn = true;
 
+  }
+
+  ionViewWillEnter() {
     console.log(this.renderer.selectRootElement('ion-content'));
 
     let width = this.platform.width();
@@ -80,9 +82,6 @@ console.log('canvasWidth', this.canvasWidth);
     // this.canvasWheel.innerRadius = canvasWidth*0.3;
 console.log('canvasWheel', this.canvasWheel);
 console.log('wheel', this.wheel);
-  }
-
-  ionViewWillEnter() {
   }
 
   alertPrize() {
