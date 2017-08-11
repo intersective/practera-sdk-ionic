@@ -13,8 +13,8 @@ import * as Winwheel from 'Winwheel';
 export class SpinwheelComponent implements OnInit {
   canvasWheel = {
     'canvasId'        : 'spinwheel',
-    'outerRadius'     : 80,        // Set outer radius so wheel fits inside the background.
-    'innerRadius'     : 20,         // Make wheel hollow so segments don't go all way to center.
+    'outerRadius'     : 150,        // Set outer radius so wheel fits inside the background.
+    'innerRadius'     : 50,         // Make wheel hollow so segments don't go all way to center.
     'textFontSize'    : 24,         // Set default font size for the segments.
     'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
     'textAlignment'   : 'outer',    // Align text to outside of wheel.
@@ -49,7 +49,8 @@ export class SpinwheelComponent implements OnInit {
     spinning: false,
     power: 0,
     value: 0,
-    spinOn: false
+    spinOn: false,
+    displayPureCSS: false
   };
 
   constructor(
@@ -63,30 +64,25 @@ export class SpinwheelComponent implements OnInit {
   }
 
   ngOnInit() {
-    let width = this.platform.width();
-    this.canvasWidth = width * 0.8;
-
-    let canvasWidth = width * 0.5;
-    this.canvasWheel.outerRadius = canvasWidth*0.75;
-    this.canvasWheel.innerRadius = canvasWidth*0.2;
-    this.wheel = new Winwheel(this.canvasWheel);
-    console.log(this.wheel);
-  }
-
-  ionViewWillEnter() {
     // preset values
     this.statuses.chances = 10;
     this.statuses.value = 0;
     this.statuses.spinOn = true;
 
-    /*this.gameService.getAchievements().subscribe(res => {
-      console.log(res);
-    }, err => {
-      console.log(err);
-    });*/
+    console.log(this.renderer.selectRootElement('ion-content'));
+
+    let width = this.platform.width();
+    this.canvasWidth = width * 0.9;
+console.log('width', width);
+console.log('canvasWidth', this.canvasWidth);
+    let canvasWidth = width * 0.8;
+    // this.canvasWheel.outerRadius = canvasWidth*0.7;
+    // this.canvasWheel.innerRadius = canvasWidth*0.3;
+console.log('canvasWheel', this.canvasWheel);
+console.log('wheel', this.wheel);
   }
 
-  ionViewDidEnter() {
+  ionViewWillEnter() {
   }
 
   alertPrize() {
@@ -95,12 +91,50 @@ export class SpinwheelComponent implements OnInit {
 
   retrieve() {}
 
-  draw() {
+  private runInZone(cb) {
     this.zone.run(() => {
+      cb();
+    });
+  }
+
+  draw() {
+    this.runInZone(() => {
+      this.wheel = new Winwheel(this.canvasWheel);
       this.wheel.draw();
       console.log('drawn!!!');
       console.log(this.wheel);
     });
+  }
+
+  // pause
+  pause() {
+    this.runInZone(() => {
+      this.wheel.pause();
+    });
+  }
+
+  // resume
+  play() {
+    this.runInZone(() => {
+      this.wheel.play();
+    });
+  }
+
+  // reset
+  /**
+   * reset: required before 2nd spin
+   */
+  reset() {
+    this.runInZone(() => {
+      this.wheel.stopAnimation(true);  // Stop the animation, false as param so does not call callback function.
+      // this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+      this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+      this.wheel.draw();                // Call draw to render changes to the wheel.
+    });
+  }
+
+  clear() {
+    this.wheel.clearCanvas();
   }
 
   spin() {
@@ -128,10 +162,8 @@ export class SpinwheelComponent implements OnInit {
     }
   }
 
-  slices = [
-    {}
-  ];
 
+  // pure CSS drawing
   createSlice() {
     let result = `
       <div>
@@ -140,7 +172,10 @@ export class SpinwheelComponent implements OnInit {
     `;
   }
 
-  spin2() {
+  // draw pure CSS spinwheel
+  drawPureCSS() {
+    this.statuses.displayPureCSS = true;
+
     var duration = Math.floor(Math.random() * 4) + 1;
     var degrees = 360 * (Math.random() * 10);
 
@@ -154,7 +189,6 @@ export class SpinwheelComponent implements OnInit {
       {id: 'lizard', class: 'slide4', text: 'LizardS'}
     ];
 
-console.log(el);
     slices.forEach((slice) => {
       let newSlice = this.renderer.createElement('div');
       this.renderer.addClass(newSlice, 'slice');

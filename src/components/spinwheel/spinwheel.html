@@ -1,12 +1,15 @@
 <div class="center">
   <div class="power_controls">
-    <button ion-button color="secondary" block (click)="draw()">
+    <button ion-button color="soft-green" block (click)="draw()">
       Draw
     </button>
-    <button ion-button color="primary" block [disabled]="statuses.spinOn" (click)="spin()">
+    <button ion-button color="soft-green" block (click)="reset()">
+      Reset
+    </button>
+    <button ion-button color="primary" block [disabled]="!statuses.spinOn" (click)="spin()">
       Spin
     </button>
-    <button ion-button color="primary" block (click)="spin2()">
+    <button ion-button color="primary" block (click)="drawPureCSS()">
       Add slices
     </button>
     <div>
@@ -17,7 +20,7 @@
     </div>
   </div>
 
-  <div class="wheelContainer">
+  <div class="wheelContainer" *ngIf="statuses.displayPureCSS">
     <div class="pointer"></div>
     <div class="gameWheel">
     </div>
