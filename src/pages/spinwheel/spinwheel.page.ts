@@ -5,6 +5,23 @@ import { TweenMax } from 'gsap';
 
 import * as Winwheel from 'Winwheel';
 
+// font size and test colour overridden on backrupt segments.
+// hardcoded prize list
+const POINTS = [
+   {'fillStyle' : '#97ACD9', 'text' : '100'},
+   {'fillStyle' : '#ABE0F9', 'text' : '200'},
+   {'fillStyle' : '#96D5D2', 'text' : '300'},
+   {'fillStyle' : '#C4DF9F', 'text' : '400'},
+   {'fillStyle' : '#97ACD9', 'text' : '100'},
+   {'fillStyle' : '#ABE0F9', 'text' : '200'},
+   {'fillStyle' : '#96D5D2', 'text' : '300'},
+   {'fillStyle' : '#C4DF9F', 'text' : '400'},
+   {'fillStyle' : '#97ACD9', 'text' : '100'},
+   {'fillStyle' : '#ABE0F9', 'text' : '200'},
+   {'fillStyle' : '#96D5D2', 'text' : '300'},
+   {'fillStyle' : '#C4DF9F', 'text' : '400'}
+];
+
 @Component({
   templateUrl: './spinwheel.html',
   styleUrls: ['./spinwheel.scss']
@@ -18,31 +35,19 @@ export class SpinwheelPage implements OnInit {
     'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
     'textAlignment'   : 'outer',    // Align text to outside of wheel.
     'numSegments'     : 12,         // Specify number of segments.
-    'segments'        :             // Define segments including colour and text.
-    [                               // font size and test colour overridden on backrupt segments.
-       {'fillStyle' : '#97ACD9', 'text' : '100'},
-       {'fillStyle' : '#ABE0F9', 'text' : '200'},
-       {'fillStyle' : '#96D5D2', 'text' : '300'},
-       {'fillStyle' : '#C4DF9F', 'text' : '400'},
-       {'fillStyle' : '#97ACD9', 'text' : '100'},
-       {'fillStyle' : '#ABE0F9', 'text' : '200'},
-       {'fillStyle' : '#96D5D2', 'text' : '300'},
-       {'fillStyle' : '#C4DF9F', 'text' : '400'},
-       {'fillStyle' : '#97ACD9', 'text' : '100'},
-       {'fillStyle' : '#ABE0F9', 'text' : '200'},
-       {'fillStyle' : '#96D5D2', 'text' : '300'},
-       {'fillStyle' : '#C4DF9F', 'text' : '400'}
-    ],
+    'segments'        : POINTS,     // Define segments including colour and text.
     'animation' :           // Specify the animation to use.
     {
       'type'     : 'spinToStop',
       'duration' : 10,     // Duration in seconds.
       'spins'    : 3,     // Default number of complete spins.
-      'callbackFinished' : this.alertPrize
+      'callbackFinished' : this.alertPrize,
+      'onComplete': this.onComplete
     }
   };
   wheel: any;
   canvasWidth: number = 300;
+  canvasHeight: number = 500;
   statuses = {
     chances: 0,
     spinning: false,
@@ -71,21 +76,23 @@ export class SpinwheelPage implements OnInit {
   }
 
   ionViewWillEnter() {
-    console.log(this.renderer.selectRootElement('ion-content'));
+    let ionContentElement = this.renderer.selectRootElement('ion-content');
 
-    let width = this.platform.width();
+    let width = ionContentElement.clientWidth;
     this.canvasWidth = width * 0.9;
-console.log('width', width);
-console.log('canvasWidth', this.canvasWidth);
-    let canvasWidth = width * 0.8;
-    // this.canvasWheel.outerRadius = canvasWidth*0.7;
-    // this.canvasWheel.innerRadius = canvasWidth*0.3;
-console.log('canvasWheel', this.canvasWheel);
-console.log('wheel', this.wheel);
+
+    let radius = this.canvasWidth / 2;
+    // make canvas rectangle dynamically, so it do not crop spinwheel
+    this.canvasHeight = width;
+    this.canvasWheel.outerRadius = radius * 0.8;
+    this.canvasWheel.innerRadius = radius * 0.2;
+    console.log(width);
+    console.log(this.canvasWidth);
   }
 
   alertPrize() {
     this.statuses.value += 100;
+    console.log('hmmmm...... hahahahahahahah');
   }
 
   retrieve() {}
@@ -96,9 +103,16 @@ console.log('wheel', this.wheel);
     });
   }
 
+  onComplete() {
+    console.log('onCompleteha! gotcha!');
+  }
+
   draw() {
     this.runInZone(() => {
       this.wheel = new Winwheel(this.canvasWheel);
+      let test = this.wheel;
+      console.log(this.onComplete);
+      this.wheel.animation.callbackFinished = 'this.onComplete()';
       this.wheel.draw();
       console.log('drawn!!!');
       console.log(this.wheel);
