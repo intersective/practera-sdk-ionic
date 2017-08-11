@@ -1,12 +1,7 @@
-<div *ngIf="rank === 1">
-  <ion-icon name="fa-trophy" class="fa" aria-hidden="true"></ion-icon>
-</div>
-<div *ngIf="rank === 2">
-  <ion-icon name="fa-trophy" class="fa" aria-hidden="true"></ion-icon>
-</div>
-<div *ngIf="rank === 3">
-  <ion-icon name="fa-trophy" class="fa" aria-hidden="true"></ion-icon>
-</div>
-<div *ngIf="rank > 3">
+<ion-icon *ngIf="rank === 1" name="fa-trophy" class="fa" item-start></ion-icon>
+<ion-icon *ngIf="rank === 2" name="fa-trophy" class="fa" item-start></ion-icon>
+<ion-icon *ngIf="rank === 3" name="fa-trophy" class="fa" item-start></ion-icon>
+<ion-icon *ngIf="rank > 3" name="fa-trophy" class="fa" item-start></ion-icon>
+<div *ngIf="rank > 3" item-start>
   {{ rank }}
 </div>
