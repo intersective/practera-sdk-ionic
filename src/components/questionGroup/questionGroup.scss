@@ -45,7 +45,7 @@ questionGroup {
     }
 
     .feedback-available {
-      color: $soft-green
+      color: color($colors, button, base)
     }
   }
 

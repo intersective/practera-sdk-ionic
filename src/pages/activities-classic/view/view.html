@@ -1,7 +1,7 @@
 <ion-header class="activity-detail">
   <ion-navbar>
     <ion-title>{{ activity.name }}</ion-title>
-    <ion-buttons end *ngIf="activity.description">
+    <ion-buttons end>
       <button ion-button icon-only (click)="openModal()">
         <ion-icon name="information-circle"></ion-icon>
       </button>
@@ -17,6 +17,7 @@
       </ion-row>
     </ion-grid>
   </ion-list>
+
 </ion-header>
 
 <ion-content padding class="activity-detail">
@@ -25,8 +26,9 @@
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab top right edge *ngIf="!loadings.submissions">
-    <button ion-fab color="primary-button" (click)="goAssessment(activity)">
+
+  <ion-fab top right edge>
+    <button ion-fab color="dark" (click)="goAssessment(activity)">
       <ion-icon name="add" color="secondary"></ion-icon>
     </button>
   </ion-fab>
@@ -41,30 +43,35 @@
 
   <ion-list class="submissions">
     <ion-list-header>
-      {{ 'ACTIVITY.SUBMISSION' | translate }}
+      Submission
+      <ion-chip class="pull-right" color="border">
+        <ion-icon name="time" center></ion-icon>
+      </ion-chip>
     </ion-list-header>
-
-    <ion-item *ngIf="loadings.submissions" class="center">
-      <ion-spinner>Loading submissions...</ion-spinner>
-    </ion-item>
-
-    <ion-item *ngFor="let submission of submissions; let i = index;" (click)="goAssessment(activity, {hasSubmission: true})">
+    <ion-item *ngFor="let submission of submissions">
       <ion-row>
-
         <ion-col align-self-start>
           <div>
-            <h2>{{ "Submission " + (i + 1) }}</h2>
-            <p>{{ submission.submitted | timeago }}</p>
+            <h2>{{ submission.title }}</h2>
+            <p>{{ submission.status }}</p>
           </div>
         </ion-col>
-
         <ion-col align-self-end class="note">
-          <ion-note>{{ submission.status }}</ion-note>
+          <ion-note>{{ submission.submittedOn | timeago }}</ion-note>
         </ion-col>
-
       </ion-row>
     </ion-item>
   </ion-list>
 
+  <ion-list>
+    <ion-item>
+      <ion-note item-start>Test 1</ion-note>
+      <ion-note item-end>Test 2</ion-note>
+    </ion-item>
+
+    <ion-item>
+      Test
+    </ion-item>
+  </ion-list>
 </ion-content>
 
