@@ -17,8 +17,8 @@ $item-wp-detail-push-show: true;
 
 // General Colors (Shared File)
 // main colors
-$primary: #E60028;
-$secondary: #ffffff;
+$primary: #ebebeb; // #E60028
+$secondary: #000000; // #ffffff
 $primary-text: #000054;
 $secondary-text: #000000;
 $primary-bg: #EBEBEB;
@@ -155,4 +155,3 @@ $item-ios-detail-push-color: color($colors, primary-light, base);
 
 // @import "roboto";
 // @import "noto-sans";
-
