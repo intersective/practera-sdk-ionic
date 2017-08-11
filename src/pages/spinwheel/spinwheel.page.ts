@@ -1,9 +1,9 @@
 import { Component, NgZone, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
-import { TweenMax } from 'gsap';
 
 import * as Winwheel from 'Winwheel';
+import * as TweenMax from 'gsap';
 
 // font size and test colour overridden on backrupt segments.
 // hardcoded prize list
@@ -159,7 +159,8 @@ export class SpinwheelPage implements OnInit {
 
       // Important thing is to set the stopAngle of the animation before stating the spin.
       this.wheel.animation.stopAngle = stopAt;
-      this.wheel.startAnimation();
+      this.startAnimation();
+      // this.wheel.startAnimation();
     });
   }
 
@@ -231,5 +232,40 @@ export class SpinwheelPage implements OnInit {
         }
       }
     });*/
+  }
+
+  startAnimation() {
+    if (this.wheel.animation)
+    {
+        // Call function to compute the animation properties.
+        this.wheel.computeAnimation();
+
+        let animation = this.wheel.animation;
+        var properties = {
+          yoyo: animation.yoyo,
+          repeat: animation.repeat,
+          ease: animation.easing,
+          onUpdate: this.onComplete,
+          onComplete: this.onComplete
+        };
+        properties[`${animation.propertyName}`] = animation.propertyValue;
+
+// var properties = new Array(null);
+// properties[animation.propertyName] = animation.propertyValue; // Here we set the property to be animated and its value.
+// properties['yoyo']       = animation.yoyo;     // Set others.
+// properties['repeat']     = animation.repeat;
+// properties['ease']       = animation.easing;
+// properties['onUpdate']   = this.onComplete;   // Call function to re-draw the canvas.
+// properties['onComplete'] = this.onComplete;
+
+        // Do the tween animation passing the properties from the animation object as an array of key => value pairs.
+        // Keep reference to the tween object in the wheel as that allows pausing, resuming, and stopping while the animation is still running.
+        console.log(properties);
+
+        let result = TweenMax.to(this.wheel, animation.duration, properties);
+        console.log(result);
+
+        this.wheel.tween = TweenMax.to(this.wheel, animation.duration, properties);
+    }
   }
 }
