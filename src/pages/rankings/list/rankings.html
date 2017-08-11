@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings">
-  <ion-list no-lines>
+  <ion-list *ngIf="isEmptyList === false" no-lines>
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
       {{ listData.name }}
@@ -14,25 +14,13 @@
     </ion-item>
   </ion-list>
 
-  <!-- <ion-list class="ranking-list">
-    <ion-col *ngFor="let listData of listRankingData">
-      <div class="ranking-item" *ngIf="isEmptyList === false">
-        <div col-2>
-          <rankIcon [rank]="listData.rank"></rankIcon>
-        </div>
-        <div col-7 [ngClass]="listData.name === 'Hidden Name' ? 'blur-hidden-text' : ''">
-          <div class="middle">{{ listData.name }}</div>
-        </div>
-        <div col-2 class="user-score"><b>{{ listData.experience_points }}</b></div>
-        <div col-1></div>
-      </div>
-    </ion-col>
-    <ion-col>
-      <div class="error-message" *ngIf="isEmptyList === true">{{ rankingListEmpty }}</div>
-    </ion-col>
-  </ion-list> -->
+  <ion-list *ngIf="isEmptyList === true" no-lines>
+    <ion-item>
+      {{ rankingListEmpty }}
+    </ion-item>
+  </ion-list>
 
-  <ion-list class="my-ranking">
+  <ion-list class="my-ranking" *ngIf="isEmptyList === false">
     <ion-item (click)="goRankingDetail()" detail-push>
       <rankIcon [rank]="myRankingData.rank"></rankIcon>
       {{ 'RANKING.ME' | translate }}
@@ -41,15 +29,4 @@
       </div>
     </ion-item>
   </ion-list>
-
-  <!-- <ion-list class="my-ranking" (click)="goRankingDetail()" *ngIf="isEmptyList === false">
-    <ion-row>
-      <ion-col class="ranking-item">
-        <div col-2><rankIcon [rank]="myRankingData.rank"></rankIcon></div>
-        <div col-7>{{ 'RANKING.ME' | translate }}</div>
-        <div col-2><b>{{ myRankingData.experience_points }}</b></div>
-        <div col-1><ion-icon name="arrow-forward"></ion-icon></div>
-      </ion-col>
-    </ion-row>
-  </ion-list> -->
 </ion-content>
