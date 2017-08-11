@@ -16,7 +16,6 @@ export class RankingDetailsPage {
   public userAchievementsData: any = [];
   public achievementBadgeImage = '../assets/img/default/default-badge.png';
   public achievementName = 'Achievement';
-  public achievementPoint = 0;
   public totalPoints = 0;
   public monthlyPoints = 0;
   public currentMonth = moment().month() + 1;
