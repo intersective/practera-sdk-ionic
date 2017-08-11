@@ -16,12 +16,13 @@ $item-wp-detail-push-show: true;
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 // General Colors (Shared File)
-$primary: #22c7fa;
-$secondary: #ffffff;
-$danger: #f53d3d;
-$light: #f4f4f4;
-$primary-dark: #000000;
-$secondary-dark: #222222;
+// main colors
+$primary: #ebebeb; // #E60028
+$secondary: #000000; // #ffffff
+$primary-text: #000054;
+$secondary-text: #000000;
+$primary-bg: #EBEBEB;
+$primary-button: #00B5AD;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
 $button: #4470a5;
@@ -134,4 +135,3 @@ $item-ios-detail-push-color: color($colors, primary-light, base);
 
 // @import "roboto";
 // @import "noto-sans";
-
