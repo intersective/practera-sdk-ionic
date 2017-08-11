@@ -30,54 +30,69 @@ export class RankingDetailsPage {
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
               private achievementService: AchievementService){}
-  ionViewWillEnter(){
-    this.userAchievements();
-  }
-  userAchievements(){
-    // const emptyDataAlert = this.alertCtrl.create({
-    //   title: 'Oops! No data has been found',
-    //   message: this.emptyErrorMessage,
-    //   buttons: ['Close']
-    // });
-    this.achievementService.getAchievements()
-    .subscribe(
-      data => {
-        console.log("Total achievemnts: ", data);
-        console.log("Total achievemnts length : ", data.length);
-        this.monthlyPoints = 0;
-        this.totalPoints = 0;
+  ionViewWillEnter() {
+    let loader = this.loadingCtrl.create();
+    loader.present().then(() => {
+      this.userAchievements()
+      .then(() => {
+        loader.dismiss();
+      }, err => {
+        console.log('log::', err);
+      });
+    });
 
-        if(data.length !== 0) {
-          // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.
-          // this.userAchievementsData = data.Achievement;
-          _.forEach(data.Achievement, element => {
-            if(element.visibility !== 2){
-              this.userAchievementsData.push(element);
-            }
-          });
-          _.forEach(this.userAchievementsData, element => {
-            this.totalPoints += element.points;
-          });
-          this.currentMonthData = _.filter(this.userAchievementsData, (monthData) => {
-            (moment(monthData.earned).month() + 1) == this.currentMonth;
-          });
-          if (this.currentMonthData.length != 0) {
-            this.userAchievementsData.forEach(element => {
-              this.monthlyPoints += element.points;
-            });
-          } else {
+  }
+  userAchievements(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // const emptyDataAlert = this.alertCtrl.create({
+      //   title: 'Oops! No data has been found',
+      //   message: this.emptyErrorMessage,
+      //   buttons: ['Close']
+      // });
+      this.achievementService.getAchievements()
+        .subscribe(
+          (data) => {
+            console.log('achievemnts', data);
             this.monthlyPoints = 0;
+            this.totalPoints = 0;
+
+            if (data.length !== 0) {
+              // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.
+              // this.userAchievementsData = data.Achievement;
+              _.forEach(data.Achievement, element => {
+                if(element.visibility !== 2){
+                  this.userAchievementsData.push(element);
+                }
+              });
+              _.forEach(this.userAchievementsData, element => {
+                this.totalPoints += element.points;
+              });
+              this.currentMonthData = _.filter(this.userAchievementsData, (monthData) => {
+                (moment(monthData.earned).month() + 1) == this.currentMonth;
+              });
+              if (this.currentMonthData.length != 0) {
+                this.userAchievementsData.forEach(element => {
+                  this.monthlyPoints += element.points;
+                });
+              } else {
+                this.monthlyPoints = 0;
+              }
+
+              resolve();
+            } else {
+              resolve();
+            }
+          },
+          (err) => {
+            this.monthlyPoints = 0;
+            this.totalPoints = 0; // if data arary (data.Achievement) loading connection error occurred
+            // this.isEmpty = true;
+            console.log("Error: ", err);
+            // emptyDataAlert.present();
+            reject(err);
           }
-        }
-      },
-      err => {
-        this.monthlyPoints = 0;
-        this.totalPoints = 0; // if data arary (data.Achievement) loading connection error occurred
-        // this.isEmpty = true;
-        console.log("Error: ", err);
-        // emptyDataAlert.present();
-      }
-    );
+        );
+    });
   }
   goToBadgeDetailsPage(achievementData){
     let goRankingBadgesPopup = this.modalCtrl.create(RankingBadgesPage, { achievement: achievementData });
