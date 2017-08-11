@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings">
-  <ion-list *ngIf="isEmptyList === false" no-lines>
+  <ion-list *ngIf="isEmptyList === false">
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
       {{ listData.name }}
