@@ -19,7 +19,7 @@ export class AchievementService {
 
   // List User Achievements
   public getAchievements(params = {}) {
-    return this.request.get('api/user_achievements.json')
+    return this.request.get('api/user_achievements.json');
   }
 
   // List All Achievements

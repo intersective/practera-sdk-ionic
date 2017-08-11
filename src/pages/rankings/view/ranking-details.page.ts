@@ -44,14 +44,10 @@ export class RankingDetailsPage {
       data => {
         console.log("Total achievemnts: ", data);
         console.log("Total achievemnts length : ", data.length);
-        if(data.length === 0) {
-          // emptyDataAlert.present();
-          // this.isEmpty = true;
-          this.monthlyPoints = 0;
-          this.totalPoints = 0;
-        }else {
-          this.monthlyPoints = 0;
-          this.totalPoints = 0;
+        this.monthlyPoints = 0;
+        this.totalPoints = 0;
+
+        if(data.length !== 0) {
           // everytime when loading ranking details page, the total points needs to be same as previous unless user got new achievements.
           // this.userAchievementsData = data.Achievement;
           _.forEach(data.Achievement, element => {
@@ -65,11 +61,11 @@ export class RankingDetailsPage {
           this.currentMonthData = _.filter(this.userAchievementsData, (monthData) => {
             (moment(monthData.earned).month() + 1) == this.currentMonth;
           });
-          if(this.currentMonthData.length != 0){
+          if (this.currentMonthData.length != 0) {
             this.userAchievementsData.forEach(element => {
               this.monthlyPoints += element.points;
             });
-          }else {
+          } else {
             this.monthlyPoints = 0;
           }
         }
