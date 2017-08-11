@@ -14,6 +14,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
+import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
@@ -51,7 +52,8 @@ export class LoginModalPage {
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private gameService: GameService
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -85,6 +87,7 @@ export class LoginModalPage {
       // This part is calling post_auth() API from backend
       this.authService.loginAuth(this.email, this.password)
         .subscribe(data => {
+          data = data.data;
           // this.getLogInData(data);
           self.cacheService.setLocalObject('apikey', data.apikey);
           // saved for 3 types of timeline id in order for later use
@@ -105,6 +108,14 @@ export class LoginModalPage {
                   console.log(err);
                 }
               );
+
+          this.gameService.getGames()
+            .subscribe((data) => {
+              if (data.Games) {
+                // For now only have one game per project
+                self.cacheService.setLocalObject('game_id', data.Games[0].id);
+              }
+            });
 
           // get milestone data after login
           this.milestoneService.getMilestones()

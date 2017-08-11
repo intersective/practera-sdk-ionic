@@ -129,6 +129,7 @@ export class RegistrationModalPage {
         password: this.regForm.get('password').value
       }).subscribe(regRespond => {
         //@TODO: set user data
+        regRespond = regRespond.data;
         console.log(regRespond);
         this.cache.setLocalObject('apikey', regRespond.apikey);
         this.cache.setLocalObject('timelineID', regRespond.Timeline.id);
