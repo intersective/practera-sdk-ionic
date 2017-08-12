@@ -12,25 +12,23 @@
 	</ion-refresher>
   <ion-grid>
     <ion-row class="score-board">
-      <div class="score-board-inner">
-         <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-              <h1>{{ currentPercentage }}%</h1>  
-            </div>
+      <ion-col class="score-board-inner">
+        <div class="score-inner-box">
+          <div>
+            <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
+            <h1>{{ currentPercentage }}%</h1>  
           </div>
-        </ion-col> 
-        <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
-              <!-- <h1>{{ currentPoints }}</h1> -->
-              <h1>{{ characterCurrentExperience }}</h1>
-            </div>
+        </div>
+      </ion-col> 
+      <ion-col>
+        <div class="score-inner-box">
+          <div>
+            <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
+            <!-- <h1>{{ currentPoints }}</h1> -->
+            <h1>{{ characterCurrentExperience }}</h1>
           </div>
-        </ion-col>
-      </div>
+        </div>
+      </ion-col>
     </ion-row>
     <ion-row class="activity-list">
       <ion-col>

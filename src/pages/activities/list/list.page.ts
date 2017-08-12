@@ -34,7 +34,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 })
 export class ActivitiesListPage implements OnInit {
   public activities: any = [];
-  public initialItems = [];
+  public initialItems: any = [];
   public totalAchievements: any = [];
   public currentPoints: number = 0;
   public maxPoints: number = 0;
@@ -45,7 +45,6 @@ export class ActivitiesListPage implements OnInit {
   public percentageValue: number = 0;
   public submissionPoints: number = 0;
   public returnError: boolean = false;
-  public getCharacterID: any = this.cacheService.getLocal('character_id');
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
@@ -97,9 +96,7 @@ export class ActivitiesListPage implements OnInit {
             }
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
-            console.log("chracter_id: ", this.getCharacterID);
-            let getGameItems = this.gameService.getGameItems(this.getCharacterID);
-            Observable.forkJoin([getSubmission, getCharacter, getGameItems])
+            Observable.forkJoin([getSubmission, getCharacter])
               .subscribe(results => { 
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
@@ -112,11 +109,22 @@ export class ActivitiesListPage implements OnInit {
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   // console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Characters[0];
-                  this.cacheService.setLocal('character_id', this.characterData.id)
+                  this.cacheService.setLocal('character_id', this.characterData.id);
                   console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
                   // console.log("Experience: ", this.characterCurrentExperience);
-                  // console.log("Items Data: ", results[2]);
+                  this.gameService.getGameItems(this.characterData.id)
+                                  .subscribe(
+                                    data => {
+                                      this.initialItems = data.Items;
+                                      this.cacheService.setLocalObject('initialItems', this.initialItems);
+                                      console.log("Items Data: ", this.initialItems);
+                                    },
+                                    err => {
+                                      console.log("Items Data error: ", err);
+                                    }
+                                  );
+                  
                 });
               },
               err => {
