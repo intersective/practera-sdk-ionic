@@ -39,6 +39,7 @@ export class ActivitiesListPage implements OnInit {
   public currentPoints: number = 0;
   public maxPoints: number = 0;
   public currentPercentage: any = '0';
+  public filteredSubmissions: any = [];
   public characterData: any = [];
   public submissionData: any = [];
   public characterCurrentExperience: number = 0;
@@ -101,11 +102,15 @@ export class ActivitiesListPage implements OnInit {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
-                    if(element.AssessmentSubmission.status == 'published'){
-                      this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
+                    if(element.AssessmentSubmission.status == 'published' || element.AssessmentSubmission.status == 'done'){
+                      if(element.AssessmentSubmission.moderated_score !== null){
+                        this.filteredSubmissions.push(element.AssessmentSubmission);
+                        this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
+                      }
                     }
                   });
-                  this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
+                  let average_score = (this.submissionPoints/this.filteredSubmissions.length)*100;
+                  (average_score > 0) ? this.percentageValue = average_score : this.percentageValue = 0;
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   // console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Characters[0];
