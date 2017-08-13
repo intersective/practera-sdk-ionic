@@ -14,6 +14,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
+import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
@@ -53,7 +54,8 @@ export class LoginModalPage {
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private gameService: GameService
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -122,6 +124,14 @@ export class LoginModalPage {
                   console.log(err);
                 }
               );
+
+          this.gameService.getGames()
+            .subscribe((data) => {
+              if (data.Games) {
+                // For now only have one game per project
+                self.cacheService.setLocalObject('game_id', data.Games[0].id);
+              }
+            });
 
           // get milestone data after login
           this.milestoneService.getMilestones()
