@@ -5,6 +5,12 @@
 
 <ion-content>
   <div class="center">
+    <ion-list>
+      <button ion-item (click)="calls('game')">1. Load Game API</button>
+      <button ion-item (click)="calls('character')">2. Load Character API</button>
+      <button ion-item (click)="calls('item')">3. Load Item API</button>
+    </ion-list>
+
     <div class="power_controls">
       <button ion-button color="soft-green" block (click)="draw()">
         Draw
@@ -25,6 +31,7 @@
         Restart
       </button>
     </div>
+
 
     <ion-list>
       <ion-item *ngIf="statuses.isCompleted">Completed!</ion-item>

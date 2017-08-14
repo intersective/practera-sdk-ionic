@@ -31,7 +31,11 @@ export class GameService {
     });
   }
 
-  public getItems(characterId, filters?) {
-    return this.request.get('api/items', filters);
+  public getItems(options?) {
+    options = _.merge({
+      character_id: null,
+      action: 'list'
+    }, options);
+    return this.request.get('api/items', {search: options});
   }
 }

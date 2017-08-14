@@ -95,6 +95,66 @@ export class SpinwheelPage implements OnInit {
     this.config.innerRadius = radius * 0.2;
   }
 
+  // api calls
+  game: any = {};
+  character: any = {};
+  item: any = {};
+  calls (types) {
+
+    let gameId = null;
+    let characterId = null;
+    let itemId = null;
+
+    switch (types) {
+      case "game":
+        this.gameService.getGames().subscribe(res => {
+          console.log(res);
+          this.game = res.Games[0];
+          /*
+            {
+              "Games": [
+                {
+                  "id": 1,
+                  "name": "PE-TEST Project",
+                  "created": "2017-08-04 08:00:08.865691",
+                  "modified": "2017-08-04 08:00:08.865691"
+                }
+              ]
+            }
+           */
+        });
+        break;
+
+      case "character":
+        if (this.game.id === null) {
+          console.log('load game API first!');
+        } else {
+          this.gameService.getCharacters(this.game.id).subscribe(res => {
+            console.log(res);
+            this.character = res.Characters[0];
+          });
+        }
+        break;
+
+      case "item":
+        if (this.character.id === null) {
+          console.log('load character API first!');
+        } else {
+          this.gameService.getItems({
+            character_id: this.character.id,
+            action: 'list'
+          }).subscribe(res => {
+            this.item = res.Items[0];
+            console.log(res);
+          });
+        }
+        break;
+      default:
+          console.log('nothing loaded');
+        break;
+    }
+  }
+
   private getItems() {
 
     // get current user's character ID
@@ -109,11 +169,15 @@ export class SpinwheelPage implements OnInit {
 
   retrieve() {
     if (this.cache.getLocal('character_id')) {
-      this.gameService.getItems(1).subscribe(res => {
-
+      this.gameService.getItems({
+        character_id: this.character.id
+      }).subscribe(res => {
+        console.log(res);
       });
     } else {
-      this.gameService.getGames().subscribe(res => {
+      this.gameService.getGames({
+        character_id: this.game.id
+      }).subscribe(res => {
         console.log(res);
         // this.gameService.getCharacters()
       }, err => {
@@ -180,7 +244,7 @@ export class SpinwheelPage implements OnInit {
   }
 
   spin() {
-    this.zone.run(() => {
+    this.runInZone(() => {
       let segmentNumber = 70/100;
 
       // Get random angle inside specified segment of the wheel.
