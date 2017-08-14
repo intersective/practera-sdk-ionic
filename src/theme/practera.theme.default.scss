@@ -650,6 +650,34 @@ tutorial-page {
     align-items: center;
   }
 }
+// 15. items popup general styling 
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    .tutorial-slides p {
+      margin-top: 12pt;
+    }
+    .tutorial-slides img {
+      width: 50%;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 100%;
+      margin-top: 12pt;
+      padding: 12pt;
+      background-color: color($colors, primary, base);
+      color: color($colors, secondary, base);
+    }
+  }
+}
 // landscape activity list view
 @media screen and (min-width: 500px) {
   .score-board {

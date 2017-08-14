@@ -11,7 +11,7 @@ export class GameService {
   constructor(
     private request: RequestService
   ) {}
-
+  // get games
   public getGames(options = {}) {
     return this.request.get(this.gamesTarget, options);
   }
@@ -32,10 +32,6 @@ export class GameService {
         character_id: characterId
       }
     });
-  }
-  // get games
-  public getGames(){
-    return this.request.get('api/games');
   }
   // get game items 
   public getGameItems(character_id) {

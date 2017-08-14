@@ -136,6 +136,7 @@ export class RegistrationModalPage {
         console.log(regRespond);
         this.cache.setLocalObject('apikey', regRespond.apikey);
         this.cache.setLocalObject('timelineID', regRespond.Timeline.id);
+        this.cache.setLocal('gotNewItems', false);
         // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
         this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
             .subscribe(
@@ -171,6 +172,7 @@ export class RegistrationModalPage {
                       this.milestone_id = data.data[0].id;
                       self.cache.setLocalObject('milestone_id', data.data[0].id);
                       self.navCtrl.push(TabsPage).then(() => {
+                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                         window.history.replaceState({}, '', window.location.origin);
                       });
                     },

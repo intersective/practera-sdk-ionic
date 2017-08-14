@@ -22,6 +22,8 @@ import { TranslationService } from '../../shared/translation/translation.service
 // pages
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 import { ItemsPopupPage } from './popup/items-popup.page';
+// import { TabsPage } from '../../pages/tabs/tabs.page';
+import { ActivitiesListPage } from '../activities/list/list.page';
 class ActivityBase {
   id: number;
   name: string;
@@ -55,6 +57,8 @@ export class AssessmentsPage {
   submissions: any = [];
   getInitialItems: any = this.cacheService.getLocalObject('initialItems');
   getCharacterID: any = this.cacheService.getLocal('character_id');
+  gotNewItems: boolean = false;
+  isEventSubmission: boolean = false;
   initialItemsCount: any = {};
   newItemsCount: any = {};
   newItemsData: any = [];
@@ -74,7 +78,7 @@ export class AssessmentsPage {
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private modalCtrl: ModalController,
+    public modalCtrl: ModalController,
     private popoverCtrl: PopoverController,
     private assessmentService: AssessmentService,
     private characterService: CharacterService,
@@ -392,23 +396,6 @@ export class AssessmentsPage {
   doSubmit() {
     let loading = this.loadingCtrl.create({
       content: 'Loading...'
-    }),
-
-    // Error handling for all kind of non-specific API respond error code
-    alert = this.alertCtrl.create({
-      title: 'Congratulations',
-      message: 'Would you like to see your score?',
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.popupAfterSubmit()
-          }
-        },
-        {
-          text: 'Close'
-        }
-      ]
     });
 
     loading.present().then(() => {
@@ -447,37 +434,14 @@ export class AssessmentsPage {
         .forkJoin(tasks)
         .subscribe(
           (assessments: any) => {
-            loading.dismiss().then(() => {
+            loading.dismiss().then(_ => {
               console.log('assessments', assessments);
               this.allowSubmit = false;
-              if (!_.isEmpty(this.navParams.get('event'))) {
-                // display checkin successful (in event submission)
-                // alert.data.title = 'Checkin Successful!';
-                // alert.present().then(() => {
-                //   this.navCtrl.pop();
-                //   this.popupAfterSubmit();
-                // });
-                alert.present().then(() => {
-                  this.navCtrl.pop();
-                });
-              } else {
-                // normal submission should redirect user back to previous stack/page
-                // alert.data.title = 'Submit Success!';
-                // alert.present().then(() => {
-                //   this.navCtrl.pop();
-                //   this.popupAfterSubmit();
-                // });
-                // this.navCtrl.pop();
-                alert.present().then(() => {
-                  this.navCtrl.pop();
-                });
-              }
+              this.popupAfterSubmit();
             });
           },
           err => {
-            loading.dismiss().then(() => {
-              alert.data.title = err.msg || alert.data.title;
-              alert.present();
+            loading.dismiss().then(_ => {
               console.log('err', err);
             });
           }
@@ -512,32 +476,17 @@ export class AssessmentsPage {
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });
-    // loading.onDidDismiss(() => {
-    //   console.log('Dismissed loading');
-    //   if (combinedItems && events) {
-    //     popupItemModal(combinedItems, events);
-    //   }
-    //
-    // });
-
-
-    const popupItemModal = (combinedItems, events) => {
-      const modal = this.modalCtrl.create(ItemsPopupPage, {
-        combined: this.combinedItems,
-        events: this.navParams.get('event')
-      });
-
-      modal.onDidDismiss(data => {
-        this.initialItemsCount = {};
-        this.newItemsCount = {};
-        this.newItemsData = [];
-        this.totalItems = [];
-        this.allItemsData = [];
-        this.combinedItems = [];
-      });
-
-      modal.present();
-    };
+    const alert = this.alertCtrl.create({
+      title: 'Submission Successful',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.navCtrl.setRoot(ActivitiesListPage); // dashboard page
+          }
+        }
+      ]
+    });
 
     // get initial items
     console.log('Inital Items: ', this.getInitialItems);
@@ -588,27 +537,27 @@ export class AssessmentsPage {
             // get the final object with item occurance count value
             let groupData = _.groupBy(this.totalItems, 'id');
             console.log("Group?? ", groupData);
-            _.map(this.allItemsData, (ele) => {
-              this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
-              console.log("Final Combined results: ", this.combinedItems);
-            });
-
-            loading.onDidDismiss(() => {
-              popupItemModal(this.combinedItems, this.navParams.get('event'));
-            });
-            loading.dismiss();
-
-
-
-            // loading.dismiss().then(() => {
-            //   // let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems, events: this.navParams.get('event')});
-            //   console.log("combined object array data: ", this.combinedItems);
-            //   // itemsPopup
-            //   // reset array in case data repeat avoid unexpected errors
-            //
-            // });
-
-
+            if(this.allItemsData.length === 0){
+              this.gotNewItems = false;
+              this.cacheService.setLocal('gotNewItems', this.gotNewItems);
+              loading.onDidDismiss(() => {
+                alert.present(); // redirect to dashboard page
+              });
+              loading.dismiss();
+            }else {
+              _.map(this.allItemsData, (ele) => {
+                this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
+                console.log("Final Combined results: ", this.combinedItems);
+              });
+              // display items on dashboard page
+              this.gotNewItems = true;
+              this.cacheService.setLocal('gotNewItems', this.gotNewItems);
+              this.cacheService.setLocalObject('allNewItems', this.combinedItems);
+              loading.onDidDismiss(() => {
+                this.navCtrl.setRoot(ActivitiesListPage);
+              });
+              loading.dismiss();
+            }
           },
           err => {
             loading.dismiss().then(() => {
@@ -617,7 +566,6 @@ export class AssessmentsPage {
           }
         );
   }
-
   gotoAssessment(assessmentGroup, activity) {
     console.log('activity', activity);
     this.navCtrl.push(AssessmentsGroupPage, {
