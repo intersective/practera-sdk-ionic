@@ -52,7 +52,8 @@ export class RankingsPage {
                 console.log(results);
                 this.totalData = results;
                 this.rankingData = this.totalData;
-                this.myRankingData = this.totalData.My_Character;
+                // We only have 1 character
+                this.myRankingData = this.totalData.MyCharacters[0];
                 this.listRankingData = this.totalData.Characters;
                 console.log(this.myRankingData);
                 console.log(this.listRankingData);
