@@ -1,6 +1,8 @@
 import { Component, NgZone, OnInit, Renderer2, ElementRef } from '@angular/core';
 import { LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
+import { CacheService } from '../../shared/cache/cache.service';
+
 
 import * as Winwheel from 'Winwheel';
 // import {TweenLite, Power2, TimelineMax, TweenMax} from "gsap";
@@ -9,18 +11,18 @@ import {TweenLite, TweenMax, Power2, Power4, TimelineLite} from "gsap";
 // font size and test colour overridden on backrupt segments.
 // hardcoded prize list
 const POINTS = [
-   {'fillStyle' : '#97ACD9', 'text' : '100'},
-   {'fillStyle' : '#ABE0F9', 'text' : '200'},
-   {'fillStyle' : '#96D5D2', 'text' : '300'},
-   {'fillStyle' : '#C4DF9F', 'text' : '400'},
-   {'fillStyle' : '#97ACD9', 'text' : '100'},
-   {'fillStyle' : '#ABE0F9', 'text' : '200'},
-   {'fillStyle' : '#96D5D2', 'text' : '300'},
-   {'fillStyle' : '#C4DF9F', 'text' : '400'},
-   {'fillStyle' : '#97ACD9', 'text' : '100'},
-   {'fillStyle' : '#ABE0F9', 'text' : '200'},
-   {'fillStyle' : '#96D5D2', 'text' : '300'},
-   {'fillStyle' : '#C4DF9F', 'text' : '400'}
+   {'fillStyle' : '#97ACD9', 'text' : '100', 'value' : 100},
+   {'fillStyle' : '#ABE0F9', 'text' : '200', 'value' : 200},
+   {'fillStyle' : '#96D5D2', 'text' : '300', 'value' : 300},
+   {'fillStyle' : '#C4DF9F', 'text' : '400', 'value' : 400},
+   {'fillStyle' : '#97ACD9', 'text' : '100', 'value' : 100},
+   {'fillStyle' : '#ABE0F9', 'text' : '200', 'value' : 200},
+   {'fillStyle' : '#96D5D2', 'text' : '300', 'value' : 300},
+   {'fillStyle' : '#C4DF9F', 'text' : '400', 'value' : 400},
+   {'fillStyle' : '#97ACD9', 'text' : '100', 'value' : 100},
+   {'fillStyle' : '#ABE0F9', 'text' : '200', 'value' : 200},
+   {'fillStyle' : '#96D5D2', 'text' : '300', 'value' : 300},
+   {'fillStyle' : '#C4DF9F', 'text' : '400', 'value' : 400}
 ];
 
 @Component({
@@ -28,7 +30,7 @@ const POINTS = [
   styleUrls: ['./spinwheel.scss']
 })
 export class SpinwheelPage implements OnInit {
-  canvasWheel = {
+  config = {
     'canvasId'        : 'spinwheel',
     'outerRadius'     : 150,        // Set outer radius so wheel fits inside the background.
     'innerRadius'     : 50,         // Make wheel hollow so segments don't go all way to center.
@@ -42,11 +44,10 @@ export class SpinwheelPage implements OnInit {
       'type'     : 'spinToStop',
       'duration' : 10,     // Duration in seconds.
       'spins'    : 3,     // Default number of complete spins.
-      'callbackFinished' : this.alertPrize,
-      'onComplete': this.onComplete
+      'callbackFinished' : this.alertPrize
     }
   };
-  wheel: any;
+  public wheel: any;
   canvasWidth: number = 300;
   canvasHeight: number = 500;
   statuses = {
@@ -55,7 +56,9 @@ export class SpinwheelPage implements OnInit {
     power: 0,
     value: 0,
     spinOn: false,
-    displayPureCSS: false
+    displayPureCSS: false,
+    isCompleted: false,
+    isStarted: false,
   };
 
   constructor(
@@ -64,6 +67,7 @@ export class SpinwheelPage implements OnInit {
     private zone: NgZone,
     private renderer: Renderer2,
     private el: ElementRef,
+    private cache: CacheService,
     private platform: Platform
   ) {
   }
@@ -87,8 +91,15 @@ export class SpinwheelPage implements OnInit {
 
     // make canvas rectangle dynamically, so it do not crop spinwheel
     this.canvasHeight = width;
-    this.canvasWheel.outerRadius = radius * 0.8;
-    this.canvasWheel.innerRadius = radius * 0.2;
+    this.config.outerRadius = radius * 0.8;
+    this.config.innerRadius = radius * 0.2;
+  }
+
+  private getItems() {
+
+    // get current user's character ID
+    // call getItems API
+
   }
 
   alertPrize() {
@@ -96,26 +107,40 @@ export class SpinwheelPage implements OnInit {
     console.log('hmmmm...... hahahahahahahah');
   }
 
-  retrieve() {}
+  retrieve() {
+    if (this.cache.getLocal('character_id')) {
+      this.gameService.getItems(1).subscribe(res => {
 
+      });
+    } else {
+      this.gameService.getGames().subscribe(res => {
+        console.log(res);
+        // this.gameService.getCharacters()
+      }, err => {
+        console.log(err);
+      })
+    }
+  }
+
+  /**
+   * @description ensure WinWheel library code run under the watch of angular
+   * @param {Function} cb callback function run under ngZone's watch
+   */
   private runInZone(cb) {
     this.zone.run(() => {
       cb();
     });
   }
 
-  onComplete() {
-    console.log('onCompleteha! gotcha!');
-  }
-
+  /**
+   * @name draw
+   * @description draw SpinWheel in the canvas based on given config
+   */
   draw() {
+    this.retrieve();
     this.runInZone(() => {
-      this.wheel = new Winwheel(this.canvasWheel);
-      let test = this.wheel;
-      console.log(this.onComplete);
-      this.wheel.animation.callbackFinished = 'this.onComplete()';
+      this.wheel = new Winwheel(this.config);
       this.wheel.draw();
-      console.log('drawn!!!');
       console.log(this.wheel);
     });
   }
@@ -130,7 +155,7 @@ export class SpinwheelPage implements OnInit {
   // resume
   play() {
     this.runInZone(() => {
-      this.wheel.play();
+      this.wheel.tween.play();
     });
   }
 
@@ -140,6 +165,7 @@ export class SpinwheelPage implements OnInit {
    */
   reset() {
     this.runInZone(() => {
+      this.wheel.kill();
       this.wheel.stopAnimation(true);  // Stop the animation, false as param so does not call callback function.
       // this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
       this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
@@ -149,6 +175,8 @@ export class SpinwheelPage implements OnInit {
 
   clear() {
     this.wheel.clearCanvas();
+    this.wheel.canvas.kill();
+    this.wheel.tween.kill();
   }
 
   spin() {
@@ -235,57 +263,89 @@ export class SpinwheelPage implements OnInit {
     });*/
   }
 
-  onStart() {
-    console.log('im started!');
-  }
+
 
   onUpdate() {
-    console.log('spinning......');
+    console.log('spinning...');
   }
 
+  finalisingSpinner() {
+    // let segment = this.wheel.segments;
+    let prize = this.wheel.getIndicatedSegment();
+    this.statuses.value += prize.value;
+  }
+
+
+  /**
+   * @name startAnimation
+   * @description
+   *   similar startAnimation replace WinWheel library's animation trigger
+   *   this will also use current context of TweenLite to run gsap animation
+   */
   startAnimation() {
-    if (this.wheel.animation)
-    {
+    // gsap callback: triggered when spin started
+    let onStart= () => {
+      console.log('im started!');
+      this.statuses.isStarted = true;
+      this.statuses.isCompleted = false;
+
+      let test = this.wheel;
+      console.log(test);
+    };
+
+    // gsap callback: triggered after spin is complete
+    let onComplete = () => {
+      console.log('onCompleteha! gotcha!');
+      this.statuses.isStarted = false;
+      this.statuses.isCompleted = true;
+      this.statuses.chances -= 1;
+
+      let test = this.wheel;
+      console.log(test);
+      this.finalisingSpinner();
+    };
+
+    // check animation is allowed/activated
+    if (this.wheel.animation && this.statuses.chances > 0) {
         // Call function to compute the animation properties.
         this.wheel.computeAnimation();
 
-        let animation = this.wheel.animation;
-        var properties = {
+        let animation = this.wheel.animation,
+        properties: any = {
           yoyo: animation.yoyo,
           repeat: animation.repeat,
           ease: animation.easing,
-          onStart: this.onStart,
+          onStart: onStart,
           onUpdate: this.onUpdate,
-          onComplete: this.onComplete
+          onComplete: onComplete
         };
         properties[`${animation.propertyName}`] = animation.propertyValue;
         properties['rotation'] = animation.propertyValue;
 
-// var properties = new Array(null);
-// properties[animation.propertyName] = animation.propertyValue; // Here we set the property to be animated and its value.
-// properties['yoyo']       = animation.yoyo;     // Set others.
-// properties['repeat']     = animation.repeat;
-// properties['ease']       = animation.easing;
-// properties['onUpdate']   = this.onComplete;   // Call function to re-draw the canvas.
-// properties['onComplete'] = this.onComplete;
+        // use back same wheel object
+        if (this.wheel.tween) {
+          this.restart();
+        } else {
+          this.wheel.tween = TweenLite.to(this.wheel.canvas, animation.duration, properties);
+        }
+        let test = this.wheel;
+        console.log(test);
+    }
+  }
 
-        // Do the tween animation passing the properties from the animation object as an array of key => value pairs.
-        // Keep reference to the tween object in the wheel as that allows pausing, resuming, and stopping while the animation is still running.
-        console.log(properties);
-
-        let thisWheelElem = this.renderer.selectRootElement('#spinwheel');
-
-        this.wheel.tween = TweenLite.to(thisWheelElem, animation.duration, properties);
+  restart() {
+    if (this.wheel.tween) {
+      this.wheel.tween.restart();
+    } else {
+      throw 'Tween doesnt exist!';
     }
   }
 
   manualSpin() {
     let tweenmaxTest = this.renderer.selectRootElement('.tweenmax-test');
-    console.log(tweenmaxTest);
-    let tm = TweenLite.to(tweenmaxTest, 1, {
-      x: 100
+    let tm = TweenLite.to(tweenmaxTest, 0.5, {
+      rotation: 360 * 10
     });
-    console.log(tm);
 
   }
 }

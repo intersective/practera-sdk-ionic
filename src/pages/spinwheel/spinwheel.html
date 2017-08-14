@@ -15,16 +15,27 @@
       <button ion-button color="primary" block [disabled]="!statuses.spinOn" (click)="spin()">
         Spin
       </button>
-      <div>
-        SPINS: <span id="spins">{{ statuses.chances }}</span>
-      </div>
-      <div>
-        POINTS: <span id="points">{{ statuses.value }}</span>
-      </div>
       <button ion-button color="soft-green" block (click)="manualSpin()">
         Manual Spin
       </button>
+      <button ion-button color="soft-green" block (click)="play()">
+        Play
+      </button>
+      <button ion-button color="soft-green" block (click)="restart()">
+        Restart
+      </button>
     </div>
+
+    <ion-list>
+      <ion-item *ngIf="statuses.isCompleted">Completed!</ion-item>
+      <ion-item *ngIf="statuses.isStarted">Started!</ion-item>
+      <ion-item>
+        SPINS: <span id="spins">{{ statuses.chances }}</span>
+      </ion-item>
+      <ion-item>
+        POINTS: <span id="points">{{ statuses.value }}</span>
+      </ion-item>
+    </ion-list>
 
     <canvas id="spinwheel" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
       <p align="center">
