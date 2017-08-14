@@ -127,6 +127,10 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@ngx-translate/http-loader/-/http-loader-0.1.0.tgz#6029325561d7868fe325a419de2770e98ff1502e"
 
+"@types/greensock@^1.15.32":
+  version "1.15.32"
+  resolved "https://registry.yarnpkg.com/@types/greensock/-/greensock-1.15.32.tgz#083daac25a9e6f332d5678b1462d6f97a82251f7"
+
 "@types/jasmine@^2.5.47":
   version "2.5.53"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.53.tgz#4e0cefad09df5ec48c8dd40433512f84b1568d61"

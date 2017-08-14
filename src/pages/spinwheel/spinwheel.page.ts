@@ -3,7 +3,8 @@ import { LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 
 import * as Winwheel from 'Winwheel';
-import * as TweenMax from 'gsap';
+// import {TweenLite, Power2, TimelineMax, TweenMax} from "gsap";
+import {TweenLite, TweenMax, Power2, Power4, TimelineLite} from "gsap";
 
 // font size and test colour overridden on backrupt segments.
 // hardcoded prize list
@@ -81,13 +82,13 @@ export class SpinwheelPage implements OnInit {
     let width = ionContentElement.clientWidth;
     this.canvasWidth = width * 0.9;
 
+    // radius X 2 < max-width of ion-content
     let radius = this.canvasWidth / 2;
+
     // make canvas rectangle dynamically, so it do not crop spinwheel
     this.canvasHeight = width;
     this.canvasWheel.outerRadius = radius * 0.8;
     this.canvasWheel.innerRadius = radius * 0.2;
-    console.log(width);
-    console.log(this.canvasWidth);
   }
 
   alertPrize() {
@@ -234,6 +235,14 @@ export class SpinwheelPage implements OnInit {
     });*/
   }
 
+  onStart() {
+    console.log('im started!');
+  }
+
+  onUpdate() {
+    console.log('spinning......');
+  }
+
   startAnimation() {
     if (this.wheel.animation)
     {
@@ -245,10 +254,12 @@ export class SpinwheelPage implements OnInit {
           yoyo: animation.yoyo,
           repeat: animation.repeat,
           ease: animation.easing,
-          onUpdate: this.onComplete,
+          onStart: this.onStart,
+          onUpdate: this.onUpdate,
           onComplete: this.onComplete
         };
         properties[`${animation.propertyName}`] = animation.propertyValue;
+        properties['rotation'] = animation.propertyValue;
 
 // var properties = new Array(null);
 // properties[animation.propertyName] = animation.propertyValue; // Here we set the property to be animated and its value.
@@ -262,10 +273,19 @@ export class SpinwheelPage implements OnInit {
         // Keep reference to the tween object in the wheel as that allows pausing, resuming, and stopping while the animation is still running.
         console.log(properties);
 
-        let result = TweenMax.to(this.wheel, animation.duration, properties);
-        console.log(result);
+        let thisWheelElem = this.renderer.selectRootElement('#spinwheel');
 
-        this.wheel.tween = TweenMax.to(this.wheel, animation.duration, properties);
+        this.wheel.tween = TweenLite.to(thisWheelElem, animation.duration, properties);
     }
+  }
+
+  manualSpin() {
+    let tweenmaxTest = this.renderer.selectRootElement('.tweenmax-test');
+    console.log(tweenmaxTest);
+    let tm = TweenLite.to(tweenmaxTest, 1, {
+      x: 100
+    });
+    console.log(tm);
+
   }
 }

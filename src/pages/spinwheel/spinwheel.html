@@ -21,6 +21,9 @@
       <div>
         POINTS: <span id="points">{{ statuses.value }}</span>
       </div>
+      <button ion-button color="soft-green" block (click)="manualSpin()">
+        Manual Spin
+      </button>
     </div>
 
     <canvas id="spinwheel" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
@@ -28,5 +31,7 @@
         Sorry, your browser doesn't support canvas. Please try another.
       </p>
     </canvas>
+
+    <div class="tweenmax-test"> 123 </div>
   </div>
 </ion-content>
