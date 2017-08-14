@@ -9,7 +9,7 @@ import {
   AlertController,
   Events
 } from 'ionic-angular';
-import { confirmMessages, errMessages, loadingMessages } from '../../app/messages'; 
+import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
 import * as _ from 'lodash';
 import { Observable } from 'rxjs/Observable';
 //services
@@ -507,12 +507,39 @@ export class AssessmentsPage {
     confirm.present();
   }
 
-  // items popup 
+  // items popup
   popupAfterSubmit(){
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });
-    // get initial items 
+    // loading.onDidDismiss(() => {
+    //   console.log('Dismissed loading');
+    //   if (combinedItems && events) {
+    //     popupItemModal(combinedItems, events);
+    //   }
+    //
+    // });
+
+
+    const popupItemModal = (combinedItems, events) => {
+      const modal = this.modalCtrl.create(ItemsPopupPage, {
+        combined: this.combinedItems,
+        events: this.navParams.get('event')
+      });
+
+      modal.onDidDismiss(data => {
+        this.initialItemsCount = {};
+        this.newItemsCount = {};
+        this.newItemsData = [];
+        this.totalItems = [];
+        this.allItemsData = [];
+        this.combinedItems = [];
+      });
+
+      modal.present();
+    };
+
+    // get initial items
     console.log('Inital Items: ', this.getInitialItems);
     _.forEach(this.getInitialItems, element => {
       let id = element.id;
@@ -523,8 +550,9 @@ export class AssessmentsPage {
       this.initialItemsCount[id]++;
     });
     console.log("Count for initial Items: ", this.initialItemsCount);
-    // get latest updated items data api call 
+    // get latest updated items data api call
     loading.present();
+
     this.gameService.getGameItems(this.getCharacterID)
         .subscribe(
           data => {
@@ -562,27 +590,32 @@ export class AssessmentsPage {
             console.log("Group?? ", groupData);
             _.map(this.allItemsData, (ele) => {
               this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
-              console.log("Final Combined results: ", this.combinedItems);    
+              console.log("Final Combined results: ", this.combinedItems);
             });
-            loading.dismiss().then(() => {
-              let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems, events: this.navParams.get('event')});
-              console.log("combined object array data: ", this.combinedItems);
-              itemsPopup.present();
-              // reset array in case data repeat avoid unexpected errors
-              this.initialItemsCount = {};
-              this.newItemsCount = {};
-              this.newItemsData = [];
-              this.totalItems = [];
-              this.allItemsData = [];
-              this.combinedItems = []; 
+
+            loading.onDidDismiss(() => {
+              popupItemModal(this.combinedItems, this.navParams.get('event'));
             });
+            loading.dismiss();
+
+
+
+            // loading.dismiss().then(() => {
+            //   // let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems, events: this.navParams.get('event')});
+            //   console.log("combined object array data: ", this.combinedItems);
+            //   // itemsPopup
+            //   // reset array in case data repeat avoid unexpected errors
+            //
+            // });
+
+
           },
           err => {
             loading.dismiss().then(() => {
               console.log("Err: ", err);
             });
           }
-        );    
+        );
   }
 
   gotoAssessment(assessmentGroup, activity) {
