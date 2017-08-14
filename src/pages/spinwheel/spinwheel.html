@@ -9,6 +9,7 @@
       <button ion-item (click)="calls('game')">1. Load Game API</button>
       <button ion-item (click)="calls('character')">2. Load Character API</button>
       <button ion-item (click)="calls('item')">3. Load Item API</button>
+      <button ion-item (click)="calls('open')">4. Open First Item</button>
     </ion-list>
 
     <div class="power_controls">
@@ -44,11 +45,14 @@
       </ion-item>
     </ion-list>
 
-    <canvas id="spinwheel" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
-      <p align="center">
-        Sorry, your browser doesn't support canvas. Please try another.
-      </p>
-    </canvas>
+    <div class="spinwheel-pointer"></div>
+    <div class="spinwheel">
+      <canvas id="spinwheel" [attr.width]="canvasWidth" [attr.height]="canvasHeight">
+        <p align="center">
+          Sorry, your browser doesn't support canvas. Please try another.
+        </p>
+      </canvas>
+    </div>
 
     <div class="tweenmax-test"> 123 </div>
   </div>

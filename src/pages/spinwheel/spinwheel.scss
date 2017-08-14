@@ -12,3 +12,14 @@
   height: 6em;
   margin-bottom: 3em;
 }
+
+.spinwheel-pointer {
+  border-radius: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color:black;
+  width: 10px;
+  height: 10px;
+  display: absolute;
+  bottom: -5px;
+}

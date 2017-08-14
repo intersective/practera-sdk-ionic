@@ -39,12 +39,17 @@ export class SpinwheelPage implements OnInit {
     'textAlignment'   : 'outer',    // Align text to outside of wheel.
     'numSegments'     : 12,         // Specify number of segments.
     'segments'        : POINTS,     // Define segments including colour and text.
+    'pointerGuide'    : {
+        'display'     : true,
+        'strokeStyle' : 'red',
+        'lineWidth'   : 3
+    },
     'animation' :           // Specify the animation to use.
     {
       'type'     : 'spinToStop',
       'duration' : 10,     // Duration in seconds.
       'spins'    : 3,     // Default number of complete spins.
-      'callbackFinished' : this.alertPrize
+      // 'callbackFinished' : this.alertPrize
     }
   };
   public wheel: any;
@@ -146,6 +151,42 @@ export class SpinwheelPage implements OnInit {
           }).subscribe(res => {
             this.item = res.Items[0];
             console.log(res);
+            /*
+              {
+                "Containers": [
+                  {
+                    "id": 1,
+                    "item_id": 1,
+                    "opened": true
+                  }
+                ],
+                "Items": [
+                  {
+                    "id": 1,
+                    "name": "default inventory",
+                    "description": "This is the default inventory of the game. This item cannot be deleted or edited.",
+                    "meta": null,
+                    "base_value": "0",
+                    "container_id": null,
+                    "experience_points": 0
+                  }
+                ]
+              }
+             */
+          });
+        }
+        break;
+
+      case "open":
+        if (this.item.id === null) {
+          console.log('load item API first!');
+        } else {
+          this.gameService.postItems({
+            character_id: this.character.id,
+            item_id: this.item.id,
+            action: 'option'
+          }).subscribe(res => {
+            console.log(res);
           });
         }
         break;
@@ -229,11 +270,15 @@ export class SpinwheelPage implements OnInit {
    */
   reset() {
     this.runInZone(() => {
-      this.wheel.kill();
+      if (this.wheel.tween) {
+        this.wheel.tween.kill();
+      }
       this.wheel.stopAnimation(true);  // Stop the animation, false as param so does not call callback function.
       // this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
       this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
       this.wheel.draw();                // Call draw to render changes to the wheel.
+    let test = this.wheel;
+    console.log(test);
     });
   }
 
@@ -245,11 +290,12 @@ export class SpinwheelPage implements OnInit {
 
   spin() {
     this.runInZone(() => {
-      let segmentNumber = 70/100;
-
+      let segmentNumber = Math.floor((Math.floor(Math.random() * 1000) / 100) % 12);
+console.log('segmentNumber', segmentNumber);
       // Get random angle inside specified segment of the wheel.
       let stopAt = this.wheel.getRandomForSegment(segmentNumber);
-
+console.log('stopAt', stopAt);
+      this.wheel.rotationAngle = stopAt;
       // Important thing is to set the stopAngle of the animation before stating the spin.
       this.wheel.animation.stopAngle = stopAt;
       this.startAnimation();
@@ -335,7 +381,10 @@ export class SpinwheelPage implements OnInit {
 
   finalisingSpinner() {
     // let segment = this.wheel.segments;
+    let test = this.wheel;
+    console.log(test);
     let prize = this.wheel.getIndicatedSegment();
+    console.log(prize);
     this.statuses.value += prize.value;
   }
 

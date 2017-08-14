@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
+import { URLSearchParams } from '@angular/http';
 
 import * as _ from 'lodash';
 
@@ -37,5 +38,17 @@ export class GameService {
       action: 'list'
     }, options);
     return this.request.get('api/items', {search: options});
+  }
+
+  public postItems(options = {
+    character_id: null,
+    item_id: null,
+    action: 'open'
+  }) {
+    let urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('item_id', options.item_id);
+    urlSearchParams.append('character_id', options.character_id);
+
+    return this.request.post('api/items', urlSearchParams);
   }
 }
