@@ -70,7 +70,7 @@ $font-secondary: 'Raleway';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
-  color: color($colors, text, base);
+  color: color($colors, primary, base);
   border-color: color($colors, primary, base);
 }
 .segment-ios .segment-button.segment-activated,
