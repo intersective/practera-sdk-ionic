@@ -6,7 +6,8 @@ import { RequestService } from '../shared/request/request.service';
 
 @Injectable()
 export class CharacterService {
-  public charactersAPIEndpoint = `api/characters.json`;
+  public charactersAPIEndpoint: any = 'api/characters.json';
+
   constructor(
     public cache: CacheService,
     public request: RequestService
