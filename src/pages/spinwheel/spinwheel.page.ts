@@ -39,6 +39,7 @@ export class SpinwheelPage implements OnInit {
     'textAlignment'   : 'outer',    // Align text to outside of wheel.
     'numSegments'     : 12,         // Specify number of segments.
     'segments'        : POINTS,     // Define segments including colour and text.
+    'rotationAngle'   : 0,
     'pointerGuide'    : {
         'display'     : true,
         'strokeStyle' : 'red',
@@ -47,6 +48,7 @@ export class SpinwheelPage implements OnInit {
     'animation' :           // Specify the animation to use.
     {
       'type'     : 'spinToStop',
+      'direction': 'anti-clockwise',
       'duration' : 10,     // Duration in seconds.
       'spins'    : 3,     // Default number of complete spins.
       // 'callbackFinished' : this.alertPrize
@@ -242,7 +244,6 @@ export class SpinwheelPage implements OnInit {
    * @description draw SpinWheel in the canvas based on given config
    */
   draw() {
-    this.retrieve();
     this.runInZone(() => {
       this.wheel = new Winwheel(this.config);
       this.wheel.draw();
@@ -270,15 +271,13 @@ export class SpinwheelPage implements OnInit {
    */
   reset() {
     this.runInZone(() => {
-      if (this.wheel.tween) {
-        this.wheel.tween.kill();
-      }
-      this.wheel.stopAnimation(true);  // Stop the animation, false as param so does not call callback function.
-      // this.wheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+      this.wheel.clearCanvas();
+      this.wheel = new Winwheel(this.config);
+      this.stopAnimation();  // Stop the animation, false as param so does not call callback function.
       this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
       this.wheel.draw();                // Call draw to render changes to the wheel.
-    let test = this.wheel;
-    console.log(test);
+      let test = this.wheel;
+      console.log(test);
     });
   }
 
@@ -290,9 +289,9 @@ export class SpinwheelPage implements OnInit {
 
   spin() {
     this.runInZone(() => {
+      // Get random angle inside specified segment of the wheel.
       let segmentNumber = Math.floor((Math.floor(Math.random() * 1000) / 100) % 12);
 console.log('segmentNumber', segmentNumber);
-      // Get random angle inside specified segment of the wheel.
       let stopAt = this.wheel.getRandomForSegment(segmentNumber);
 console.log('stopAt', stopAt);
       this.wheel.rotationAngle = stopAt;
@@ -301,9 +300,6 @@ console.log('stopAt', stopAt);
       this.startAnimation();
       // this.wheel.startAnimation();
     });
-  }
-
-  stop() {
   }
 
   powerSelected() {
@@ -315,70 +311,6 @@ console.log('stopAt', stopAt);
     }
   }
 
-
-  // pure CSS drawing
-  createSlice() {
-    let result = `
-      <div>
-        <h2>Daylights<i class="fa fa-lightbulb-o"></i></h2>
-      </div>
-    `;
-  }
-
-  // draw pure CSS spinwheel
-  drawPureCSS() {
-    this.statuses.displayPureCSS = true;
-
-    var duration = Math.floor(Math.random() * 4) + 1;
-    var degrees = 360 * (Math.random() * 10);
-
-    // $('#outcome-icon').removeClass('fa-hand-' + selectedOutcome.toLowerCase()  + '-o');
-    // $('#outcome-name').text('');
-    let el = this.renderer.selectRootElement('.wheelContainer .gameWheel');
-    let slices = [
-      {id: 'rock', class: 'slide1', text: 'RockS'},
-      {id: 'paper', class: 'slide2', text: 'PaperS'},
-      {id: 'scissors', class: 'slide3', text: 'ScissorsS'},
-      {id: 'lizard', class: 'slide4', text: 'LizardS'}
-    ];
-
-    slices.forEach((slice) => {
-      let newSlice = this.renderer.createElement('div');
-      this.renderer.addClass(newSlice, 'slice');
-      this.renderer.addClass(newSlice, slice.class);
-      this.renderer.setProperty(newSlice, 'id', slice.id);
-
-      let newSliceChild = this.renderer.createElement('h2');
-      this.renderer.setValue(newSliceChild, slice.text);
-      let test2 = this.renderer.appendChild(newSlice, newSliceChild);
-
-      let test = this.renderer.appendChild(el, newSlice);
-      console.log(newSlice, test);
-    });
-
-    /*TweenMax.to('.gameWheel', duration,  {rotation: degrees}).eventCallback("onComplete", function(){
-      for (var i = 0; i < slices.length; i++) {
-        var $slice = $(slices[i]);
-        var topPosition = $slice.position().top;
-
-        if (topPosition < 0.3) {
-          break;
-        }
-
-        if (topPosition < 5) {
-          $slice.addClass('selected');
-          break;
-        }
-      }
-    });*/
-  }
-
-
-
-  onUpdate() {
-    console.log('spinning...');
-  }
-
   finalisingSpinner() {
     // let segment = this.wheel.segments;
     let test = this.wheel;
@@ -388,6 +320,9 @@ console.log('stopAt', stopAt);
     this.statuses.value += prize.value;
   }
 
+  onUpdate() {
+    console.log('updated!');
+  }
 
   /**
    * @name startAnimation
@@ -436,13 +371,20 @@ console.log('stopAt', stopAt);
         properties['rotation'] = animation.propertyValue;
 
         // use back same wheel object
-        if (this.wheel.tween) {
-          this.restart();
-        } else {
+        // if (this.wheel.tween) {
+        //   this.restart();
+        // } else {
           this.wheel.tween = TweenLite.to(this.wheel.canvas, animation.duration, properties);
-        }
+        // }
         let test = this.wheel;
         console.log(test);
+    }
+  }
+
+  stopAnimation() {
+    if (this.wheel.tween) {
+      this.wheel.tween.kill();
+      console.log('animation stopped');
     }
   }
 
