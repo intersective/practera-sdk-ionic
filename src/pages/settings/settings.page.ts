@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
+import { CharacterService } from '../../services/character.service';
 import { CacheService } from '../../shared/cache/cache.service';
 // pages
 import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-settings.page';
@@ -16,19 +17,43 @@ import { TermConditionPage } from '../term-condition/term-condition.page';
 export class SettingsPage {
   public helpline = "help@practera.com";
   public logoutMessage: any = loadingMessages.Logout.logout;
+  public hideMe = true;
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
     private menuCtrl: MenuController,
     private loadingCtrl: LoadingController,
     public translationService: TranslationService,
+    public characterService: CharacterService,
     private appCtrl: App
   ) {}
   public settings = [];
   public getUserEmail() {
     return this.cache.getLocalObject('email') || '';
   }
-  public goLeaderBoardSettings(){
+  public changePrivate() {
+    let loader = this.loadingCtrl.create();
+    loader.present()
+    .then(() => {
+      console.log('hideMe', this.hideMe);
+      this.characterService.postCharacter({
+        Character: {
+          id: this.cache.getLocalObject('character_id'),
+          meta: {
+            private: (this.hideMe) ? 1 : 0
+          }
+        }
+      })
+      .subscribe((character) => {
+        console.log('character', character);
+        loader.dismiss();
+      }, (err) => {
+        console.log('err', err);
+        loader.dismiss();
+      });
+    });
+  }
+  public goLeaderBoardSettings() {
     this.navCtrl.push(LeaderboardSettingsPage);
   }
   public goToTutorial() {

@@ -10,7 +10,11 @@ export class CharacterService {
     private request: RequestService
   ) {}
 
-  getCharacter(){
+  getCharacter() {
     return this.request.get(this.charactersAPIEndpoint);
+  }
+
+  postCharacter(data) {
+    return this.request.post(this.charactersAPIEndpoint, data);
   }
 }
