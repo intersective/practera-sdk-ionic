@@ -106,7 +106,7 @@ export class ActivitiesListPage implements OnInit {
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
-              .subscribe(results => { 
+              .subscribe(results => {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
@@ -115,7 +115,7 @@ export class ActivitiesListPage implements OnInit {
                         this.filteredSubmissions.push(element.AssessmentSubmission);
                         this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
                       }
-                    }
+                    }ß
                   });
                   let average_score = (this.submissionPoints/this.filteredSubmissions.length)*100;
                   (average_score > 0) ? this.percentageValue = average_score : this.percentageValue = 0;
