@@ -208,7 +208,6 @@ export class SubmissionService {
         }
       });
     };
-
     // Congregation of get_submissions API Observable with different context_id
     _.forEach(references, reference => {
       if (reference.context_id) {
@@ -218,10 +217,9 @@ export class SubmissionService {
 
     return tasks;
   }
-
   // get user submissions data
   // @TODO Remove it later
   public getSubmissionsData() {
-    return this.getSubmissions()
+    return this.getSubmissions();
   }
 }
