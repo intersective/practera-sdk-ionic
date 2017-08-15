@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
+import { App, NavController, MenuController, LoadingController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
@@ -23,6 +23,7 @@ export class SettingsPage {
     private navCtrl: NavController,
     private menuCtrl: MenuController,
     private loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
     public translationService: TranslationService,
     public characterService: CharacterService,
     private appCtrl: App
@@ -32,10 +33,16 @@ export class SettingsPage {
     return this.cache.getLocalObject('email') || '';
   }
   public changePrivate() {
-    let loader = this.loadingCtrl.create();
+    const showAlert = (msg) => {
+      let alert = this.alertCtrl.create({
+        subTitle: msg,
+        buttons: ['OK']
+      });
+      alert.present();
+    }
+    const loader = this.loadingCtrl.create();
     loader.present()
     .then(() => {
-      console.log('hideMe', this.hideMe);
       this.characterService.postCharacter({
         Character: {
           id: this.cache.getLocalObject('character_id'),
@@ -44,11 +51,12 @@ export class SettingsPage {
           }
         }
       })
-      .subscribe((character) => {
-        console.log('character', character);
+      .subscribe((result) => {
         loader.dismiss();
+        showAlert(result.msg);
       }, (err) => {
-        console.log('err', err);
+        this.hideMe = !this.hideMe;
+        showAlert('Unabled to update account.');
         loader.dismiss();
       });
     });

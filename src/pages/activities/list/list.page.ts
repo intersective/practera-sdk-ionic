@@ -93,8 +93,10 @@ export class ActivitiesListPage implements OnInit {
                   this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   console.log("Percent: ", this.currentPercentage); // display as string format
-                  this.characterData = results[1].Character;
-                  this.characterCurrentExperience = this.characterData.experience;
+                  console.log('results', results);
+                  this.characterData = results[1].Characters[0];
+                  console.log('this.characterData', this.characterData);
+                  this.characterCurrentExperience = this.characterData.experience_points;
                   console.log("Experience: ", this.characterCurrentExperience);
                 },
                 err => {
