@@ -69,7 +69,7 @@ $title-font: 'Arvo';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
-  color: color($colors, primary, base);
+  color: color($colors, text, base);
   border-color: color($colors, primary, base);
 }
 .segment-ios .segment-button.segment-activated,
@@ -448,7 +448,7 @@ event {
             height: 40%;
             font-size: 28pt;
             font-weight: bold;
-            
+
           }
         }
       }
@@ -542,7 +542,7 @@ event {
     }
   }
 }
-// achievement page styling 
+// achievement page styling
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -582,4 +582,3 @@ event {
     }
   }
 }
-
