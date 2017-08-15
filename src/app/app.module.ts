@@ -20,10 +20,10 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { GameService } from '../services/game.service';
 import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
+import { GameService } from '../services/game.service';
 import { GroupEmitterService } from '../components/questions/group-emitter.service';
 import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
@@ -73,6 +73,7 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
+import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
@@ -137,6 +138,7 @@ export function HttpLoaderFactory(http: Http) {
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
+    ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
     LevelsComponent,
@@ -249,6 +251,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
+    ItemsPopupPage,
     GalleryPage,
     LeaderboardSettingsPage,
     LevelComponent,
