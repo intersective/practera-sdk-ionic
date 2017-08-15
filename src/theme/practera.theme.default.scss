@@ -508,22 +508,9 @@ event {
     }
   }
   .my-ranking {
-    border-top: 1px solid color($colors, border, base);
     position: fixed;
     bottom: 49px;
-    height: 54px;
     width: 100%;
-    background: color($colors, secondary, base);
-    .ranking-item {
-      p {
-        border: none;
-        b {
-          font-weight: normal;
-          width: 100%;
-          text-align: right;
-        }
-      }
-    }
   }
   ion-list.my-ranking.list.list-md {
     bottom: 55px;
