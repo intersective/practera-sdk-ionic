@@ -33,4 +33,8 @@ export class GameService {
       }
     });
   }
+  // get game items 
+  public getGameItems(character_id) {
+    return this.request.get(`api/items.json?character_id=${character_id}&filter=items_all`);
+  }
 }
