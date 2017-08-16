@@ -154,6 +154,21 @@ $font-secondary: 'Raleway';
   .close-btn {
     @include closeBtn;
   }
+  // general form
+  .general-form {
+    width: 100%;
+    padding: 10%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
+  }
 }
 // 7.2 login form box styling (shared module: part 2)
 .login-container {

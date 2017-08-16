@@ -21,7 +21,6 @@ import { RequestServiceConfig } from '../../shared/request/request.service';
 import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
-import { LoginPage } from '../../pages/login/login';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
 /* This page is for handling user login process */
 @Component({

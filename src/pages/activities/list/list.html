@@ -11,7 +11,7 @@
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-title *ngIf="anyNewItems == 'false'">{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
+    <ion-title *ngIf="anyNewItems != 'true'">{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
