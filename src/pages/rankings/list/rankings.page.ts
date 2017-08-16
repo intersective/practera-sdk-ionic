@@ -84,7 +84,10 @@ export class RankingsPage {
         });
       });
   }
-  goRankingDetail(){
-    this.navCtrl.push(RankingDetailsPage);
+  goRankingDetail(myRanking){
+    console.log('goRankingDetail', myRanking)
+    this.navCtrl.push(RankingDetailsPage, {
+      myRanking: myRanking
+    });
   }
 }
