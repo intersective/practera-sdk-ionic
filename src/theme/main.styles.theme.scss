@@ -193,6 +193,10 @@ $title-font: 'Arvo';
   .close-btn {
     @include closeBtn;
   }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
   // general form
   .general-form {
     width: 100%;
