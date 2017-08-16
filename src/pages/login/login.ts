@@ -137,12 +137,14 @@ export class LoginPage {
               this.milestoneService.getMilestones()
                   .subscribe(
                     data => {
-                      console.log(data.data[0].id);
-                      this.milestone_id = data.data[0].id;
-                      self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                      console.log("milestone id: " + data.data[0].id);
-                      this.navCtrl.push(TabsPage).then(() => {
-                        window.history.replaceState({}, '', window.location.origin);
+                      loading.dismiss().then(() => {
+                        console.log(data.data[0].id);
+                        this.milestone_id = data.data[0].id;
+                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                        console.log("milestone id: " + data.data[0].id);
+                        this.navCtrl.push(TabsPage).then(() => {
+                          window.history.replaceState({}, '', window.location.origin);
+                        });
                       });
                     },
                     err => {
@@ -152,10 +154,11 @@ export class LoginPage {
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
-              loading.dismiss();
-              this.logError(err);
-              this.cacheService.removeLocal('isAuthenticated');
-              this.cacheService.write('isAuthenticated', false);
+              loading.dismiss().then(() => {
+                this.logError(err);
+                this.cacheService.removeLocal('isAuthenticated');
+                this.cacheService.write('isAuthenticated', false);
+              });
             });
       });
       // This part is calling post_auth() API from backend
