@@ -16,7 +16,6 @@ import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
 import {FormValidator} from '../../validators/formValidator';
@@ -54,8 +53,7 @@ export class LoginModalPage {
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
-    private ngZone: NgZone,
-    private gameService: GameService
+    private ngZone: NgZone
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -96,7 +94,7 @@ export class LoginModalPage {
           self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('teams', data.Teams);
-          // get game_id data after login 
+          // get game_id data after login
           this.gameService.getGames()
               .subscribe(
                 data => {
@@ -142,8 +140,8 @@ export class LoginModalPage {
                   self.cacheService.setLocalObject('milestone_id', data.data[0].id);
                   console.log("milestone id: " + data.data[0].id);
                   this.navCtrl.push(TabsPage).then(() => {
+                    this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                     window.history.replaceState({}, '', window.location.origin);
-                    // console.log("url changed?");
                   });
                 },
                 err => {
@@ -215,6 +213,7 @@ export class LoginModalPage {
    */
   linkToForgetPassword() {
     this.navCtrl.push(this.forgetpasswordPage);
+    this.viewCtrl.dismiss();
   }
   closeModal() {
     this.viewCtrl.dismiss();

@@ -5,15 +5,18 @@ import {
   Navbar,
   LoadingController,
   AlertController,
+  ModalController,
   Events
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { AssessmentService } from '../../services/assessment.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { CharacterService } from '../../services/character.service';
+import { GameService } from '../../services/game.service';
 import { SubmissionService } from '../../services/submission.service';
 
-import { AssessmentsGroupPage } from './group/assessments-group.page'
+import { AssessmentsGroupPage } from './group/assessments-group.page';
+import { ItemsPopupPage } from './popup/items-popup.page';
 
 import { TranslationService } from '../../shared/translation/translation.service';
 import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
@@ -35,7 +38,8 @@ export class AssessmentsPage {
   allowSubmit: boolean = false;
   submissions: any = [];
   submissionUpdated: boolean = false; // event listener flag
-  getInitialItems: any = this.cacheService.getLocal('initialItems') == 'undefined' ? [] : this.cacheService.getLocal('initialItems');
+  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  getCharacterID: any = this.cacheService.getLocal('character_id');
   initialItemsCount: any = {};
   newItemsCount: any = {};
   newItemsData: any = [];
@@ -55,8 +59,10 @@ export class AssessmentsPage {
     private assessmentService: AssessmentService,
     private characterService: CharacterService,
     private cacheService: CacheService,
+    private gameService: GameService,
     private submissionService: SubmissionService,
     private translationService: TranslationService,
+    public modalCtrl: ModalController,
     public events: Events
   ) {
     this.activity = this.navParams.get('activity');
@@ -400,7 +406,19 @@ export class AssessmentsPage {
 
     // Error handling for all kind of non-specific API respond error code
     alert = this.alertCtrl.create({
-      buttons: ["Ok"]
+      title: 'Congratulations',
+      message: 'Would you like to see your score?',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.popupAfterSubmit()
+          }
+        },
+        {
+          text: 'Close'
+        }
+      ]
     });
 
     loading.present().then(() => {
@@ -445,13 +463,22 @@ export class AssessmentsPage {
 
               if (!_.isEmpty(this.navParams.get('event'))) {
                 // display checkin successful (in event submission)
-                alert.data.title = 'Checkin Successful!';
+                // alert.data.title = 'Checkin Successful!';
+                // alert.present().then(() => {
+                //   this.navCtrl.pop();
+                //   this.popupAfterSubmit();
+                // });
                 alert.present().then(() => {
                   this.navCtrl.pop();
                 });
               } else {
                 // normal submission should redirect user back to previous stack/page
-                alert.data.title = 'Submit Success!';
+                // alert.data.title = 'Submit Success!';
+                // alert.present().then(() => {
+                //   this.navCtrl.pop();
+                //   this.popupAfterSubmit();
+                // });
+                // this.navCtrl.pop();
                 alert.present().then(() => {
                   this.navCtrl.pop();
                 });
@@ -464,7 +491,6 @@ export class AssessmentsPage {
               alert.present();
               console.log('err', err);
             });
-
           }
         );
     });
@@ -544,7 +570,7 @@ export class AssessmentsPage {
     console.log("Count for initial Items: ", this.initialItemsCount);
     // get latest updated items data api call
     loading.present();
-    this.characterService.getCharacter()
+    this.gameService.getGameItems(this.getCharacterID)
         .subscribe(
           data => {
             console.log("Items: ", data.Items);
@@ -592,7 +618,16 @@ export class AssessmentsPage {
               this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
             });
             loading.dismiss().then(() => {
-              popupItems.present();
+              let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems, events: this.navParams.get('event')});
+              console.log("combined object array data: ", this.combinedItems);
+              itemsPopup.present();
+              // reset array in case data repeat avoid unexpected errors
+              this.initialItemsCount = {};
+              this.newItemsCount = {};
+              this.newItemsData = [];
+              this.totalItems = [];
+              this.allItemsData = [];
+              this.combinedItems = [];
             });
           },
           err => {
