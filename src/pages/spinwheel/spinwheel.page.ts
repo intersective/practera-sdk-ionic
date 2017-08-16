@@ -48,13 +48,14 @@ export class SpinwheelPage implements OnInit {
     'animation' :           // Specify the animation to use.
     {
       'type'     : 'spinToStop',
-      'direction': 'anti-clockwise',
+      // 'direction': 'anti-clockwise',
+      // 'propertyName': 'rotation',
       'duration' : 10,     // Duration in seconds.
       'spins'    : 3,     // Default number of complete spins.
       // 'callbackFinished' : this.alertPrize
     }
   };
-  public wheel: any;
+  public wheel: any = {};
   canvasWidth: number = 300;
   canvasHeight: number = 500;
   statuses = {
@@ -184,9 +185,12 @@ export class SpinwheelPage implements OnInit {
           console.log('load item API first!');
         } else {
           this.gameService.postItems({
-            character_id: this.character.id,
-            item_id: this.item.id,
-            action: 'option'
+            "Character": {
+              "id": this.character.id
+            },
+            "Item": {
+              "id": this.item.id,     // ID of the item to take action
+            }
           }).subscribe(res => {
             console.log(res);
           });
@@ -281,20 +285,25 @@ export class SpinwheelPage implements OnInit {
     });
   }
 
+
+
   clear() {
     this.wheel.clearCanvas();
     this.wheel.canvas.kill();
     this.wheel.tween.kill();
   }
 
+  stoppingAngle: number = 0;
   spin() {
     this.runInZone(() => {
       // Get random angle inside specified segment of the wheel.
-      let segmentNumber = Math.floor((Math.floor(Math.random() * 1000) / 100) % 12);
-console.log('segmentNumber', segmentNumber);
+      let segmentNumber = Math.floor((Math.floor(Math.random() * 1000) / 100) % 12) + 1;
       let stopAt = this.wheel.getRandomForSegment(segmentNumber);
-console.log('stopAt', stopAt);
-      this.wheel.rotationAngle = stopAt;
+      this.stoppingAngle = stopAt;
+console.log('please stop at segmentNumber::', segmentNumber);
+console.log('stopAt angle::', stopAt);
+
+      // this.wheel.rotationAngle = stopAt;
       // Important thing is to set the stopAngle of the animation before stating the spin.
       this.wheel.animation.stopAngle = stopAt;
       this.startAnimation();
@@ -320,9 +329,9 @@ console.log('stopAt', stopAt);
     this.statuses.value += prize.value;
   }
 
-  onUpdate() {
-    console.log('updated!');
-  }
+  // onUpdate() {
+  //   console.log('updated!');
+  // }
 
   /**
    * @name startAnimation
@@ -348,44 +357,62 @@ console.log('stopAt', stopAt);
       this.statuses.isCompleted = true;
       this.statuses.chances -= 1;
 
+
+      this.stopAnimation();  // Stop the animation, false as param so does not call callback function.
+      this.wheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+      this.wheel.draw();                // Call draw to render changes to the wheel.
+
+
       let test = this.wheel;
       console.log(test);
       this.finalisingSpinner();
     };
 
-    // check animation is allowed/activated
-    if (this.wheel.animation && this.statuses.chances > 0) {
-        // Call function to compute the animation properties.
-        this.wheel.computeAnimation();
+    this.runInZone(() => {
 
-        let animation = this.wheel.animation,
-        properties: any = {
-          yoyo: animation.yoyo,
-          repeat: animation.repeat,
-          ease: animation.easing,
-          onStart: onStart,
-          onUpdate: this.onUpdate,
-          onComplete: onComplete
-        };
-        properties[`${animation.propertyName}`] = animation.propertyValue;
-        properties['rotation'] = animation.propertyValue;
+      // check animation is allowed/activated
+      if (this.wheel.animation && this.statuses.chances > 0) {
+          // Call function to compute the animation properties.
+          console.log('before compute::', this.wheel);
+          this.wheel.computeAnimation();
+          console.log('after compute::', this.wheel);
 
-        // use back same wheel object
-        // if (this.wheel.tween) {
-        //   this.restart();
-        // } else {
-          this.wheel.tween = TweenLite.to(this.wheel.canvas, animation.duration, properties);
-        // }
-        let test = this.wheel;
-        console.log(test);
-    }
+          let animation = this.wheel.animation,
+          properties: any = {
+            yoyo: animation.yoyo,
+            repeat: animation.repeat,
+            ease: animation.easing,
+            onStart: onStart,
+            // onUpdate: this.onUpdate,
+            onComplete: onComplete
+          };
+          properties[`${animation.propertyName}`] = animation.propertyValue;
+          properties['rotation'] = animation.propertyValue;
+
+          // use back same wheel object
+          // if (this.wheel.tween) {
+          //   this.restart();
+          // } else {
+            console.log('animation::', this.wheel);
+            console.log('Rotate::', animation.propertyValue);
+            // this.wheel.tween = TweenMax.to(this.wheel.ctx, animation.duration, properties);
+
+            // this.wheel.tween = tm.to();
+            this.wheel.tween = TweenLite.to(this.wheel.canvas, animation.duration, properties);
+          // }
+          let test = this.wheel;
+          console.log(test);
+      }
+    });
   }
 
   stopAnimation() {
-    if (this.wheel.tween) {
-      this.wheel.tween.kill();
-      console.log('animation stopped');
-    }
+    this.runInZone(() => {
+      if (this.wheel.tween) {
+        this.wheel.tween.kill();
+        console.log('animation stopped');
+      }
+    });
   }
 
   restart() {
@@ -398,7 +425,7 @@ console.log('stopAt', stopAt);
 
   manualSpin() {
     let tweenmaxTest = this.renderer.selectRootElement('.tweenmax-test');
-    let tm = TweenLite.to(tweenmaxTest, 0.5, {
+    let tm = TweenLite.to(tweenmaxTest, 3, {
       rotation: 360 * 10
     });
 

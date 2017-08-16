@@ -41,15 +41,14 @@ export class GameService {
     return this.request.get('api/items.json', {search: options});
   }
 
-  public postItems(options = {
-    character_id: null,
-    item_id: null,
-    action: 'open'
+  public postItems(options: any = {
+    "Character": {
+      "id": null
+    },
+    "Item": {
+      "id": null
+    }
   }) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('item_id', options.item_id);
-    urlSearchParams.append('character_id', options.character_id);
-
-    return this.request.post('api/items.json', urlSearchParams);
+    return this.request.post('api/items.json', options, {'Content-Type': 'application/json'});
   }
 }
