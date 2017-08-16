@@ -167,20 +167,26 @@ export class RegisterPage implements OnInit {
                   // get milestone data after registration and login
                   self.milestone.getMilestones()
                       .subscribe( data => {
-                        // console.log(data.data[0].id);
-                        this.milestone_id = data.data[0].id;
-                        self.cache.setLocalObject('milestone_id', data.data[0].id);
-                        self.navCtrl.push(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
+                        loading.dismiss().then(() => {
+                          // console.log(data.data[0].id);
+                          this.milestone_id = data.data[0].id;
+                          self.cache.setLocalObject('milestone_id', data.data[0].id);
+                          self.navCtrl.push(TabsPage).then(() => {
+                            this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                            window.history.replaceState({}, '', window.location.origin);
+                          });
                         });
                       },
                       err => {
-                        console.log(err);
+                        loading.dismiss().then(() => {
+                          console.log(err);
+                        });
                       });
                 },
                 err => {
-                  console.log(err);
+                  loading.dismiss().then(() => {
+                    console.log(err);
+                  });
                 }
               );
         }, onRegError, onFinally);
