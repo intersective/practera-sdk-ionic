@@ -4,29 +4,32 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings ranking-details">
+
   <ion-list>
-    <ion-col>
-      <div class="points-display">
-        <p col-10>{{ 'RANKING.MONTHLYPOINTS' | translate }}</p>
-        <p col-2>{{ monthlyPoints || 0 }}</p>
+    <ion-item>
+      {{ 'RANKING.MONTHLYPOINTS' | translate }}
+      <div item-end>
+        <b>{{ monthlyPoints || 0 }}</b>
       </div>
-    </ion-col>
+    </ion-item>
+    <ion-item>
+      {{ 'RANKING.TOTALPOINTS' | translate }}
+      <div item-end>
+        <b>{{ totalPoints || 0 }}</b>
+      </div>
+    </ion-item>
   </ion-list>
-  <ion-list>
-    <ion-col>
-      <div class="points-display">
-        <p col-10>{{ 'RANKING.TOTALPOINTS' | translate }}</p>
-        <p col-2>{{ totalPoints || 0 }}</p>
-      </div>
-    </ion-col>
-  </ion-list>
-  <ion-list>
-    <ion-col *ngFor="let eachAchievement of userAchievementsData">
-      <div class="ranking-item ranking-detail-item" (click)="goToBadgeDetailsPage(eachAchievement)">
-        <img class="badge-image" col-2 src="{{ eachAchievement.badge || achievementBadgeImage }}" alt="Badge Image" /> 
-        <p col-8>{{ eachAchievement.name || achievementName }}</p>
-        <p col-2>{{ eachAchievement.points || achievementPoint }} <ion-icon name="arrow-forward"></ion-icon></p>
-      </div>
-    </ion-col>
+
+  <ion-list inset>
+    <ion-item
+      *ngFor="let eachAchievement of userAchievementsData"
+      (click)="goToBadgeDetailsPage(eachAchievement)"
+      detail-push
+    >
+      <ion-thumbnail item-start>
+        <img src="{{ eachAchievement.badge || achievementBadgeImage }}">
+      </ion-thumbnail>
+      <h2>{{ eachAchievement.name || achievementName }}</h2>
+    </ion-item>
   </ion-list>
 </ion-content>

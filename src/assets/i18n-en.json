@@ -69,7 +69,9 @@
     "ACCOUNT": "Account",
     "DASHBOARD": "Dashboard",
     "EVENTS": "Events",
-    "RANKING": "Ranking"
+    "RANKING": "Leaderboard",
+    "ACTIVITIES": "Activities",
+    "SPINNER": "Spinner"
   },
   "TERMCONDITIONS": {
     "PAGETITLE": "Terms and Conditions",

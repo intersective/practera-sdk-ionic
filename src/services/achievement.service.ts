@@ -6,20 +6,19 @@ import { CacheService } from '../shared/cache/cache.service';
 export class AchievementService {
   private target_id = this.cacheService.getLocalObject('program_id');
   private target_model = 'program';
-
-  constructor(
-    private request: RequestService,
-    private cacheService: CacheService
-  ) {}
-
-  // List Maximum Point Of Total Achievements
+  private getMaximumPointsUrl = `api/maximum_points.json?target_model=${this.target_model}&target_id=${this.target_id}`;
+  private userAchievementUrl = 'api/user_achievements.json';
+  private totalAchievementUrl = 'api/achievements.json';
+  constructor(private request: RequestService,
+              private cacheService: CacheService) {}
+  // List Maximum Point Of Total Achievements 
   public getMaxPoints(){
     return this.request.get('api/maximum_points.json?target_model=' + this.target_model + '&target_id=' + this.target_id)
   }
 
   // List User Achievements
   public getAchievements(params = {}) {
-    return this.request.get('api/user_achievements.json')
+    return this.request.get('api/user_achievements.json');
   }
 
   // List All Achievements

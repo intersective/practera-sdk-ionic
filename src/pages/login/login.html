@@ -1,20 +1,11 @@
 <ion-content class="login-module">
   <ion-grid class="default-center-container">
-    <!-- <ion-row>
-      <ion-col>
-         <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
-        <h3>
-          {{ 'LOGIN.HEADER' | translate }}
-        </h3> 
-      </ion-col>
-    </ion-row> -->
     <ion-row class="login-bgs">
       <img col-offset-3 col-6 col-offset-3 src="./assets/img/main/bg32.png" class="left-image" />
     </ion-row>
     <ion-row class="main-login-text">
       <ion-col>
         <h3 col-offset-1 col-10 col-offset-1>
-          <!-- <span>Personal </span><span> Edge</span> -->
           <img src="./assets/img/main/logo02.png" />
         </h3>
         <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
@@ -24,13 +15,41 @@
     </ion-row>
     <ion-row>
       <ion-col col-10 offset-1>
-        <button class="general-circle-btn"
-                ion-button
-                block
-                color="button"
-                (click)="popLoginModal()">
-          {{ 'LOGIN.PAGETITLE' | translate }}
-        </button>
+        <form #loginForm="ngForm"
+          [formGroup]="loginFormGroup"
+          class="general-form">
+          <ion-list>
+            <ion-item no-lines>
+              <ion-input type="text"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Email"
+                formControlName="email"
+                #emailFocus></ion-input>
+            </ion-item>
+            <ion-item no-lines>
+              <ion-input type="password"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Password"
+                formControlName="password"></ion-input>
+            </ion-item>
+          </ion-list>
+          <button ion-button
+            type="submit"
+            block
+            color="button"
+            (click)="userLogin()"
+            [disabled]="loginForm.invalid">
+            {{ 'LOGIN.PAGETITLE' | translate }}
+          </button>
+          <div class="forget-password-container">
+            <button class="general-circle-btn"
+              (click)="linkToForgetPassword()">
+              {{ 'LOGIN.PASSWORDFORGOT' | translate }}
+            </button>
+          </div>
+        </form>
       </ion-col>
     </ion-row>
     <ion-row class="login-bgs">

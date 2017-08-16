@@ -7,8 +7,8 @@
 // 1.1 General Color Variables
 $events-download-btn: 1px $border-primary solid;
 // 1.2 General Font Variables
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
-@import url(http://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
 $font-primary: 'Roboto';
 $font-secondary: 'Raleway';
 
@@ -70,7 +70,7 @@ $font-secondary: 'Raleway';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
-  color: color($colors, primary, base);
+  color: color($colors, text, base);
   border-color: color($colors, primary, base);
 }
 .segment-ios .segment-button.segment-activated,
@@ -471,6 +471,18 @@ event {
     }
   }
 }
+.assessments-items-popup {
+  display: flex;
+  align-items: center;
+  padding-left: 12pt;
+  .item-popup-img {
+    width: 20pt;
+    height: 20pt;
+  }
+  .item-popup-text {
+    padding-left: 4pt;
+  }
+}
 // 13. Rankings Page Styling
 .rankings {
   .scroll-content {
@@ -496,22 +508,9 @@ event {
     }
   }
   .my-ranking {
-    border-top: 1px solid color($colors, border, base);
     position: fixed;
     bottom: 49px;
-    height: 54px;
     width: 100%;
-    background: color($colors, secondary, base);
-    .ranking-item {
-      p {
-        border: none;
-        b {
-          font-weight: normal;
-          width: 100%;
-          text-align: right;
-        }
-      }
-    }
   }
   ion-list.my-ranking.list.list-md {
     bottom: 55px;
@@ -636,6 +635,34 @@ tutorial-page {
     margin: 0;
     display: flex;
     align-items: center;
+  }
+}
+// 15. items popup general styling 
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    .tutorial-slides p {
+      margin-top: 12pt;
+    }
+    .tutorial-slides img {
+      width: 50%;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 100%;
+      margin-top: 12pt;
+      padding: 12pt;
+      background-color: color($colors, primary, base);
+      color: color($colors, secondary, base);
+    }
   }
 }
 // landscape activity list view

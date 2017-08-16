@@ -9,7 +9,7 @@ export class GameService {
   constructor(
     private request: RequestService
   ) {}
-
+  // get games
   public getGames(options = {}) {
     return this.request.get('api/games', options);
   }
@@ -35,9 +35,10 @@ export class GameService {
   public getItems(options?) {
     options = _.merge({
       character_id: null,
-      action: 'list'
+      action: 'list',
+      filter: 'items_all'
     }, options);
-    return this.request.get('api/items', {search: options});
+    return this.request.get('api/items.json', {search: options});
   }
 
   public postItems(options = {
@@ -49,6 +50,6 @@ export class GameService {
     urlSearchParams.append('item_id', options.item_id);
     urlSearchParams.append('character_id', options.character_id);
 
-    return this.request.post('api/items', urlSearchParams);
+    return this.request.post('api/items.json', urlSearchParams);
   }
 }

@@ -43,6 +43,7 @@ export class RankingsPage {
     let gameId = this.cacheService.getLocalObject('game_id');
     this.gameService.getCharacters(gameId)
       .subscribe((characters) => {
+        // Now only have one character per project
         let me = characters.Characters[0];
         this.gameService.getRanking(gameId, me.id)
           .subscribe(
@@ -51,15 +52,14 @@ export class RankingsPage {
                 console.log(results);
                 this.totalData = results;
                 this.rankingData = this.totalData;
-                this.myRankingData = this.totalData.My_Character;
+                // We only have 1 character
+                this.myRankingData = this.totalData.MyCharacters[0];
                 this.listRankingData = this.totalData.Characters;
                 console.log(this.myRankingData);
                 console.log(this.listRankingData);
                 _.forEach(this.listRankingData, (element, idx) => {
                   if(element.meta && element.meta.private === 1) {
-                    // element.name = "User"+(index+1);
                     this.listRankingData[idx].name = 'Hidden Name';
-                    // console.log("Hidden Name: ", element.name);
                   }
                   this.isEmptyList = false;
                 });
