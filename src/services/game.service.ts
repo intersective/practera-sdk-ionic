@@ -11,7 +11,7 @@ export class GameService {
   constructor(
     private request: RequestService
   ) {}
-
+  // get games
   public getGames(options = {}) {
     return this.request.get(this.gamesTarget, options);
   }
