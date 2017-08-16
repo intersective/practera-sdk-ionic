@@ -13,8 +13,9 @@ import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
-import { CharacterService } from '../../../services/character.service';
 import { SubmissionService } from '../../../services/submission.service';
+import { CacheService } from '../../../shared/cache/cache.service';
+import { CharacterService } from '../../../services/character.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
@@ -34,6 +35,10 @@ const ACTIVATE_TOAST = false;
 export class ActivitiesListPage implements OnInit {
   public activities = [];
   public currentPercentage: any = 0;
+  public initialItems = [];
+  public totalAchievements: any = [];
+  public currentPoints: number = 0;
+  public maxPoints: number = 0;
   public characterData: any = [];
   public submissionData: any = [];
   public characterCurrentExperience: number = 0;
@@ -57,8 +62,9 @@ export class ActivitiesListPage implements OnInit {
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
-    public characterService: CharacterService,
     public submissionService: SubmissionService,
+    public cacheService: CacheService,
+    public characterService: CharacterService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
