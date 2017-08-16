@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ currentAchievement.name || achievementName }}</ion-title>  
+    <ion-title>{{ currentAchievement.name || achievementName }}</ion-title>
     <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
   </ion-navbar>
 </ion-header>
@@ -9,14 +9,14 @@
     <ion-row>
        <ion-col>
          <div class="popup-contents">
-          <img class="badge-image" src="{{ currentAchievement.badge || badgeUrl }}" alt="Badge Image"/> 
+          <img class="badge-image" src="{{ currentAchievement.badge || badgeUrl }}" alt="Badge Image"/>
           <p>{{ currentAchievement.description || description }}</p>
           <p class="badge-points">
-            <span>{{ 'ACTIVITY.POINTS' | translate }}: </span> 
-            <span>{{ currentAchievement.points || points }}</span>
+            <span>{{ 'ACTIVITY.POINTS' | translate }}: </span>
+            <span><b>{{ currentAchievement.points || points }}</b></span>
           </p>
         </div>
-      </ion-col> 
+      </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
