@@ -98,6 +98,9 @@ export class ActivitiesListPage implements OnInit {
                   });
                   this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
                   this.currentPercentage = this.percentageValue.toFixed(2);
+                  if(this.currentPercentage == 'NaN' || this.currentPercentage == 'undefined'){
+                    this.currentPercentage = 0;
+                  }
                   console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Character;
                   this.characterCurrentExperience = this.characterData.experience;
