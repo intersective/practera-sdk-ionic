@@ -9,7 +9,9 @@
       <div item-start>
         {{ listData.rank }}
       </div>
-      {{ listData.name }}
+      <div [ngClass]="{'muted': !listData.name}">
+        <span>{{ listData.name || 'Hidden Name' }}</span>
+      </div>
       <div item-end>
         <b>{{ listData.experience_points }}</b>
       </div>
