@@ -4,19 +4,41 @@ import {
   NavController,
   Navbar,
   LoadingController,
+  ModalController,
+  PopoverController,
   AlertController,
   Events
 } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
-import { AssessmentService } from '../../services/assessment.service';
-import { SubmissionService } from '../../services/submission.service';
-
-import { AssessmentsGroupPage } from './group/assessments-group.page'
-
-import { TranslationService } from '../../shared/translation/translation.service';
-import { confirmMessages } from '../../app/messages';
-
+import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
 import * as _ from 'lodash';
+import { Observable } from 'rxjs/Observable';
+//services
+import { AssessmentService } from '../../services/assessment.service';
+import { CacheService } from '../../shared/cache/cache.service';
+import { CharacterService } from '../../services/character.service';
+import { GameService } from '../../services/game.service';
+import { SubmissionService } from '../../services/submission.service';
+import { TranslationService } from '../../shared/translation/translation.service';
+// pages
+import { AssessmentsGroupPage } from './group/assessments-group.page'
+import { ItemsPopupPage } from './popup/items-popup.page';
+// import { TabsPage } from '../../pages/tabs/tabs.page';
+import { ActivitiesListPage } from '../activities/list/list.page';
+class ActivityBase {
+  id: number;
+  name: string;
+  description: string;
+}
+
+class ReferenceAssessmentBase {
+  id: number;
+  name: string;
+}
+
+class ReferenceBase {
+  context_id: number;
+  Assessment: ReferenceAssessmentBase
+}
 
 @Component({
   selector: 'assessments-page',
@@ -33,8 +55,20 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: boolean = false;
   submissions: any = [];
+  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  getCharacterID: any = this.cacheService.getLocal('character_id');
+  gotNewItems: boolean = false;
+  isEventSubmission: boolean = false;
+  initialItemsCount: any = {};
+  newItemsCount: any = {};
+  newItemsData: any = [];
+  totalItems: any = [];
+  allItemsData: any = [];
+  combinedItems: any = [];
+  noItems: boolean = null;
+  outputData: any = [];
+  public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   submissionUpdated: boolean = false; // event listener flag
-
   // confirm message variables
   private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
@@ -44,7 +78,12 @@ export class AssessmentsPage {
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
+    private popoverCtrl: PopoverController,
     private assessmentService: AssessmentService,
+    private characterService: CharacterService,
+    private cacheService: CacheService,
+    private gameService: GameService,
     private submissionService: SubmissionService,
     private translationService: TranslationService,
     public events: Events
@@ -221,35 +260,66 @@ export class AssessmentsPage {
     return assessments;
   }
 
+  /**
+   * pull submission when required, when:
+   * - no submission available in the redirection from activity-view/event-view pages
+   * - [save] clicked & saved from assessment-group.page.ts
+   *
+   * @return {Promise<any>}
+   */
   private pullSubmissions(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 2nd batch API requests (get_submissions)
-      // response format: [ // context_ids
-      //   [ // assessment group 1
-      //     assessment1,
-      //     assessment2,
-      //     ...
-      //   ],
-      //   [ // assessment group 2
-      //     assessment1,
-      //     assessment2,
-      //     ...
-      //   ],
-      //   ...
-      // ]
-      Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References))
-        .subscribe((allSubmissions) => {
+      Observable.forkJoin(
+        this.submissionService.getSubmissionsByReferences(
+          this.activity.References
+        ))
+        .subscribe(allSubmissions => {
+          // allSubmissions - response format: [ // context_ids
+          //   [ // assessment group 1
+          //     assessment1,
+          //     assessment2,
+          //     ...
+          //   ],
+          //   [ // assessment group 2
+          //     assessment1,
+          //     assessment2,
+          //     ...
+          //   ],
+          //   ...
+          // ]
           let submissions = [];
           _.forEach(allSubmissions, group => {
             _.forEach(group, (submission) => {
-              submissions.push(this.submissionService.normalise(submission));
+                submissions.push(this.submissionService.normalise(submission));
             });
           });
-          this.submissions = submissions;
+
+          // check if a submission is specified
+          let currentSubmission = this.navParams.get('currentSubmission');
+          let filteredSubmissions = [];
+
+          submissions.forEach(subm => {
+            if (currentSubmission && currentSubmission.id === subm.id) {
+              filteredSubmissions.push(subm);
+            }
+          });
+          let hasInProgress = _.find(submissions, {status: 'in progress'}); // "in progress" never > 1
+          let isNew = (!currentSubmission && (filteredSubmissions.length === 0 || !_.isEmpty(hasInProgress)));
+
+          if (isNew) { // new submission
+            this.submissions = !_.isEmpty(hasInProgress) ? [hasInProgress] : [];
+          } else if (!isNew && hasInProgress) { // resume "in progress"
+            filteredSubmissions.push(hasInProgress);
+            this.submissions = filteredSubmissions;
+          } else if (currentSubmission) { // display current submission
+            filteredSubmissions.push(currentSubmission);
+            this.submissions = filteredSubmissions;
+          }
+
           console.log('this.submissions', this.submissions);
           resolve(submissions);
-        },
-        (err) => {
+        }, err => {
           console.log('err', err);
           reject(err);
         });
@@ -292,17 +362,17 @@ export class AssessmentsPage {
         );
 
         // Only allow submit when all required question have answered.
-        _.forEach(this.assessmentGroups, (groups, i) => {
-          _.forEach(groups, (assessment, j) => {
+        _.forEach(this.assessmentGroups, groups => {
+          _.forEach(groups, assessment => {
             let groupWithAnswers = 0;
             _.forEach(assessment.AssessmentGroup, group => {
-              console.log('group.answeredQuestions', group.answeredQuestions);
-              console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
+              // console.log('group.answeredQuestions', group.answeredQuestions);
+              // console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
               if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
-            console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
+            // console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
             if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
               this.allowSubmit = true;
             }
@@ -313,7 +383,7 @@ export class AssessmentsPage {
           if (
             submission.status === 'pending review' ||
             submission.status === 'pending approval' ||
-            submission.status === 'published' ||
+            submission.status === 'published' || // moderated type (reviews & published)
             submission.status === 'done' // survey type
           ) {
             this.allowSubmit = false;
@@ -333,12 +403,21 @@ export class AssessmentsPage {
             this.assessmentGroups = assessments;
             this.submissions = this.navParams.get('submissions');
 
-            if (this.submissionUpdated) { // pull new when submission is updated
+            // check if this is from single submission view
+            let currentSubmission = this.navParams.get('currentSubmission');
+            if (currentSubmission) {
+              this.submissions = [currentSubmission];
+              console.log(this.navParams.get('currentSubmission'), this.submissions);
+            }
+
+            // pull new when submission is updated or currentSubmission is empty
+            if (this.submissionUpdated || !currentSubmission) {
               this.pullSubmissions().then(res => {
                 preprocessAssessmentSubmission();
               }, err => {
                 reject(err);
               });
+              this.submissionUpdated = false;
             } else {
               preprocessAssessmentSubmission();
             }
@@ -357,10 +436,9 @@ export class AssessmentsPage {
   doSubmit() {
     let loading = this.loadingCtrl.create({
       content: 'Loading...'
-    }),
-
+    });
     // Error handling for all kind of non-specific API respond error code
-    alert = this.alertCtrl.create({
+    let alert = this.alertCtrl.create({
       buttons: ["Ok"]
     });
 
@@ -400,7 +478,7 @@ export class AssessmentsPage {
         .forkJoin(tasks)
         .subscribe(
           (assessments: any) => {
-            loading.dismiss().then(() => {
+            loading.dismiss().then(_ => {
               console.log('assessments', assessments);
               this.allowSubmit = false;
 
@@ -408,25 +486,18 @@ export class AssessmentsPage {
                 // display checkin successful (in event submission)
                 alert.data.title = 'Checkin Successful!';
                 alert.present().then(() => {
-                  this.navCtrl.pop();
+                  this.navCtrl.pop(); // back to event page
                 });
               } else {
                 // normal submission should redirect user back to previous stack/page
-                alert.data.title = 'Submit Success!';
-                alert.present().then(() => {
-                  this.navCtrl.pop();
-                });
-                this.navCtrl.pop();
+                this.popupAfterSubmit();
               }
             });
           },
           err => {
-            loading.dismiss().then(() => {
-              alert.data.title = err.msg || alert.data.title;
-              alert.present();
+            loading.dismiss().then(_ => {
               console.log('err', err);
             });
-
           }
         );
     });
@@ -454,6 +525,101 @@ export class AssessmentsPage {
     confirm.present();
   }
 
+  // items popup
+  popupAfterSubmit() {
+    const loading = this.loadingCtrl.create({
+      content: this.loadingMessages
+    });
+    const alert = this.alertCtrl.create({
+      title: 'Submission Successful',
+      buttons: [
+        {
+          text: 'OK',
+          handler: () => {
+            this.navCtrl.setRoot(ActivitiesListPage); // dashboard page
+          }
+        }
+      ]
+    });
+
+    // get initial items
+    console.log('Inital Items: ', this.getInitialItems);
+    _.forEach(this.getInitialItems, element => {
+      let id = element.id;
+      console.log("id value: ", id);
+      if(!this.initialItemsCount[id]){
+        this.initialItemsCount[id] = 0;
+      }
+      this.initialItemsCount[id]++;
+    });
+    console.log("Count for initial Items: ", this.initialItemsCount);
+    // get latest updated items data api call
+    loading.present();
+
+    this.gameService.getGameItems(this.getCharacterID)
+        .subscribe(
+          data => {
+            console.log("Items: ", data.Items);
+            this.newItemsData = data.Items;
+            _.forEach(data.Items, (element, index) => {
+              let id = element.id;
+              console.log("id value: ", id);
+              if(!this.newItemsCount[id]){
+                this.newItemsCount[id] = 0;
+              }
+              this.newItemsCount[id]++;
+            });
+            console.log("Count for final Items: ", this.newItemsCount);
+            // compare with previous get_characters() results and generate final index value array result
+            _.forEach(this.newItemsCount, (element, id) => {
+              if(!this.initialItemsCount[id]){
+                this.totalItems.push({ "count": element, "id": id });
+              }else {
+                let diffCountVal = element - this.initialItemsCount[id];
+                if(diffCountVal > 0){
+                  this.totalItems.push({ "count": diffCountVal, "id": id });
+                }
+              }
+            });
+            console.log("New compared items: ", this.newItemsData);
+            _.forEach(this.totalItems, (element, index) => {
+              element.id = parseInt(element.id);
+            });
+            console.log("Count for new total Items: ", this.totalItems);
+            this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
+            console.log("Final items object data: ", this.allItemsData);
+            // get the final object with item occurance count value
+            let groupData = _.groupBy(this.totalItems, 'id');
+            console.log("Group?? ", groupData);
+            if(this.allItemsData.length === 0){
+              this.gotNewItems = false;
+              this.cacheService.setLocal('gotNewItems', this.gotNewItems);
+              loading.onDidDismiss(() => {
+                alert.present(); // redirect to dashboard page
+              });
+              loading.dismiss();
+            } else {
+              _.map(this.allItemsData, (ele) => {
+                this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
+                console.log("Final Combined results: ", this.combinedItems);
+              });
+              // display items on dashboard page
+              this.gotNewItems = true;
+              this.cacheService.setLocal('gotNewItems', this.gotNewItems);
+              this.cacheService.setLocalObject('allNewItems', this.combinedItems);
+              loading.onDidDismiss(() => {
+                this.navCtrl.setRoot(ActivitiesListPage);
+              });
+              loading.dismiss();
+            }
+          },
+          err => {
+            loading.dismiss().then(() => {
+              console.log("Err: ", err);
+            });
+          }
+        );
+  }
   gotoAssessment(assessmentGroup, activity) {
     console.log('activity', activity);
     this.navCtrl.push(AssessmentsGroupPage, {
