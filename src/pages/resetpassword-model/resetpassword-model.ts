@@ -5,12 +5,14 @@ import { NavController,
          LoadingController,
          AlertController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
-import { TranslationService } from '../../shared/translation/translation.service';
+import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { GameService } from '../../services/game.service';
+import { TranslationService } from '../../shared/translation/translation.service';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
@@ -43,6 +45,7 @@ export class ResetpasswordModelPage {
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
+    private gameService: GameService,
     public translationService: TranslationService
   ) {
     // validation for both password values: required & minlength is 8
@@ -77,9 +80,25 @@ export class ResetpasswordModelPage {
         // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
+              data = data.data;
               this.cacheService.setLocalObject('apikey', data.apikey);
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
+              this.cacheService.setLocal('gotNewItems', false);
+              // get game_id data after login 
+              this.gameService.getGames()
+                  .subscribe(
+                    data => {
+                      console.log("game data: ", data);
+                      _.map(data, (element) => {
+                        console.log("game id: ", element[0].id);
+                        this.cacheService.setLocal('game_id', element[0].id);
+                      });
+                    },
+                    err => {
+                      console.log("game err: ", err);
+                    }
+                  );
               // get milestone data after login
               this.authService.getUser()
                   .subscribe(
@@ -103,6 +122,7 @@ export class ResetpasswordModelPage {
                       console.log("milestone id: " + data.data[0].id);
                       loading.dismiss();
                       this.navCtrl.push(TabsPage).then(() => {
+                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                         window.history.replaceState({}, '', window.location.origin);
                       });
                     },

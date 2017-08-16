@@ -471,6 +471,18 @@ event {
     }
   }
 }
+.assessments-items-popup {
+  display: flex;
+  align-items: center;
+  padding-left: 12pt;
+  .item-popup-img {
+    width: 20pt;
+    height: 20pt;
+  }
+  .item-popup-text {
+    padding-left: 4pt;
+  }
+}
 // 13. Rankings Page Styling
 .rankings {
   .scroll-content {
@@ -636,6 +648,34 @@ tutorial-page {
     margin: 0;
     display: flex;
     align-items: center;
+  }
+}
+// 15. items popup general styling 
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;  
+    .tutorial-slides p {
+      margin-top: 12pt;
+    }
+    .tutorial-slides img {
+      width: 50%;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 100%;
+      margin-top: 12pt;
+      padding: 12pt;
+      background-color: color($colors, primary, base);
+      color: color($colors, secondary, base);
+    }
   }
 }
 // landscape activity list view

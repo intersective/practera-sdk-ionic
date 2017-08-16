@@ -1,9 +1,20 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-12 class="flex-display">
+          <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
+          <button *ngIf="anyNewItems == 'true'" 
+            (click)="closeItemsShwon()" 
+            class="close" 
+            menuClose="right">&times;</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <ion-title *ngIf="anyNewItems == 'false'">{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content class="activities" scroll="false">
+<ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
@@ -12,25 +23,23 @@
 	</ion-refresher>
   <ion-grid>
     <ion-row class="score-board">
-      <div class="score-board-inner">
-         <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-              <h1>{{ currentPercentage || 0 }}%</h1>  
-            </div>
+      <ion-col class="score-board-inner">
+        <div class="score-inner-box">
+          <div>
+            <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
+            <h1>{{ currentPercentage }}%</h1>  
           </div>
-        </ion-col> 
-        <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
-              <!-- <h1>{{ currentPoints }}</h1> -->
-              <h1>{{ characterCurrentExperience || 0 }}</h1>
-            </div>
+        </div>
+      </ion-col> 
+      <ion-col>
+        <div class="score-inner-box">
+          <div>
+            <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
+            <!-- <h1>{{ currentPoints }}</h1> -->
+            <h1>{{ characterCurrentExperience }}</h1>
           </div>
-        </ion-col>
-      </div>
+        </div>
+      </ion-col>
     </ion-row>
     <ion-row class="activity-list">
       <ion-col>
@@ -56,4 +65,26 @@
       </ion-col>
     </ion-row>
   </ion-grid>
+</ion-content>
+<ion-content *ngIf="anyNewItems == 'true'" id="itemsPopup" class="items-popup">
+  <ion-list class="items-popup-data">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-slides pager="true" class="tutorial-slides" *ngFor="let item of newItemsData">
+            <ion-slide>
+              <img *ngIf="item.meta !== null" class="item-popup-img" src="{{ item.meta.img }}" alt="item"/>
+              <img *ngIf="item.meta === null || item.meta.img === null" 
+                class="item-popup-img" 
+                src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
+              <p class="item-popup-text">
+                {{ item.name }} <span> x{{ item.count[0].count }}</span>
+              </p> 
+            </ion-slide>
+          </ion-slides>
+          <button class="general-circle-btn" (click)="closeItemsShwon()">OK</button> 
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>
