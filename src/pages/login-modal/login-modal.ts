@@ -16,6 +16,7 @@ import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
+import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
 import {FormValidator} from '../../validators/formValidator';
@@ -47,6 +48,7 @@ export class LoginModalPage {
     private modalCtrl: ModalController,
     private viewCtrl: ViewController,
     private authService: AuthService,
+    private gameService: GameService,
     public translationService: TranslationService,
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
@@ -94,6 +96,20 @@ export class LoginModalPage {
           self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('teams', data.Teams);
+          // get game_id data after login 
+          this.gameService.getGames()
+              .subscribe(
+                data => {
+                  console.log("game data: ", data);
+                  _.map(data, (element) => {
+                    console.log("game id: ", element[0].id);
+                    this.cacheService.setLocal('game_id', element[0].id);
+                  });
+                },
+                err => {
+                  console.log("game err: ", err);
+                }
+              );
           // get milestone data after login
           this.authService.getUser()
               .subscribe(
