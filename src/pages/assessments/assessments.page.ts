@@ -524,39 +524,33 @@ export class AssessmentsPage {
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });
-    // after submit assessment successfully, popup with a item achieved window
-    const popupItems = this.alertCtrl.create({
-      title: 'Total Items',
-      message: `
-        <div *ngIf="allItemsData">
-          <div class="assessments-items-popup" *ngFor="let item of allItemsData">
-            <img class="item-popup-img" src={{ item.meta.img }} alt="item"/>
-            <p class="item-popup-text">
-              {{ item.name }} <span> X {{ item.count[0].count) }}</span>
-            </p>
-          </div>
-        </div>
-        <div *ngIf="allItemsData">
-          <div>
-            <p>No items earned</p>
-          </div>
-        </div>
-      `,
-      buttons: [
-        {
-          text: 'Okay',
-          handler: () => {
-            console.log("Okay");
-          }
-        },
-        {
-          text: 'Close',
-          handler: () => {
-            console.log("Close Window");
-          }
-        },
-      ]
-    });
+    // loading.onDidDismiss(() => {
+    //   console.log('Dismissed loading');
+    //   if (combinedItems && events) {
+    //     popupItemModal(combinedItems, events);
+    //   }
+    //
+    // });
+
+
+    const popupItemModal = (combinedItems, events) => {
+      const modal = this.modalCtrl.create(ItemsPopupPage, {
+        combined: this.combinedItems,
+        events: this.navParams.get('event')
+      });
+
+      modal.onDidDismiss(data => {
+        this.initialItemsCount = {};
+        this.newItemsCount = {};
+        this.newItemsData = [];
+        this.totalItems = [];
+        this.allItemsData = [];
+        this.combinedItems = [];
+      });
+
+      modal.present();
+    };
+
     // get initial items
     console.log('Inital Items: ', this.getInitialItems);
     _.forEach(this.getInitialItems, element => {
@@ -570,6 +564,7 @@ export class AssessmentsPage {
     console.log("Count for initial Items: ", this.initialItemsCount);
     // get latest updated items data api call
     loading.present();
+
     this.gameService.getGameItems(this.getCharacterID)
         .subscribe(
           data => {
@@ -616,19 +611,25 @@ export class AssessmentsPage {
             _.map(this.allItemsData, function(ele) {
               // this.combinedItems.push(_.extend({count: _.groupBy(this.totalItems, 'id')[ele.id] || []}, ele));
               this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
+              console.log("Final Combined results: ", this.combinedItems);
             });
-            loading.dismiss().then(() => {
-              let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems, events: this.navParams.get('event')});
-              console.log("combined object array data: ", this.combinedItems);
-              itemsPopup.present();
-              // reset array in case data repeat avoid unexpected errors
-              this.initialItemsCount = {};
-              this.newItemsCount = {};
-              this.newItemsData = [];
-              this.totalItems = [];
-              this.allItemsData = [];
-              this.combinedItems = [];
+
+            loading.onDidDismiss(() => {
+              popupItemModal(this.combinedItems, this.navParams.get('event'));
             });
+            loading.dismiss();
+
+
+
+            // loading.dismiss().then(() => {
+            //   // let itemsPopup = this.modalCtrl.create(ItemsPopupPage, {combined: this.combinedItems, events: this.navParams.get('event')});
+            //   console.log("combined object array data: ", this.combinedItems);
+            //   // itemsPopup
+            //   // reset array in case data repeat avoid unexpected errors
+            //
+            // });
+
+
           },
           err => {
             loading.dismiss().then(() => {
