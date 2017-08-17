@@ -3,7 +3,6 @@ import { ModalController, NavParams, NavController, AlertController } from 'ioni
 import { Observable } from 'rxjs/Observable';
 // pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
-// import { AssessmentsPage } from '../../assessments/assessment.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
@@ -131,7 +130,7 @@ export class ActivitiesViewPage {
         buttons: ["Ok"]
       });
       alert.present();
-    } else {
+    } else if (opts.hasSubmission === true) {
       let inProgress = _.find(this.submissions, {status: 'in progress'});
 
       this.navCtrl.push(AssessmentsPage, {
@@ -139,6 +138,11 @@ export class ActivitiesViewPage {
         assessment: this.assessment,
         submissions: this.submissions,
         inProgress
+      });
+    } else {
+      this.navCtrl.push(AssessmentsPage, {
+        activity,
+        assessment: this.assessment
       });
     }
   }
