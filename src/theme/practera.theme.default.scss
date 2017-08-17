@@ -471,12 +471,18 @@ event {
     }
   }
 }
-// tutorial-slides
-.skip-button {
-  background-color: color($colors, secondary, base);
-  border: none;
-  color: color($colors, primary, base);
-  float: right;
+// 11. Settings & Tutorial page stylings
+.settings {
+  .list-header-md {
+    border: none;
+  }
+}
+tutorial-page {
+  .header-md::after,
+  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before,
+  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+    background-image: none;
+  }
 }
 .tutorial-slides {
   h1 {
@@ -497,6 +503,10 @@ event {
     bottom: 16pt;
   }
 }
+.skip-button {
+  border: none;
+  float: right;
+}
 .slides-button {
   .toolbar-background {
     background-color: color($colors, secondary, base);
@@ -509,8 +519,9 @@ event {
   .prev-button,
   .next-button,
   .skip-button {
-    background-color: color($colors, secondary, base);
+    background-color: color($colors, secondary, base) !important;
     color: color($colors, primary, base);
+    box-shadow: none;
   }
 }
 // landscape activity list view
