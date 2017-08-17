@@ -44,12 +44,12 @@
       </button>
 
       <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="checkin-btn" (click)="checkin(event)">
-        <span *ngIf="submissions.length > 0; else checkin">
+        <span *ngIf="submissions.length > 0">
           {{ 'EVENTS.VIEWCHECKIN' | translate }}
         </span>
-        <ng-template #checkin let-user>
+        <span *ngIf="submissions.length === 0">
           {{ 'EVENTS.CHECKIN' | translate }}
-        </ng-template>
+        </span>
       </button>
 
       <button ion-button *ngIf="bookingStatus !== 'Booked' && event.isBooked && allowCheckIn(event)" class="cancel-btn" outline (click)="cancelBooking(event)">

@@ -63,7 +63,6 @@ export class EventsViewPage {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
     }
 
-    console.log('ionViewDidEnter', this.event);
     if (this.event) {
       this.bookingStatus = this.availability(this.event);
     }
@@ -92,6 +91,8 @@ export class EventsViewPage {
    */
   private extractAssessment(references: Array<any>) {
     let ref = references[0];
+    ref.Assessment.context_id = ref.context_id;
+
     return {
       assessment: ref.Assessment,
       context_id: ref.context_id
@@ -202,28 +203,25 @@ export class EventsViewPage {
         loading.dismiss();
         this.navCtrl.push(EventCheckinPage, {event: this.event});
       } else { // get assessment and go checkin
-        this.doCheckin(loading.dismiss);
+        this.assessmentService.getAll({
+          search: {
+            assessment_id: this.event.assessment.id,
+            structured: true
+          }
+        }).subscribe(assessments => {
+          let assessment = assessments[0],
+              assessmentGroup = assessment.AssessmentGroup[0];
+
+          loading.dismiss().then(() => {
+            this.navCtrl.push(AssessmentsGroupPage, {
+              event,
+              assessment: assessment.Assessment,
+              assessmentGroup: assessmentGroup
+            })
+          });
+        }, err => { loading.dismiss(); });
       }
     })
-  }
-
-  private doCheckin(cb: Function) {
-    this.assessmentService.getAll({
-      search: {
-        assessment_id: this.event.assessment.id,
-        structured: true
-      }
-    }).subscribe(assessments => {
-      cb();
-      let assessment = assessments[0],
-          assessmentGroup = assessment.AssessmentGroup[0];
-
-      this.navCtrl.push(AssessmentsGroupPage, {
-        event,
-        assessment: assessment.Assessment,
-        assessmentGroup: assessmentGroup
-      });
-    }, err => { cb(); }
   }
 
   /**
@@ -248,18 +246,18 @@ export class EventsViewPage {
           handler: () => {
             cancelLoading.present();
             this.eventService.cancelEventBooking(this.event.id)
-                .subscribe(
-                  data => {
-                    cancelLoading.dismiss().then(() => {
-                     this.navCtrl.popToRoot(EventsListPage);
-                    });
-                  },
-                  err => {
-                    cancelLoading.dismiss().then(() => {
-                      cancelFailed.present();
-                    });
-                  }
-                )
+              .subscribe(
+                data => {
+                  cancelLoading.dismiss().then(() => {
+                   this.navCtrl.popToRoot(EventsListPage);
+                  });
+                },
+                err => {
+                  cancelLoading.dismiss().then(() => {
+                    cancelFailed.present();
+                  });
+                }
+              )
           }
         },
         {
