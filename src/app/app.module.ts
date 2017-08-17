@@ -77,9 +77,7 @@ import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
-import { RegistrationModalPage } from '../pages/registration/modal';
 import { RegistrationPage } from '../pages/registration/registration.page';
-import { ResetpasswordModelPage } from '../pages/resetpassword-model/resetpassword-model';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
@@ -141,9 +139,7 @@ export function HttpLoaderFactory(http: Http) {
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationModalPage,
     RegistrationPage,
-    ResetpasswordModelPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
@@ -246,9 +242,7 @@ export function HttpLoaderFactory(http: Http) {
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationModalPage,
     RegistrationPage,
-    ResetpasswordModelPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,

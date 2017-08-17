@@ -568,7 +568,7 @@ export class AssessmentsPage {
                 alert.present(); // redirect to dashboard page
               });
               loading.dismiss();
-            }else {
+            } else {
               _.map(this.allItemsData, (ele) => {
                 this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
                 console.log("Final Combined results: ", this.combinedItems);
