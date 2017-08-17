@@ -37,4 +37,8 @@ export class GameService {
   public getGames(){
     return this.request.get('api/games');
   }
+  // get game items 
+  public getGameItems(character_id) {
+    return this.request.get(`api/items.json?character_id=${character_id}&filter=items_all`);
+  }
 }

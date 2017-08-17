@@ -47,6 +47,7 @@ export class ActivitiesListPage implements OnInit {
   public percentageValue: number = 0;
   public submissionPoints: number = 0;
   public returnError: boolean = false;
+  public getCharacterID: any = this.cacheService.getLocal('character_id');
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
@@ -98,15 +99,17 @@ export class ActivitiesListPage implements OnInit {
             }
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissions();
-            Observable.forkJoin([getSubmission, getCharacter])
+            console.log("chracter_id: ", this.getCharacterID);
+            let getGameItems = this.gameService.getGameItems(this.getCharacterID);
+            Observable.forkJoin([getSubmission, getCharacter, getGameItems])
               .subscribe(results => {
-                this.submissionData = results[0];
-                _.forEach(this.submissionData, element => {
-                  if(element.AssessmentSubmission.status == 'published'){
-                    this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
-                  }
-                });
                 loadingData.dismiss().then(() => {
+                  this.submissionData = results[0];
+                  _.forEach(this.submissionData, element => {
+                    if(element.AssessmentSubmission.status == 'published'){
+                      this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
+                    }
+                  });
                   this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   // console.log("Percent: ", this.currentPercentage); // display as string format
@@ -115,7 +118,8 @@ export class ActivitiesListPage implements OnInit {
                   console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
                   // console.log("Experience: ", this.characterCurrentExperience);
-                })
+                  // console.log("Items Data: ", results[2]);
+                });
               },
               err => {
                 loadingData.dismiss().then(() => {
