@@ -16,27 +16,14 @@
       <button ion-button outline (click)="draw()">
         Draw
       </button>
-      <button ion-button outline (click)="reset()">
-        Reset
-      </button>
-      <button ion-button outline [disabled]="!statuses.spinOn" (click)="spin()">
+      <button ion-button outline [disabled]="statuses.isSpinning" (click)="spin()">
         Spin
-      </button>
-      <button ion-button outline (click)="play()">
-        Play
-      </button>
-      <button ion-button outline (click)="restart()">
-        Restart
-      </button>
-      <button ion-button outline (click)="changeSegmentsText('chaw')">
-        Change All Text
       </button>
     </div>
 
 
     <ion-list>
       <ion-item *ngIf="statuses.isCompleted">Completed!</ion-item>
-      <ion-item *ngIf="statuses.isStarted">Started!</ion-item>
       <ion-item>
         SPINS: <span id="spins">{{ statuses.chances }}</span>
       </ion-item>
