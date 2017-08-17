@@ -39,12 +39,12 @@
     <ion-list-header>
       {{ 'ACTIVITY.SUBMISSION' | translate }}
     </ion-list-header>
-    <ion-item *ngFor="let submission of submissions">
+    <ion-item *ngFor="let submission of submissions; let i = index;">
       <ion-row>
         <ion-col align-self-start>
           <div>
-            <h2>{{ submission.title }}</h2>
-            <p>{{ submission.submittedOn | timeago }}</p>
+            <h2>{{ "Submission " + (i + 1) }}</h2>
+            <p>{{ submission.submitted | timeago }}</p>
           </div>
         </ion-col>
         <ion-col align-self-end class="note">

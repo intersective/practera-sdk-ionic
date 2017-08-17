@@ -16,6 +16,7 @@ export class AssessmentsGroupPage {
 
   //@TODO: decide which one to use
   activity: any;
+  submissions: any;
   assessment: any;
   assessmentGroup: any;
   submission: Submission;
@@ -33,7 +34,9 @@ export class AssessmentsGroupPage {
     this.activity = this.navParams.get('activity') || {};
     this.assessment = this.navParams.get('assessment') || {};
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
+    this.submissions = this.navParams.get('submissions') || {};
 
+    console.log('this.submissions', this.submissions);
     console.log('this.assessmentGroup', this.assessmentGroup);
 
     this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
@@ -50,9 +53,12 @@ export class AssessmentsGroupPage {
     let result: any = {};
 
     this.questions.forEach(question => {
+      let currentAnswer = question.answer;
       let group = {
-        answer: question.required ? new FormControl(question.answer || '', Validators.required) : new FormControl(question.answer || ''),
-        comment: question.required ? new FormControl(question.comment || '', Validators.required) : new FormControl(question.comment || '')
+        answer: question.required ?
+          new FormControl(currentAnswer.answer || '', Validators.required) : new FormControl(currentAnswer.answer || ''),
+        comment: question.required ?
+          new FormControl(currentAnswer.comment || '', Validators.required) : new FormControl(currentAnswer.comment || '')
       };
 
       // render choices' FormGroup
@@ -263,20 +269,22 @@ export class AssessmentsGroupPage {
     let result = [];
 
     questions.forEach((question) => {
-      let choices = question.AssessmentQuestionChoice || [];
+      let assessmentQuestion = question.AssessmentQuestion;
+      let choices = assessmentQuestion.AssessmentQuestionChoice || [];
       if (choices.length > 0) {
         choices = this.normaliseChoices(choices);
       }
 
       let normalised: QuestionBase<any> = {
-        id: question.AssessmentQuestion.id,
+        id: assessmentQuestion.id,
         assessment_id: question.assessment_group_id,
-        name: question.AssessmentQuestion.name,
-        type: question.AssessmentQuestion.question_type,
-        audience: question.AssessmentQuestion.audience,
-        file_type: question.AssessmentQuestion.file_type,
-        required: question.AssessmentQuestion.is_required || false,
-        choices: choices
+        name: assessmentQuestion.name,
+        type: assessmentQuestion.question_type,
+        audience: assessmentQuestion.audience,
+        file_type: assessmentQuestion.file_type,
+        required: assessmentQuestion.is_required,
+        choices: choices,
+        answer: assessmentQuestion.answer
       };
 
       result.push(normalised);
@@ -317,7 +325,7 @@ export class AssessmentsGroupPage {
       let assessmentChoice = choice.AssessmentChoice;
       results.push({
         id: choice.id,
-        value: choice.assessment_choice_id, // or choice id
+        value: choice.assessment_choice_id, // or choice.id (similar id used as "assessment_choice_id")
         name: assessmentChoice.name,
         description: assessmentChoice.description,
         explanation: choice.explanation,
@@ -335,6 +343,5 @@ export class AssessmentsGroupPage {
   save() {
     this.assessmentService.save(this.storeProgress());
     this.navCtrl.pop();
-    // this.assessmentService.post();
   }
 }
