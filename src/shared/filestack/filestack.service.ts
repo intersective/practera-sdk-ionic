@@ -47,7 +47,7 @@ export class FilestackService {
   }
 
   // single file picker
-  pickV1(config?, onSuccess: Function, onError?, onProgress?) {
+  pickV1(config, onSuccess, onError?, onProgress?) {
     if (!config) {
       config = {
         // container: 'modal',
@@ -57,9 +57,7 @@ export class FilestackService {
       };
     }
 
-    this.filepicker.pick(config, success => {
-      return onSuccess(success);
-    }, onError, onProgress);
+    this.filepicker.pick(config, onSuccess, onError, onProgress);
   }
 
   getSecurity() {

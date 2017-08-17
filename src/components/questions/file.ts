@@ -49,6 +49,7 @@ export class FileQuestionComponent implements OnInit {
   }
 
   private pickUploaded(uploaded) {
+    let self = this;
     if (uploaded.filesUploaded.length > 0) {
       let file = uploaded.filesUploaded.shift();
       file.icon = self.util.getIcon(file.mimetype);
