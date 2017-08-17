@@ -210,14 +210,14 @@ export class AssessmentsGroupPage {
     // final step - save to localstorage
     let submission = {
       Assessment: {
-          id: this.assessment.id,
-          context_id: this.getSubmissionContext()
+          id: this.activity.assessment.id,
+          context_id: this.activity.assessment.context_id
       },
       // AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
       AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
-    this.cache.setLocal(`assessment.group.${this.assessment.id}`, JSON.stringify(submission));
+    this.cache.setLocal(`assessment.group.${this.activity.assessment.id}`, JSON.stringify(submission));
     return submission;
   };
 
