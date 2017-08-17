@@ -59,6 +59,25 @@ export class ActivitiesListPage implements OnInit {
     obtained: {},
     available: []
   };
+  public achievementListIDs: any = [
+    [55, 56, 58, 59],
+    [0, 56, 0, 0],
+    [0, 0, 55, 0],
+    [0, 0, 56, 0],
+    [0, 0, 55, 0],
+    [0, 55, 0, 0]
+  ];
+  public getUserAchievementData: any = [];
+  public changeColor: any = [
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false]
+  ];
+  // public userAchievemntsIDsObj: any = {};
+  public userAchievemntsIDs: any = [];
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -105,7 +124,8 @@ export class ActivitiesListPage implements OnInit {
             }
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
-            Observable.forkJoin([getSubmission, getCharacter])
+            let getUserAchievemnt = this.achievementService.getAchievements();
+            Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt])
               .subscribe(results => {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
@@ -126,6 +146,23 @@ export class ActivitiesListPage implements OnInit {
                   console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
                   // console.log("Experience: ", this.characterCurrentExperience);
+                  // achievement list data handling 
+                  this.getUserAchievementData = results[2];
+                  console.log("this.getUserAchievementData: ", this.getUserAchievementData);
+                  _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
+                    this.userAchievemntsIDs[index] = ele.id;
+                    console.log("ID value: ", this.userAchievemntsIDs[index]);
+                  });
+                  // find ahievement ID whether inside achievemnt list or not
+                  for(let i=0; i<6; i++){
+                    for(let j=0; j<4; j++){
+                      if(this.userAchievemntsIDs.includes(this.achievementListIDs[i][j])){
+                        this.changeColor[i][j] = true;
+                      }else {
+                        this.changeColor[i][j] = false;
+                      }
+                    }
+                  }
                   this.gameService.getGameItems(this.characterData.id)
                                   .subscribe(
                                     data => {

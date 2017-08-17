@@ -520,6 +520,28 @@ event {
     }
   }
   .activity-list {
+    .icon-color-default {
+      // color: color($colors, dark, contrast) !important;
+      color: color($colors, dark, contrast);
+    }
+    .icon-color-0 {
+      color: color($colors, button, contrast) !important;
+    }
+    .icon-color-1 {
+      color: color($colors, palette-three, base) !important;
+    }
+    .icon-color-2 {
+      color: color($colors, palette-one, contrast) !important;
+    }
+    .icon-color-3 {
+      color: color($colors, palette-one, base) !important;
+    }
+    .icon-color-4 {
+      color: color($colors, palette-four, contrast) !important;
+    }
+    .icon-color-5 {
+      color: color($colors, palette-four, base) !important;
+    }
     // just demo start
     .first-checkbox-demo {
       color: color($colors, button, contrast);
