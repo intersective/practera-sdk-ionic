@@ -7,9 +7,9 @@
   <ion-list *ngIf="isEmptyList === false">
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
-      <div [ngClass]="{'muted': !listData.name}">
-        <span>{{ listData.name || 'Hidden Name' }}</span>
-      </div>
+      <span [ngClass]="{'muted': !listData.name}">
+        {{ listData.name || 'Hidden Name' }}
+      </span>
       <div item-end>
         <b>{{ listData.experience_points }}</b>
       </div>
