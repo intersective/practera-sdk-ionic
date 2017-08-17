@@ -130,8 +130,8 @@ export class ResetPasswordPage implements OnInit {
     const loading = this.loadingCtrl.create({
       content: this.successResetPasswordMessage
     });
-    loading.present();
-    this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
+    loading.present().then(() => {
+      this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
         // loading.dismiss();
         // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
@@ -172,35 +172,41 @@ export class ResetPasswordPage implements OnInit {
               this.milestoneService.getMilestones()
                   .subscribe(
                     data => {
-                      console.log(data.data[0].id);
-                      this.milestone_id = data.data[0].id;
-                      this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                      console.log("milestone id: " + data.data[0].id);
-                      loading.dismiss();
-                      this.navCtrl.push(TabsPage).then(() => {
-                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin);
+                      loading.dismiss().then(() => {
+                        console.log(data.data[0].id);
+                        this.milestone_id = data.data[0].id;
+                        this.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                        console.log("milestone id: " + data.data[0].id);
+                        loading.dismiss();
+                        this.navCtrl.push(TabsPage).then(() => {
+                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                          window.history.replaceState({}, '', window.location.origin);
+                        });
                       });
                     },
                     err => {
-                      console.log(err);
+                      loading.dismiss().then(() => {
+                        console.log(err);
+                      });
                     }
                   )
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             },
             err => {
-              loading.dismiss();
-              this.loginError(err);
-              this.cacheService.removeLocal('isAuthenticated');
-              this.cacheService.write('isAuthenticated', false);
+              loading.dismiss().then(() => {
+                this.loginError(err);
+                this.cacheService.removeLocal('isAuthenticated');
+                this.cacheService.write('isAuthenticated', false);
+              });
             });
-        // console.log('Succefully updated');
       },
       err => {
-        loading.dismiss();
-        // console.log('Update failure ..');
+        loading.dismiss().then(() => {
+          console.log(err);
+        });
       });
+    });
   }
   // after password set, auto login error alertbox
   loginError(error) {

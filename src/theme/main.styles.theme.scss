@@ -135,7 +135,7 @@ $title-font: 'Arvo';
 }
 .login-module {
   font-family: $font-secondary;
-  // background-color: color($colors, secondary, base);
+  background-color: color($colors, background, contrast) !important;
   background-repeat: no-repeat;
   .scroll-content {
     overflow-y: hidden;
