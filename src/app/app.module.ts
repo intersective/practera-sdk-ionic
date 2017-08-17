@@ -68,9 +68,9 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
+import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
-import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
@@ -122,12 +122,12 @@ export function HttpLoaderFactory(http: Http) {
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
+    ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
-    LoginModalPage,
     LoginPage,
     MagicLinkPage,
     MemberComponent,
@@ -231,13 +231,13 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
+    ItemsPopupPage,
     GalleryPage,
     LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
-    LoginModalPage,
     LoginPage,
     MagicLinkPage,
     ModalComponent,

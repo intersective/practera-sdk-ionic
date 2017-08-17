@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
 // services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
@@ -22,7 +22,6 @@ export class TermConditionPage {
   private helpEmailMessage = generalVariableMessages.helpMail.email;
   private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
   private verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
-  private checkAccessMethod: boolean = false;
   constructor(
     public nav: NavController,
     private alertCtrl: AlertController,

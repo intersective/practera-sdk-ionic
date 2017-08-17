@@ -239,7 +239,8 @@ export class AssessmentsGroupPage {
       result[question.id] = new FormGroup(group);
     });
 
-    console.log('this.group', this.group)
+    return result;
+  };
 
   /**
    * turn answer into answer submission format (which is formatted for POST to post_assessment API)

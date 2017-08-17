@@ -13,10 +13,10 @@ import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
-import { GameService } from '../../../services/game.service';
-import { SubmissionService } from '../../../services/submission.service';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { CharacterService } from '../../../services/character.service';
+import { GameService } from '../../../services/game.service';
+import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
@@ -38,11 +38,11 @@ export class ActivitiesListPage implements OnInit {
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
   public activities: any = [];
-  public currentPercentage: any = 0;
   public initialItems: any = [];
   public totalAchievements: any = [];
   public currentPoints: number = 0;
   public maxPoints: number = 0;
+  public currentPercentage: any = '0';
   public filteredSubmissions: any = [];
   public characterData: any = [];
   public submissionData: any = [];
@@ -64,10 +64,10 @@ export class ActivitiesListPage implements OnInit {
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
-    public gameService: GameService,
-    public submissionService: SubmissionService,
     public cacheService: CacheService,
     public characterService: CharacterService,
+    public gameService: GameService,
+    public submissionService: SubmissionService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -106,7 +106,7 @@ export class ActivitiesListPage implements OnInit {
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
-              .subscribe(results => {
+              .subscribe(results => { 
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
