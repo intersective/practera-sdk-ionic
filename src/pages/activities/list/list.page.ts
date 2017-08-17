@@ -106,7 +106,7 @@ export class ActivitiesListPage implements OnInit {
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
-              .subscribe(results => { 
+              .subscribe(results => {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {

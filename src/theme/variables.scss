@@ -18,15 +18,22 @@ $item-wp-detail-push-show: true;
 // General Colors (Shared File)
 // main colors
 $primary: #ebebeb; // #E60028
-$secondary: #ffffff;
-$danger: #f53d3d;
-$light: #f4f4f4;
-$primary-dark: #000000;
-$secondary-dark: #222222;
+$secondary: #000000; // #ffffff
+$primary-text: #000054;
+$secondary-text: #000000;
+$primary-bg: #EBEBEB;
+$secondary-bg: #ffffff;
+$primary-button: #00B5AD;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
-$button: #4470a5;
-$soft-green: #49BA81;
+$primary-dark: #AFAFAF;
+$secondary-palette-one: #FFCB05;
+$secondary-palette-two: #8CC747;
+$secondary-palette-three: #C9E9E6;
+$secondary-palette-four: #D4EEFC;
+$secondary-palette-five: #3A74BA;
+$secondary-palette-six: #fc9147;
+$secondary-palette-seven: #43c7f4;
 
 
 // App Mixin Functions
@@ -43,7 +50,11 @@ $soft-green: #49BA81;
 $colors: (
   primary: (
      base: $primary,
-     contrast: $light
+     contrast: $secondary-palette-three
+  ),
+  secondary: (
+     base: $secondary,
+     contrast: $secondary-palette-three
   ),
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
@@ -53,43 +64,53 @@ $colors: (
      base: darken($primary, 10%), // make 10% darker than primary
      contrast: lighten($secondary, 10%) // lighten for contrast?
   ),
-  secondary: (
-     base: $secondary,
-     contrast: $light
-  ),
-  danger: (
-     base: $danger,
-     contrast: $secondary
-  ),
   light: (
-     base: $light,
-     contrast: $secondary
+     base: $secondary-palette-three,
+     contrast: $secondary-palette-four
   ),
-  dark: (
-     base: $primary-dark,
-     contrast: $secondary
+  text: (
+     base: $primary-text,
+     contrast: $secondary-text
   ),
   button: (
-    base: $button,
-    contrast: $secondary
+    base: $primary-text,
+    // base: $secondary-palette-one,
+    contrast: $primary-button
   ),
   border: (
     base: $border-primary,
     contrast: $border-secondary
   ),
-  soft-green: (
-     base: $soft-green,
-     contrast: darken($soft-green, 10%) // darken for contrast?
+  dark: ( // main secondary palette colors
+    base: $secondary-palette-one,
+    contrast: $primary-dark
   ),
-  purple: (
-    base: #a94aa9,
-    contrast: $secondary
-  )
+  background: (
+    base: $primary-bg,
+    contrast: $secondary-bg
+  ),
+  palette-one: (
+    base: $secondary-palette-one,
+    contrast: $secondary-palette-two
+  ),
+  palette-two: (
+    base: $secondary-palette-three,
+    contrast: $secondary-palette-four
+  ),
+  palette-three: (
+    base: $secondary-palette-five,
+    contrast: $secondary-palette-six
+  ),
+  palette-four: (
+    base: $secondary-palette-seven,
+    contrast: $secondary-palette-six
+  ),
 );
 
 $item-md-detail-push-color: color($colors, primary-light, base);
 $item-wp-detail-push-color: color($colors, primary-light, base);
 $item-ios-detail-push-color: color($colors, primary-light, base);
+
 
 // App iOS Variables
 // --------------------------------------------------

@@ -13,6 +13,7 @@
 
 * {
   font-family: "Roboto";
+  // color: color($colors, text, base);
 }
 
 
@@ -151,3 +152,4 @@
 @include makeIcon(fa-zip, $fa-var-file-zip-o)
 @include makeIcon(fa-file, $fa-var-file-o)
 @include makeIcon(fa-files, $fa-var-files-o)
+@include makeIcon(fa-trophy, $fa-var-trophy)

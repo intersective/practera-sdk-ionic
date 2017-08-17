@@ -22,38 +22,73 @@
     </ion-refresher-content>
 	</ion-refresher>
   <ion-grid>
+    <!-- <ion-row class="score-board">
+      <div class="score-board-inner">
+         <ion-col>
+          <div class="score-inner-box">
+            <div>
+              <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
+              <h1>{{ currentPercentage || 0 }}%</h1>  
+            </div>
+          </div>
+        </ion-col> 
+        <ion-col>
+          <div class="score-inner-box">
+            <div>
+              <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
+              <h1>{{ characterCurrentExperience || 0 }}</h1>
+            </div>
+          </div>
+        </ion-col>
+      </div>
+    </ion-row> -->
     <ion-row class="score-board">
-      <ion-col class="score-board-inner">
-        <div class="score-inner-box">
-          <div>
-            <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-            <h1>{{ currentPercentage }}%</h1>  
-          </div>
-        </div>
-      </ion-col> 
-      <ion-col>
-        <div class="score-inner-box">
-          <div>
-            <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
-            <!-- <h1>{{ currentPoints }}</h1> -->
-            <h1>{{ characterCurrentExperience }}</h1>
-          </div>
-        </div>
+      <ion-col col-12>
+        <img class="dashboard-logo" src="./assets/img/main/logo02.png" />
+      </ion-col>
+      <ion-col col-12>
+        <ul class="dashboard-data">
+          <li col-4>
+            <p class="title">Bookings</p>    
+            <p class="number">0</p>
+            <p class="link">Browse Events</p>            
+          </li>
+          <li col-4>
+            <p class="title">Points</p>
+            <p class="number">30</p>
+            <p class="link">Ranking</p>
+          </li>
+          <li col-4>
+            <p class="title">Grade</p>
+            <p class="number">2.93</p>
+            <p class="link">What's this?</p>
+          </li>
+        </ul>
       </ion-col>
     </ion-row>
     <ion-row class="activity-list">
       <ion-col>
-        <!--<button (click)="shiftLanguageTrial()">Shift Language</button>-->
         <div class="activity-error" *ngIf="returnError == true">
           <p>
             {{ activitiesLoadingErr }}
           </p>
         </div>
-        <div *ngFor="let activity of activities">
-          <div *ngIf="activity.Activity.is_locked == false" class="unlocked">
-            <p (click)="goToDetail(activity, activity.Activity.id)" class="line-break">
-              {{ activity.Activity.name }}
-            </p>
+        <div *ngFor="let activity of activities; let i = index">
+          <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
+            <div (click)="goToDetail(activity, activity.Activity.id)" class="line-break">
+              <p col-7>{{ activity.Activity.name }}</p>
+              <p col-3 *ngIf="i == 0" class="first-checkbox-demo">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+              </p>
+              <p col-3 *ngIf="i > 0">
+                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+              </p>
+              <p col-2>2.5</p>
+            </div>
           </div>
           <div *ngIf="activity.Activity.is_locked == true" class="locked">
             <i class="fa fa-lock" aria-hidden="true"></i>
