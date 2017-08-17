@@ -9,16 +9,19 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
+import 'rxjs/add/observable/forkJoin';
+import 'rxjs/add/operator/map';
+import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
 import { CharactersService } from '../../../services/characters.service';
+import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
-
 /**
  * @TODO: remove after development is complete
  * flag to tell whether should UI popup toast error message at the bottom
@@ -32,13 +35,12 @@ const ACTIVATE_TOAST = false;
 })
 export class ActivitiesListPage implements OnInit {
   public activities = [];
-  public totalAchievements: any = [];
-  public currentPoints: number = 0;
-  public maxPoints: number = 0;
+  public currentPercentage: number = 0;
   public characterData: any = [];
+  public submissionData: any = [];
   public characterCurrentExperience: number = 0;
-  public pointPercentage: number = 0;
-  public percentageValue: any = 0;
+  public percentageValue: number = 0;
+  public submissionPoints: number = 0;
   public returnError: boolean = false;
   // public shiftLang: boolean = false;
   // loading & err message variables
@@ -58,6 +60,7 @@ export class ActivitiesListPage implements OnInit {
     public activityService: ActivityService,
     public achievementService: AchievementService,
     public charactersService: CharactersService,
+    public submissionService: SubmissionService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -78,44 +81,30 @@ export class ActivitiesListPage implements OnInit {
       duration: 4000,
       position: 'bottom'
     });
-
-    Observable.forkJoin([
-      this.achievementService.getAchievements(),
-      this.achievementService.getAll(),
-      this.achievementService.getMaxPoints()
-    ]).subscribe(
-        results => {
-          this.totalAchievements = results;
-          this.achievements = {
-            obtained: results[0],
-            available: results[1],
-            maxPoint: results[2],
-          };
-
-          console.log(this.totalAchievements);
-          console.log("Max Points: ", results[2].max_achievable_points);
-          this.maxPoints = results[2].max_achievable_points;
-          this.currentPoints = results[0].total_points;
-          if (this.currentPoints >= 0 && this.currentPoints <= this.maxPoints) {
-            this.percentageValue = (Math.round( ((this.currentPoints / this.maxPoints) * 100) * 10 ) / 10);
-            (this.percentageValue % 1 === 0) ? this.pointPercentage = this.percentageValue : this.pointPercentage = this.percentageValue.toFixed(1);
-          } else if(this.currentPoints > this.maxPoints){
-            this.pointPercentage = 100;
-          } else {
-            this.currentPoints = 0;
-            this.maxPoints = 0;
-            this.pointPercentage = 0;
-          }
-        },
-        err => {
-          this.currentPoints = 0;
-          this.maxPoints = 0;
-          this.pointPercentage = 0;
-          if (ACTIVATE_TOAST) {
-            loadingFailed.present();
-          }
-        }
-    );
+    let getCharacter = this.charactersService.getCharacter();
+    let getSubmission = this.submissionService.getSubmissions();
+    Observable.forkJoin([getSubmission, getCharacter])
+              .subscribe(results => {
+                  this.submissionData = results[0];
+                  _.forEach(this.submissionData, element => {
+                    if(element.AssessmentSubmission.status == 'published'){
+                      // console.log("published score: ", element.AssessmentSubmission.moderated_score);
+                      this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
+                    }
+                  });
+                  this.percentageValue = this.submissionPoints/this.submissionData.length;
+                  this.currentPercentage = parseFloat(this.percentageValue.toFixed(4))*100;
+                  console.log("percent: ", this.currentPercentage);
+                  this.characterData = results[1].Character;
+                  this.characterCurrentExperience = this.characterData.experience;
+                  console.log("Experience: ", this.characterCurrentExperience);
+                },
+                err => {
+                  if (ACTIVATE_TOAST) {
+                    loadingFailed.present();
+                  }
+                }
+              );
   }
 
   // loading activity list data
