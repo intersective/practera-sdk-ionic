@@ -84,6 +84,8 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
+import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
+
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
@@ -144,6 +146,8 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TeamPage,
+    TestPage,
+    TutorialPage,
     TermConditionPage,
     TermContentComponent,
     TestPage,
@@ -243,6 +247,9 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     TabsPage,
     TestPage,
+    TermConditionPage,
+    TutorialPage,
+    TermContentComponent,
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },

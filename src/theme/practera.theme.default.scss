@@ -405,7 +405,7 @@ event {
             height: 40%;
             font-size: 28pt;
             font-weight: bold;
-            
+
           }
         }
       }
@@ -449,7 +449,7 @@ event {
     }
   }
 }
-// 10. Achievement page styling 
+// 10. Achievement page styling
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -471,109 +471,46 @@ event {
     }
   }
 }
-// 13. Rankings Page Styling
-.rankings {
-  .scroll-content {
-    bottom: 49px !important;
+// tutorial-slides
+.skip-button {
+  background-color: color($colors, secondary, base);
+  border: none;
+  color: color($colors, primary, base);
+  float: right;
+}
+.tutorial-slides {
+  h1 {
+    padding-bottom: 20pt;
   }
-  ion-list:first-child {
-    margin-bottom: 5px;
+  p {
+    padding: 0 36pt;
+    margin-top: -12pt;
   }
-  ion-list {
-    margin: 0px;
+  img {
+    width: 36%;
   }
-  ion-col {
-    padding: 0px;
+  button.general-circle-btn {
+    width: 80%;
+    margin: 0 auto;
   }
-  .ranking-list {
-    .user-score {
-      text-align: right;
-      b {
-        font-weight: normal;
-        width: 100%;
-        text-align: right;
-      }
-    }
-  }
-  .my-ranking {
-    border-top: 1px solid color($colors, border, base);
-    position: fixed;
-    bottom: 49px;
-    height: 54px;
-    width: 100%;
-    background: color($colors, secondary, base);
-    .ranking-item {
-      p {
-        border: none;
-        b {
-          font-weight: normal;
-          width: 100%;
-          text-align: right;
-        }
-      }
-    }
-  }
-  ion-list.my-ranking.list.list-md {
-    bottom: 55px;
-  }
-  .ranking-item {
-    width: 100%;
-    display: flex;
-    .blur-hidden-text {
-      color: transparent;
-      text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
-    }
-    ion-icon {
-      font-size: 10pt;
-      font-weight: 900; 
-    }
-    ion-icon[name=arrow-forward] {
-      font-weight: normal;
-      font-size: 18pt;
-      padding-left: 8pt;
-      color: #bbb;
-    }
-    .badge-image {
-      width: 60px;
-      height: 60px; 
-    }
-    p {
-      display: flex;
-      align-items: center; 
-      word-break: break-all;
-      margin: 0px;
-      padding: 15px 0pt;      
-      border-bottom: 1px solid color($colors, border, base); 
-    }
-    p:first-child{
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  .swiper-pagination {
+    bottom: 16pt;
   }
 }
-// ranking details page stylings
-rankings-details-page {
-  padding: 0 6pt;
-  .ranking-details {
-    .scroll-content {
-      bottom: 0px !important;
-    }
+.slides-button {
+  .toolbar-background {
+    background-color: color($colors, secondary, base);
+    border: none;
   }
-  .ranking-item {
-    p {
-      border: none !important;
-    }
+  .next-button,
+  .skip-button {
+    float: right;
   }
-  .ranking-detail-item {
-    padding: 2pt 0;
-    border-bottom: 1px solid color($colors, border, base);
-  }
-  .points-display {
-    padding: 2pt 0;
-    display: flex;
-    border-bottom: 1px solid color($colors, border, base);
+  .prev-button,
+  .next-button,
+  .skip-button {
+    background-color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
 }
 // landscape activity list view
@@ -594,4 +531,3 @@ rankings-details-page {
     }
   }
 }
-

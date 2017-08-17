@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
@@ -21,6 +21,7 @@ export class TermConditionPage {
   private helpEmailMessage = generalVariableMessages.helpMail.email;
   private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
   private verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
+  private checkAccessMethod: boolean = false;
   constructor(
     public nav: NavController,
     private alertCtrl: AlertController,
@@ -28,6 +29,9 @@ export class TermConditionPage {
     private notificationService: NotificationService,
     public translationService: TranslationService,
   ) {}
+  private accessMethod(){
+    return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
+  }
   private displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
@@ -37,6 +41,9 @@ export class TermConditionPage {
       }]
     });
     alert.present();
+  }
+  private backToSAccountPage() {
+    this.nav.popToRoot();
   }
   ionViewDidEnter() {
     console.log(this.user);
