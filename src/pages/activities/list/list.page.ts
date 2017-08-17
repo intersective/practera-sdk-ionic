@@ -35,7 +35,7 @@ const ACTIVATE_TOAST = false;
 })
 export class ActivitiesListPage implements OnInit {
   public activities = [];
-  public currentPercentage: number = 0;
+  public currentPercentage: any = 0;
   public characterData: any = [];
   public submissionData: any = [];
   public characterCurrentExperience: number = 0;
@@ -84,7 +84,6 @@ export class ActivitiesListPage implements OnInit {
     let getCharacter = this.charactersService.getCharacter();
     let getSubmission = this.submissionService.getSubmissions();
     Observable.forkJoin([getSubmission, getCharacter])
-    // Observable.forkJoin([getSubmission]) // this line will be removed when ISDK-57 is merged
               .subscribe(results => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
@@ -92,9 +91,9 @@ export class ActivitiesListPage implements OnInit {
                       this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
                     }
                   });
-                  this.percentageValue = this.submissionPoints/this.submissionData.length;
-                  this.currentPercentage = parseFloat(this.percentageValue.toFixed(4))*100;
-                  console.log("percent: ", this.currentPercentage);
+                  this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
+                  this.currentPercentage = this.percentageValue.toFixed(2);
+                  console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Character;
                   this.characterCurrentExperience = this.characterData.experience;
                   console.log("Experience: ", this.characterCurrentExperience);
