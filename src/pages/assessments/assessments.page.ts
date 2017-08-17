@@ -34,7 +34,7 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: boolean = false;
   submissions: any = [];
-  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  getInitialItems: any = this.cacheService.getLocal('initialItems') == 'undefined' ? [] : this.cacheService.getLocal('initialItems');
   initialItemsCount: any = {};
   newItemsCount: any = {};
   newItemsData: any = [];
@@ -470,39 +470,6 @@ export class AssessmentsPage {
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });
-    // after submit assessment successfully, popup with a item achieved window
-    const popupItems = this.alertCtrl.create({
-      title: 'Total Items',
-      message: `
-        <div *ngIf="allItemsData">
-          <div class="assessments-items-popup" *ngFor="let item of allItemsData">
-            <img class="item-popup-img" src={{ item.meta.img }} alt="item"/>
-            <p class="item-popup-text">
-              {{ item.name }} <span> X {{ item.count[0].count) }}</span>
-            </p>
-          </div>
-        </div>
-        <div *ngIf="allItemsData">
-          <div>
-            <p>No items earned</p>
-          </div>
-        </div>
-      `,
-      buttons: [
-        {
-          text: 'Okay',
-          handler: () => {
-            console.log("Okay");
-          }
-        },
-        {
-          text: 'Close',
-          handler: () => {
-            console.log("Close Window");
-          }
-        },
-      ]
-    });
     // get initial items
     console.log('Inital Items: ', this.getInitialItems);
     _.forEach(this.getInitialItems, element => {
@@ -519,7 +486,7 @@ export class AssessmentsPage {
     this.characterService.getCharacter()
         .subscribe(
           data => {
-            // console.log("Items: ", data.Items);
+            console.log("Items: ", data.Items);
             this.newItemsData = data.Items;
             _.forEach(data.Items, (element, index) => {
               let id = element.id;
@@ -542,14 +509,12 @@ export class AssessmentsPage {
               }
             });
             console.log("New compared items: ", this.newItemsData);
-            // if(!this.totalItems){
-              _.forEach(this.totalItems, (element, index) => {
-                element.id = parseInt(element.id);
-              });
-              console.log("Count for new total Items: ", this.totalItems);
-              this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
-              console.log("Final items object data: ", this.allItemsData);
-            // }
+            _.forEach(this.totalItems, (element, index) => {
+              element.id = parseInt(element.id);
+            });
+            console.log("Count for new total Items: ", this.totalItems);
+            this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
+            console.log("Final items object data: ", this.allItemsData);
             // get the final object with item occurance count value
             let groupData = _.groupBy(this.totalItems, 'id');
             console.log("Group?? ", groupData);
@@ -557,7 +522,6 @@ export class AssessmentsPage {
               // this.combinedItems.push(_.extend({count: _.groupBy(this.totalItems, 'id')[ele.id] || []}, ele));
               this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
               console.log("Final Combined results: ", this.combinedItems);
-              console.log("Final Combined results count value: ", this.combinedItems.count[0].count);
             });
             loading.dismiss().then(() => {
               popupItems.present();
