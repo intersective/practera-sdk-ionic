@@ -33,4 +33,8 @@ export class GameService {
       }
     });
   }
+  // get games
+  public getGames(){
+    return this.request.get('api/games');
+  }
 }
