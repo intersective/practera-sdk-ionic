@@ -107,9 +107,10 @@ $colors: (
   ),
 );
 
-$item-md-detail-push-color: color($colors, primary-light, base);
-$item-wp-detail-push-color: color($colors, primary-light, base);
-$item-ios-detail-push-color: color($colors, primary-light, base);
+// Small arrow color for list
+$item-md-detail-push-color: color($colors, primary-dark, base);
+$item-wp-detail-push-color: color($colors, primary-dark, base);
+$item-ios-detail-push-color: color($colors, primary-dark, base);
 
 
 // App iOS Variables
