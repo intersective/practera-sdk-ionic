@@ -431,8 +431,12 @@ export class AssessmentsGroupPage {
     });
 
     let saveProgress = () => {
+      let save = this.assessmentService.save(this.storeProgress());
       loading.present().then(() => {
-        this.assessmentService.save(this.storeProgress()).subscribe(
+        if (_.isEmpty(this.event)) { // if event then submit directly
+          save = this.assessmentService.save(this.storeProgress(), {inProgress: false});
+        }
+        save.subscribe(
           response => {
             loading.dismiss().then(() => {
               this.navCtrl.pop();
