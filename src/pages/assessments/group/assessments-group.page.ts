@@ -18,12 +18,11 @@ export class AssessmentsGroupPage {
 
   //@TODO: decide which one to use
   activity: any;
-  submissions: any;
+  submission: Submission;
   assessment: any;
   assessmentGroup: any;
   cacheKey: any; // to render & display stored
-  canUpdateInput: boolean = false;
-  published: boolean = false;
+  answers: any; // to render & display submitted answers
 
   constructor(
     private navParams: NavParams,
@@ -49,88 +48,14 @@ export class AssessmentsGroupPage {
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
 
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
-    this.submissions = this.navParams.get('submissions') || {};
-
-    console.log('this.assessmentGroup', this.assessmentGroup);
+    this.submission = this.navParams.get('submission') || {};
 
     // preset key used for caching later (locally and remote data)
-    this.canUpdateInput = this.isInputEditable();
-    console.log('this.canUpdateInput', this.canUpdateInput)
-    this.published = this.assessmentService.isPublished(this.submissions);
-    this.questions = this.assessmentGroup.questions;
-    this.questions = this.mapQuestionsFeedback(this.questions, this.submissions);
-    this.formGroup = this.retrieveProgress(this.buildFormGroup(this.questions));
-
-    console.log('this.submissions', this.submissions);
-    console.log('this.assessment', this.assessment);
-    console.log('this.questions', this.questions);
-  }
-
-  /**
-   * @description check answers are editable
-   *    Must define submissions first
-   * @type {boolen}
-   */
-   private isInputEditable = ():boolean => {
-     let editable = false;
-
-     _.forEach(this.submissions, (submission) => {
-       if (_.isEmpty(submission)) {
-         editable = true;
-       } else {
-         _.forEach(submission, (subm) => {
-           if (
-             subm.AssessmentSubmission &&
-             subm.AssessmentSubmission.status === 'in progress'
-           ) {
-             editable = true;
-           }
-         });
-       }
-     });
-     return editable;
-   }
-
-  /**
-   * @description use proper context id based on situation
-   *
-   * @type {array}
-   */
-  private mapQuestionsFeedback = (questions, submissions):any => {
-    _.forEach(submissions, (submission) => {
-      _.forEach(submission, (subm) => {
-
-        _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
-          _.forEach(questions, (question, idx) => {
-
-            if (reviewAnswer.assessment_question_id === question.id) {
-              // text type
-              if (question.type === 'text') {
-                questions[idx].review_answer = reviewAnswer;
-              }
-
-              // oneof type
-              if (question.type === 'oneof') {
-                questions[idx].review_answer = reviewAnswer;
-                _.forEach(question.choices, (choice, key) => {
-                  if (choice.id == reviewAnswer.answer && choice.id == question.answer.answer) {
-                    questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
-                  }
-                  if (choice.id != reviewAnswer.answer && choice.id == question.answer.answer) {
-                    questions[idx].choices[key].name = choice.name + ' (you)';
-                  }
-                  if (choice.id == reviewAnswer.answer && choice.id != question.answer.answer) {
-                    questions[idx].choices[key].name = choice.name + ' (reviewer)';
-                  }
-                });
-              }
-            }
-
-          });
-        });
-      });
-    });
-    return questions;
+    this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
+    this.formGroup = this.retrieveProgress(
+      this.buildFormGroup(this.questions),
+      this.formInProgressAnswer(this.submission)
+    );
   }
 
   /**
@@ -206,69 +131,27 @@ export class AssessmentsGroupPage {
 
     console.log('this.group', this.group)
 
-    this.questions = this.navParams.get('questions') || [
-      {
-        id: 4,
-        type: 'file',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'TASK: What was actually required of me in that situation?',
-        required: true
-      },
-      {
-        id: 1,
-        type: 'oneof',
-        choices: [
-          {
-            id: 1,
-            name: 'Test 1'
-          },
-          {
-            id: 2,
-            name: 'Test 2'
-          },
-          {
-            id: 3,
-            name: 'Test 3'
-          },
-        ],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'SITUATION: The context in which this experience took place',
-        required: true
-      },
-      {
-        id: 2,
-        type: 'text',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'TASK: What was actually required of me in that situation?',
-        required: true
-      },
-      {
-        id: 3,
-        type: 'text',
-        choices: [],
-        answers: {
-          submitter: [],
-          reviewer: [],
-        },
-        name: 'ACTION: What did I do given the situation and the task?',
-        required: true
-      },
-    ];
+  /**
+   * turn answer into answer submission format (which is formatted for POST to post_assessment API)
+   * @param {object} submission single submission object retrieve from previous page/view
+   * @return {object} formatted submission answer
+   */
+  private formInProgressAnswer(submission) {
+    let answers = {};
+    submission.answer.forEach(ans => {
+      answers[ans.assessment_question_id] = {
+        assessment_question_id: ans.assessment_question_id,
+        answer: ans.comment || ans.answer
+      }
+    });
 
-    console.log('this.questions', this.questions)
-
-    this.formGroup = this.retrieveProgress(this.formQuestionGroup(this.questions));
+    return {
+      Assessment: {
+          id: submission.assessment_id,
+          context_id: this.getSubmissionContext()
+      },
+      AssessmentSubmissionAnswer: answers
+    };
   }
 
   /**
@@ -286,17 +169,15 @@ export class AssessmentsGroupPage {
             choices: (!_.isEmpty(values.choices)) ? values.choices : null
           };
 
-
       answers[id] = answer;
     });
 
-    // final step - save to localstorage
+    // final step - store submission locally
     let submission = {
       Assessment: {
           id: this.activity.assessment.id,
           context_id: this.activity.assessment.context_id
       },
-      // AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
       AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
@@ -309,8 +190,8 @@ export class AssessmentsGroupPage {
   /**
    * @description retrieve saved progress from localStorage
    */
-  retrieveProgress = (questions: Array<any>) => {
-    let cachedProgress = this.cache.getLocalObject(this.cacheKey);
+  retrieveProgress = (questions: Array<any>, answers?) => {
+    let cachedProgress = answers || this.cache.getLocalObject(this.cacheKey);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
@@ -344,35 +225,105 @@ export class AssessmentsGroupPage {
     return question;
   }
 
+
+  /*
+    Turn AssessmentQuestion object from:
+    {
+      Assessment: {
+        id: 123
+      },
+      AssessmentQuestion: [
+        {
+          id: 234,
+          question_type: 'file',
+          audience: "[\"reviewer\",\"submitter\"]",
+          file_type: 'image',
+          choices: [],
+          answers: {
+            submitter: [],
+            reviewer: [],
+          },
+          name: 'Question 234',
+          required: true
+        }
+        ...
+      ]
+    }
+
+    to:
+    [
+      {
+        id: 234,
+        assessment_id: 123
+        name: 'Question 234',
+        type: 'file',
+        audience: "[\"reviewer\",\"submitter\"]",
+        file_type: 'image',
+        choices: []
+      },
+      ...
+    ]
+   */
+  private normaliseQuestions = (questions: any[]) => {
+    let result = [];
+
+    (questions || []).forEach((question) => {
+      let normalised = this.assessmentService.normaliseQuestion(question);
+
+      result.push(normalised);
+    });
+
+    return result;
+  };
+
+  displayAlert(opts) {
+    return this.alertCtrl.create(opts);
+  }
+
   /**
    * @description initiate save progress and return to previous page/navigation stack
    */
   save() {
-    let loading = this.loadingCtrl.create({
+    let self = this,
+    loading = this.loadingCtrl.create({
       content: 'Loading...'
-    });
+    }),
 
     // Error handling for all kind of non-specific API respond error code
-    let alert = this.alertCtrl.create({
+    failureAlert = this.displayAlert({
       title: 'Fail to submit',
+      buttons: ["Ok"]
+    }),
+    successAlert = this.displayAlert({
+      title: 'Checkin Successful!',
       buttons: ["Ok"]
     });
 
     let saveProgress = () => {
-      let save = this.assessmentService.save(this.storeProgress());
+      let save = self.assessmentService.save(self.storeProgress());
       loading.present().then(() => {
-        if (_.isEmpty(this.event)) { // if event then submit directly
-          save = this.assessmentService.save(this.storeProgress(), {inProgress: false});
+        // if event then submit directly
+        if (_.isEmpty(self.event)) {
+          save = self.assessmentService.save(self.storeProgress(), {inProgress: false});
         }
+
         save.subscribe(
           response => {
             loading.dismiss().then(() => {
-              this.navCtrl.pop();
+              if (!_.isEmpty(self.event)) {
+                // display checkin successful (in event submission)
+                successAlert.present().then(() => {
+                  self.navCtrl.pop();
+                });
+              } else {
+                // "in progress" save, redirect back to page
+                self.navCtrl.pop();
+              }
             });
           },
           reject => {
             loading.dismiss().then(() => {
-              alert.present().then(() => {
+              failureAlert.present().then(() => {
                 console.log('Unable to save', reject);
               });
             });
