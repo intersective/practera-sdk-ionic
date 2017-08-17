@@ -229,7 +229,7 @@ export class AssessmentsPage {
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
             // if (assessments) {
-            //   this.assessment = _.head(assessments).Assessment || {};
+            //   this.assessment = _.head(_.head(assessments)).Assessment || {};
             //   console.log('this.assessment', this.assessment)
             // }
 
