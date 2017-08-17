@@ -255,6 +255,15 @@ export class AssessmentsPage {
                   });
                 });
 
+                // Set submit button to false since submission was done
+                _.forEach(this.submissions, (submission, i) => {
+                  _.forEach(submission, (subm) => {
+                    if (subm.AssessmentSubmission.status === 'done') {
+                      this.allowSubmit = false;
+                    }
+                  });
+                });
+
                 console.log('this.assessmentGroups', this.assessmentGroups);
                 console.log('allowSubmit', this.allowSubmit);
                 resolve();
@@ -343,6 +352,7 @@ export class AssessmentsPage {
           (assessments: any) => {
             loading.dismiss().then(() => {
               console.log('assessments', assessments);
+              this.allowSubmit = false;
               this.navCtrl.pop();
             });
           },
