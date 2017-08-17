@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { ModalController, NavParams, NavController } from 'ionic-angular';
-import { TranslationService } from '../../../shared/translation/translation.service';
+import { ModalController, NavParams, NavController, AlertController } from 'ionic-angular';
+import { Observable } from 'rxjs/Observable';
 // pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 // import { AssessmentsPage } from '../../assessments/assessment.page';
@@ -30,11 +30,12 @@ export class ActivitiesViewPage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
-    public translationService: TranslationService,
     private activityService: ActivityService,
     private submissionService: SubmissionService,
-    private achievementService: AchievementService
-  ) {}
+    private alertCtrl: AlertController
+  ) {
+  }
+
 
   // @TODO: use simple mock data for assessment first
   /**
@@ -55,17 +56,17 @@ export class ActivitiesViewPage {
 
     // submission
     this.submissions = [];
-    this.submissionService.getSubmissions({
-      search: { context_id: this.assessment.context_id }
-    }).subscribe(response => {
-      if (response.length > 0) {
-        console.log(this.submissions);
-        this.submissions = response.map(submission => {
-          return this.submissionService.normalise(submission);
-        });
-        console.log(this.submissions);
-      }
+    Observable.forkJoin(this.getSubmissions()).subscribe(responses => {
+      // turn nested array into single dimension array
+      responses.forEach((submissions: Array<any>) => {
+        if (submissions.length > 0) {
+          this.submissions = submissions.map(submission => {
+            return this.submissionService.normalise(submission);
+          });
+        }
+      });
 
+      console.log(this.submissions);
       this.loadings.submissions = false;
     });
 
@@ -79,6 +80,39 @@ export class ActivitiesViewPage {
         badge.disabled = true;
       }
     });
+  }
+
+  private getSubmissions() {
+    let tasks = []; // multiple API requests
+
+    // get_submissions API to retrieve submitted answer
+    let getSubmissions = (contextId) => {
+      return this.submissionService.getSubmissions({
+        search: {
+          context_id: contextId
+        }
+      });
+    };
+
+    // Congregation of get_submissions API Observable with different context_id
+    _.forEach(this.activity.References, (reference) => {
+      if (reference.context_id) {
+        return tasks.push(getSubmissions(reference.context_id));
+      }
+    });
+
+    return tasks;
+  }
+
+  // extract "in progress"
+  inProgressSubmission() {
+    let result = [];
+    (this.submissions || []).forEach(submission => {
+      if (submission.status === 'in progress') {
+        result.push(submission);
+      }
+    });
+    return result;
   }
 
   private extractBadges(): Array<any> {
@@ -109,15 +143,26 @@ export class ActivitiesViewPage {
    * @description direct to assessment page of a selected activity
    * @param {Object} activity single activity object from the list of
    *                          activities respond from get_activities API
+   * @param {Object} opts optional object with
+   *                 - hasSubmission: to indicateif user is accessing a in
+   *                   progress assessment
    */
-  goAssessment(activity) {
-    let inProgress = _.find(this.submissions, {status: 'in progress'});
+  goAssessment(activity, opts = { hasSubmission: false }) {
+    if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
+      let alert = this.alertCtrl.create({
+        title: 'You have a submission in progress.',
+        buttons: ["Ok"]
+      });
+      alert.present();
+    } else {
+      let inProgress = _.find(this.submissions, {status: 'in progress'});
 
-    this.navCtrl.push(AssessmentsPage, {
-      activity,
-      assessment: this.assessment,
-      submissions: this.submissions,
-      inProgress
-    });
+      this.navCtrl.push(AssessmentsPage, {
+        activity,
+        assessment: this.assessment,
+        submissions: this.submissions,
+        inProgress
+      });
+    }
   }
 }

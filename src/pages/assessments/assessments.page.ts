@@ -59,7 +59,7 @@ export class AssessmentsPage {
    * @param {Object} submissions submissions
    * @param {Object} assessments assessments
    */
-  mapSubmissionsToAssessment(allSubmissions, assessments) {
+  mapSubmissionsToAssessment(submissions, assessments) {
     _.forEach(assessments, (group, i) => {
       _.forEach(group, (assessment, j) => {
 
@@ -75,27 +75,26 @@ export class AssessmentsPage {
             assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = null;
 
             // find submission
-            _.forEach(allSubmissions, (submissions) => {
-              _.forEach(submissions, (submission) => {
-                // attach existing submission to assessment group it belongs to
-                let normalisedSubmission = this.submissionService.normalise(submission);
-                let group = this.assessmentGroups[i][j].AssessmentGroup[k];
-                if (group.assessment_id === normalisedSubmission.assessment_id) {
-                  this.assessmentGroups[i][j].AssessmentGroup[k].submission = normalisedSubmission;
+            _.forEach(submissions, (submission) => {
+              // attach existing submission to assessment group it belongs to
+              let normalisedSubmission = this.submissionService.normalise(submission);
+              let group = this.assessmentGroups[i][j].AssessmentGroup[k];
+              if (group.assessment_id === normalisedSubmission.assessment_id) {
+                this.assessmentGroups[i][j].AssessmentGroup[k].submission = normalisedSubmission;
+              }
+
+              // find user answer
+              _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
+                if (answer.assessment_question_id === question.id) {
+                  assessments[i][j].AssessmentGroup[k].questions[l].answer = answer;
                 }
+              });
 
-                _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
-                  if (answer.assessment_question_id === question.id) {
-                    assessments[i][j].AssessmentGroup[k].questions[l].answer = answer;
-                  }
-                });
-
-                // find reviewer feedback
-                _.forEach(submission.AssessmentReviewAnswer, (reviewerAnswer) => {
-                  if (reviewerAnswer.assessment_question_id === question.id) {
-                    assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = reviewerAnswer;
-                  }
-                });
+              // find reviewer feedback
+              _.forEach(submission.AssessmentReviewAnswer, (reviewerAnswer) => {
+                if (reviewerAnswer.assessment_question_id === question.id) {
+                  assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = reviewerAnswer;
+                }
               });
             });
 
@@ -194,6 +193,58 @@ export class AssessmentsPage {
     return assessments;
   }
 
+  private pullSubmissions(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      // get_submissions API to retrieve submitted answer
+      let getSubmissions = (contextId) => {
+        return this.submissionService.getSubmissions({
+          search: {
+            context_id: contextId
+          }
+        });
+      };
+
+      // Congregation of get_submissions API Observable with different context_id
+      let submissionTasks = [];
+      _.forEach(this.activity.References, (reference) => {
+        if (reference.context_id) {
+          return submissionTasks.push(getSubmissions(reference.context_id));
+        }
+      });
+
+      // 2nd batch API requests (get_submissions)
+      // response format: [ // context_ids
+      //   [ // assessment group 1
+      //     assessment1,
+      //     assessment2,
+      //     ...
+      //   ],
+      //   [ // assessment group 2
+      //     assessment1,
+      //     assessment2,
+      //     ...
+      //   ],
+      //   ...
+      // ]
+      Observable.forkJoin(submissionTasks)
+        .subscribe((allSubmissions) => {
+          let submissions = [];
+          _.forEach(allSubmissions, group => {
+            _.forEach(group, (submission) => {
+              submissions.push(this.submissionService.normalise(submission));
+            });
+          });
+          this.submissions = submissions;
+          console.log('this.submissions', this.submissions);
+          resolve(submissions);
+        },
+        (err) => {
+          console.log('err', err);
+          reject(err);
+        });
+    });
+  }
+
   loadQuestions(): Promise<any> {
     return new Promise((resolve, reject) => {
 
@@ -218,22 +269,44 @@ export class AssessmentsPage {
         }
       });
 
-      // get_submissions API to retrieve submitted answer
-      let getSubmissions = (contextId) => {
-        return this.submissionService.getSubmissions({
-          search: {
-            context_id: contextId
+      let preprocessAssessmentSubmission = () => {
+        this.assessmentGroups = this.mapSubmissionsToAssessment(
+          this.submissions,
+          this.assessmentGroups
+        );
+
+        // Only allow submit when all required question have answered.
+        _.forEach(this.assessmentGroups, (group, i) => {
+          _.forEach(group, (assessment, j) => {
+            let groupWithAnswers = 0;
+            _.forEach(assessment.AssessmentGroup, (g) => {
+              if (g.answeredQuestions >= g.totalRequiredQuestions) {
+                groupWithAnswers += 1;
+              }
+            });
+            if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
+              this.allowSubmit = true;
+            }
+          });
+        });
+
+        _.forEach(this.submissions, submission => {
+          if (
+            submission.status === 'pending review' ||
+            submission.status === 'pending approval' ||
+            submission.status === 'published'
+          ) {
+            this.allowSubmit = false;
           }
         });
-      };
 
-      // Congregation of get_submissions API Observable with different context_id
-      let submissionTasks = [];
-      _.forEach(this.activity.References, (reference) => {
-        if (reference.context_id) {
-          return submissionTasks.push(getSubmissions(reference.context_id));
-        }
-      });
+        console.log('this.assessmentGroups', this.assessmentGroups);
+        console.log('allowSubmit', this.allowSubmit);
+        resolve({
+          assessmentGroups: this.assessmentGroups,
+          submissions: this.submissions
+        });
+      };
 
       // first batch API requests (get_assessments)
       Observable.forkJoin(tasks)
@@ -242,55 +315,15 @@ export class AssessmentsPage {
             this.assessmentGroups = assessments;
             console.log('this.assessmentGroups', this.assessmentGroups);
 
-            // 2nd batch API requests (get_submissions)
-            Observable.forkJoin(submissionTasks)
-              .subscribe((allSubmissions) => {
-                this.submissions = allSubmissions;
-                console.log('this.submissions', this.submissions);
-
-                this.assessmentGroups = this.mapSubmissionsToAssessment(
-                  this.submissions,
-                  this.assessmentGroups
-                );
-
-                // Only allow submit when all required question have answered.
-                _.forEach(this.assessmentGroups, (group, i) => {
-                  _.forEach(group, (assessment, j) => {
-                    let groupWithAnswers = 0;
-                    _.forEach(assessment.AssessmentGroup, (g) => {
-                      if (g.answeredQuestions >= g.totalRequiredQuestions) {
-                        groupWithAnswers += 1;
-                      }
-                    });
-                    if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
-                      this.allowSubmit = true;
-                    }
-                  });
-                });
-
-                _.forEach(this.submissions, (submission, i) => {
-                  _.forEach(submission, (subm) => {
-                    if (
-                      subm.AssessmentSubmission.status === 'pending review' ||
-                      subm.AssessmentSubmission.status === 'pending approval' ||
-                      subm.AssessmentSubmission.status === 'published'
-                    ) {
-                      this.allowSubmit = false;
-                    }
-                  });
-                });
-
-                console.log('this.assessmentGroups', this.assessmentGroups);
-                console.log('allowSubmit', this.allowSubmit);
-                resolve({
-                  assessmentGroups: this.assessmentGroups,
-                  submissions: this.submissions
-                });
-              },
-              (err) => {
-                console.log('err', err);
+            if (this.submissions.length === 0) {
+              this.pullSubmissions().then(res => {
+                preprocessAssessmentSubmission();
+              }, err => {
                 reject(err);
               });
+            } else {
+              preprocessAssessmentSubmission();
+            }
           },
           (err) => {
             console.log('err', err);
@@ -334,23 +367,22 @@ export class AssessmentsPage {
       _.forEach(this.submissions, (submission) => {
         console.log('submission', submission);
 
-        _.forEach(submission, (subm) => {
           if (
-            subm.AssessmentSubmission &&
-            subm.AssessmentSubmission.assessment_id &&
-            subm.AssessmentSubmission.context_id &&
-            subm.AssessmentSubmission.id
+            submission &&
+            submission.assessment_id &&
+            submission.context_id &&
+            submission.id
           ) {
             tasks.push(this.assessmentService.submit({
               Assessment: {
-                id: subm.AssessmentSubmission.assessment_id,
-                context_id: subm.AssessmentSubmission.context_id,
+                id: submission.assessment_id,
+                context_id: submission.context_id,
                 in_progress: false
               },
               AssessmentSubmission: {
-                id: subm.AssessmentSubmission.id
+                id: submission.id
               },
-              AssessmentSubmissionAnswer: _.map(subm.AssessmentSubmissionAnswer, (answ) => {
+              AssessmentSubmissionAnswer: _.map(submission.answer, (answ) => {
                 if (answ && answ.assessment_question_id && answ.answer) {
                   return {
                     assessment_question_id: answ.assessment_question_id,
@@ -360,7 +392,6 @@ export class AssessmentsPage {
               })
             }));
           }
-        });
       });
 
       Observable
