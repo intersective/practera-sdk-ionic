@@ -17,6 +17,15 @@ import * as _ from 'lodash';
 
 import { TranslationService } from '../../shared/translation/translation.service';
 import { confirmMessages } from '../../app/messages';
+export class ReferenceAssessmentBase<T> {
+  id: number;
+  name: string;
+}
+
+export class ReferenceBase<T> {
+  context_id: number;
+  Assessment: ReferenceAssessmentBase<any>
+}
 
 @Component({
   selector: 'assessments-page',
@@ -24,8 +33,6 @@ import { confirmMessages } from '../../app/messages';
 })
 export class AssessmentsPage {
   @ViewChild(Navbar) navbar: Navbar;
-
-  // @Input() activity: any;
 
   activity: any = {};
   answers: any = {};
@@ -58,6 +65,69 @@ export class AssessmentsPage {
     }
   }
 
+  /*
+  Turn Activity object from:
+  {
+      "Activity": {
+        "id": 14,
+        "milestone_id": 5,
+        "name": "Warm-up Round",
+        "description": "...",
+        ...
+      },
+      "ActivitySequence": [
+        {
+          "id": 16,
+          "activity_id": 14,
+          "model": "Assess.Assessment",
+          "model_id": 8,
+          "order": 0,
+          "is_locked": false,
+          "Assess.Assessment": {
+            "id": 8,
+            "name": "Team, introduce yourselves!",
+            "description": "...",
+            ...
+          }
+        },
+        ...
+      ],
+      "References": [
+        {
+          "context_id": 1,
+          "Assessment": {
+            "id": 31,
+            "name": "Checkin Assessment"
+          }
+        },
+        ...
+      ]
+    }
+  */
+  normaliseActivity = (activity) => {
+    let result = [];
+
+    // Normalise activity reference
+    activity.References.forEach((reference, idx) => {
+      let referenceAssessment: ReferenceAssessmentBase<any> = {
+        id: reference.Assessment.id,
+        name: reference.Assessment.name,
+      }
+      let normalisedReference: ReferenceBase<any> = {
+        context_id: reference.context_id,
+        Assessment: referenceAssessment
+      };
+      activity.References[idx] = normalisedReference;
+    });
+
+    return result;
+  }
+
+  /**
+   * @description mapping assessments and submissions
+   * @param {Object} assessments assessments
+   * @param {Object} submissions submissions
+   */
   mapAssessmentsAndSubmissions(assessments, allSubmissions) {
     _.forEach(assessments, (group, i) => {
       _.forEach(group.assessments, (assessment, j) => {
