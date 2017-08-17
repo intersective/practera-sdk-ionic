@@ -206,7 +206,7 @@ export class AssessmentsPage {
             context_id: contextId
           }
         });
-      }
+      };
 
       let submissionTasks = [];
       _.forEach(this.activity.References, (reference) => {

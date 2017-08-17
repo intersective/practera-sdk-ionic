@@ -22,6 +22,7 @@ export class ActivitiesViewPage {
     public translationService: TranslationService,
     private activityService: ActivityService
   ) {}
+
   // @TODO: use simple mock data for assessment first
   /**
    * on assessment implementation, to do list:
