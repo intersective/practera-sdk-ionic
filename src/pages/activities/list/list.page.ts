@@ -12,6 +12,7 @@ import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
+import { CharactersService } from '../../../services/characters.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
@@ -34,6 +35,8 @@ export class ActivitiesListPage implements OnInit {
   public totalAchievements: any = [];
   public currentPoints: number = 0;
   public maxPoints: number = 0;
+  public characterData: any = [];
+  public characterCurrentExperience: number = 0;
   public pointPercentage: number = 0;
   public percentageValue: any = 0;
   public returnError: boolean = false;
@@ -54,6 +57,7 @@ export class ActivitiesListPage implements OnInit {
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
+    public charactersService: CharactersService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
