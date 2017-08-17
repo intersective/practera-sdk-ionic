@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { ActivityService } from '../../../services/activity.service';
@@ -56,7 +55,8 @@ export class EventsListPage {
       case 'browses':
         // List all not booked and not ended event in order of start time (asc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          return (moment(event.end).isAfter() && event.isBooked === false);
+          // return (moment(event.end).isAfter() && event.isBooked === false);
+          return (moment().isBefore(moment(event.end)) && event.isBooked === false);
         }), 'start', 'asc');
         break;
     }
@@ -103,9 +103,6 @@ export class EventsListPage {
         })
         .then((events) => {
           console.log('events', events);
-          // After map event with activities,
-          // assign events to 'events' and 'loadedEvents'
-
           // loadedEvents will never change (private use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));

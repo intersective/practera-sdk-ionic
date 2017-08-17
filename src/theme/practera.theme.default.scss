@@ -154,6 +154,24 @@ $font-secondary: 'Raleway';
   .close-btn {
     @include closeBtn;
   }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
+  // general form
+  .general-form {
+    width: 100%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
+  }
 }
 // 7.2 login form box styling (shared module: part 2)
 .login-container {
@@ -514,6 +532,129 @@ tutorial-page {
     width: 80%;
     margin: 0 auto;
   }
+  .ranking-item {
+    width: 100%;
+    display: flex;
+    .blur-hidden-text {
+      color: transparent;
+      text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
+    }
+    ion-icon {
+      font-size: 10pt;
+      font-weight: 900;
+    }
+    ion-icon[name=arrow-forward] {
+      font-weight: normal;
+      font-size: 18pt;
+      padding-left: 8pt;
+      color: #bbb;
+    }
+    .badge-image {
+      width: 60px;
+      height: 60px;
+    }
+    p {
+      display: flex;
+      align-items: center;
+      word-break: break-all;
+      margin: 0px;
+      padding: 15px 0pt;
+      border-bottom: 1px solid color($colors, border, base);
+    }
+    p:first-child{
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+.skip-button {
+  border: none;
+  float: right;
+}
+.slides-button {
+  .toolbar-background {
+    background-color: color($colors, secondary, base);
+    border: none;
+  }
+  .next-button,
+  .skip-button {
+    float: right;
+  }
+  .prev-button,
+  .next-button,
+  .skip-button {
+    background-color: color($colors, secondary, base) !important;
+    color: color($colors, primary, base);
+    box-shadow: none;
+  }
+}
+// 14.leaderboard settings page styling
+.leaderboard-settings {
+  .hide-settings {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+// 15. items popup general styling
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .tutorial-slides p {
+      margin-top: 12pt;
+    }
+    .tutorial-slides img {
+      width: 50%;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 100%;
+      margin-top: 12pt;
+      padding: 12pt;
+      background-color: color($colors, primary, base);
+      color: color($colors, secondary, base);
+    }
+  }
+}
+// 11. Settings & Tutorial page stylings
+.settings {
+  .list-header-md {
+    border: none;
+  }
+}
+tutorial-page {
+  .header-md::after,
+  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before,
+  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+    background-image: none;
+  }
+}
+.tutorial-slides {
+  h1 {
+    padding-bottom: 20pt;
+  }
+  p {
+    padding: 0 36pt;
+    margin-top: -12pt;
+  }
+  img {
+    width: 36%;
+  }
+  button.general-circle-btn {
+    width: 80%;
+    margin: 0 auto;
+  }
   .swiper-pagination {
     bottom: 16pt;
   }
@@ -548,7 +689,7 @@ tutorial-page {
     align-items: center;
   }
 }
-// 15. items popup general styling 
+// 15. items popup general styling
 .items-popup {
   .scroll-content {
     overflow-y: hidden;
@@ -557,7 +698,7 @@ tutorial-page {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     .tutorial-slides p {
       margin-top: 12pt;
     }

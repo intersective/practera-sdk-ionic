@@ -23,6 +23,9 @@ export class AssessmentsGroupPage {
   assessment: any;
   assessmentGroup: any;
   cacheKey: any; // to render & display stored
+
+  canUpdateInput: boolean = false;
+  published: boolean = false;
   answers: any; // to render & display submitted answers
   inProgress: boolean | any;
 
@@ -53,8 +56,13 @@ export class AssessmentsGroupPage {
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submission = this.navParams.get('submission') || {};
 
+    console.log('this.assessmentGroup', this.assessmentGroup);
+
     // preset key used for caching later (locally and remote data)
-    this.questions = this.normaliseQuestions(this.assessmentGroup.AssessmentGroupQuestion);
+    this.canUpdateInput = this.isInputEditable(this.submission);
+    // this.published = this.assessmentService.isPublished(this.submissions);
+    this.questions = this.assessmentGroup.questions;
+    this.questions = this.mapQuestionsFeedback(this.questions, this.submission);
     this.formGroup = this.retrieveProgress(
       this.buildFormGroup(this.questions),
       this.formInProgressAnswer(this.submission)
@@ -332,57 +340,6 @@ export class AssessmentsGroupPage {
     }
     return question;
   }
-
-
-  /*
-    Turn AssessmentQuestion object from:
-    {
-      Assessment: {
-        id: 123
-      },
-      AssessmentQuestion: [
-        {
-          id: 234,
-          question_type: 'file',
-          audience: "[\"reviewer\",\"submitter\"]",
-          file_type: 'image',
-          choices: [],
-          answers: {
-            submitter: [],
-            reviewer: [],
-          },
-          name: 'Question 234',
-          required: true
-        }
-        ...
-      ]
-    }
-
-    to:
-    [
-      {
-        id: 234,
-        assessment_id: 123
-        name: 'Question 234',
-        type: 'file',
-        audience: "[\"reviewer\",\"submitter\"]",
-        file_type: 'image',
-        choices: []
-      },
-      ...
-    ]
-   */
-  private normaliseQuestions = (questions: any[]) => {
-    let result = [];
-
-    (questions || []).forEach((question) => {
-      let normalised = this.assessmentService.normaliseQuestion(question);
-
-      result.push(normalised);
-    });
-
-    return result;
-  };
 
   displayAlert(opts) {
     return this.alertCtrl.create(opts);

@@ -6,7 +6,6 @@ import {
   LoadingController,
   AlertController,
   ModalController,
-  PopoverController,
   Events
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
@@ -15,7 +14,6 @@ import { CacheService } from '../../shared/cache/cache.service';
 import { CharacterService } from '../../services/character.service';
 import { GameService } from '../../services/game.service';
 import { SubmissionService } from '../../services/submission.service';
-import { TranslationService } from '../../shared/translation/translation.service';
 // pages
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 import { ItemsPopupPage } from './popup/items-popup.page';
@@ -26,6 +24,8 @@ class ActivityBase {
   name: string;
   description: string;
 }
+
+import { TranslationService } from '../../shared/translation/translation.service';
 import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
 import * as _ from 'lodash';
 
@@ -44,6 +44,7 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   allowSubmit: boolean = false;
   submissions: any = [];
+  submissionUpdated: boolean = false; // event listener flag
   getInitialItems: any = this.cacheService.getLocalObject('initialItems');
   getCharacterID: any = this.cacheService.getLocal('character_id');
   gotNewItems: boolean = false;
@@ -54,7 +55,6 @@ export class AssessmentsPage {
   totalItems: any = [];
   allItemsData: any = [];
   combinedItems: any = [];
-  submissionUpdated: boolean = false; // event listener flag
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   // confirm message variables
   private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
@@ -65,14 +65,13 @@ export class AssessmentsPage {
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    public modalCtrl: ModalController,
-    private popoverCtrl: PopoverController,
     private assessmentService: AssessmentService,
     private characterService: CharacterService,
     private cacheService: CacheService,
     private gameService: GameService,
     private submissionService: SubmissionService,
     private translationService: TranslationService,
+    public modalCtrl: ModalController,
     public events: Events
   ) {
     this.activity = this.navParams.get('activity');
@@ -556,6 +555,14 @@ export class AssessmentsPage {
               }
             });
             console.log("New compared items: ", this.newItemsData);
+            // if(!this.totalItems){
+              _.forEach(this.totalItems, (element, index) => {
+                element.id = parseInt(element.id);
+              });
+              console.log("Count for new total Items: ", this.totalItems);
+              this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
+              console.log("Final items object data: ", this.allItemsData);
+            // }
             _.forEach(this.totalItems, (element, index) => {
               element.id = parseInt(element.id);
             });
@@ -606,39 +613,4 @@ export class AssessmentsPage {
       this.traceAssessmentProgress();
     });
   }
-
-  // @TODO: Remove it later...
-  // clickFillAllAnswers() {
-  //   _.forEach(this.assessmentQuestions, (question, key) => {
-  //     console.log('q', question);
-  //     if (question.question_type === 'file') {
-  //       this.answers[question.id] = {
-  //         type: 'file',
-  //         files: [
-  //           {
-  //             mime: 'image/jpeg',
-  //             url: 'https://placeimg.com/100/100/nature/grayscale'
-  //           },
-  //           {
-  //             mime: 'image/jpeg',
-  //             url: 'https://placeimg.com/100/100/nature/grayscale'
-  //           }
-  //         ]
-  //       };
-  //     }
-  //
-  //     if (question.question_type === 'oneof') {
-  //       this.answers[question.id] = {
-  //         type: 'file',
-  //         answers: [
-  //           {
-  //             context: 'This is answer for ' + question.assessment_id
-  //           }
-  //         ]
-  //       };
-  //     }
-  //
-  //     this.loadQuestions();
-  //   });
-  // }
 }

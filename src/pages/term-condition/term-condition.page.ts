@@ -17,6 +17,7 @@ export class TermConditionPage {
   @Input('content') content?: SafeResourceUrl;
   @Input('user') user: any;
   agreed:boolean = false;
+  private checkAccessMethod: boolean = false;
   // loading & error message variables
   private helpEmailMessage = generalVariableMessages.helpMail.email;
   private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
