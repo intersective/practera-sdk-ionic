@@ -471,10 +471,25 @@ event {
     }
   }
 }
-// 11. Settings & Tutorial page stylings
-.settings {
-  .list-header-md {
-    border: none;
+.assessments-items-popup {
+  display: flex;
+  align-items: center;
+  padding-left: 12pt;
+  .item-popup-img {
+    width: 20pt;
+    height: 20pt;
+  }
+  .item-popup-text {
+    padding-left: 4pt;
+  }
+}
+// 13. Rankings Page Styling
+.rankings {
+  .scroll-content {
+    bottom: 49px !important;
+  }
+  ion-list:first-child {
+    margin-bottom: 5px;
   }
 }
 tutorial-page {
