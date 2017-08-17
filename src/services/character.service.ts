@@ -3,7 +3,6 @@ import { Injectable }    from '@angular/core';
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
-
 @Injectable()
 export class CharacterService {
   public charactersAPIEndpoint: any = 'api/characters.json';
@@ -13,6 +12,9 @@ export class CharacterService {
     public request: RequestService
   ) {}
 
+  /**
+   * Get character
+   */
   getCharacter() {
     return this.request.get(this.charactersAPIEndpoint, {
       search: {
@@ -21,6 +23,10 @@ export class CharacterService {
     });
   }
 
+  /**
+   * Post character
+   * @param {object} data
+   */
   postCharacter(data) {
     return this.request.post(this.charactersAPIEndpoint, data, {
       'Content-Type': 'application/json'
