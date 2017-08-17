@@ -2,9 +2,9 @@ import { Component, ViewChild } from '@angular/core';
 import {
   NavParams,
   NavController,
-  AlertController,
   Navbar,
-  LoadingController
+  LoadingController,
+  AlertController
 } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import { AssessmentService } from '../../services/assessment.service';
@@ -79,7 +79,6 @@ export class AssessmentsPage {
                 // attach existing submission to assessment group it belongs to
                 let normalisedSubmission = this.submissionService.normalise(submission);
                 let group = this.assessmentGroups[i][j].AssessmentGroup[k];
-
                 if (group.assessment_id === normalisedSubmission.assessment_id) {
                   this.assessmentGroups[i][j].AssessmentGroup[k].submission = normalisedSubmission;
                 }
@@ -246,13 +245,13 @@ export class AssessmentsPage {
   }
 
   ionViewWillEnter() {
-    this.assessment = this.navParams.get('assessment');
-
     let loader = this.loadingCtrl.create();
     loader.present().then(() => {
       this.loadQuestions()
       .then(() => {
         loader.dismiss();
+      }, err => {
+        console.log('log::', err);
       })
       .catch((err) => {
         console.log(err);
@@ -267,10 +266,10 @@ export class AssessmentsPage {
   doSubmit() {
     let loading = this.loadingCtrl.create({
       content: 'Loading...'
-    });
+    }),
 
-    let alert = this.alertCtrl.create({
-      title: 'Fail to submit',
+    // Error handling for all kind of non-specific API respond error code
+    alert = this.alertCtrl.create({
       buttons: ["Ok"]
     });
 
@@ -315,13 +314,24 @@ export class AssessmentsPage {
             loading.dismiss().then(() => {
               console.log('assessments', assessments);
               this.allowSubmit = false;
-              this.navCtrl.pop();
+
+              if (!_.isEmpty(this.navParams.get('event'))) {
+                // display checkin successful (in event submission)
+                alert.data.title = 'Checkin Successful!';
+                alert.present().then(() => {
+                  this.navCtrl.pop();
+                });
+              } else {
+                // normal submission should redirect user back to previous stack/page
+                this.navCtrl.pop();
+              }
             });
           },
-          (e) => {
+          err => {
             loading.dismiss().then(() => {
+              alert.data.title = err.msg || alert.data.title;
               alert.present();
-              console.log('err', e);
+              console.log('err', err);
             });
 
           }
@@ -357,8 +367,8 @@ export class AssessmentsPage {
       assessmentGroup,
       activity,
       submission: assessmentGroup.submission, // use back the one back from ActivityViewPage
-      assessment: this.assessment, // use back the one back from ActivityViewPage
-      submissions: this.submissions
+      submissions: this.submissions,
+      event: this.navParams.get('event')
     });
   }
 

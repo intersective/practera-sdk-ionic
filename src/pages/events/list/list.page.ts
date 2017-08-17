@@ -65,32 +65,36 @@ export class EventsListPage {
     }
     return this.events;
   }
+
   // Called when tap on filter tab
   selected(filter) {
     this.filter = filter;
     this.events = this.filterEvents();
   }
+
   // Check total of events, return "true" when 0 found
   showNoEventMessage() {
     return (this.noEvents);
   }
 
+  /**
+   * @name loadEvents
+   * @description retrieve events (from get_events) with a list of activity_id (from get_activity)
+   * @return {Promise<any>}
+   */
   loadEvents(): Promise<any> {
     return new Promise((resolve, reject) => {
       // Get activities IDs
       this.activityService.getList().toPromise()
       .then((activities) => {
-        console.log('activities', activities);
         this.activities = {};
-
         let activityIDs = [];
         _.forEach(activities, (act) => {
-          this.activities[act.Activity.id] = this.activityService.normaliseActivity(act);
+          this.activities[act.Activity.id] = act;
           activityIDs.push(act.Activity.id);
         });
 
-        // Try to get event by all extracted activityIDs
-        // activity_id which has event returns event based on activity_id
+        // Get event by activityIDs
         this.eventService.getEvents({
           search: {
             activity_id: '[' + _.toString(activityIDs) + ']',
@@ -114,6 +118,7 @@ export class EventsListPage {
       }, reject);
     });
   }
+
   ionViewDidEnter() {
     let loader = this.loadingCtrl.create();
 
@@ -127,6 +132,7 @@ export class EventsListPage {
       });
     });
   }
+
   doRefresh(e) {
     this.loadEvents().then(() => {
       e.complete();
@@ -157,15 +163,18 @@ export class EventsListPage {
   /**
    * @name _mapWithActivity
    * @description
-   * - Extract and merge event-activity only
-   * - skip non-event activities
+   *     - attach "activity" object into each of single "event" object
+   *     - Extract and merge event-activity only
+   *     - skip non-event activities
    * @param {array} events get_events response
    */
   private _mapWithActivity(events) {
     let result = [];
 
-    events.forEach((event, key) => {
-      event.activity = this.activities[event.activity_id];
+    events.forEach(event => {
+      let thisActivity = this.activities[event.activity_id];
+      thisActivity.References = event.References; // must use event's references
+      event.activity = this.activityService.normaliseActivity(thisActivity);
       result.push(event);
     });
 
@@ -176,12 +185,8 @@ export class EventsListPage {
     console.log('event', event);
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
   }
+
   view(event) {
-    /*if (this.allowCheckIn(event)) {
-      alert('Going to check-in page...');
-    } else {
-      alert('This event not allow to check-in...');
-    }*/
     console.log(event);
     this.navCtrl.push(EventsViewPage, {
       event

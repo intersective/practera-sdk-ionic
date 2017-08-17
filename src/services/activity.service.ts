@@ -190,7 +190,7 @@ export class ActivityService {
    */
   public rebuildReferences(references) {
     let result = {};
-    references.forEach(ref => {
+    (references || []).forEach(ref => {
       result[ref.Assessment.id] = ref.context_id;
     });
     return result;
