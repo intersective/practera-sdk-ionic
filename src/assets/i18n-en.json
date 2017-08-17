@@ -14,7 +14,6 @@
     "BROWSE": "Browse",
     "CANCELBOOKING": "Cancel Booking",
     "CHECKIN": "Check-in",
-    "DOWNLOAD": "Download",
     "MYBOOKINGS": "My Bookings",
     "PAGETITLE": "Events"
   },
@@ -23,24 +22,31 @@
     "PAGETITLE": "Forgot Password",
     "SENDBUTTON": "Send to Mailbox"
   },
+  "GENERAL": {
+    "DONE": "Done",
+    "DOWNLOAD": "Download",
+    "NEXT": "Next",
+    "PREV": "Prev",
+    "SKIP": "Skip",
+    "SUBMIT": "Submit"
+  },
   "LOGIN": {
     "HEADER": "Welcome to Practera",
     "PAGETITLE": "Login",
     "PASSWORDFORGOT": "Forget Your Password?"
   },
   "REGISTRATION": {
-    "DONE": "Done",
     "HEADER": "Great - you are almost there! Just one more thing...",
     "PAGETITLE": "Set Password"
   },
   "RESETPASSWORD": {
-    "DONE": "Done",
     "PAGETITLE": "Reset Password"
   },
   "SETTINGS": {
     "HELP": "Email Help",
+    "LEADERBOARD": "Settings",
     "LOGOUT": "Logout",
-    "PAGETITLE": "Settings",
+    "PAGETITLE": "Account",
     "PROFILE": "My Profile ",
     "SUPPORT": "Support",
     "SWITCHER": "Program Switcher",

@@ -524,6 +524,15 @@ tutorial-page {
     box-shadow: none;
   }
 }
+// 14.leaderboard settings page styling
+.leaderboard-settings {
+  .hide-settings {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+}
 // landscape activity list view
 @media screen and (min-width: 500px) {
   .score-board {

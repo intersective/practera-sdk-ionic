@@ -2,7 +2,7 @@
   <button class="skip-button"
     ion-button
     (click)="goDashbaord()">
-    Skip
+    {{ 'GENERAL.SKIP' | translate }}
   </button>
 </ion-header>
 <ion-content>
@@ -30,8 +30,8 @@
 </ion-content>
 <ion-footer class="slides-button">
   <ion-toolbar>
-    <button ion-button class="prev-button" (click)="goPrev()">Prev</button>
-    <button *ngIf="hideNextButton == false" ion-button class="next-button" (click)="goNext()">Next</button>
-    <button *ngIf="hideNextButton == true" ion-button class="next-button" (click)="goDashbaord()">Done</button>
+    <button ion-button class="prev-button" (click)="goPrev()">{{ 'GENERAL.PREV' | translate }}</button>
+    <button *ngIf="hideNextButton == false" ion-button class="next-button" (click)="goNext()">{{ 'GENERAL.NEXT' | translate }}</button>
+    <button *ngIf="hideNextButton == true" ion-button class="next-button" (click)="goDashbaord()">{{ 'GENERAL.DONE' | translate }}</button>
   </ion-toolbar>
 </ion-footer>
