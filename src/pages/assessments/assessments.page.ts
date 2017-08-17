@@ -98,10 +98,23 @@ export class AssessmentsPage {
     }
   */
   normaliseActivity = (activity) => {
-    let normalisedActivity: ActivityBase = {
-      id: activity.Activity.id,
-      name: activity.Activity.name,
-      description: activity.Activity.description
+    let normalisedActivity: ActivityBase;
+
+    if (activity.Activity) {
+      normalisedActivity = {
+        id: activity.Activity.id,
+        name: activity.Activity.name,
+        description: activity.Activity.description
+      }
+    }
+
+    // Some response from API use non-capitalised letters
+    if (activity.activity) {
+      normalisedActivity = {
+        id: activity.activity.id,
+        name: activity.activity.name,
+        description: activity.activity.description
+      }
     }
 
     activity.Activity = normalisedActivity;

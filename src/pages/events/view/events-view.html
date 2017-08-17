@@ -38,11 +38,11 @@
       <button ion-button *ngIf="!event.isBooked" class="book-btn" (click)="book(event)">
         {{ 'EVENTS.BOOK' | translate }}
       </button>
-      <button ion-button *ngIf="event.isBooked" class="checkin-btn" (click)="checkin(event)">
-        {{ 'EVENTS.CHECKIN' | translate }}
+      <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="checkin-btn" (click)="checkin(event)">
+        Check-in
       </button>
-      <button ion-button *ngIf="event.isBooked" class="cancel-btn" outline (click)="cancelBooking(event)">
-        {{ 'EVENTS.CANCELBOOKING' | translate }}
+      <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="cancel-btn" outline (click)="cancelBooking(event)">
+        Cancel Booking
       </button>
     </ion-buttons>
   </ion-toolbar>

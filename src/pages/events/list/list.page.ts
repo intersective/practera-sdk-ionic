@@ -3,7 +3,7 @@ import { NavController, LoadingController } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { EventService } from '../../../services/event.service';
@@ -23,12 +23,13 @@ export class EventsListPage {
     public eventService: EventService,
     public activityService: ActivityService,
     public loadingCtrl: LoadingController,
-    public translationService: TranslationService
   ) {}
+
   loadedEvents = [];
   events = [];
   noEvents = false;
   filter = 'browses';
+
   /**
    * @name filterEvents
    * @description filter and group events into 3 catergories (attended, my-bookings, browses)
@@ -78,6 +79,8 @@ export class EventsListPage {
       this.activityService.getList()
       .toPromise()
       .then((activities) => {
+        console.log('activities', activities);
+
         let activityIDs = [];
         _.forEach(activities, (act) => {
           activityIDs.push(act.Activity.id);
@@ -85,10 +88,12 @@ export class EventsListPage {
         // Get event by activityIDs
         this.eventService.getEvents({
           search: {
-            activity_id: '[' + _.toString(activityIDs) + ']'
+            activity_id: '[' + _.toString(activityIDs) + ']',
+            type: 'session'
           }
         })
         .then((events) => {
+          console.log('events', events);
           // After map event with activities,
           // assign events to 'events' and 'loadedEvents'
 

@@ -1,14 +1,19 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Tabs, NavParams, NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { loadingMessages, errMessages } from '../../../app/messages';
 import { TranslationService } from '../../../shared/translation/translation.service';
 // services
 import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
+
 // pages
 import { EventsListPage } from '../list/list.page';
 import { EventsDownloadPage } from '../download/events-download.page';
-import { EventCheckinPage } from '../checkin/event-checkin.page';
+import { AssessmentsPage } from '../../assessments/assessments.page';
+
+// We no need custom page for checkin anymore
+// import { EventCheckinPage } from '../checkin/event-checkin.page';
+
 import * as moment from 'moment';
 
 const terms = {
@@ -38,9 +43,11 @@ export class EventsViewPage {
   ) {
     this.event = params.get('event');
   }
+
   private availability(event): string {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
   }
+
   ionViewDidEnter() {
     this.event = this.params.get('event');
     console.log('ionViewDidEnter', this.event);
@@ -48,12 +55,14 @@ export class EventsViewPage {
       this.bookingStatus = this.availability(this.event);
     }
   }
+
   /**
    * Push Download page to ionic nav stack (navigate to attachment download page)
    */
   gotoDownload(event) {
     this.nav.push(EventsDownloadPage, {event});
   }
+
   /**
    * Event booking function
    * @param {object} event Single event object from get_events API response
@@ -61,6 +70,7 @@ export class EventsViewPage {
   checkBookStatus(){
     return false ? (this.event.remaining_capacity == this.event.capacity && this.event.isBooked == false) : (this.event.remaining_capacity != this.event.capacity && this.event.isBooked == true)
   }
+
   book(event): void {
     let earnPoints = this.alertCtrl.create({
       message: `<div class="earn-points-box"><h4>Congratulations!</h4><br><img src="./assets/img/success-logo.png" alt="Congratulations logo"><p>You have earned 20 points.</p></div>`,
@@ -74,6 +84,7 @@ export class EventsViewPage {
         }
       ]
     });
+
     let bookLoading = this.loadingCtrl.create({
       content: 'Booking ..'
     });
@@ -120,13 +131,27 @@ export class EventsViewPage {
     });
     bookPopup.present();
   }
+
+  /**
+   * examine event to allow check in
+   * @param {Object} event
+   */
+  allowCheckIn(event) {
+    if (event.References && event.References.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
   /**
    * Event checkin action
    * @param
    */
-  checkin(){
-    // this.nav.push(EventCheckinPage, {event: this.event});
+  checkin(event) {
+    console.log('event', event)
+    this.nav.push(AssessmentsPage, {activity: event});
   }
+
   /**
    * Event cancel booking action
    * @param
