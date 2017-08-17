@@ -13,23 +13,23 @@
     </ion-list>
 
     <div class="power_controls">
-      <button ion-button color="soft-green" block (click)="draw()">
+      <button ion-button outline (click)="draw()">
         Draw
       </button>
-      <button ion-button color="soft-green" block (click)="reset()">
+      <button ion-button outline (click)="reset()">
         Reset
       </button>
-      <button ion-button color="primary" block [disabled]="!statuses.spinOn" (click)="spin()">
+      <button ion-button outline [disabled]="!statuses.spinOn" (click)="spin()">
         Spin
       </button>
-      <button ion-button color="soft-green" block (click)="manualSpin()">
-        Manual Spin
-      </button>
-      <button ion-button color="soft-green" block (click)="play()">
+      <button ion-button outline (click)="play()">
         Play
       </button>
-      <button ion-button color="soft-green" block (click)="restart()">
+      <button ion-button outline (click)="restart()">
         Restart
+      </button>
+      <button ion-button outline (click)="changeSegmentsText('chaw')">
+        Change All Text
       </button>
     </div>
 
@@ -53,7 +53,5 @@
         </p>
       </canvas>
     </div>
-
-    <div class="tweenmax-test"> 123 </div>
   </div>
 </ion-content>
