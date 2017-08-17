@@ -142,8 +142,8 @@ export class LoginModalPage {
                   self.cacheService.setLocalObject('milestone_id', data.data[0].id);
                   console.log("milestone id: " + data.data[0].id);
                   this.navCtrl.push(TabsPage).then(() => {
+                    this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                     window.history.replaceState({}, '', window.location.origin);
-                    // console.log("url changed?");
                   });
                 },
                 err => {
@@ -215,6 +215,7 @@ export class LoginModalPage {
    */
   linkToForgetPassword() {
     this.navCtrl.push(this.forgetpasswordPage);
+    this.viewCtrl.dismiss();
   }
   closeModal() {
     this.viewCtrl.dismiss();
