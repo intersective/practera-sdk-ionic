@@ -106,4 +106,38 @@ export class ActivityService {
       References: activity.References
     });
   }
+
+  /*
+    turns:
+    [
+      {
+        "context_id": 25,
+        "Assessment": {
+          "id": 19,
+          "name": "Check-In Workshop 1"
+        }
+      },
+      {
+        "context_id": 26,
+        "Assessment": {
+          "id": 20,
+          "name": "Check-In Workshop 2"
+        }
+      },
+      ...
+    ]
+
+    into:
+    {
+      19: 25,
+      20: 26
+    }
+   */
+  public rebuildReferences(references) {
+    let result = {};
+    references.forEach(ref => {
+      result[ref.Assessment.id] = ref.context_id;
+    });
+    return result;
+  }
 }

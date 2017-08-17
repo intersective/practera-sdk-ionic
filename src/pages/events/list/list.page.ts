@@ -25,9 +25,9 @@ export class EventsListPage {
     public loadingCtrl: LoadingController,
   ) {}
 
-  activities = [];
-  loadedEvents = [];
-  events = [];
+  activities = {};
+  private loadedEvents = []; // Further processed events array, for private use
+  events = []; // ordered events array in filterEvents and to be access through template
   noEvents = false;
   filter = 'browses';
 
@@ -74,19 +74,23 @@ export class EventsListPage {
   showNoEventMessage() {
     return (this.noEvents);
   }
+
   loadEvents(): Promise<any> {
     return new Promise((resolve, reject) => {
       // Get activities IDs
       this.activityService.getList().toPromise()
       .then((activities) => {
         console.log('activities', activities);
-        this.activities = activities;
+        this.activities = {};
 
         let activityIDs = [];
         _.forEach(activities, (act) => {
+          this.activities[act.Activity.id] = this.activityService.normaliseActivity(act);
           activityIDs.push(act.Activity.id);
         });
-        // Get event by activityIDs
+
+        // Try to get event by all extracted activityIDs
+        // activity_id which has event returns event based on activity_id
         this.eventService.getEvents({
           search: {
             activity_id: '[' + _.toString(activityIDs) + ']',
@@ -98,11 +102,10 @@ export class EventsListPage {
           // After map event with activities,
           // assign events to 'events' and 'loadedEvents'
 
-          // loadedEvents will never change,
-          // it use to filtering events.
-          this.loadedEvents = this._injectCover(
-            this._mapWithActivity(events, activities)
-          );
+          // loadedEvents will never change (private use),
+          // it will be used for filtering of events (prep for display/template variable).
+          this.loadedEvents = this._injectCover(this._mapWithActivity(events));
+
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
           this.filterEvents();
@@ -115,8 +118,7 @@ export class EventsListPage {
     let loader = this.loadingCtrl.create();
 
     loader.present().then(() => {
-      this.loadEvents()
-      .then(() => {
+      this.loadEvents().then(() => {
         loader.dismiss();
       })
       .catch((err) => {
@@ -126,8 +128,7 @@ export class EventsListPage {
     });
   }
   doRefresh(e) {
-    this.loadEvents()
-    .then(() => {
+    this.loadEvents().then(() => {
       e.complete();
     })
     .catch((err) => {
@@ -152,17 +153,19 @@ export class EventsListPage {
 
     return events;
   }
-  private _mapWithActivity(events, activities) {
+
+  /**
+   * @name _mapWithActivity
+   * @description
+   * - Extract and merge event-activity only
+   * - skip non-event activities
+   * @param {array} events get_events response
+   */
+  private _mapWithActivity(events) {
     let result = [];
 
     events.forEach((event, key) => {
-      let activity = _.find(activities, (actv) => {
-        return actv.Activity.id === event.activity_id
-      });
-
-      if (activity) {
-        events[key].activity = activity.Activity;
-      }
+      event.activity = this.activities[event.activity_id];
       result.push(event);
     });
 
@@ -181,8 +184,7 @@ export class EventsListPage {
     }*/
     console.log(event);
     this.navCtrl.push(EventsViewPage, {
-      activities: this.activities,
-      event: event
+      event
     });
   }
 }
