@@ -12,26 +12,10 @@ import { SubmissionService } from '../../services/submission.service';
 
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 
-import * as _ from 'lodash';
-
 import { TranslationService } from '../../shared/translation/translation.service';
 import { confirmMessages } from '../../app/messages';
 
-class ActivityBase {
-  id: number;
-  name: string;
-  description: string;
-}
-
-class ReferenceAssessmentBase {
-  id: number;
-  name: string;
-}
-
-class ReferenceBase {
-  context_id: number;
-  Assessment: ReferenceAssessmentBase
-}
+import * as _ from 'lodash';
 
 @Component({
   selector: 'assessments-page',
@@ -65,74 +49,10 @@ export class AssessmentsPage {
       throw "Fatal Error: Activity not available";
     }
 
-    // @TODO move this to activity service
-    // this.activity = this.normaliseActivity(this.activity);
     console.log('this.activity', this.activity);
   }
 
   ionViewDidLoad() {}
-
-  /*
-  Turn Activity object from:
-    {
-      "Activity": {
-        "id": 14,
-        "name": "Warm-up Round",
-        "description": "...",
-        ...
-      },
-      "ActivitySequence": [
-        ...
-      ],
-      "References": [
-        {
-          "context_id": 1,
-          "Assessment": {
-            "id": 31,
-            "name": "Checkin Assessment"
-          }
-        },
-        ...
-      ]
-    }
-  */
-  normaliseActivity = (activity) => {
-    let normalisedActivity: ActivityBase;
-
-    if (activity.Activity) {
-      normalisedActivity = {
-        id: activity.Activity.id,
-        name: activity.Activity.name,
-        description: activity.Activity.description
-      }
-    }
-
-    // Some response from API use non-capitalised letters
-    if (activity.activity) {
-      normalisedActivity = {
-        id: activity.activity.id,
-        name: activity.activity.name,
-        description: activity.activity.description
-      }
-    }
-
-    activity.Activity = normalisedActivity;
-
-    // Normalise activity reference
-    activity.References.forEach((reference, idx) => {
-      let referenceAssessment: ReferenceAssessmentBase = {
-        id: reference.Assessment.id,
-        name: reference.Assessment.name,
-      }
-      let normalisedReference: ReferenceBase = {
-        context_id: reference.context_id,
-        Assessment: referenceAssessment
-      };
-      activity.References[idx] = normalisedReference;
-    });
-
-    return activity;
-  };
 
   /**
    * @description mapping assessments and submissions
