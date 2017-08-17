@@ -168,17 +168,16 @@ export class AssessmentsGroupPage {
     });
 
     // final step - save to localstorage
-    let assessmentId = this.assessment.Assessment.id;
     let submission = {
       Assessment: {
-          id: assessmentId,
-          context_id: this.activity.id || 'temporary_fake_activity_id'
+          id: this.assessment.id,
+          context_id: this.assessment.context_id || 'temporary_fake_activity_id'
       },
-      AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
+      // AssessmentSubmission: (this.submissions[0] && this.submissions[0].id) ? { id: this.submissions[0].id } : {},
       AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
-    this.cache.setLocal(`assessment.group.${assessmentId}`, JSON.stringify(submission));
+    this.cache.setLocal(`assessment.group.${this.assessment.id}`, JSON.stringify(submission));
     return submission;
   };
 
@@ -186,7 +185,7 @@ export class AssessmentsGroupPage {
    * @description retrieve saved progress from localStorage
    */
   retrieveProgress = (questions: Array<any>) => {
-    let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.Assessment.id}`);
+    let cachedProgress = this.cache.getLocalObject(`assessment.group.${this.assessment.id}`);
 
     let newQuestions = questions;
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
