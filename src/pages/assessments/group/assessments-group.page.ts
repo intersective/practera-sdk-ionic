@@ -96,19 +96,83 @@ export class AssessmentsGroupPage {
 
       result[question.id] = new FormGroup(group);
 
-    });
+    this.group = this.navParams.get('group') || [
+      {
+        type: 'oneof'
+      },
+      {
+        type: 'file'
+      },
+      {
+        type: 'text'
+      }
+    ];
 
-    return result;
-  };
+    console.log('this.group', this.group)
 
-  /**
-   * @TODO: confirm with backend how checkbox value submission is handled
-   * @description format checkbox value before post back to server
-   */
-  getCheckboxValues(choices) {
-    let result = {};
-    // choices
-    return result;
+    this.questions = this.navParams.get('questions') || [
+      {
+        id: 4,
+        type: 'file',
+        choices: [],
+        answers: {
+          submitter: [],
+          reviewer: [],
+        },
+        name: 'TASK: What was actually required of me in that situation?',
+        required: true
+      },
+      {
+        id: 1,
+        type: 'oneof',
+        choices: [
+          {
+            id: 1,
+            name: 'Test 1'
+          },
+          {
+            id: 2,
+            name: 'Test 2'
+          },
+          {
+            id: 3,
+            name: 'Test 3'
+          },
+        ],
+        answers: {
+          submitter: [],
+          reviewer: [],
+        },
+        name: 'SITUATION: The context in which this experience took place',
+        required: true
+      },
+      {
+        id: 2,
+        type: 'text',
+        choices: [],
+        answers: {
+          submitter: [],
+          reviewer: [],
+        },
+        name: 'TASK: What was actually required of me in that situation?',
+        required: true
+      },
+      {
+        id: 3,
+        type: 'text',
+        choices: [],
+        answers: {
+          submitter: [],
+          reviewer: [],
+        },
+        name: 'ACTION: What did I do given the situation and the task?',
+        required: true
+      },
+    ];
+
+    console.log('this.questions', this.questions)
+
+    this.formGroup = this.retrieveProgress(this.formQuestionGroup(this.questions));
   }
 
   /**

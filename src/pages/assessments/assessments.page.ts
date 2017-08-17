@@ -10,10 +10,12 @@ import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
 import { AssessmentsGroupPage } from './group/assessments-group.page';
 
+import { AssessmentsGroupPage } from './group/assessments-group.page'
+
 import * as _ from 'lodash';
 
 import { TranslationService } from '../../shared/translation/translation.service';
-import { confirmMessages } from '../../app/messages'; 
+import { confirmMessages } from '../../app/messages';
 
 @Component({
   selector: 'assessments-page',
@@ -65,8 +67,12 @@ export class AssessmentsPage {
         this.assessmentGroups = assessmentData[0].AssessmentGroup;
         this.assessmentQuestions = assessmentData[0].AssessmentQuestion;
 
+        console.log('this.assessmentGroups', this.assessmentGroups);
+        console.log('this.assessmentQuestions', this.assessmentQuestions);
+
         _.forEach(this.assessmentQuestions, (question, key) => {
 
+          // @TODO Check question one by one
           let idx = `assessment.group.${question.assessment_id}`;
           let exists = this.cache.getLocalObject(idx);
 
@@ -80,16 +86,34 @@ export class AssessmentsPage {
             this.allowSubmit = false;
             this.assessmentQuestions[key].answer = null;
           }
-
-          // // Inject answers
-          // if (this.answers[question.id]) {
-          //   this.assessmentQuestions[key].answer = this.answers[question.id];
-          // } else {
-          //   // Set allowSubmit to false when some assessment no answer
-          //   this.allowSubmit = false;
-          //   this.assessmentQuestions[key].answer = null;
-          // }
         });
+
+        // _.forEach(this.assessmentQuestions, (question, key) => {
+        //
+        //   let idx = `assessment.group.${question.assessment_id}`;
+        //   let exists = this.cache.getLocalObject(idx);
+        //
+        //   if (exists.AssessmentSubmissionAnswer) {
+        //     if (_.isString(exists.AssessmentSubmissionAnswer)) {
+        //       this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer;
+        //     } else {
+        //       this.assessmentQuestions[key].answer = exists.AssessmentSubmissionAnswer[0].answer;
+        //     }
+        //   } else {
+        //     this.allowSubmit = false;
+        //     this.assessmentQuestions[key].answer = null;
+        //   }
+        //
+        //
+        //   // // Inject answers
+        //   // if (this.answers[question.id]) {
+        //   //   this.assessmentQuestions[key].answer = this.answers[question.id];
+        //   // } else {
+        //   //   // Set allowSubmit to false when some assessment no answer
+        //   //   this.allowSubmit = false;
+        //   //   this.assessmentQuestions[key].answer = null;
+        //   // }
+        // });
 
         return resolve();
       }, reject);
@@ -170,42 +194,42 @@ export class AssessmentsPage {
     confirm.present();
   }
 
+  gotoAssessment(group, questions) {
+    this.navCtrl.push(AssessmentsGroupPage, { group, questions });
+  }
+
   // @TODO: Remove it later...
-  clickFillAllAnswers() {
-    _.forEach(this.assessmentQuestions, (question, key) => {
-      console.log('q', question);
-      if (question.question_type === 'file') {
-        this.answers[question.id] = {
-          type: 'file',
-          files: [
-            {
-              mime: 'image/jpeg',
-              url: 'https://placeimg.com/100/100/nature/grayscale'
-            },
-            {
-              mime: 'image/jpeg',
-              url: 'https://placeimg.com/100/100/nature/grayscale'
-            }
-          ]
-        };
-      }
-
-      if (question.question_type === 'oneof') {
-        this.answers[question.id] = {
-          type: 'file',
-          answers: [
-            {
-              context: 'This is answer for ' + question.assessment_id
-            }
-          ]
-        };
-      }
-
-      this.loadQuestions();
-    });
-  }
-
-  doAssessment(question) {
-    this.navCtrl.push(AssessmentsGroupPage, {activity: this.activity, assessment: question});
-  }
+  // clickFillAllAnswers() {
+  //   _.forEach(this.assessmentQuestions, (question, key) => {
+  //     console.log('q', question);
+  //     if (question.question_type === 'file') {
+  //       this.answers[question.id] = {
+  //         type: 'file',
+  //         files: [
+  //           {
+  //             mime: 'image/jpeg',
+  //             url: 'https://placeimg.com/100/100/nature/grayscale'
+  //           },
+  //           {
+  //             mime: 'image/jpeg',
+  //             url: 'https://placeimg.com/100/100/nature/grayscale'
+  //           }
+  //         ]
+  //       };
+  //     }
+  //
+  //     if (question.question_type === 'oneof') {
+  //       this.answers[question.id] = {
+  //         type: 'file',
+  //         answers: [
+  //           {
+  //             context: 'This is answer for ' + question.assessment_id
+  //           }
+  //         ]
+  //       };
+  //     }
+  //
+  //     this.loadQuestions();
+  //   });
+  // }
 }
