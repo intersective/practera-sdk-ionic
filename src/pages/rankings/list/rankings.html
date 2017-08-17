@@ -4,32 +4,35 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings">
-  <ion-list class="ranking-list">
-    <ion-col *ngFor="let listData of listRankingData">
-      <div class="ranking-item" *ngIf="isEmptyList === false">
-        <!-- <p col-1 *ngIf="i == 0"><ion-icon name="beer"></ion-icon></p>
-        <p col-1 *ngIf="i == 1"><ion-icon name="logo-bitcoin"></ion-icon></p>
-        <p col-1 *ngIf="i == 2"><ion-icon name="book"></ion-icon></p>
-        <p col-1 *ngIf="i > 2">{{ i+1 }}</p>  -->
-        <!-- please keep it for future usage -->
-        <p col-2>{{ listData.rank }}</p>
-        <p col-7 [ngClass]="listData.name === 'Hidden Name' ? 'blur-hidden-text' : ''">{{ listData.name }}</p>
-        <p col-2 class="user-score"><b>{{ listData.experience_points }}</b></p>
-        <p col-1></p>
+  <ion-list *ngIf="isEmptyList === false">
+    <ion-item *ngFor="let listData of listRankingData">
+      <div item-start>
+        {{ listData.rank }}
       </div>
-    </ion-col>
-    <ion-col>
-      <div class="error-message" *ngIf="isEmptyList === true">{{ rankingListEmpty }}</div>
-    </ion-col>
+      <div [ngClass]="{'muted': !listData.name}">
+        <span>{{ listData.name || 'Hidden Name' }}</span>
+      </div>
+      <div item-end>
+        <b>{{ listData.experience_points }}</b>
+      </div>
+    </ion-item>
   </ion-list>
-  <ion-list class="my-ranking" (click)="goRankingDetail()" *ngIf="isEmptyList === false">
-    <ion-row>
-      <ion-col class="ranking-item">
-        <p col-2>{{ myRankingData.rank }}</p>
-        <p col-7>{{ 'RANKING.ME' | translate }}</p>
-        <p col-2><b>{{ myRankingData.experience_points }}</b></p>
-        <p col-1><ion-icon name="arrow-forward"></ion-icon></p>
-      </ion-col>
-    </ion-row>
+
+  <ion-list *ngIf="isEmptyList === true" no-lines>
+    <ion-item>
+      {{ rankingListEmpty }}
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="my-ranking" *ngIf="isEmptyList === false">
+    <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
+      <div item-start>
+        {{ myRankingData.rank }}
+      </div>
+      {{ 'RANKING.ME' | translate }}
+      <div item-end>
+        <b>{{ myRankingData.experience_points }}</b>
+      </div>
+    </ion-item>
   </ion-list>
 </ion-content>

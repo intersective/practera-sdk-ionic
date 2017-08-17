@@ -154,6 +154,24 @@ $font-secondary: 'Raleway';
   .close-btn {
     @include closeBtn;
   }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
+  // general form
+  .general-form {
+    width: 100%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
+  }
 }
 // 7.2 login form box styling (shared module: part 2)
 .login-container {
@@ -491,42 +509,28 @@ event {
   ion-list:first-child {
     margin-bottom: 5px;
   }
-  ion-list {
-    margin: 0px;
+}
+tutorial-page {
+  .header-md::after,
+  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before,
+  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
+    background-image: none;
   }
-  ion-col {
-    padding: 0px;
+}
+.tutorial-slides {
+  h1 {
+    padding-bottom: 20pt;
   }
-  .ranking-list {
-    .user-score {
-      text-align: right;
-      b {
-        font-weight: normal;
-        width: 100%;
-        text-align: right;
-      }
-    }
+  p {
+    padding: 0 36pt;
+    margin-top: -12pt;
   }
-  .my-ranking {
-    border-top: 1px solid color($colors, border, base);
-    position: fixed;
-    bottom: 49px;
-    height: 54px;
-    width: 100%;
-    background: color($colors, secondary, base);
-    .ranking-item {
-      p {
-        border: none;
-        b {
-          font-weight: normal;
-          width: 100%;
-          text-align: right;
-        }
-      }
-    }
+  img {
+    width: 36%;
   }
-  ion-list.my-ranking.list.list-md {
-    bottom: 55px;
+  button.general-circle-btn {
+    width: 80%;
+    margin: 0 auto;
   }
   .ranking-item {
     width: 100%;
@@ -565,27 +569,62 @@ event {
     }
   }
 }
-// ranking details page stylings
-rankings-details-page {
-  padding: 0 6pt;
-  .ranking-details {
-    .scroll-content {
-      bottom: 0px !important;
-    }
+.skip-button {
+  border: none;
+  float: right;
+}
+.slides-button {
+  .toolbar-background {
+    background-color: color($colors, secondary, base);
+    border: none;
   }
-  .ranking-item {
-    p {
-      border: none !important;
-    }
+  .next-button,
+  .skip-button {
+    float: right;
   }
-  .ranking-detail-item {
-    padding: 2pt 0;
-    border-bottom: 1px solid color($colors, border, base);
+  .prev-button,
+  .next-button,
+  .skip-button {
+    background-color: color($colors, secondary, base) !important;
+    color: color($colors, primary, base);
+    box-shadow: none;
   }
-  .points-display {
-    padding: 2pt 0;
+}
+// 14.leaderboard settings page styling
+.leaderboard-settings {
+  .hide-settings {
+    padding: 0;
+    margin: 0;
     display: flex;
-    border-bottom: 1px solid color($colors, border, base);
+    align-items: center;
+  }
+}
+// 15. items popup general styling
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .tutorial-slides p {
+      margin-top: 12pt;
+    }
+    .tutorial-slides img {
+      width: 50%;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 100%;
+      margin-top: 12pt;
+      padding: 12pt;
+      background-color: color($colors, primary, base);
+      color: color($colors, secondary, base);
+    }
   }
 }
 // 11. Settings & Tutorial page stylings
@@ -650,7 +689,7 @@ tutorial-page {
     align-items: center;
   }
 }
-// 15. items popup general styling 
+// 15. items popup general styling
 .items-popup {
   .scroll-content {
     overflow-y: hidden;
@@ -659,7 +698,7 @@ tutorial-page {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     .tutorial-slides p {
       margin-top: 12pt;
     }

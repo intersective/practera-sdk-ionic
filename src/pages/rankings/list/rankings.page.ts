@@ -43,6 +43,7 @@ export class RankingsPage {
     let gameId = this.cacheService.getLocalObject('game_id');
     this.gameService.getCharacters(gameId)
       .subscribe((characters) => {
+        // Now only have one character per project
         let me = characters.Characters[0];
         this.gameService.getRanking(gameId, me.id)
           .subscribe(
@@ -56,14 +57,16 @@ export class RankingsPage {
                 this.listRankingData = this.totalData.Characters;
                 console.log(this.myRankingData);
                 console.log(this.listRankingData);
-                _.forEach(this.listRankingData, (element, idx) => {
-                  if(element.meta && element.meta.private === 1) {
-                    // element.name = "User"+(index+1);
-                    this.listRankingData[idx].name = 'Hidden Name';
-                    // console.log("Hidden Name: ", element.name);
-                  }
+                if (results) {
                   this.isEmptyList = false;
-                });
+                }
+                // _.forEach(this.listRankingData, (element, idx) => {
+                //   if (!element.name) {
+                //     this.listRankingData[idx].name = 'Hidden Name';
+                //   }
+                //   this.isEmptyList = false;
+                // });
+                console.log('this.listRankingData', this.listRankingData);
               });
             },
             err => {
@@ -85,7 +88,10 @@ export class RankingsPage {
         });
       });
   }
-  goRankingDetail(){
-    this.navCtrl.push(RankingDetailsPage);
+  goRankingDetail(myRanking){
+    console.log('goRankingDetail', myRanking)
+    this.navCtrl.push(RankingDetailsPage, {
+      myRanking: myRanking
+    });
   }
 }
