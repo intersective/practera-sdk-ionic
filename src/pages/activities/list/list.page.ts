@@ -89,54 +89,47 @@ export class ActivitiesListPage implements OnInit {
       position: 'bottom'
     });
     let getActivities = this.activityService.getList();
-    let getGames = this.gameService.getGames();
     loadingData.present().then(() => {
-      Observable.forkJoin([getGames, getActivities])
-              .subscribe(
-                results => {
-                    _.map(results[0], (element) => {
-                      // console.log("game id: ", element[0].id);
-                      this.cacheService.setLocal('game_id', element[0].id);
-                    })
-                    this.activities = results[1];
-                    if(this.activities.length == 0){
-                      this.returnError = true;
-                    }
-                    let getCharacter = this.characterService.getCharacter();
-                    let getSubmission = this.submissionService.getSubmissions();
-                    Observable.forkJoin([getSubmission, getCharacter])
-                              .subscribe(results => {
-                                this.submissionData = results[0];
-                                _.forEach(this.submissionData, element => {
-                                  if(element.AssessmentSubmission.status == 'published'){
-                                    this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
-                                  }
-                                });
-                                loadingData.dismiss().then(() => {
-                                  this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
-                                  this.currentPercentage = this.percentageValue.toFixed(2);
-                                  // console.log("Percent: ", this.currentPercentage); // display as string format
-                                  this.characterData = results[1].Characters[0];
-                                  this.cacheService.setLocal('character_id', this.characterData.id)
-                                  console.log("character id: ", this.characterData.id);
-                                  this.characterCurrentExperience = this.characterData.experience_points;
-                                  // console.log("Experience: ", this.characterCurrentExperience);
-                                })
-                              },
-                              err => {
-                                loadingData.dismiss().then(() => {
-                                  loadingFailed.present();
-                                });
-                              }
-                            );
-
-                },
-                error => {
-                  loadingData.dismiss().then(() => {
-                    loadingFailed.present();
-                  });
-                }
-              );
+      getActivities.subscribe(
+        results => {
+            this.activities = results;
+            if(this.activities.length == 0){
+              this.returnError = true;
+            }
+            let getCharacter = this.characterService.getCharacter();
+            let getSubmission = this.submissionService.getSubmissions();
+            Observable.forkJoin([getSubmission, getCharacter])
+              .subscribe(results => {
+                this.submissionData = results[0];
+                _.forEach(this.submissionData, element => {
+                  if(element.AssessmentSubmission.status == 'published'){
+                    this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
+                  }
+                });
+                loadingData.dismiss().then(() => {
+                  this.percentageValue = (this.submissionPoints/this.submissionData.length)*100;
+                  this.currentPercentage = this.percentageValue.toFixed(2);
+                  // console.log("Percent: ", this.currentPercentage); // display as string format
+                  this.characterData = results[1].Characters[0];
+                  this.cacheService.setLocal('character_id', this.characterData.id)
+                  console.log("character id: ", this.characterData.id);
+                  this.characterCurrentExperience = this.characterData.experience_points;
+                  // console.log("Experience: ", this.characterCurrentExperience);
+                })
+              },
+              err => {
+                loadingData.dismiss().then(() => {
+                  loadingFailed.present();
+                });
+              }
+            );
+          },
+          error => {
+            loadingData.dismiss().then(() => {
+              loadingFailed.present();
+            });
+          }
+        );
     });
   }
   // redirect to activity detail page
