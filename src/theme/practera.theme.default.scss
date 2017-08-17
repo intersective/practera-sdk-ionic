@@ -502,6 +502,7 @@ event {
   }
 }
 // 13. Rankings Page Styling
+// 13. Rankings Page Styling
 .rankings {
   .scroll-content {
     bottom: 49px !important;
@@ -509,28 +510,42 @@ event {
   ion-list:first-child {
     margin-bottom: 5px;
   }
-}
-tutorial-page {
-  .header-md::after,
-  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before,
-  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
-    background-image: none;
+  ion-list {
+    margin: 0px;
   }
-}
-.tutorial-slides {
-  h1 {
-    padding-bottom: 20pt;
+  ion-col {
+    padding: 0px;
   }
-  p {
-    padding: 0 36pt;
-    margin-top: -12pt;
+  .ranking-list {
+    .user-score {
+      text-align: right;
+      b {
+        font-weight: normal;
+        width: 100%;
+        text-align: right;
+      }
+    }
   }
-  img {
-    width: 36%;
+  .my-ranking {
+    border-top: 1px solid color($colors, border, base);
+    position: fixed;
+    bottom: 49px;
+    height: 54px;
+    width: 100%;
+    background: color($colors, secondary, base);
+    .ranking-item {
+      p {
+        border: none;
+        b {
+          font-weight: normal;
+          width: 100%;
+          text-align: right;
+        }
+      }
+    }
   }
-  button.general-circle-btn {
-    width: 80%;
-    margin: 0 auto;
+  ion-list.my-ranking.list.list-md {
+    bottom: 55px;
   }
   .ranking-item {
     width: 100%;
@@ -569,25 +584,27 @@ tutorial-page {
     }
   }
 }
-.skip-button {
-  border: none;
-  float: right;
-}
-.slides-button {
-  .toolbar-background {
-    background-color: color($colors, secondary, base);
-    border: none;
+// ranking details page stylings
+rankings-details-page {
+  padding: 0 6pt;
+  .ranking-details {
+    .scroll-content {
+      bottom: 0px !important;
+    }
   }
-  .next-button,
-  .skip-button {
-    float: right;
+  .ranking-item {
+    p {
+      border: none !important;
+    }
   }
-  .prev-button,
-  .next-button,
-  .skip-button {
-    background-color: color($colors, secondary, base) !important;
-    color: color($colors, primary, base);
-    box-shadow: none;
+  .ranking-detail-item {
+    padding: 2pt 0;
+    border-bottom: 1px solid color($colors, border, base);
+  }
+  .points-display {
+    padding: 2pt 0;
+    display: flex;
+    border-bottom: 1px solid color($colors, border, base);
   }
 }
 // 14.leaderboard settings page styling
