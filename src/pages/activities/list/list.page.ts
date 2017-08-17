@@ -22,6 +22,8 @@ import { SubmissionService } from '../../../services/submission.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
+import { ItemsPopupPage } from '../../assessments/popup/items-popup.page';
+import { TabsPage } from '../../../pages/tabs/tabs.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 /**
@@ -35,6 +37,8 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage implements OnInit {
+  public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
+  public newItemsData: any = [];
   public activities: any = [];
   public initialItems: any = [];
   public totalAchievements: any = [];
@@ -70,7 +74,11 @@ export class ActivitiesListPage implements OnInit {
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public translationService: TranslationService
-  ) {}
+  ) {
+    this.anyNewItems = this.cacheService.getLocal('gotNewItems');
+    this.newItemsData = this.cacheService.getLocalObject('allNewItems');
+    console.log("item data: ", this.newItemsData);
+  }
   ngOnInit() {
     this.loadingDashboard();
   }
@@ -131,7 +139,6 @@ export class ActivitiesListPage implements OnInit {
                                       console.log("Items Data error: ", err);
                                     }
                                   );
-
                 });
               },
               err => {
@@ -161,5 +168,12 @@ export class ActivitiesListPage implements OnInit {
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
     console.log("Achievement ID: ", unlock_id);
     disabledActivityPopup.present();
+  }
+  // close modal and display as main page
+  closeItemsShwon(){
+    this.anyNewItems = !this.cacheService.getLocal('gotNewItems');
+    this.cacheService.setLocalObject('allNewItems', []);
+    this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
+    this.navCtrl.setRoot(TabsPage);
   }
 }

@@ -84,6 +84,7 @@ export class ResetpasswordModelPage {
               this.cacheService.setLocalObject('apikey', data.apikey);
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
+              this.cacheService.setLocal('gotNewItems', false);
               // get game_id data after login 
               this.gameService.getGames()
                   .subscribe(
@@ -121,6 +122,7 @@ export class ResetpasswordModelPage {
                       console.log("milestone id: " + data.data[0].id);
                       loading.dismiss();
                       this.navCtrl.push(TabsPage).then(() => {
+                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                         window.history.replaceState({}, '', window.location.origin);
                       });
                     },
