@@ -5,6 +5,8 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 // import { AssessmentsPage } from '../../assessments/assessment.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
+import { ActivityService } from '../../../services/activity.service';
+
 import * as _ from 'lodash';
 @Component({
   templateUrl: './view.html'
@@ -17,7 +19,8 @@ export class ActivitiesViewPage {
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    private activityService: ActivityService
   ) {}
   // @TODO: use simple mock data for assessment first
   /**
@@ -28,7 +31,7 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
-    this.activity = this.normaliseActivity(this.navParams.get('activity') || {});
+    this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
 
     console.log("Specific Activity Data, ", this.activity);
@@ -36,37 +39,6 @@ export class ActivitiesViewPage {
     this.submissions = [];
     console.log(this.activity);
   }
-  /**
-   * normalise activities
-   */
-  private normaliseActivities(activities): Array<any> {
-    let result = [];
-
-    activities.forEach((act, index) => {
-      result[index] = _.merge(act.Activity, {
-        activity: act.Activity,
-        sequences: act.ActivitySequence,
-        Activity: act.Activity,
-        ActivitySequence: act.ActivitySequence,
-        References: act.References
-      });
-    });
-    return result;
-  }
-
-  /**
-   * normalise single activity object
-   */
-  private normaliseActivity(activity) {
-    return _.merge(activity.Activity, {
-      activity: activity.Activity,
-      sequences: activity.ActivitySequence,
-      Activity: activity.Activity,
-      ActivitySequence: activity.ActivitySequence,
-      References: activity.References
-    });
-  }
-
   /**
    * @description display activity detail modal page
    */

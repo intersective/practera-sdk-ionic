@@ -37,8 +37,6 @@ import { WindowRef } from '../shared/window';
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
-import { CurrentActivitiesComponent } from '../components/currentActivities/currentActivities';
-import { CurrentLevelsComponent } from '../components/currentLevels/currentLevels';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
@@ -69,7 +67,6 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
-import { HomePage } from '../pages/home/home';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
@@ -112,8 +109,6 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CurrentActivitiesComponent,
-    CurrentLevelsComponent,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -124,7 +119,6 @@ export function HttpLoaderFactory(http: Http) {
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
-    HomePage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
