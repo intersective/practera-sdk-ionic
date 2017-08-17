@@ -6,7 +6,6 @@ import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
-import { AchievementService } from '../../../services/achievement.service';
 
 import * as _ from 'lodash';
 @Component({
@@ -15,6 +14,7 @@ import * as _ from 'lodash';
 export class ActivitiesViewPage {
   activity: any = {};
   assessment: any = {};
+  assessments: any = {};
   submissions: Array<any> = [];
   achievements: any = {
     available: [],

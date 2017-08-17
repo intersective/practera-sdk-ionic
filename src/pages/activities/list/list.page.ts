@@ -9,16 +9,14 @@ import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
-import 'rxjs/add/observable/forkJoin';
-import 'rxjs/add/operator/map';
 import * as _ from 'lodash';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
-import { CacheService } from '../../../shared/cache/cache.service';
-import { CharacterService } from '../../../services/character.service';
 import { GameService } from '../../../services/game.service';
 import { SubmissionService } from '../../../services/submission.service';
+import { CacheService } from '../../../shared/cache/cache.service';
+import { CharacterService } from '../../../services/character.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
@@ -40,11 +38,11 @@ export class ActivitiesListPage implements OnInit {
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
   public activities: any = [];
+  public currentPercentage: any = 0;
   public initialItems: any = [];
   public totalAchievements: any = [];
   public currentPoints: number = 0;
   public maxPoints: number = 0;
-  public currentPercentage: any = '0';
   public filteredSubmissions: any = [];
   public characterData: any = [];
   public submissionData: any = [];
@@ -66,10 +64,10 @@ export class ActivitiesListPage implements OnInit {
     public http: Http,
     public activityService: ActivityService,
     public achievementService: AchievementService,
-    public cacheService: CacheService,
-    public characterService: CharacterService,
     public gameService: GameService,
     public submissionService: SubmissionService,
+    public cacheService: CacheService,
+    public characterService: CharacterService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -106,7 +104,7 @@ export class ActivitiesListPage implements OnInit {
               this.returnError = true;
             }
             let getCharacter = this.characterService.getCharacter();
-            let getSubmission = this.submissionService.getSubmissions();
+            let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
               .subscribe(results => {
                 loadingData.dismiss().then(() => {

@@ -68,7 +68,6 @@ import { EventsPreviewPage } from '../pages/events/download/events-preview.page'
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { GalleryPage } from '../pages/gallery/gallery';
-import { HomePage } from '../pages/home/home';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginModalPage } from '../pages/login-modal/login-modal';
@@ -89,7 +88,6 @@ import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
-
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
@@ -124,7 +122,6 @@ export function HttpLoaderFactory(http: Http) {
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
-    HomePage,
     LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
@@ -156,7 +153,6 @@ export function HttpLoaderFactory(http: Http) {
     TutorialPage,
     TermConditionPage,
     TermContentComponent,
-    TestPage,
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
@@ -236,7 +232,6 @@ export function HttpLoaderFactory(http: Http) {
     EventsViewPage,
     ForgetPasswordPage,
     GalleryPage,
-    HomePage,
     LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,

@@ -14,6 +14,7 @@ import { TermConditionPage } from '../term-condition/term-condition.page';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
+  public helpline = "help@practera.com";
   public logoutMessage: any = loadingMessages.Logout.logout;
   public loadingMessage: any = loadingMessages.Logout.logout;
   public helpline = "help@practera.com";

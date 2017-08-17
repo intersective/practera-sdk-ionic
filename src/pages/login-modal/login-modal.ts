@@ -14,6 +14,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { MilestoneService } from '../../services/milestone.service';
+import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
@@ -95,7 +96,7 @@ export class LoginModalPage {
           self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
           self.cacheService.setLocalObject('teams', data.Teams);
           self.cacheService.setLocal('gotNewItems', false);
-          // get game_id data after login 
+          // get game_id data after login
           this.gameService.getGames()
               .subscribe(
                 data => {
