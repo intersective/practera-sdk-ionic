@@ -39,6 +39,13 @@
     "HEADER": "Great - you are almost there! Just one more thing...",
     "PAGETITLE": "Set Password"
   },
+  "RANKING": {
+    "DETAIL": "Ranking Details",
+    "ME": "Me",
+    "MONTHLYPOINTS": "Points(Monthly)",
+    "PAGETITLE": "Ranking",
+    "TOTALPOINTS": "Points(Total)"
+  },
   "RESETPASSWORD": {
     "PAGETITLE": "Reset Password"
   },
