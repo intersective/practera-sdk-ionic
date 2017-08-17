@@ -22,6 +22,9 @@ export class ActivitiesViewPage {
     obtained: {},
     maxPoints: {}
   };
+  loadings = {
+    submissions: false
+  };
 
   constructor(
     private navParams: NavParams,
@@ -42,12 +45,15 @@ export class ActivitiesViewPage {
    * - change template view based on responded data format
    */
   ionViewDidEnter(): void {
+    this.loadings.submissions = true;
 
+    // assessment
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
-
     this.assessment = this.activity.assessment;
 
+
+    // submission
     this.submissions = [];
     this.submissionService.getSubmissions({
       search: { context_id: this.assessment.context_id }
@@ -59,6 +65,8 @@ export class ActivitiesViewPage {
         });
         console.log(this.submissions);
       }
+
+      this.loadings.submissions = false;
     });
 
     // badges
