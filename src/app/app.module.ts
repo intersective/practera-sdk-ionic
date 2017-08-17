@@ -13,13 +13,14 @@ import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
-import { i18nData } from './assets/i18n-en'; 
+import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
+import { GameService } from '../services/game.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
 import { GroupEmitterService } from '../components/questions/group-emitter.service';
@@ -74,7 +75,7 @@ import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
-import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page'; 
+import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
 import { RegistrationModalPage } from '../pages/registration/modal';
@@ -270,6 +271,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: FilestackService, useClass: FilestackService },
     WindowRef,
     GroupEmitterService,
+    GameService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
 })

@@ -4,7 +4,7 @@ import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
 
 @Injectable()
-export class  {
+export class GameService {
   private gamesTarget = 'api/games';
   private charactersTarget = 'api/characters';
 

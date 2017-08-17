@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Http, Headers, RequestOptions, URLSearchParams } from '@angular/http';
+import { URLSearchParams } from '@angular/http';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 // services
@@ -9,19 +9,21 @@ import { RequestService } from '../shared/request/request.service';
 @Injectable()
 export class ActivityService {
   public milestoneID = this.cacheService.getLocalObject('milestone_id');
-  public activityAPIEndPoint = 'api/activities.json';
   constructor(
     private request: RequestService,
     private cacheService: CacheService,
-    private http: Http
   ) {}
-  public getList() {
-    return this.request.get(this.activityAPIEndPoint, {
+
+  public getList(options?) {
+    options = options || {
       search: {
         milestone_id: this.cacheService.getLocal('milestone_id')
       }
-    });
+    };
+
+    return this.request.get('api/activities.json', options);
   }
+
   public getLevels = (options?: any) => {
     let params: URLSearchParams = new URLSearchParams();
     if (options.search) {
@@ -40,8 +42,7 @@ export class ActivityService {
           params.set('project_id', data.user.project_id);
           options.search = params;
         }
-        return this.request.get(this.activityAPIEndPoint, options)
-          .toPromise();
+        return this.getList(options).toPromise();
       });
   }
   normalise(activity, index) {
@@ -63,9 +64,5 @@ export class ActivityService {
     // if sorting is not available, use index instead
     activity.order = activity.Activity.order || index;
     return activity;
-  }
-  // another way of get activity data list
-  public getActivities(){
-    return this.request.get(this.activityAPIEndPoint);
   }
 }
