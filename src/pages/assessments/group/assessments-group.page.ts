@@ -57,6 +57,113 @@ export class AssessmentsGroupPage {
       this.buildFormGroup(this.questions),
       this.formInProgressAnswer(this.submission)
     );
+
+    console.log('this.submission', this.submission);
+    console.log('this.assessment', this.assessment);
+    console.log('this.questions', this.questions);
+  }
+
+  /**
+   * @description check answers are editable
+   *    Must define submissions first
+   * @type {boolen}
+   */
+   // @TODO modify needed
+   private isInputEditable = (submission):boolean => {
+     if (_.isEmpty(submission) || submission.status === 'in progress') {
+       return true;
+     }
+     return false;
+    //  let editable = false;
+    //  _.forEach(this.submissions, (submission) => {
+    //    if (_.isEmpty(submission)) {
+    //      editable = true;
+    //    } else {
+    //      _.forEach(submission, (subm) => {
+    //        if (
+    //          subm.AssessmentSubmission &&
+    //          subm.AssessmentSubmission.status === 'in progress'
+    //        ) {
+    //          editable = true;
+    //        }
+    //      });
+    //    }
+    //  });
+    //  return editable;
+   }
+
+  /**
+   * @description use proper context id based on situation
+   *
+   * @type {array}
+   */
+   // @TODO modify
+  private mapQuestionsFeedback = (questions, submission):any => {
+    if (_.isEmpty(submission) || _.isEmpty(submission.review) || submission.status !== 'published') {
+      return questions;
+    }
+
+    _.forEach(submission.review, (review) => {
+      _.forEach(questions, (question, idx) => {
+        if (review.assessment_question_id === question.id) {
+          // text type
+          if (question.type === 'text') {
+            questions[idx].review_answer = review;
+          }
+
+          // oneof type
+          if (question.type === 'oneof') {
+            questions[idx].review_answer = review;
+            _.forEach(question.choices, (choice, key) => {
+              if (choice.id == review.answer && choice.id == question.answer.answer) {
+                questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+              }
+              if (choice.id != review.answer && choice.id == question.answer.answer) {
+                questions[idx].choices[key].name = choice.name + ' (you)';
+              }
+              if (choice.id == review.answer && choice.id != question.answer.answer) {
+                questions[idx].choices[key].name = choice.name + ' (reviewer)';
+              }
+            });
+          }
+        }
+      });
+    });
+
+    // _.forEach(submissions, (submission) => {
+    //   _.forEach(submission, (subm) => {
+    //
+    //     _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
+    //       _.forEach(questions, (question, idx) => {
+    //
+    //         if (reviewAnswer.assessment_question_id === question.id) {
+    //           // text type
+    //           if (question.type === 'text') {
+    //             questions[idx].review_answer = reviewAnswer;
+    //           }
+    //
+    //           // oneof type
+    //           if (question.type === 'oneof') {
+    //             questions[idx].review_answer = reviewAnswer;
+    //             _.forEach(question.choices, (choice, key) => {
+    //               if (choice.id == reviewAnswer.answer && choice.id == question.answer.answer) {
+    //                 questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+    //               }
+    //               if (choice.id != reviewAnswer.answer && choice.id == question.answer.answer) {
+    //                 questions[idx].choices[key].name = choice.name + ' (you)';
+    //               }
+    //               if (choice.id == reviewAnswer.answer && choice.id != question.answer.answer) {
+    //                 questions[idx].choices[key].name = choice.name + ' (reviewer)';
+    //               }
+    //             });
+    //           }
+    //         }
+    //
+    //       });
+    //     });
+    //   });
+    // });
+    return questions;
   }
 
   /**
