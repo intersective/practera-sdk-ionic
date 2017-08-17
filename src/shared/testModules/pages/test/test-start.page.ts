@@ -294,7 +294,7 @@ const PAGES = [
             question_type: 'file',
             audience: "[\"reviewer\",\"submitter\"]",
             file_type: 'image',
-            choices: [],
+            AssessmentQuestionChoice: [],
             answers: {
               submitter: [],
               reviewer: [],
@@ -307,19 +307,46 @@ const PAGES = [
             question_type: 'multiple',
             audience: "[\"reviewer\",\"submitter\"]",
             file_type: null,
-            choices: [
+            AssessmentQuestionChoice: [
               {
-                id: 1,
-                name: 'Test 1'
+                  "id": 1,
+                  "assessment_question_id": 5,
+                  "assessment_choice_id": 1,
+                  "order": 1,
+                  "weight": "1",
+                  "explanation": null,
+                  "AssessmentChoice": {
+                      "id": 1,
+                      "name": "Test 1",
+                      "description": ""
+                  }
               },
               {
-                id: 2,
-                name: 'Test 2'
+                  "id": 2,
+                  "assessment_question_id": 5,
+                  "assessment_choice_id": 2,
+                  "order": 2,
+                  "weight": "1",
+                  "explanation": null,
+                  "AssessmentChoice": {
+                      "id": 2,
+                      "name": "Test 2",
+                      "description": ""
+                  }
               },
               {
-                id: 3,
-                name: 'Test 3'
-              },
+                  "id": 3,
+                  "assessment_question_id": 5,
+                  "assessment_choice_id": 3,
+                  "order": 3,
+                  "weight": "1",
+                  "explanation": null,
+                  "AssessmentChoice": {
+                      "id": 3,
+                      "name": "Test 3",
+                      "description": ""
+                  }
+              }
             ],
             answers: {
               submitter: [],
@@ -333,19 +360,46 @@ const PAGES = [
             question_type: 'oneof',
             audience: "[\"reviewer\",\"submitter\"]",
             file_type: null,
-            choices: [
+            AssessmentQuestionChoice: [
               {
-                id: 1,
-                name: 'Test 1'
+                  "id": 1,
+                  "assessment_question_id": 5,
+                  "assessment_choice_id": 1,
+                  "order": 1,
+                  "weight": "1",
+                  "explanation": null,
+                  "AssessmentChoice": {
+                      "id": 1,
+                      "name": "Test 1",
+                      "description": ""
+                  }
               },
               {
-                id: 2,
-                name: 'Test 2'
+                  "id": 2,
+                  "assessment_question_id": 5,
+                  "assessment_choice_id": 2,
+                  "order": 2,
+                  "weight": "1",
+                  "explanation": null,
+                  "AssessmentChoice": {
+                      "id": 2,
+                      "name": "Test 2",
+                      "description": ""
+                  }
               },
               {
-                id: 3,
-                name: 'Test 3'
-              },
+                  "id": 3,
+                  "assessment_question_id": 5,
+                  "assessment_choice_id": 3,
+                  "order": 3,
+                  "weight": "1",
+                  "explanation": null,
+                  "AssessmentChoice": {
+                      "id": 3,
+                      "name": "Test 3",
+                      "description": ""
+                  }
+              }
             ],
             answers: {
               submitter: [],
@@ -359,7 +413,7 @@ const PAGES = [
             question_type: 'text',
             audience: "[\"reviewer\",\"submitter\"]",
             file_type: null,
-            choices: [],
+            AssessmentQuestionChoice: [],
             answers: {
               submitter: [],
               reviewer: [],
@@ -372,7 +426,7 @@ const PAGES = [
             question_type: 'text',
             audience: "[\"reviewer\",\"submitter\"]",
             file_type: null,
-            choices: [],
+            AssessmentQuestionChoice: [],
             answers: {
               submitter: [],
               reviewer: [],

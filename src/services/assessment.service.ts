@@ -46,7 +46,7 @@ export class QuestionBase<T> {
 
 export class Submission {
   Assessment: Assessment;
-  AssessmentSubmissionAnswer: Answer[];
+  AssessmentSubmissionAnswer: Object;
 }
 
 @Injectable()

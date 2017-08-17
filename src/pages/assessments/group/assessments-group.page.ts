@@ -150,7 +150,7 @@ export class AssessmentsGroupPage {
    * @description store assessment answer/progress locally
    */
   storeProgress = () => {
-    let answers = [];
+    let answers = {};
     _.forEach(this.formGroup, (question, id) => {
       let values = question.getRawValue(),
           answer = {
@@ -162,7 +162,7 @@ export class AssessmentsGroupPage {
           };
 
 
-      answers.push(answer);
+      answers[id] = answer;
     });
 
     // final step - save to localstorage
@@ -172,7 +172,7 @@ export class AssessmentsGroupPage {
           id: assessmentId,
           activity_id: this.activity.id || 'temporary_fake_activity_id'
       },
-      AssessmentSubmissionAnswer: answers || []
+      AssessmentSubmissionAnswer: answers
     };
     this.submission = submission;
     console.log(this.submission);
@@ -189,8 +189,11 @@ export class AssessmentsGroupPage {
     let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
 
     if (!_.isEmpty(savedProgress)) {
+
+      // index "id" is set as question.id in @Function buildFormGroup above
       _.forEach(newQuestions, (question, id) => {
-        if (savedProgress[id]) {
+        // check integrity of saved answer (question might get updated)
+        if (savedProgress[id] && savedProgress[id].assessment_question_id == id) {
           newQuestions[id] = this.setValueWith(question, savedProgress[id]);
         }
       });
@@ -259,11 +262,10 @@ export class AssessmentsGroupPage {
     let result = [];
 
     questions.forEach((question) => {
-      // let thisQuestion = question['Assess.Assessment'];
-
-      let choices = (question.AssessmentQuestion.AssessmentQuestionChoice) ?
-        this.normaliseChoices(question.AssessmentQuestion.AssessmentQuestionChoice) :
-        [];
+      let choices = question.AssessmentQuestionChoice || [];
+      if (choices.length > 0) {
+        choices = this.normaliseChoices(choices);
+      }
 
       let normalised: QuestionBase<any> = {
         id: question.AssessmentQuestion.id,
