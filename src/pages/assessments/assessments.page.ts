@@ -9,7 +9,7 @@ import {
 import { Observable } from 'rxjs/Observable';
 import { CacheService } from '../../shared/cache/cache.service';
 import { AssessmentService } from '../../services/assessment.service';
-import { AssessmentsGroupPage } from './group/assessments-group.page';
+import { SubmissionService } from '../../services/submission.service';
 
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 
@@ -45,7 +45,7 @@ export class AssessmentsPage {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private assessmentService: AssessmentService,
-    public translationService: TranslationService
+    private submissionService: SubmissionService
   ) {
     this.activity = this.navParams.get('activity');
     console.log('this.activity', this.activity);
@@ -80,6 +80,21 @@ export class AssessmentsPage {
         }
       });
 
+      let getSubmissions = (contextId) => {
+        return this.submissionService.getSubmissions({
+          search: {
+            context_id: contextId
+          }
+        });
+      }
+
+      let submissionTasks = [];
+      _.forEach(this.activity.References, (reference) => {
+        if (reference.context_id) {
+          return submissionTasks.push(getSubmissions(reference.context_id));
+        }
+      });
+
       Observable.forkJoin(tasks)
         .subscribe(
           (groupOfAssessments: any) => {
@@ -88,6 +103,8 @@ export class AssessmentsPage {
                 this.assessmentGroups = _.union(this.assessmentGroups, assessment);
               });
             });
+
+            console.log('this.assessmentGroups', this.assessmentGroups);
 
             // This use in tittle of the page.
             // In normal case, we only have one assessment in this page.
@@ -100,7 +117,41 @@ export class AssessmentsPage {
             reject();
           },
           () => {
-            console.log('completed');
+            // @TODO: remove it later
+            this.submissionService.getSubmissions()
+            .subscribe(s => console.log(s));
+
+            // Not really test it because it
+            // only can test it when allow to do submission
+            Observable.forkJoin(submissionTasks)
+              .subscribe(
+                (submissions) => {
+                  // Mapping answer to question
+                  _.forEach(submissions, (submission) => {
+                    if (submission) {
+                      _.forEach(submission.AssessmentSubmissionAnswer, (answer) => {
+                        _.forEach(this.assessmentGroups, (group, idx) => {
+                          let foundQuestionIdx = _.findIndex(group.AssessmentQuestion, {
+                            id: answer.assessment_question_id
+                          });
+
+                          if (foundQuestionIdx > -1) {
+                            console.log('Inject answer to ', this.assessmentGroups[idx].AssessmentQuestion.id)
+                            this.assessmentGroups[idx].AssessmentQuestion[foundQuestionIdx].answer = answer;
+                          }
+                        });
+
+                      });
+                    }
+                  });
+
+
+                  console.log('this.assessmentGroups 2', this.assessmentGroups);
+                },
+                (err) => {
+                  console.log('err', err)
+                }
+              );
           }
         );
     });
