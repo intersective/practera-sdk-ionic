@@ -56,7 +56,8 @@ export class EventsListPage {
         // List all not booked and not ended event in order of start time (asc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
           // return (moment(event.end).isAfter() && event.isBooked === false);
-          return (moment().isBefore(moment(event.end)) && event.isBooked === false);
+          // return (moment().isBefore(moment(event.end)) && event.isBooked === false);
+          return (moment(event.end).isAfter() && event.isBooked === false);
         }), 'start', 'asc');
         break;
     }
