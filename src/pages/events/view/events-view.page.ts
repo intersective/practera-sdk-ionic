@@ -52,6 +52,8 @@ export class EventsViewPage {
   }
 
   ionViewDidEnter() {
+    console.log(this.navCtrl.getPrevious());
+
     this.event = this.navParams.get('event');
 
     if (this.event.References) {
