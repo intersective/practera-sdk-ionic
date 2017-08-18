@@ -3,7 +3,8 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController
+  ModalController,
+  PopoverController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +22,10 @@ import { SubmissionService } from '../../../services/submission.service';
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
 import { ItemsPopupPage } from '../../assessments/popup/items-popup.page';
+import { PopoverTextPage } from './popover-text';
 import { TabsPage } from '../../../pages/tabs/tabs.page';
+import { EventsListPage } from '../../events/list/list.page';
+import { RankingsPage } from '../../rankings/list/rankings.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 /**
@@ -29,7 +33,6 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
  * flag to tell whether should UI popup toast error message at the bottom
  * @type {Boolean}
  */
-
 @Component({
   selector: 'activities-list-page',
   templateUrl: 'list.html'
@@ -50,6 +53,8 @@ export class ActivitiesListPage implements OnInit {
   public percentageValue: number = 0;
   public submissionPoints: number = 0;
   public returnError: boolean = false;
+  public rankingsPage = RankingsPage;
+  public eventsListPage = EventsListPage;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
@@ -59,6 +64,25 @@ export class ActivitiesListPage implements OnInit {
     obtained: {},
     available: []
   };
+  public achievementListIDs: any = [
+    [317, 318, 319, 320],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [321, 323, 322, 324],
+    [0, 0, 0, 0]
+  ];
+  public getUserAchievementData: any = [];
+  public changeColor: any = [
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false],
+    [false,false,false,false]
+  ];
+  // public userAchievemntsIDsObj: any = {};
+  public userAchievemntsIDs: any = [];
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -71,6 +95,7 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
+    public popoverCtrl: PopoverController,
     public translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
@@ -105,7 +130,8 @@ export class ActivitiesListPage implements OnInit {
             }
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
-            Observable.forkJoin([getSubmission, getCharacter])
+            let getUserAchievemnt = this.achievementService.getAchievements();
+            Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt])
               .subscribe(results => {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
@@ -117,7 +143,7 @@ export class ActivitiesListPage implements OnInit {
                       }
                     }
                   });
-                  let average_score = (this.submissionPoints/this.filteredSubmissions.length)*100;
+                  let average_score = (this.submissionPoints/this.filteredSubmissions.length)*4; // calculate GPA garde
                   (average_score > 0) ? this.percentageValue = average_score : this.percentageValue = 0;
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   // console.log("Percent: ", this.currentPercentage); // display as string format
@@ -126,18 +152,35 @@ export class ActivitiesListPage implements OnInit {
                   console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
                   // console.log("Experience: ", this.characterCurrentExperience);
+                  // achievement list data handling
+                  this.getUserAchievementData = results[2];
+                  console.log("this.getUserAchievementData: ", this.getUserAchievementData);
+                  _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
+                    this.userAchievemntsIDs[index] = ele.id;
+                    console.log("ID value: ", this.userAchievemntsIDs[index]);
+                  });
+                  // find ahievement ID whether inside achievemnt list or not
+                  for(let i=0; i<6; i++){
+                    for(let j=0; j<4; j++){
+                      if(this.userAchievemntsIDs.includes(this.achievementListIDs[i][j])){
+                        this.changeColor[i][j] = true;
+                      }else {
+                        this.changeColor[i][j] = false;
+                      }
+                    }
+                  }
                   this.gameService.getItems({
                     character_id: this.characterData.id
                   }).subscribe(
-                      data => {
-                        this.initialItems = data.Items;
-                        this.cacheService.setLocalObject('initialItems', this.initialItems);
-                        console.log("Items Data: ", this.initialItems);
-                      },
-                      err => {
-                        console.log("Items Data error: ", err);
-                      }
-                    );
+                    data => {
+                      this.initialItems = data.Items;
+                      this.cacheService.setLocalObject('initialItems', this.initialItems);
+                      console.log("Items Data: ", this.initialItems);
+                    },
+                    err => {
+                      console.log("Items Data error: ", err);
+                    }
+                  );
                 });
               },
               err => {
@@ -174,5 +217,10 @@ export class ActivitiesListPage implements OnInit {
     this.cacheService.setLocalObject('allNewItems', []);
     this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
     this.navCtrl.setRoot(TabsPage);
+  }
+  // link to certain pages
+  whatsThis() {
+    let popover = this.popoverCtrl.create(PopoverTextPage);
+    popover.present();
   }
 }

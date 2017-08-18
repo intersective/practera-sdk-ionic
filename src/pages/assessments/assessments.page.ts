@@ -135,14 +135,14 @@ export class AssessmentsPage {
 
               // find user answer
               _.forEach(submission.answer, (answer) => {
-                if (answer.assessment_question_id === question.id) {
+                if (answer.assessment_question_id === question.question_id) {
                   assessments[i][j].AssessmentGroup[k].questions[l].answer = answer;
                 }
               });
 
               // find reviewer feedback
               _.forEach(submission.review, (reviewerAnswer) => {
-                if (reviewerAnswer.assessment_question_id === question.id) {
+                if (reviewerAnswer.assessment_question_id === question.question_id) {
                   assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = reviewerAnswer;
                 }
               });

@@ -72,8 +72,12 @@ $title-font: 'Arvo';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
-  color: color($colors, text, base);
+  color: color($colors, button, base);
   border-color: color($colors, primary, base);
+}
+.tab-button[aria-selected=true] {
+  color: color($colors, secondary, base);
+  border-top: thick double color($colors, button, base);
 }
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
@@ -94,13 +98,13 @@ $title-font: 'Arvo';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, primary, base);
+    background-color: color($colors, secondary, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
@@ -430,6 +434,17 @@ event {
   }
 }
 // 9. General Dashboard Page Styling
+.whats-this {
+  ion-list-header {
+    p {
+      display: inline-block;
+      line-height: 24pt;
+    }
+  }
+  p {
+    padding: 0 10%;
+  }
+}
 .activities {
   .scroll-content {
     overflow: hidden;
@@ -486,7 +501,7 @@ event {
         }
       }
       .dashboard-logo {
-        max-width: 60%;
+        max-width: 80%;
       }
       .dashboard-data {
         max-width: 90%;
@@ -496,22 +511,23 @@ event {
         margin: 0 auto;
         padding: 0px;
         li {
-          background-color: color($colors, secondary, base);
+          background-color: color($colors, background, contrast);
           border: 1px solid color($colors, border, base);
           p {
             margin: 0px;
           }
           p.title {
             text-transform: uppercase;
-            color: color($colors, dark, contrast);
+            color: color($colors, text, base);
           }
           p.number {
             font-size: 22pt;
             font-weight: 600;
             padding: 5pt 0;
+            color: color($colors, button, contrast);
           }
           p.link {
-            color: color($colors, primary, base);
+            color: color($colors, text, base);
           }
         }
         li:nth-child(1) {
@@ -535,12 +551,50 @@ event {
     }
   }
   .activity-list {
+    .assessment-score {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button {
+        padding: 6px 14px;
+        border-radius: 20px;
+      }
+    }
+    .icon-color-default {
+      // color: color($colors, dark, contrast) !important;
+      color: color($colors, dark, contrast);
+    }
+    .icon-color-0 {
+      color: color($colors, button, contrast) !important;
+    }
+    .icon-color-1 {
+      color: color($colors, palette-three, base) !important;
+    }
+    .icon-color-2 {
+      color: color($colors, palette-one, contrast) !important;
+    }
+    .icon-color-3 {
+      color: color($colors, palette-one, base) !important;
+    }
+    .icon-color-4 {
+      color: color($colors, palette-four, contrast) !important;
+    }
+    .icon-color-5 {
+      color: color($colors, palette-four, base) !important;
+    }
     // just demo start
     .first-checkbox-demo {
       color: color($colors, button, contrast);
     }
     .line-break {
       display: flex;
+      .ticks {
+        text-align: right;
+        padding-right: 4px;
+        i {
+          font-size: 12pt;
+        }
+      }
     }
     // demo code end
     ion-col {
@@ -597,7 +651,7 @@ event {
     }
   }
 }
-// 
+//
 @media screen and (min-width: 500px) {
   img.left-image {
     max-width: 25% !important;
