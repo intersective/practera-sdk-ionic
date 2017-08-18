@@ -75,7 +75,7 @@ $font-secondary: 'Raleway';
 }
 .tab-button[aria-selected=true] {
   color: color($colors, secondary, base);
-  border-top: thick double color($colors, secondary, base);
+  border-top: thick double color($colors, button, base);
 }
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
@@ -96,13 +96,13 @@ $font-secondary: 'Raleway';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, primary, base);
+    background-color: color($colors, secondary, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
