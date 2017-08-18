@@ -434,6 +434,17 @@ event {
   }
 }
 // 9. General Dashboard Page Styling
+.whats-this {
+  ion-list-header {
+    p {
+      display: inline-block;
+      line-height: 24pt;
+    }
+  }
+  p {
+    padding: 0 10%;
+  }
+}
 .activities {
   .scroll-content {
     overflow: hidden;
@@ -490,7 +501,7 @@ event {
         }
       }
       .dashboard-logo {
-        max-width: 60%;
+        max-width: 80%;
       }
       .dashboard-data {
         max-width: 90%;
@@ -500,24 +511,23 @@ event {
         margin: 0 auto;
         padding: 0px;
         li {
-          background-color: color($colors, text, base);
-          border: 1px solid color($colors, text, base);
+          background-color: color($colors, background, contrast);
+          border: 1px solid color($colors, border, base);
           p {
             margin: 0px;
           }
           p.title {
             text-transform: uppercase;
-            // color: color($colors, dark, contrast);
-            color: #fff;
+            color: color($colors, text, base);
           }
           p.number {
             font-size: 22pt;
             font-weight: 600;
             padding: 5pt 0;
-            color: #fff;
+            color: color($colors, button, contrast);
           }
           p.link {
-            color: color($colors, primary, base);
+            color: color($colors, text, base);
           }
         }
         li:nth-child(1) {
@@ -578,6 +588,13 @@ event {
     }
     .line-break {
       display: flex;
+      .ticks {
+        text-align: right;
+        padding-right: 4px;
+        i {
+          font-size: 12pt;
+        }
+      }
     }
     // demo code end
     ion-col {
