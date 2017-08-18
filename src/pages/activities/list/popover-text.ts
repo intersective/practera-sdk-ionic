@@ -7,8 +7,8 @@ import {  } from '';
     <ion-list class="whats-this">
       <ion-row>
         <ion-list-header>
-          <p>Whats this?</p>
-          <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
+          <p col-10>Whats this?</p>
+          <button col-2 (click)="closeModal()" class="close" menuClose="right">&times;</button>
         </ion-list-header>
       </ion-row>
       <p>Your overall grade is determined by the highest 2 grades you earn for each skill.</p>
