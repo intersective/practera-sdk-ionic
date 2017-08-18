@@ -98,13 +98,13 @@ $title-font: 'Arvo';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, primary, base);
+    background-color: color($colors, secondary, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
