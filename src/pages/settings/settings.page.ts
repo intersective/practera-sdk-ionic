@@ -53,10 +53,14 @@ export class SettingsPage {
       })
       .subscribe((result) => {
         loader.dismiss();
-        showAlert(result.msg);
+        let msg = 'You name will now be hidden if in the leaderboard';
+        if (!this.hideMe) {
+          msg = 'Your name will now be displayed if in the leaderboard';
+        }
+        showAlert(msg);
       }, (err) => {
         this.hideMe = !this.hideMe;
-        showAlert('Unabled to update account.');
+        showAlert('Unabled to change your privacy setting.');
         loader.dismiss();
       });
     });
