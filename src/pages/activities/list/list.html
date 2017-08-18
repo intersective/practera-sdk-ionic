@@ -41,24 +41,24 @@
     </ion-row> -->
     <ion-row class="score-board">
       <ion-col col-12>
-        <img class="dashboard-logo" src="./assets/img/main/logo02.png" />
+        <img class="dashboard-logo" src="./assets/img/main/logo01.svg" />
       </ion-col>
       <ion-col col-12>
         <ul class="dashboard-data">
           <li col-4>
             <p class="title">Bookings</p>    
             <p class="number">0</p>
-            <p class="link">Browse Events</p>            
+            <p class="link" [navPush]="eventsListPage">Browse Events</p>            
           </li>
           <li col-4>
             <p class="title">Points</p>
             <p class="number">{{ characterCurrentExperience || 0 }}</p>
-            <p class="link">Ranking</p>
+            <p class="link" [navPush]="rankingsPage">Ranking</p>
           </li>
           <li col-4>
             <p class="title">Grade</p>
             <p class="number">{{ currentPercentage || 0 }}</p>
-            <p class="link">What's this?</p>
+            <p class="link" (click)="whatsThis()">What's this?</p>
           </li>
         </ul>
       </ion-col>
@@ -119,7 +119,7 @@
               </p>
               <div col-2 class="assessment-score">
                 <button md-button block>
-                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle-o" aria-hidden="true"></i>
                 </button>
               </div>
             </div>

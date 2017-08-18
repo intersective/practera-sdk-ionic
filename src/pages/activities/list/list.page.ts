@@ -3,7 +3,8 @@ import {
   NavController,
   ToastController,
   LoadingController,
-  ModalController
+  ModalController,
+  PopoverController
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -21,7 +22,10 @@ import { SubmissionService } from '../../../services/submission.service';
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
 import { ItemsPopupPage } from '../../assessments/popup/items-popup.page';
+import { PopoverTextPage } from './popover-text';
 import { TabsPage } from '../../../pages/tabs/tabs.page';
+import { EventsListPage } from '../../events/list/list.page';
+import { RankingsPage } from '../../rankings/list/rankings.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 /**
@@ -29,7 +33,6 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
  * flag to tell whether should UI popup toast error message at the bottom
  * @type {Boolean}
  */
-
 @Component({
   selector: 'activities-list-page',
   templateUrl: 'list.html'
@@ -50,6 +53,8 @@ export class ActivitiesListPage implements OnInit {
   public percentageValue: number = 0;
   public submissionPoints: number = 0;
   public returnError: boolean = false;
+  public rankingsPage = RankingsPage;
+  public eventsListPage = EventsListPage;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
@@ -90,6 +95,7 @@ export class ActivitiesListPage implements OnInit {
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
+    public popoverCtrl: PopoverController,
     public translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
@@ -210,5 +216,10 @@ export class ActivitiesListPage implements OnInit {
     this.cacheService.setLocalObject('allNewItems', []);
     this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
     this.navCtrl.setRoot(TabsPage);
+  }
+  // link to certain pages
+  whatsThis() {
+    let popover = this.popoverCtrl.create(PopoverTextPage);
+    popover.present();
   }
 }

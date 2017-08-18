@@ -79,6 +79,7 @@ import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboa
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { PopoverTextPage } from '../pages/activities/list/popover-text';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
@@ -152,6 +153,7 @@ export function HttpLoaderFactory(http: Http) {
     OrderByPipe,
     OneofQuestionComponent,
     PhotoComponent,
+    PopoverTextPage,
     QuestionComponent,
     QuestionGroupComponent,
     RankingBadgesPage,
@@ -264,6 +266,7 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
+    PopoverTextPage,
     RankingBadgesPage,
     RankingDetailsPage,
     RankingsPage,
