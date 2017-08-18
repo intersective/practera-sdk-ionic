@@ -26,7 +26,7 @@
     </button>
   </ion-fab>
   <ion-fab top right edge *ngIf="!loadings.submissions">
-    <button ion-fab color="primary-button" (click)="goAssessment(activity)">
+    <button ion-fab color="primary-button" (click)="goAssessment()">
       <ion-icon name="add" color="secondary"></ion-icon>
     </button>
   </ion-fab>
@@ -48,13 +48,12 @@
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
 
-    <ion-item *ngFor="let submission of submissions; let i = index;" (click)="goAssessment(activity, {hasSubmission: true})">
+    <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row>
 
         <ion-col align-self-start>
           <div>
-            <h2>{{ "Submission " + (i + 1) }}</h2>
-            <p>{{ submission.submitted | timeago }}</p>
+            <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
           </div>
         </ion-col>
 
@@ -67,4 +66,3 @@
   </ion-list>
 
 </ion-content>
-

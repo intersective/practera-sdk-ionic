@@ -284,7 +284,7 @@ export class ActivityService {
     let refs = this.rebuildReferences(activity.References);
 
     // @NOTE: first "[0]" sequence is the assessment of an activity
-    let sequence = activity.ActivitySequence[0] || {};
+    let sequence = (activity.ActivitySequence) ? activity.ActivitySequence[0] : {};
 
     if (!_.isEmpty(sequence)) {
       // activity.ActivitySequence.forEach(seq => {

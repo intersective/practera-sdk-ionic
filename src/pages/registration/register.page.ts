@@ -1,23 +1,26 @@
-import { Component, ViewChild, NgZone, OnInit, Inject } from '@angular/core';
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ViewController, ModalController, AlertController, LoadingController, NavParams } from 'ionic-angular';
+import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
-import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
+import { TranslationService } from '../../shared/translation/translation.service';
 // directives
 import { FormValidator } from '../../validators/formValidator';
 // pages
+import { RegistrationModalPage } from './modal';
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
+
 const supportEmail = generalVariableMessages.helpMail.email;
+
 @Component({
   selector: 'register',
   templateUrl: 'register.html',
@@ -25,12 +28,10 @@ const supportEmail = generalVariableMessages.helpMail.email;
 export class RegisterPage implements OnInit {
   @ViewChild('registrationForm') registrationForm: NgForm;
   user: any = {
-    password: null,
-    verify_password: null
+    password: '',
+    verify_password: ''
   };
   submitted: boolean = false;
-  private windowHeight: number = window.innerHeight / 3;
-  private isLandscaped: boolean = false;
   private regForm: any;
   private pwdMacthBool: boolean = false;
   private verifyPwd: boolean = false;
@@ -53,7 +54,6 @@ export class RegisterPage implements OnInit {
   private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
   private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
   constructor(
-    private modalCtrl: ModalController,
     @Inject(FormBuilder) fb: FormBuilder,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
@@ -66,7 +66,6 @@ export class RegisterPage implements OnInit {
     private gameService: GameService,
     public translationService: TranslationService,
     private milestone: MilestoneService,
-    private ngZone:NgZone,
   ) {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
@@ -74,7 +73,8 @@ export class RegisterPage implements OnInit {
       verify_password: ['', [Validators.minLength(8), Validators.required]]
     });
   }
-  ngOnInit() {}
+  ngOnInit() {
+  }
   public displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Test',
@@ -140,7 +140,7 @@ export class RegisterPage implements OnInit {
           this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
               .subscribe(
                 data => {
-                  // get game_id data after login 
+                  // get game_id data after login
                   this.gameService.getGames()
                       .subscribe(
                         data => {
@@ -172,7 +172,6 @@ export class RegisterPage implements OnInit {
                           this.milestone_id = data.data[0].id;
                           self.cache.setLocalObject('milestone_id', data.data[0].id);
                           self.navCtrl.push(TabsPage).then(() => {
-                            this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                             window.history.replaceState({}, '', window.location.origin);
                           });
                         });
