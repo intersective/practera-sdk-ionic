@@ -17,13 +17,13 @@ $item-wp-detail-push-show: true;
 
 // General Colors (Shared File)
 // main colors
-$primary: #E60028; // #E60028
-$secondary: #000054; // #ffffff
+$primary: #000054; // BLUE
+$secondary: #EBEBEB; // GRAY
 
 // Buttons/tabs
 $primary-button: #3A74BA;
-
 $primary-text: #000054;
+
 $secondary-text: #000000;
 $primary-bg: #EBEBEB;
 $secondary-bg: #ffffff;
@@ -56,6 +56,11 @@ $colors: (
   button: (
     base: darken($primary-button, 10%),
     contrast: lighten($primary-button, 10%)
+  ),
+  badge-text: #FFF,
+  badge-bg: (
+    base: lighten(#E60028, 10%),
+    contrast: darken(#E60028, 10%)
   ),
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
@@ -104,9 +109,17 @@ $colors: (
 );
 
 // Small arrow color for list
-$item-md-detail-push-color: color($colors, primary-dark, base);
-$item-wp-detail-push-color: color($colors, primary-dark, base);
-$item-ios-detail-push-color: color($colors, primary-dark, base);
+$item-md-detail-push-color: color($colors, primary, base);
+$item-wp-detail-push-color: color($colors, primary, base);
+$item-ios-detail-push-color: color($colors, primary, base);
+
+// Badge style
+$badge-ios-background-color: color($colors, badge-bg, base);
+$badge-ios-text-color: color($colors, badge-text, base);
+$badge-md-background-color: color($colors, badge-bg, base);
+$badge-md-text-color: color($colors, badge-text, base);
+$badge-wp-background-color: color($colors, badge-bg, base);
+$badge-wp-text-color: color($colors, badge-text, base);
 
 
 // App iOS Variables
