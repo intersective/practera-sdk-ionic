@@ -53,6 +53,7 @@ $secondary-palette-seven: #43c7f4;
 $colors: (
   primary: $primary,
   secondary: $secondary,
+  white: #FFF,
   button: (
     base: darken($primary-button, 10%),
     contrast: lighten($primary-button, 10%)
