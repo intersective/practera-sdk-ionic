@@ -99,10 +99,7 @@ import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // unused but needed for build
-import { CalendarPipe } from '../pipes/CalendarPipe';
-import { DateFormatPipe } from '../pipes/DateFormat';
 import { OrderByPipe } from '../pipes/OrderBy';
-import { UrlFilterPipe } from '../pipes/urlfilter.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -122,8 +119,6 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsComponent,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CalendarPipe,
-    DateFormatPipe,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -174,7 +169,6 @@ export function HttpLoaderFactory(http: Http) {
     TimeAgoPipe,
     TruncatePipe,
     UcfirstPipe,
-    UrlFilterPipe,
     EscapeHtmlPipe,
   ],
   imports: [
