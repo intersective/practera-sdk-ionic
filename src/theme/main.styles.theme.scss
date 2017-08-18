@@ -584,6 +584,13 @@ event {
     }
     .line-break {
       display: flex;
+      .ticks {
+        text-align: right;
+        padding-right: 4px;
+        i {
+          font-size: 12pt;
+        }
+      }
     }
     // demo code end
     ion-col {
