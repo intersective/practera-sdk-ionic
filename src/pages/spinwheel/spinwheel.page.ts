@@ -360,9 +360,9 @@ export class SpinwheelPage implements OnInit {
     this.openModal({
       content: `<div>
         <h3>Congratulation!</h3>
-        <p>some pic here?</p>
+        <p *ngIf="false">some pic here?</p>
       </div>`,
-      description: `You won ${prize.value} points!`});
+      description: `Congratulations you’ve won ${prize.value} points.`});
   }
 
   /**

@@ -11,7 +11,6 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { RegistrationPage } from '../pages/registration/registration.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
-import { TestPage } from '../pages/tabs/test.page';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 @Component({
   templateUrl: 'app.html',
@@ -25,8 +24,7 @@ export class MyApp implements OnInit {
     'registration': RegistrationPage,
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
-    'secure': MagicLinkPage,
-    'testing': TestPage
+    'secure': MagicLinkPage
   };
 
   @ViewChild('appNav') nav: NavController;
@@ -34,13 +32,7 @@ export class MyApp implements OnInit {
     platform: Platform,
     authService: AuthService,
     private cache: CacheService
-  ) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      // ionic-native is removed, as we dont need to use cordova
-    });
-  }
+  ) {}
 
   ngOnInit() {
     let category = [];
