@@ -1,6 +1,6 @@
 {
-  "name": "Practera SDK - Ionic",
-  "short_name": "Practera SDK",
+  "name": "Personal Edge",
+  "short_name": "PersonalEdge",
   "start_url": "index.html",
   "display": "standalone",
   "icons": [{
