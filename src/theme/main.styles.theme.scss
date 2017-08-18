@@ -61,6 +61,9 @@ $title-font: 'Arvo';
     padding: 0px;
   }
 }
+.tab-button[aria-selected=true] {
+  background-color: color($colors, primary, base);
+}
 .tab-button-icon.icon,
 .button-outline-ios,
 .button-outline-md,
