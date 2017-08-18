@@ -15,6 +15,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
+import { MomentModule } from 'angular2-moment';
+
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -28,7 +30,6 @@ import { GroupEmitterService } from '../components/questions/group-emitter.servi
 import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
-import { RankingService } from '../services/ranking.service';
 import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
@@ -76,16 +77,13 @@ import { GalleryPage } from '../pages/gallery/gallery';
 import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
-import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
-import { RegistrationModalPage } from '../pages/registration/modal';
 import { RegistrationPage } from '../pages/registration/registration.page';
-import { ResetpasswordModelPage } from '../pages/resetpassword-model/resetpassword-model';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
@@ -145,7 +143,6 @@ export function HttpLoaderFactory(http: Http) {
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
-    LoginModalPage,
     LoginPage,
     MagicLinkPage,
     MemberComponent,
@@ -161,9 +158,7 @@ export function HttpLoaderFactory(http: Http) {
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationModalPage,
     RegistrationPage,
-    ResetpasswordModelPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
@@ -182,10 +177,11 @@ export function HttpLoaderFactory(http: Http) {
   ],
   imports: [
     BrowserModule,
-    TestModule,
     CacheModule,
-    NotificationModule,
     FormsModule,
+    MomentModule,
+    NotificationModule,
+    TestModule,
     UtilsModule,
     RequestModule.forRoot({
       appKey: Configure.appKey,
@@ -227,6 +223,12 @@ export function HttpLoaderFactory(http: Http) {
           name: 'Registration',
           segment: 'registration',
           defaultHistory: [ RegistrationPage ]
+        },
+        {
+          component: TestPage,
+          name: 'Testing',
+          segment: 'testing',
+          defaultHistory: [ TestPage ]
         }
       ]
     })
@@ -258,7 +260,6 @@ export function HttpLoaderFactory(http: Http) {
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
-    LoginModalPage,
     LoginPage,
     MagicLinkPage,
     ModalComponent,
@@ -267,9 +268,7 @@ export function HttpLoaderFactory(http: Http) {
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationModalPage,
     RegistrationPage,
-    ResetpasswordModelPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
@@ -292,7 +291,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
     { provide: NotificationService, useClass: NotificationService },
-    { provide: RankingService, useClass: RankingService },
     { provide: ResponsiveService, useClass: ResponsiveService },
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },

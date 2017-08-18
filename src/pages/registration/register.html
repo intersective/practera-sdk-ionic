@@ -1,24 +1,50 @@
 <ion-content class="login-module">
   <ion-grid class="default-center-container">
-    <ion-row>
-      <ion-col col-12>
-        <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
-        <p>
+    <img class="login-bgs" src="./assets/img/main/bg32.png" class="left-image" />
+    <ion-row class="main-login-text">
+      <ion-col>
+        <h3 col-offset-1 col-10 col-offset-1>
+          <img class="main-logo" src="./assets/img/main/logo01.svg" />
+        </h3>
+        <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
           {{ 'REGISTRATION.HEADER' | translate }}
         </p>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col col-10 offset-1 class="login-container">
-        <button class="general-circle-btn"
+      <ion-col col-10 offset-1>
+          <form [formGroup]="regForm" (ngSubmit)="onSubmit(regForm)" class="general-form" [formGroup]="regForm">
+              <ion-list>
+                <ion-item no-lines>
+                  <ion-input type="password" [(ngModel)]="password" placeholder="New Password" formControlName="password"></ion-input>
+                </ion-item>
+                <ion-item no-lines>
+                  <ion-input (keyup)="verifyPwdKeyUp()" type="password" name="verify_password" [(ngModel)]="verify_password" placeholder="Confirm password" formControlName="verify_password"></ion-input>
+                </ion-item>
+              </ion-list>
+              <button type="submit"
                 ion-button
                 block
                 color="button"
-                (click)="popRegistrationModal()">
-          {{ 'REGISTRATION.PAGETITLE' | translate }}
-        </button>
+                [disabled]="password!=verify_password || regForm.invalid">
+                {{ 'GENERAL.DONE' | translate }}
+              </button>
+              <div *ngIf="verifyPwd == true">
+                <div *ngIf="pwdMatchCheck()" class="error-hint">
+                  <small class="text-danger">
+                   {{ passwordMismatchMessage }}
+                  </small>
+                </div>
+                <div *ngIf="checkMinLength() == true" class="error-hint">
+                  <small class="text-danger">
+                   {{ passwordMinlengthMessage }}
+                  </small>
+                </div>
+              </div>
+            </form>
       </ion-col>
     </ion-row>
+    <img class="login-bgs" src="./assets/img/main/bg31.png" class="right-image" />
   </ion-grid>
 </ion-content>
  <ion-content class="mode-warn" *ngIf="verifySuccess == false">

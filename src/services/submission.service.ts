@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Injectable()
 export class SubmissionService {
@@ -174,6 +175,15 @@ export class SubmissionService {
     let answer = respond['AssessmentSubmissionAnswer'];
     let review = respond['AssessmentReviewAnswer'];
 
+    // preprocess date
+    submission.created = moment.utc(submission.created);
+    submission.modified = moment.utc(submission.modified);
+
+    // submitted
+    if (submission.submitted) {
+      submission.submitted = moment.utc(submission.submitted);
+    }
+
     return _.merge(submission, {
       assessment,
       answer,
@@ -197,6 +207,10 @@ export class SubmissionService {
     return review;
   }
 
+  /**
+   * extract reference IDs and prepare Observables to retrieve submissions
+   * @param {array} references References array responded with get_activities() api
+   */
   public getSubmissionsByReferences(references) {
     let tasks = []; // multiple API requests
 

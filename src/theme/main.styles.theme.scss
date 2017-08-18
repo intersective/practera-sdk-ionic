@@ -44,6 +44,9 @@ $title-font: 'Arvo';
 .general-button {
   background-color: color($colors, button, base);
 }
+.back-button-text {
+  padding-left: 4px;
+}
 .close {
   font-size: 2.7rem;
   float: right;
@@ -69,8 +72,12 @@ $title-font: 'Arvo';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
-  color: color($colors, text, base);
+  color: color($colors, button, base);
   border-color: color($colors, primary, base);
+}
+.tab-button[aria-selected=true] {
+  color: color($colors, secondary, base);
+  border-top: thick double color($colors, secondary, base);
 }
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
@@ -132,10 +139,37 @@ $title-font: 'Arvo';
       padding-bottom: 12pt;
     }
   }
+  .main-logo {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+  .login-welcome-text {
+    display: block;
+    margin: 0 auto;
+  }
+  img.left-image {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+    position: fixed;
+    top: 0px;
+    left: 25%;
+    z-index: -1;
+  }
+  img.right-image {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+    position: fixed;
+    bottom: 0px;
+    left: 25%;
+    z-index: -1;
+  }
 }
 .login-module {
   font-family: $font-secondary;
-  // background-color: color($colors, secondary, base);
+  background-color: color($colors, background, contrast) !important;
   background-repeat: no-repeat;
   .scroll-content {
     overflow-y: hidden;
@@ -152,21 +186,6 @@ $title-font: 'Arvo';
     padding: 0px;
     margin: 0px;
   }
-  .login-bgs {
-    justify-content: center;
-    img.left-image,
-    img.right-image {
-      position: absolute;
-      width: 50%;
-      padding: 0px;
-    }
-    img.left-image {
-      top: 0;
-    }
-    img.right-image {
-      bottom: 0;
-    }
-  }
   .main-login-text {
     h3 {
       position: relative;
@@ -175,7 +194,7 @@ $title-font: 'Arvo';
       color: color($colors, text, base);
       font-size: 24pt;
       text-align: left;
-      padding-bottom: 40pt;
+      // padding-bottom: 40pt;
       span {
         display: block;
         font-family: $title-font;
@@ -192,6 +211,24 @@ $title-font: 'Arvo';
   }
   .close-btn {
     @include closeBtn;
+  }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
+  // general form
+  .general-form {
+    width: 100%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
   }
 }
 // 7.2 login form box styling (shared module: part 2)
@@ -463,19 +500,21 @@ event {
         margin: 0 auto;
         padding: 0px;
         li {
-          background-color: color($colors, secondary, base);
-          border: 1px solid color($colors, border, base);
+          background-color: color($colors, text, base);
+          border: 1px solid color($colors, text, base);
           p {
             margin: 0px;
           }
           p.title {
             text-transform: uppercase;
-            color: color($colors, dark, contrast);
+            // color: color($colors, dark, contrast);
+            color: #fff;
           }
           p.number {
             font-size: 22pt;
             font-weight: 600;
             padding: 5pt 0;
+            color: #fff;
           }
           p.link {
             color: color($colors, primary, base);
@@ -502,6 +541,37 @@ event {
     }
   }
   .activity-list {
+    .assessment-score {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button {
+        padding: 6px 14px;
+        border-radius: 20px;
+      }
+    }
+    .icon-color-default {
+      // color: color($colors, dark, contrast) !important;
+      color: color($colors, dark, contrast);
+    }
+    .icon-color-0 {
+      color: color($colors, button, contrast) !important;
+    }
+    .icon-color-1 {
+      color: color($colors, palette-three, base) !important;
+    }
+    .icon-color-2 {
+      color: color($colors, palette-one, contrast) !important;
+    }
+    .icon-color-3 {
+      color: color($colors, palette-one, base) !important;
+    }
+    .icon-color-4 {
+      color: color($colors, palette-four, contrast) !important;
+    }
+    .icon-color-5 {
+      color: color($colors, palette-four, base) !important;
+    }
     // just demo start
     .first-checkbox-demo {
       color: color($colors, button, contrast);
@@ -562,6 +632,30 @@ event {
         float: right;
       }
     }
+  }
+}
+// 
+@media screen and (min-width: 500px) {
+  img.left-image {
+    max-width: 25% !important;
+    left: 37.5% !important;
+    top: 0px;
+  }
+  img.right-image {
+    max-width: 25% !important;
+    left: 37.5% !important;
+    bottom: 0px;
+  }
+  .main-logo {
+    max-width: 55% !important;
+    margin: 0 auto;
+    display: block;
+  }
+  .general-form {
+    padding: 0 15%;
+  }
+  p.login-welcome-text {
+    padding: 0 10%;
   }
 }
 // landscape activity list view

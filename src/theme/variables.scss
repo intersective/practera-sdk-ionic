@@ -17,12 +17,16 @@ $item-wp-detail-push-show: true;
 
 // General Colors (Shared File)
 // main colors
-$primary: #ebebeb; // #E60028
-$secondary: #000000; // #ffffff
+$primary: #E60028; // #E60028
+$secondary: #000054; // #ffffff
+
+// Buttons/tabs
+$primary-button: #3A74BA;
+
 $primary-text: #000054;
 $secondary-text: #000000;
 $primary-bg: #EBEBEB;
-$primary-button: #00B5AD;
+$secondary-bg: #ffffff;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
 $primary-dark: #AFAFAF;
@@ -47,13 +51,11 @@ $secondary-palette-seven: #43c7f4;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary: (
-     base: $primary,
-     contrast: $secondary-palette-three
-  ),
-  secondary: (
-     base: $secondary,
-     contrast: $secondary-palette-three
+  primary: $primary,
+  secondary: $secondary,
+  button: (
+    base: darken($primary-button, 10%),
+    contrast: lighten($primary-button, 10%)
   ),
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
@@ -71,11 +73,6 @@ $colors: (
      base: $primary-text,
      contrast: $secondary-text
   ),
-  button: (
-    base: $primary-text,
-    // base: $secondary-palette-one,
-    contrast: $primary-button
-  ),
   border: (
     base: $border-primary,
     contrast: $border-secondary
@@ -86,7 +83,7 @@ $colors: (
   ),
   background: (
     base: $primary-bg,
-    contrast: $primary-bg
+    contrast: $secondary-bg
   ),
   palette-one: (
     base: $secondary-palette-one,
@@ -106,9 +103,10 @@ $colors: (
   ),
 );
 
-$item-md-detail-push-color: color($colors, primary-light, base);
-$item-wp-detail-push-color: color($colors, primary-light, base);
-$item-ios-detail-push-color: color($colors, primary-light, base);
+// Small arrow color for list
+$item-md-detail-push-color: color($colors, primary-dark, base);
+$item-wp-detail-push-color: color($colors, primary-dark, base);
+$item-ios-detail-push-color: color($colors, primary-dark, base);
 
 
 // App iOS Variables
