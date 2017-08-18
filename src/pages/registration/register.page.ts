@@ -71,7 +71,7 @@ export class RegisterPage implements OnInit {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
       password: ['', [Validators.minLength(8), Validators.required]],
-      verify_password: ['', [Validators.minLength(8), Validators.required]],
+      verify_password: ['', [Validators.minLength(8), Validators.required]]
     });
   }
   ngOnInit() {}

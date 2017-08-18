@@ -60,10 +60,8 @@ export class ResetPasswordPage implements OnInit {
               private cacheService: CacheService,
               private gameService: GameService) {
                 this.resetPwdFormGroup = formBuilder.group({
-                  password: ['', [Validators.minLength(8),
-                                  Validators.required]],
-                  verify_password: ['', [Validators.minLength(8),
-                                         Validators.required]],
+                  password: ['', [Validators.minLength(8), Validators.required]],
+                  verify_password: ['', [Validators.minLength(8), Validators.required]]
                 });
               }
   /**
