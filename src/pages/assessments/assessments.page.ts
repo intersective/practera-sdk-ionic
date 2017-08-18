@@ -5,7 +5,6 @@ import {
   Navbar,
   LoadingController,
   ModalController,
-  PopoverController,
   AlertController,
   Events
 } from 'ionic-angular';
@@ -24,21 +23,6 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 import { ItemsPopupPage } from './popup/items-popup.page';
 // import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ActivitiesListPage } from '../activities/list/list.page';
-class ActivityBase {
-  id: number;
-  name: string;
-  description: string;
-}
-
-class ReferenceAssessmentBase {
-  id: number;
-  name: string;
-}
-
-class ReferenceBase {
-  context_id: number;
-  Assessment: ReferenceAssessmentBase
-}
 
 @Component({
   selector: 'assessments-page',
@@ -79,7 +63,6 @@ export class AssessmentsPage {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    private popoverCtrl: PopoverController,
     private assessmentService: AssessmentService,
     private characterService: CharacterService,
     private cacheService: CacheService,
@@ -430,16 +413,13 @@ export class AssessmentsPage {
     });
   }
 
+
   /**
    * submit answer and change submission status to done
    */
   doSubmit() {
     let loading = this.loadingCtrl.create({
       content: 'Loading...'
-    });
-    // Error handling for all kind of non-specific API respond error code
-    let alert = this.alertCtrl.create({
-      buttons: ["Ok"]
     });
 
     loading.present().then(() => {
@@ -481,17 +461,7 @@ export class AssessmentsPage {
             loading.dismiss().then(_ => {
               console.log('assessments', assessments);
               this.allowSubmit = false;
-
-              if (!_.isEmpty(this.navParams.get('event'))) {
-                // display checkin successful (in event submission)
-                alert.data.title = 'Checkin Successful!';
-                alert.present().then(() => {
-                  this.navCtrl.pop(); // back to event page
-                });
-              } else {
-                // normal submission should redirect user back to previous stack/page
-                this.popupAfterSubmit();
-              }
+              this.popupAfterSubmit();
             });
           },
           err => {
@@ -526,7 +496,7 @@ export class AssessmentsPage {
   }
 
   // items popup
-  popupAfterSubmit() {
+  popupAfterSubmit(){
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });
