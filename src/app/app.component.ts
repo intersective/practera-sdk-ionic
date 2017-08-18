@@ -11,6 +11,7 @@ import { TabsPage } from '../pages/tabs/tabs.page';
 import { RegistrationPage } from '../pages/registration/registration.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
+import { TestPage } from '../pages/tabs/test.page';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 @Component({
   templateUrl: 'app.html',
@@ -25,6 +26,7 @@ export class MyApp implements OnInit {
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage,
+    'testing': TestPage
   };
 
   @ViewChild('appNav') nav: NavController;
