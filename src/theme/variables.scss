@@ -22,6 +22,7 @@ $secondary: #000000; // #ffffff
 $primary-text: #000054;
 $secondary-text: #000000;
 $primary-bg: #EBEBEB;
+$secondary-bg: #ffffff;
 $primary-button: #00B5AD;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
@@ -86,7 +87,7 @@ $colors: (
   ),
   background: (
     base: $primary-bg,
-    contrast: $primary-bg
+    contrast: $secondary-bg
   ),
   palette-one: (
     base: $secondary-palette-one,
@@ -106,9 +107,10 @@ $colors: (
   ),
 );
 
-$item-md-detail-push-color: color($colors, primary-light, base);
-$item-wp-detail-push-color: color($colors, primary-light, base);
-$item-ios-detail-push-color: color($colors, primary-light, base);
+// Small arrow color for list
+$item-md-detail-push-color: color($colors, primary-dark, base);
+$item-wp-detail-push-color: color($colors, primary-dark, base);
+$item-ios-detail-push-color: color($colors, primary-dark, base);
 
 
 // App iOS Variables

@@ -5,9 +5,9 @@ import { NavController,
          LoadingController,
          AlertController,
          ModalController } from 'ionic-angular';
-import { FormBuilder, Validators } from '@angular/forms';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
+import { FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 // services
 import { AuthService } from '../../services/auth.service';
@@ -46,26 +46,22 @@ export class ResetPasswordPage implements OnInit {
   private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
   private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
   constructor(private navCtrl: NavController,
-              private navParams: NavParams,
-              private ngZone: NgZone,
-              private modalCtrl: ModalController,
-              private alertCtrl: AlertController,
-              private authService: AuthService,
-              private loadingCtrl: LoadingController,
-              private responsiveService: ResponsiveService,
-              public translationService: TranslationService,
-              private viewCtrl: ViewController,
-              private formBuilder: FormBuilder,
-              private milestoneService: MilestoneService,
-              private cacheService: CacheService,
-              private gameService: GameService) {
-                this.resetPwdFormGroup = formBuilder.group({
-                  password: ['', [Validators.minLength(8),
-                                  Validators.required]],
-                  verify_password: ['', [Validators.minLength(8),
-                                         Validators.required]],
-                });
-              }
+    private navParams: NavParams,
+    private alertCtrl: AlertController,
+    private authService: AuthService,
+    private viewCtrl: ViewController,
+    private loadingCtrl: LoadingController,
+    private formBuilder: FormBuilder,
+    private milestoneService: MilestoneService,
+    private cacheService: CacheService,
+    private gameService: GameService,
+    public translationService: TranslationService) {
+      // validation for both password values: required & minlength is 8
+      this.resetPwdFormGroup = formBuilder.group({
+          password: ['', [Validators.minLength(8), Validators.required]],
+          verify_password: ['', [Validators.minLength(8), Validators.required]],
+      })
+    }
   /**
    * Detect user device type (mobile or desktop) on initial page load
    * Purpose: Initially page loaded, this peice code will detect user screen
@@ -130,8 +126,8 @@ export class ResetPasswordPage implements OnInit {
     const loading = this.loadingCtrl.create({
       content: this.successResetPasswordMessage
     });
-    loading.present();
-    this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
+    loading.present().then(() => {
+      this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
         // loading.dismiss();
         // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
@@ -141,7 +137,7 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {
@@ -172,35 +168,41 @@ export class ResetPasswordPage implements OnInit {
               this.milestoneService.getMilestones()
                   .subscribe(
                     data => {
-                      console.log(data.data[0].id);
-                      this.milestone_id = data.data[0].id;
-                      this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                      console.log("milestone id: " + data.data[0].id);
-                      loading.dismiss();
-                      this.navCtrl.push(TabsPage).then(() => {
-                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin);
+                      loading.dismiss().then(() => {
+                        console.log(data.data[0].id);
+                        this.milestone_id = data.data[0].id;
+                        this.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                        console.log("milestone id: " + data.data[0].id);
+                        loading.dismiss();
+                        this.navCtrl.push(TabsPage).then(() => {
+                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                          window.history.replaceState({}, '', window.location.origin);
+                        });
                       });
                     },
                     err => {
-                      console.log(err);
+                      loading.dismiss().then(() => {
+                        console.log(err);
+                      });
                     }
                   )
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             },
             err => {
-              loading.dismiss();
-              this.loginError(err);
-              this.cacheService.removeLocal('isAuthenticated');
-              this.cacheService.write('isAuthenticated', false);
+              loading.dismiss().then(() => {
+                this.loginError(err);
+                this.cacheService.removeLocal('isAuthenticated');
+                this.cacheService.write('isAuthenticated', false);
+              });
             });
-        // console.log('Succefully updated');
       },
       err => {
-        loading.dismiss();
-        // console.log('Update failure ..');
+        loading.dismiss().then(() => {
+          console.log(err);
+        });
       });
+    });
   }
   // after password set, auto login error alertbox
   loginError(error) {
