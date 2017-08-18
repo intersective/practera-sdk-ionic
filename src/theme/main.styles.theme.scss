@@ -44,6 +44,9 @@ $title-font: 'Arvo';
 .general-button {
   background-color: color($colors, button, base);
 }
+.back-button-text {
+  padding-left: 4px;
+}
 .close {
   font-size: 2.7rem;
   float: right;
