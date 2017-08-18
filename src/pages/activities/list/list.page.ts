@@ -166,10 +166,8 @@ export class ActivitiesListPage implements OnInit {
                     for(let j=0; j<4; j++){
                       if(this.userAchievemntsIDs.includes(this.achievementListIDs[i][j])){
                         this.changeColor[i][j] = true;
-                        console.log(this.changeColor[i][j]);
                       }else {
                         this.changeColor[i][j] = false;
-                        console.log(this.changeColor[i][j]);
                       }
                     }
                   }
