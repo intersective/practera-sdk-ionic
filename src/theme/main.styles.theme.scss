@@ -62,7 +62,7 @@ $title-font: 'Arvo';
   }
 }
 .tab-button[aria-selected=true] {
-  background-color: color($colors, primary, base);
+  background-color: color($colors, button-bg, base);
 }
 .tab-button-icon.icon,
 .button-outline-ios,
@@ -72,7 +72,7 @@ $title-font: 'Arvo';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
-  color: color($colors, text, base);
+  color: color($colors, button, base);
   border-color: color($colors, primary, base);
 }
 .segment-ios .segment-button.segment-activated,

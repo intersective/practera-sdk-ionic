@@ -19,11 +19,15 @@ $item-wp-detail-push-show: true;
 // main colors
 $primary: #E60028; // #E60028
 $secondary: #000054; // #ffffff
+
+// Buttons/tabs
+$primary-button: #000054;
+$primary-button-bg: #44C8CF;
+
 $primary-text: #000054;
 $secondary-text: #000000;
 $primary-bg: #EBEBEB;
 $secondary-bg: #ffffff;
-$primary-button: #00B5AD;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
 $primary-dark: #AFAFAF;
@@ -48,14 +52,17 @@ $secondary-palette-seven: #43c7f4;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary: (
-     base: $primary,
-     contrast: $secondary-palette-three
+  primary: $primary,
+  secondary: $secondary,
+  button: (
+    base: $primary-button,
+    contrast: darken($primary-button, 10%)
   ),
-  secondary: (
-     base: $secondary,
-     contrast: $secondary-palette-three
+  button-bg: ( // Use for tab selected background
+    base: $primary-button-bg,
+    contrast: lighten($primary-button-bg, 10%)
   ),
+
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
      contrast: darken($secondary, 10%) // darken for contrast?
@@ -71,11 +78,6 @@ $colors: (
   text: (
      base: $primary-text,
      contrast: $secondary-text
-  ),
-  button: (
-    base: $primary-text,
-    // base: $secondary-palette-one,
-    contrast: $primary-button
   ),
   border: (
     base: $border-primary,
