@@ -77,7 +77,7 @@ $title-font: 'Arvo';
 }
 .tab-button[aria-selected=true] {
   color: color($colors, secondary, base);
-  border-top: thick double color($colors, secondary, base);
+  border-top: thick double color($colors, button, base);
 }
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
@@ -634,7 +634,7 @@ event {
     }
   }
 }
-// 
+//
 @media screen and (min-width: 500px) {
   img.left-image {
     max-width: 25% !important;
