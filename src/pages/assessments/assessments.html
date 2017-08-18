@@ -1,22 +1,32 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ assessment.name }}</ion-title>
+    <ion-title></ion-title>
 
     <ion-buttons end>
-      <button ion-button (click)="clickSubmit()" [disabled]="!allowSubmit">
-        Submit
+      <button ion-button (click)="clickSubmit()" class="btn-submit" *ngIf="allowSubmit">
+        {{ 'GENERAL.SUBMIT' | translate }}
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content>
+  
+  <div *ngFor="let assessmentGroup of assessmentGroups; let i = index">
+    <div *ngFor="let assessment of assessmentGroup; let j = index">
 
-  <ion-card *ngIf="assessment.description" class="rounded">
-    <ion-card-content>
-      <div [innerHTML]="assessment.description"></div>
-    </ion-card-content>
-  </ion-card>
+      <ion-card *ngIf="assessment.description" class="no-box-shadow">
+        <ion-card-content>
+          <h2 class="text-center">{{ assessment.name }}</h2>
+          <div [innerHTML]="assessment.description"></div>
+        </ion-card-content>
+      </ion-card>
 
-  <questionGroup *ngFor="let questionGroup of assessmentGroups; let i = index" [questionGroup]="questionGroup">
-  </questionGroup>
+      <questionGroup
+        *ngFor="let group of assessment.AssessmentGroup; let q = index"
+        [group]="group"
+        (click)="gotoAssessment(group, activity)"
+      >
+      </questionGroup>
+    </div>
+  </div>
 </ion-content>

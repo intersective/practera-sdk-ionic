@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'RANKING.PAGETITLE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="rankings">
+  <ion-list *ngIf="isEmptyList === false">
+    <ion-item *ngFor="let listData of listRankingData">
+      <rankIcon [rank]="listData.rank"></rankIcon>
+      <span [ngClass]="{'muted': !listData.name}">
+        {{ listData.name || 'Hidden Name' }}
+      </span>
+      <div item-end>
+        <b>{{ listData.experience_points }}</b>
+      </div>
+    </ion-item>
+  </ion-list>
+
+  <ion-list *ngIf="isEmptyList === true" no-lines>
+    <ion-item>
+      {{ rankingListEmpty }}
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="my-ranking" *ngIf="isEmptyList === false">
+    <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
+      <rankIcon [rank]="myRankingData.rank"></rankIcon>
+      {{ 'RANKING.ME' | translate }}
+      <div item-end>
+        <b>{{ myRankingData.experience_points }}</b>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

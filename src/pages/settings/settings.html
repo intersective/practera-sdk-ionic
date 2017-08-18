@@ -1,34 +1,37 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
-      Settings
-    </ion-title>
+    <ion-title>{{ 'SETTINGS.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content class="settings" padding="true">
   <ion-list no-lines>
     <ion-list-header>
-      My Profile <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
+      {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
     </ion-list-header>
-    <button ion-item>
-      <ion-icon name="medkit" item-left></ion-icon> Tutorial
+    <ion-item>
+      <ion-label *ngIf="!hideMe" text-wrap>Hide my name on leaderboard</ion-label>
+      <ion-label *ngIf="hideMe" text-wrap>Show my name on leaderboard</ion-label>
+      <ion-toggle checked="false" color="primary" [(ngModel)]="hideMe" (ionChange)="changePrivate()"></ion-toggle>
+    </ion-item>
+    <button ion-item (click)="goToTutorial()">
+      <ion-icon name="medkit" item-left></ion-icon> {{ 'SETTINGS.TUTORIAL' | translate }}
     </button>
-    <button ion-item>
-      <ion-icon name="clipboard" item-left></ion-icon> Terms of Use
+    <button ion-item (click)="goToTermConditions()">
+      <ion-icon name="clipboard" item-left></ion-icon> {{ 'SETTINGS.TERMS' | translate }}
     </button>
-    <button ion-item>
-      <ion-icon name="swap" item-left></ion-icon> Program Switcher
-    </button>
+    <!-- <button ion-item (click)="goLeaderBoardSettings()">
+      <ion-icon name="swap" item-left></ion-icon> {{ 'SETTINGS.LEADERBOARD' | translate }}
+    </button> -->
   </ion-list>
   <ion-list no-lines>
     <ion-list-header>
-      Support
+      {{ 'SETTINGS.SUPPORT' | translate }}
     </ion-list-header>
-    <button ion-item>
-      <ion-icon name="mail" item-left></ion-icon> Email Help
-    </button>
+    <a ion-item href="mailto:{{helpline}}?Subject=Tech%20Support%20Request" target="_blank">
+      <ion-icon name="mail" item-left></ion-icon> {{ 'SETTINGS.HELP' | translate }}
+    </a>
     <button ion-item (click)="logout()">
-      <ion-icon name="exit" item-left></ion-icon> Logout
+      <ion-icon name="exit" item-left></ion-icon> {{ 'SETTINGS.LOGOUT' | translate }}
     </button>
   </ion-list>
 </ion-content>

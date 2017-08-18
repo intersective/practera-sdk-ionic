@@ -10,6 +10,7 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { RegistrationPage } from '../pages/registration/registration.page';
 import { LoginPage } from '../pages/login/login';
+import { TestPage } from '../pages/tabs/test.page';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 @Component({
   templateUrl: 'app.html',
@@ -23,7 +24,9 @@ export class MyApp implements OnInit {
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage,
+    'testing': TestPage
   };
+
   @ViewChild('appNav') nav: NavController;
   constructor(
     platform: Platform,
@@ -36,10 +39,12 @@ export class MyApp implements OnInit {
       // ionic-native is removed, as we dont need to use cordova
     });
   }
+
   ngOnInit() {
     let category = [];
     let page;
     let navParams = {};
+
     if (document.URL.indexOf("?") !== -1) {
       let splitURL = document.URL.split("?");
       let splitParams = splitURL[1].split("&");
@@ -56,6 +61,7 @@ export class MyApp implements OnInit {
         navParams[singleURLParam[0]] = singleURLParam[1];
       });
     }
+
     if (page) {
       this.nav.setRoot(page, navParams);
     } else {
@@ -66,4 +72,5 @@ export class MyApp implements OnInit {
       }
     }
   }
+
 }
