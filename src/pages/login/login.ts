@@ -55,8 +55,7 @@ export class LoginPage {
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
-      email: ['', [FormValidator.isValidEmail,
-                   Validators.required]],
+      email: ['', [FormValidator.isValidEmail, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
