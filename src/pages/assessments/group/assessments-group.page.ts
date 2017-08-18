@@ -240,8 +240,10 @@ export class AssessmentsGroupPage {
        * id and question_id are different id
        * - id =  has no obvious purpose
        * - question_id must be used as id for submission
+       *
+       * but for case like this just for index id
        */
-      result[question.question_id] = new FormGroup(group);
+      result[question.id] = new FormGroup(group);
     });
 
     return result;
