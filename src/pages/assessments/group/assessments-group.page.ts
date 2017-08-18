@@ -117,7 +117,7 @@ export class AssessmentsGroupPage {
 
     _.forEach(submission.review, (review) => {
       _.forEach(questions, (question, idx) => {
-        if (review.assessment_question_id === question.id) {
+        if (review.assessment_question_id === question.question_id) {
           // text type
           if (question.type === 'text') {
             questions[idx].review_answer = review;
@@ -148,7 +148,7 @@ export class AssessmentsGroupPage {
     //     _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
     //       _.forEach(questions, (question, idx) => {
     //
-    //         if (reviewAnswer.assessment_question_id === question.id) {
+    //         if (reviewAnswer.assessment_question_id === question.question_id) {
     //           // text type
     //           if (question.type === 'text') {
     //             questions[idx].review_answer = reviewAnswer;
@@ -243,7 +243,7 @@ export class AssessmentsGroupPage {
        *
        * but for case like this just for index id
        */
-      result[question.id] = new FormGroup(group);
+      result[question.question_id] = new FormGroup(group);
     });
 
     return result;
@@ -322,11 +322,11 @@ export class AssessmentsGroupPage {
 
     if (!_.isEmpty(savedProgress)) {
 
-      // index "id" is set as question.id in @Function buildFormGroup above
-      _.forEach(newQuestions, (question, id) => {
+      // index "id" is set as question.question_id in @Function buildFormGroup above
+      _.forEach(newQuestions, (question, question_id) => {
         // check integrity of saved answer (question might get updated)
-        if (savedProgress[id] && savedProgress[id].assessment_question_id == id) {
-          newQuestions[id] = this.setValueWith(question, savedProgress[id]);
+        if (savedProgress[question_id] && savedProgress[question_id].assessment_question_id == question_id) {
+          newQuestions[question_id] = this.setValueWith(question, savedProgress[question_id]);
         }
       });
     }
