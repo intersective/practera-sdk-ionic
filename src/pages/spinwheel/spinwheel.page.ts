@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
-import { AlertController, LoadingController } from 'ionic-angular';
+import { AlertController, LoadingController, Platform } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
@@ -40,9 +40,7 @@ export class SpinwheelPage implements OnInit {
     }
   };
 
-  public wheel: any = {};
-  canvasWidth: number = 300;
-  canvasHeight: number = 500;
+  public wheel: any;
   statuses = {
     chances: 0,
     power: 0,
@@ -52,6 +50,10 @@ export class SpinwheelPage implements OnInit {
     isSpinning: false,
     isCompleted: false
   };
+  canvas = {
+    width: 0,
+    height: 0
+  };
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -59,8 +61,13 @@ export class SpinwheelPage implements OnInit {
     private gameService: GameService,
     private zone: NgZone,
     private renderer: Renderer2,
-    private cache: CacheService
+    private cache: CacheService,
+    public platform: Platform
   ) {
+    this.canvas = {
+      width: platform.width() * 0.9,
+      height: platform.width(),
+    };
   }
 
   // @TODO: split this into useful functions
@@ -170,21 +177,6 @@ export class SpinwheelPage implements OnInit {
     this.statuses.spinOn = true;
   }
 
-  ionViewWillEnter() {
-    let ionContentElement = this.renderer.selectRootElement('ion-content');
-
-    let width = ionContentElement.clientWidth;
-    this.canvasWidth = width * 0.9;
-
-    // radius X 2 < max-width of ion-content
-    let radius = this.canvasWidth / 2;
-
-    // make canvas size responsive
-    this.canvasHeight = width;
-    this.config.outerRadius = radius * 0.8;
-    this.config.innerRadius = radius * 0.2;
-  }
-
   /**
    * @name getSegments
    * @description
@@ -235,13 +227,46 @@ export class SpinwheelPage implements OnInit {
     });
   }
 
+
+  private setCanvasSize() {
+    let width = this.platform.width(),
+      canvasWidth = width * 0.9,
+      canvasHeight = width;
+
+    // radius X 2 < max-width of ion-content
+    let radius = canvasWidth / 2;
+    let radiusConfig = {
+      outer: radius * 0.8,
+      inner: radius * 0.2
+    };
+
+    this.config.outerRadius = radiusConfig.outer;
+    this.config.innerRadius = radiusConfig.inner;
+
+    if (this.wheel) {
+      if (this.wheel.canvas) {
+        // make canvas size responsive
+        this.wheel.canvas.width = canvasWidth;
+        this.wheel.canvas.height = canvasHeight;
+      }
+      this.wheel.outerRadius = radiusConfig.outer;
+      this.wheel.innerRadius = radiusConfig.inner;
+    } else {
+      this.canvas = {
+        width: canvasWidth,
+        height: canvasHeight
+      };
+    }
+  }
+
   /**
    * @name draw
    * @description draw SpinWheel canvas based on given config
    */
   draw() {
+    this.setCanvasSize();
     this.wheel = new Winwheel(this.config);
-    this.wheel.draw(true);
+    this.wheel.draw();
   }
 
   /**
