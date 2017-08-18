@@ -1,8 +1,9 @@
 import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
-import { AlertController, LoadingController, Platform } from 'ionic-angular';
+import { AlertController, LoadingController, Platform, ModalController } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
+import { SpinwheelModalPage } from './spinwheel-modal.page';
 
 import * as Winwheel from 'Winwheel';
 import { TweenLite } from "gsap";
@@ -58,11 +59,12 @@ export class SpinwheelPage implements OnInit {
   constructor(
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
+    public platform: Platform,
     private gameService: GameService,
     private zone: NgZone,
     private renderer: Renderer2,
     private cache: CacheService,
-    public platform: Platform
+    private modalCtrl: ModalController
   ) {
     this.canvas = {
       width: platform.width() * 0.9,
@@ -227,6 +229,21 @@ export class SpinwheelPage implements OnInit {
     });
   }
 
+  /**
+   * @description display activity detail modal page
+   */
+  private openModal(content?) {
+    let spinner = Object.assign({
+      name: 'You Won!',
+      content: '',
+      description: ''
+    }, content || {});
+
+    let spinnerModal = this.modalCtrl.create(SpinwheelModalPage, {
+      spinner: spinner
+    });
+    spinnerModal.present();
+  }
 
   private setCanvasSize() {
     let width = this.platform.width(),
@@ -340,6 +357,12 @@ export class SpinwheelPage implements OnInit {
   finaliseSpinner() {
     let prize = this.wheel.getIndicatedSegment();
     this.statuses.value += prize.value;
+    this.openModal({
+      content: `<div>
+        <h3>Congratulation!</h3>
+        <p>some pic here?</p>
+      </div>`,
+      description: `You won ${prize.value} points!`});
   }
 
   /**

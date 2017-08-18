@@ -53,6 +53,7 @@ import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
 import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
+import { SpinwheelModalPage } from '../pages/spinwheel/spinwheel-modal.page';
 import { RankIconComponent } from '../components/rank/icon';
 // unused but necessary for build
 import { AssessmentsComponent } from '../components/assessments/assessments.component';
@@ -165,6 +166,7 @@ export function HttpLoaderFactory(http: Http) {
     SettingsPage,
     SidenavPage,
     SpinwheelPage,
+    SpinwheelModalPage,
     TabsPage,
     TeamPage,
     TestPage,
@@ -202,7 +204,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
-       links: [
+      links: [
         {
           component: LoginPage,
           name: 'Login',
@@ -276,6 +278,7 @@ export function HttpLoaderFactory(http: Http) {
     SettingsPage,
     SidenavPage,
     SpinwheelPage,
+    SpinwheelModalPage,
     TabsPage,
     TestPage,
     TermConditionPage,
