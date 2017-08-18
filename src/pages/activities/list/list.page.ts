@@ -60,12 +60,12 @@ export class ActivitiesListPage implements OnInit {
     available: []
   };
   public achievementListIDs: any = [
-    [55, 56, 58, 59],
-    [0, 56, 0, 0],
-    [0, 0, 55, 0],
-    [0, 0, 56, 0],
-    [0, 0, 55, 0],
-    [0, 55, 0, 0]
+    [317, 318, 319, 320],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [321, 323, 322, 324],
+    [0, 0, 0, 0]
   ];
   public getUserAchievementData: any = [];
   public changeColor: any = [
@@ -137,7 +137,7 @@ export class ActivitiesListPage implements OnInit {
                       }
                     }
                   });
-                  let average_score = (this.submissionPoints/this.filteredSubmissions.length)*100;
+                  let average_score = (this.submissionPoints/this.filteredSubmissions.length)*4; // calculate GPA garde
                   (average_score > 0) ? this.percentageValue = average_score : this.percentageValue = 0;
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   // console.log("Percent: ", this.currentPercentage); // display as string format

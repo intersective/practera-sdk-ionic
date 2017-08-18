@@ -481,19 +481,21 @@ event {
         margin: 0 auto;
         padding: 0px;
         li {
-          background-color: color($colors, secondary, base);
-          border: 1px solid color($colors, border, base);
+          background-color: color($colors, text, base);
+          border: 1px solid color($colors, text, base);
           p {
             margin: 0px;
           }
           p.title {
             text-transform: uppercase;
-            color: color($colors, dark, contrast);
+            // color: color($colors, dark, contrast);
+            color: #fff;
           }
           p.number {
             font-size: 22pt;
             font-weight: 600;
             padding: 5pt 0;
+            color: #fff;
           }
           p.link {
             color: color($colors, primary, base);
@@ -520,6 +522,15 @@ event {
     }
   }
   .activity-list {
+    .assessment-score {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button {
+        padding: 6px 14px;
+        border-radius: 20px;
+      }
+    }
     .icon-color-default {
       // color: color($colors, dark, contrast) !important;
       color: color($colors, dark, contrast);
