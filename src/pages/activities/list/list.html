@@ -1,19 +1,16 @@
-<ion-header>
-  <ion-navbar>
-    <ion-grid>
-      <ion-row>
-        <ion-col col-12 class="flex-display">
-          <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
-          <button *ngIf="anyNewItems == 'true'" 
-            (click)="closeItemsShwon()" 
-            class="close" 
-            menuClose="right">&times;</button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <ion-title *ngIf="anyNewItems == 'false'">{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
-  </ion-navbar>
-</ion-header>
+<ion-navbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 class="flex-display">
+        <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
+        <button *ngIf="anyNewItems == 'true'" 
+          (click)="closeItemsShwon()" 
+          class="close" 
+          menuClose="right">&times;</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-navbar>
 <ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
@@ -55,12 +52,12 @@
           </li>
           <li col-4>
             <p class="title">Points</p>
-            <p class="number">30</p>
+            <p class="number">{{ characterCurrentExperience || 0 }}</p>
             <p class="link">Ranking</p>
           </li>
           <li col-4>
             <p class="title">Grade</p>
-            <p class="number">2.93</p>
+            <p class="number">{{ currentPercentage || 0 }}</p>
             <p class="link">What's this?</p>
           </li>
         </ul>
@@ -77,17 +74,54 @@
           <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
             <div (click)="goToDetail(activity, activity.Activity.id)" class="line-break">
               <p col-7>{{ activity.Activity.name }}</p>
-              <p col-3 *ngIf="i == 0" class="first-checkbox-demo">
-                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                <i class="fa fa-check-circle" aria-hidden="true"></i>
-                <i class="fa fa-check-circle" aria-hidden="true"></i>
+              <p col-3> 
+                <!-- <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][0]}" aria-hidden="true"></i>
+                <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][1]}" aria-hidden="true"></i>
+                <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][2]}" aria-hidden="true"></i>
+                <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][3]}" aria-hidden="true"></i> -->
+                <!-- This is hardcode just for display different numbers, coz ngClass add dynamic variable does not work -->
+                <span *ngIf="i == 0">
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-0': changeColor[i][0]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-0': changeColor[i][1]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-0': changeColor[i][2]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-0': changeColor[i][3]}" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 1">
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-1': changeColor[i][0]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-1': changeColor[i][1]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-1': changeColor[i][2]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-1': changeColor[i][3]}" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 2">
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-2': changeColor[i][0]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-2': changeColor[i][1]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-2': changeColor[i][2]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-2': changeColor[i][3]}" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 3">
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-3': changeColor[i][0]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-3': changeColor[i][1]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-3': changeColor[i][2]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-3': changeColor[i][3]}" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 4">
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-4': changeColor[i][0]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-4': changeColor[i][1]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-4': changeColor[i][2]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-4': changeColor[i][3]}" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 5">
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-5': changeColor[i][0]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-5': changeColor[i][1]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-5': changeColor[i][2]}" aria-hidden="true"></i>
+                  <i class="fa fa-check-circle icon-color-default" [ngClass]="{'icon-color-5': changeColor[i][3]}" aria-hidden="true"></i>
+                </span>
               </p>
-              <p col-3 *ngIf="i > 0">
-                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-                <i class="fa fa-check-circle-o" aria-hidden="true"></i>
-              </p>
-              <p col-2>2.5</p>
+              <div col-2 class="assessment-score">
+                <button md-button block>
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
           </div>
           <div *ngIf="activity.Activity.is_locked == true" class="locked">

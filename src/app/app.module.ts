@@ -223,6 +223,12 @@ export function HttpLoaderFactory(http: Http) {
           name: 'Registration',
           segment: 'registration',
           defaultHistory: [ RegistrationPage ]
+        },
+        {
+          component: TestPage,
+          name: 'Testing',
+          segment: 'testing',
+          defaultHistory: [ TestPage ]
         }
       ]
     })

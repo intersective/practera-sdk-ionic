@@ -1,9 +1,12 @@
 <ion-content class="login-module">
   <ion-grid class="default-center-container">
-    <ion-row>
-      <ion-col col-12>
-        <img class="general-logo" src="./assets/img/main/logo02.png" />
-        <p>
+    <img class="login-bgs" src="./assets/img/main/bg32.png" class="left-image" />
+    <ion-row class="main-login-text">
+      <ion-col>
+        <h3 col-offset-1 col-10 col-offset-1>
+          <img class="main-logo" src="./assets/img/main/logo01.svg" />
+        </h3>
+        <p class="login-welcome-text" col-offset-1 col-10 col-offset-1>
           {{ 'REGISTRATION.HEADER' | translate }}
         </p>
       </ion-col>
@@ -41,6 +44,7 @@
             </form>
       </ion-col>
     </ion-row>
+    <img class="login-bgs" src="./assets/img/main/bg31.png" class="right-image" />
   </ion-grid>
 </ion-content>
  <ion-content class="mode-warn" *ngIf="verifySuccess == false">
