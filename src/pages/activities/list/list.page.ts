@@ -64,16 +64,18 @@ export class ActivitiesListPage implements OnInit {
     obtained: {},
     available: []
   };
-  public achievementListIDs: any = [
+  public achievementListIDs: any = [    
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
     [317, 318, 319, 320],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
     [321, 323, 322, 324],
-    [0, 0, 0, 0]
+    [0, 0, 0, 0],
+    [316, 316, 316, 316]
   ];
   public getUserAchievementData: any = [];
   public changeColor: any = [
+    [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
@@ -160,7 +162,7 @@ export class ActivitiesListPage implements OnInit {
                     console.log("ID value: ", this.userAchievemntsIDs[index]);
                   });
                   // find ahievement ID whether inside achievemnt list or not
-                  for(let i=0; i<6; i++){
+                  for(let i=0; i<7; i++){
                     for(let j=0; j<4; j++){
                       if(this.userAchievemntsIDs.includes(this.achievementListIDs[i][j])){
                         this.changeColor[i][j] = true;

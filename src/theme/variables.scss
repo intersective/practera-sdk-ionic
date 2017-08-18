@@ -37,6 +37,7 @@ $secondary-palette-four: #D4EEFC;
 $secondary-palette-five: #3A74BA;
 $secondary-palette-six: #fc9147;
 $secondary-palette-seven: #43c7f4;
+$secondary-palette-eight: #00b5ac;
 
 
 // App Mixin Functions
@@ -106,6 +107,10 @@ $colors: (
     base: $secondary-palette-seven,
     contrast: $secondary-palette-six
   ),
+  palette-five: (
+    base: $secondary-palette-eight,
+    contrast: $secondary-palette-eight
+  )
 );
 
 // Small arrow color for list
