@@ -5,11 +5,6 @@ import { Cache } from '../app/cache';
 
 import * as _ from 'lodash';
 
-
-export class LocalStorage {
-}
-
-
 @Injectable()
 export class CacheService {
 

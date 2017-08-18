@@ -5,7 +5,6 @@ import {
   Navbar,
   LoadingController,
   ModalController,
-  PopoverController,
   AlertController,
   Events
 } from 'ionic-angular';
@@ -24,21 +23,6 @@ import { AssessmentsGroupPage } from './group/assessments-group.page'
 import { ItemsPopupPage } from './popup/items-popup.page';
 // import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ActivitiesListPage } from '../activities/list/list.page';
-class ActivityBase {
-  id: number;
-  name: string;
-  description: string;
-}
-
-class ReferenceAssessmentBase {
-  id: number;
-  name: string;
-}
-
-class ReferenceBase {
-  context_id: number;
-  Assessment: ReferenceAssessmentBase
-}
 
 @Component({
   selector: 'assessments-page',
@@ -79,7 +63,6 @@ export class AssessmentsPage {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    private popoverCtrl: PopoverController,
     private assessmentService: AssessmentService,
     private characterService: CharacterService,
     private cacheService: CacheService,
@@ -260,35 +243,66 @@ export class AssessmentsPage {
     return assessments;
   }
 
+  /**
+   * pull submission when required, when:
+   * - no submission available in the redirection from activity-view/event-view pages
+   * - [save] clicked & saved from assessment-group.page.ts
+   *
+   * @return {Promise<any>}
+   */
   private pullSubmissions(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 2nd batch API requests (get_submissions)
-      // response format: [ // context_ids
-      //   [ // assessment group 1
-      //     assessment1,
-      //     assessment2,
-      //     ...
-      //   ],
-      //   [ // assessment group 2
-      //     assessment1,
-      //     assessment2,
-      //     ...
-      //   ],
-      //   ...
-      // ]
-      Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References))
-        .subscribe((allSubmissions) => {
+      Observable.forkJoin(
+        this.submissionService.getSubmissionsByReferences(
+          this.activity.References
+        ))
+        .subscribe(allSubmissions => {
+          // allSubmissions - response format: [ // context_ids
+          //   [ // assessment group 1
+          //     assessment1,
+          //     assessment2,
+          //     ...
+          //   ],
+          //   [ // assessment group 2
+          //     assessment1,
+          //     assessment2,
+          //     ...
+          //   ],
+          //   ...
+          // ]
           let submissions = [];
           _.forEach(allSubmissions, group => {
             _.forEach(group, (submission) => {
-              submissions.push(this.submissionService.normalise(submission));
+                submissions.push(this.submissionService.normalise(submission));
             });
           });
-          this.submissions = submissions;
+
+          // check if a submission is specified
+          let currentSubmission = this.navParams.get('currentSubmission');
+          let filteredSubmissions = [];
+
+          submissions.forEach(subm => {
+            if (currentSubmission && currentSubmission.id === subm.id) {
+              filteredSubmissions.push(subm);
+            }
+          });
+          let hasInProgress = _.find(submissions, {status: 'in progress'}); // "in progress" never > 1
+          let isNew = (!currentSubmission && (filteredSubmissions.length === 0 || !_.isEmpty(hasInProgress)));
+
+          if (isNew) { // new submission
+            this.submissions = !_.isEmpty(hasInProgress) ? [hasInProgress] : [];
+          } else if (!isNew && hasInProgress) { // resume "in progress"
+            filteredSubmissions.push(hasInProgress);
+            this.submissions = filteredSubmissions;
+          } else if (currentSubmission) { // display current submission
+            filteredSubmissions.push(currentSubmission);
+            this.submissions = filteredSubmissions;
+          }
+
           console.log('this.submissions', this.submissions);
           resolve(submissions);
-        },
-        (err) => {
+        }, err => {
           console.log('err', err);
           reject(err);
         });
@@ -331,17 +345,17 @@ export class AssessmentsPage {
         );
 
         // Only allow submit when all required question have answered.
-        _.forEach(this.assessmentGroups, (groups, i) => {
-          _.forEach(groups, (assessment, j) => {
+        _.forEach(this.assessmentGroups, groups => {
+          _.forEach(groups, assessment => {
             let groupWithAnswers = 0;
             _.forEach(assessment.AssessmentGroup, group => {
-              console.log('group.answeredQuestions', group.answeredQuestions);
-              console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
+              // console.log('group.answeredQuestions', group.answeredQuestions);
+              // console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
               if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
-            console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
+            // console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
             if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
               this.allowSubmit = true;
             }
@@ -352,7 +366,7 @@ export class AssessmentsPage {
           if (
             submission.status === 'pending review' ||
             submission.status === 'pending approval' ||
-            submission.status === 'published' ||
+            submission.status === 'published' || // moderated type (reviews & published)
             submission.status === 'done' // survey type
           ) {
             this.allowSubmit = false;
@@ -372,12 +386,21 @@ export class AssessmentsPage {
             this.assessmentGroups = assessments;
             this.submissions = this.navParams.get('submissions');
 
-            if (this.submissionUpdated) { // pull new when submission is updated
+            // check if this is from single submission view
+            let currentSubmission = this.navParams.get('currentSubmission');
+            if (currentSubmission) {
+              this.submissions = [currentSubmission];
+              console.log(this.navParams.get('currentSubmission'), this.submissions);
+            }
+
+            // pull new when submission is updated or currentSubmission is empty
+            if (this.submissionUpdated || !currentSubmission) {
               this.pullSubmissions().then(res => {
                 preprocessAssessmentSubmission();
               }, err => {
                 reject(err);
               });
+              this.submissionUpdated = false;
             } else {
               preprocessAssessmentSubmission();
             }
@@ -389,6 +412,7 @@ export class AssessmentsPage {
         );
     });
   }
+
 
   /**
    * submit answer and change submission status to done
@@ -544,7 +568,7 @@ export class AssessmentsPage {
                 alert.present(); // redirect to dashboard page
               });
               loading.dismiss();
-            }else {
+            } else {
               _.map(this.allItemsData, (ele) => {
                 this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
                 console.log("Final Combined results: ", this.combinedItems);

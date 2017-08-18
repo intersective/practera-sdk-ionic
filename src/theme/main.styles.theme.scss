@@ -44,6 +44,9 @@ $title-font: 'Arvo';
 .general-button {
   background-color: color($colors, button, base);
 }
+.back-button-text {
+  padding-left: 4px;
+}
 .close {
   font-size: 2.7rem;
   float: right;
@@ -132,6 +135,33 @@ $title-font: 'Arvo';
       padding-bottom: 12pt;
     }
   }
+  .main-logo {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+  }
+  .login-welcome-text {
+    display: block;
+    margin: 0 auto;
+  }
+  img.left-image {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+    position: fixed;
+    top: 0px;
+    left: 25%;
+    z-index: -1;
+  }
+  img.right-image {
+    width: 50%;
+    margin: 0 auto;
+    display: block;
+    position: fixed;
+    bottom: 0px;
+    left: 25%;
+    z-index: -1;
+  }
 }
 .login-module {
   font-family: $font-secondary;
@@ -151,21 +181,6 @@ $title-font: 'Arvo';
   ion-row {
     padding: 0px;
     margin: 0px;
-  }
-  .login-bgs {
-    justify-content: center;
-    img.left-image,
-    img.right-image {
-      position: absolute;
-      width: 50%;
-      padding: 0px;
-    }
-    img.left-image {
-      top: 0;
-    }
-    img.right-image {
-      bottom: 0;
-    }
   }
   .main-login-text {
     h3 {
@@ -613,6 +628,30 @@ event {
         float: right;
       }
     }
+  }
+}
+// 
+@media screen and (min-width: 500px) {
+  img.left-image {
+    max-width: 25% !important;
+    left: 37.5% !important;
+    top: 0px;
+  }
+  img.right-image {
+    max-width: 25% !important;
+    left: 37.5% !important;
+    bottom: 0px;
+  }
+  .main-logo {
+    max-width: 55% !important;
+    margin: 0 auto;
+    display: block;
+  }
+  .general-form {
+    padding: 0 15%;
+  }
+  p.login-welcome-text {
+    padding: 0 10%;
   }
 }
 // landscape activity list view

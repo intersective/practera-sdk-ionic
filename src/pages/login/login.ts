@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { NavController,
          NavParams,
          LoadingController,
@@ -17,19 +17,17 @@ import { MilestoneService } from '../../services/milestone.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
-import { ResponsiveService } from '../../services/responsive.service';
 // directives
 import {FormValidator} from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+/* This page is for handling user login process */
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  private windowHeight: number = window.innerHeight / 3;
-  private isLandscaped: boolean = false;
   public email: string;
   public password: any;
   public userName: string;
@@ -53,14 +51,11 @@ export class LoginPage {
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
-    private responsiveService: ResponsiveService,
-    private cacheService: CacheService,
-    private ngZone: NgZone,
+    private cacheService: CacheService
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
-      email: ['', [FormValidator.isValidEmail,
-                   Validators.required]],
+      email: ['', [FormValidator.isValidEmail, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
@@ -86,6 +81,7 @@ export class LoginPage {
         content: this.loginLoadingMessages
       });
       loading.present().then(() => {
+        // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
               data = data.data;
@@ -96,7 +92,7 @@ export class LoginPage {
               self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocalObject('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {
@@ -143,6 +139,7 @@ export class LoginPage {
                         self.cacheService.setLocalObject('milestone_id', data.data[0].id);
                         console.log("milestone id: " + data.data[0].id);
                         this.navCtrl.push(TabsPage).then(() => {
+                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                           window.history.replaceState({}, '', window.location.origin);
                         });
                       });
@@ -161,7 +158,6 @@ export class LoginPage {
               });
             });
       });
-      // This part is calling post_auth() API from backend
     });
   }
   /**
@@ -219,5 +215,6 @@ export class LoginPage {
    */
   linkToForgetPassword() {
     this.navCtrl.push(this.forgetpasswordPage);
+    this.viewCtrl.dismiss();
   }
 }
