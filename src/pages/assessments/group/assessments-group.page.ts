@@ -236,7 +236,12 @@ export class AssessmentsGroupPage {
         group['choices'] = new FormGroup(choices);
       }
 
-      result[question.id] = new FormGroup(group);
+      /**
+       * id and question_id are different id
+       * - id =  has no obvious purpose
+       * - question_id must be used as id for submission
+       */
+      result[question.question_id] = new FormGroup(group);
     });
 
     return result;
@@ -262,8 +267,8 @@ export class AssessmentsGroupPage {
 
     return {
       Assessment: {
-          id: submission.assessment_id,
-          context_id: this.getSubmissionContext()
+        id: submission.assessment_id,
+        context_id: this.getSubmissionContext()
       },
       AssessmentSubmissionAnswer: answers
     };
@@ -274,10 +279,10 @@ export class AssessmentsGroupPage {
    */
   storeProgress = () => {
     let answers = {};
-    _.forEach(this.formGroup, (question, id) => {
+    _.forEach(this.formGroup, (question, question_id) => {
       let values = question.getRawValue(),
           answer = {
-            assessment_question_id: id,
+            assessment_question_id: question_id,
             answer: values.answer || values.comment,
 
             // store it if choice answer is available or skip
@@ -286,7 +291,7 @@ export class AssessmentsGroupPage {
 
       // set empty string to remove answer
       answer.answer = (answer.answer) ? answer.answer : '';
-      answers[id] = answer;
+      answers[question_id] = answer;
     });
 
     // final step - store submission locally
