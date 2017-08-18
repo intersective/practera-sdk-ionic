@@ -7,7 +7,9 @@
   <ion-list *ngIf="isEmptyList === false">
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
-      {{ listData.name }}
+      <span [ngClass]="{'muted': !listData.name}">
+        {{ listData.name || 'Hidden Name' }}
+      </span>
       <div item-end>
         <b>{{ listData.experience_points }}</b>
       </div>
@@ -21,7 +23,7 @@
   </ion-list>
 
   <ion-list class="my-ranking" *ngIf="isEmptyList === false">
-    <ion-item (click)="goRankingDetail()" detail-push>
+    <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
       <rankIcon [rank]="myRankingData.rank"></rankIcon>
       {{ 'RANKING.ME' | translate }}
       <div item-end>

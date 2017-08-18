@@ -135,7 +135,7 @@ $title-font: 'Arvo';
 }
 .login-module {
   font-family: $font-secondary;
-  // background-color: color($colors, secondary, base);
+  background-color: color($colors, background, contrast) !important;
   background-repeat: no-repeat;
   .scroll-content {
     overflow-y: hidden;
@@ -175,7 +175,7 @@ $title-font: 'Arvo';
       color: color($colors, text, base);
       font-size: 24pt;
       text-align: left;
-      padding-bottom: 40pt;
+      // padding-bottom: 40pt;
       span {
         display: block;
         font-family: $title-font;
@@ -192,6 +192,24 @@ $title-font: 'Arvo';
   }
   .close-btn {
     @include closeBtn;
+  }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
+  // general form
+  .general-form {
+    width: 100%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
   }
 }
 // 7.2 login form box styling (shared module: part 2)
