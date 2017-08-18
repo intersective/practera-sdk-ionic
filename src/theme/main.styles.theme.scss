@@ -104,7 +104,7 @@ $title-font: 'Arvo';
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, primary, base);
+    color: color($colors, secondary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
@@ -466,7 +466,7 @@ event {
     align-items: center;
   }
   .score-board {
-    background-color: color($colors, primary, base); // default-theme
+    background-color: color($colors, secondary, base); // default-theme
     background-size: cover;
     text-align: center;
     .score-board-inner {
