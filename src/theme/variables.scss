@@ -21,8 +21,7 @@ $primary: #E60028; // #E60028
 $secondary: #000054; // #ffffff
 
 // Buttons/tabs
-$primary-button: #000054;
-$primary-button-bg: #44C8CF;
+$primary-button: #3A74BA;
 
 $primary-text: #000054;
 $secondary-text: #000000;
@@ -55,14 +54,9 @@ $colors: (
   primary: $primary,
   secondary: $secondary,
   button: (
-    base: $primary-button,
-    contrast: darken($primary-button, 10%)
+    base: darken($primary-button, 10%),
+    contrast: lighten($primary-button, 10%)
   ),
-  button-bg: ( // Use for tab selected background
-    base: $primary-button-bg,
-    contrast: lighten($primary-button-bg, 10%)
-  ),
-
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
      contrast: darken($secondary, 10%) // darken for contrast?
