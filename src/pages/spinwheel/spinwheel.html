@@ -3,23 +3,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
   <div class="center">
-    <ion-list>
-      <button ion-item (click)="calls('item')">1. Load Item API</button>
-      <button ion-item (click)="calls('open')">2. Open First Item</button>
-    </ion-list>
+    <button ion-button block outline [disabled]="statuses.isSpinning" (click)="spin()">
+      Spin
+    </button>
 
-    <div class="power_controls">
-      <button ion-button outline (click)="draw()">
-        Draw
-      </button>
-      <button ion-button outline [disabled]="statuses.isSpinning" (click)="spin()">
-        Spin
-      </button>
-    </div>
-
-    <ion-list>
+    <ion-list *ngIf="false">
       <ion-item>
         SPINS: <span id="spins">{{ statuses.chances }}</span>
       </ion-item>
