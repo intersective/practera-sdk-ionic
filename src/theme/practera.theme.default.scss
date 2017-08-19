@@ -77,10 +77,16 @@ $font-secondary: 'Raleway';
   color: color($colors, secondary, base);
   border-top: thick double color($colors, button, base);
 }
+.segment-ios .segment-button,
+.segment-md .segment-button {
+  background-color: color($colors, white, base);
+  color: color($colors, primary, base);
+  border-color: color($colors, primary, base);
+}
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
   background-color: color($colors, primary, base);
-  color: color($colors, secondary, base);
+  color: color($colors, white, base);
   border-color: color($colors, primary, base);
 }
 .checkbox-md .checkbox-checked,
@@ -96,7 +102,7 @@ $font-secondary: 'Raleway';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, secondary, base);
+    background-color: color($colors, white, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
@@ -257,6 +263,8 @@ $font-secondary: 'Raleway';
 }
 // 8. General Event Page Styling
 .events {
+  background-color: color($colors, secondary, base);
+
   .list:first-child {
     margin-bottom: 0;
   }
@@ -372,10 +380,13 @@ event {
     font-family: $font-primary; // default-theme
   }
   .event-details {
-    padding: 8px 15px;
+    padding: 8px 8px;
     font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
+  }
+  .event-logo {
+    padding: 8px 8px;
   }
 }
 // 9. General Dashboard Page Styling
