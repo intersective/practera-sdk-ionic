@@ -35,8 +35,7 @@ export class GameService {
   public getItems(options?) {
     options = _.merge({
       character_id: null,
-      action: 'list',
-      filter: 'items_all'
+      filter: 'all'
     }, options);
     return this.request.get('api/items.json', {search: options});
   }

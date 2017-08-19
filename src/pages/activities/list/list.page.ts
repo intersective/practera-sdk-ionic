@@ -4,7 +4,8 @@ import {
   ToastController,
   LoadingController,
   ModalController,
-  PopoverController
+  PopoverController,
+  Events
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
@@ -64,7 +65,7 @@ export class ActivitiesListPage implements OnInit {
     obtained: {},
     available: []
   };
-  public achievementListIDs: any = [    
+  public achievementListIDs: any = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0],
@@ -92,6 +93,7 @@ export class ActivitiesListPage implements OnInit {
     public achievementService: AchievementService,
     public cacheService: CacheService,
     public characterService: CharacterService,
+    public eventListener: Events,
     public gameService: GameService,
     public submissionService: SubmissionService,
     public toastCtrl: ToastController,
@@ -177,6 +179,9 @@ export class ActivitiesListPage implements OnInit {
                     data => {
                       this.initialItems = data.Items;
                       this.cacheService.setLocalObject('initialItems', this.initialItems);
+                      // dispatch event
+                      this.eventListener.publish('spinner:update', data);
+
                       console.log("Items Data: ", this.initialItems);
                     },
                     err => {

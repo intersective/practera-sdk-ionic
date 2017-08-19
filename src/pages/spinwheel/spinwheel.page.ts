@@ -1,10 +1,11 @@
 import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
-import { AlertController, LoadingController, Platform, ModalController } from 'ionic-angular';
+import { AlertController, LoadingController, Platform, ModalController, Events } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
 
 import * as Winwheel from 'Winwheel';
+import * as _ from 'lodash';
 import { TweenLite } from "gsap";
 
 @Component({
@@ -63,7 +64,8 @@ export class SpinwheelPage implements OnInit {
     private zone: NgZone,
     private renderer: Renderer2,
     private cache: CacheService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private eventListener: Events
   ) {
     this.canvas = {
       width: platform.width() * 0.9,
@@ -77,7 +79,6 @@ export class SpinwheelPage implements OnInit {
   character: any = {};
   item: any = {};
   calls(types) {
-
     let gameId = null;
     let characterId = null;
     let itemId = null;
@@ -87,18 +88,6 @@ export class SpinwheelPage implements OnInit {
         this.gameService.getGames().subscribe(res => {
           console.log(res);
           this.game = res.Games[0];
-          /*
-            {
-              "Games": [
-                {
-                  "id": 1,
-                  "name": "PE-TEST Project",
-                  "created": "2017-08-04 08:00:08.865691",
-                  "modified": "2017-08-04 08:00:08.865691"
-                }
-              ]
-            }
-           */
         });
         break;
 
@@ -117,35 +106,35 @@ export class SpinwheelPage implements OnInit {
         if (this.character.id === null) {
           console.log('load character API first!');
         } else {
-          this.gameService.getItems({
-            character_id: this.character.id,
-            action: 'list'
-          }).subscribe(res => {
-            this.item = res.Items[0];
-            console.log(res);
-            /*
-              {
-                "Containers": [
-                  {
-                    "id": 1,
-                    "item_id": 1,
-                    "opened": true
-                  }
-                ],
-                "Items": [
-                  {
-                    "id": 1,
-                    "name": "default inventory",
-                    "description": "This is the default inventory of the game. This item cannot be deleted or edited.",
-                    "meta": null,
-                    "base_value": "0",
-                    "container_id": null,
-                    "experience_points": 0
-                  }
-                ]
+          this.retrieve().then(res => {
+            // prepare unopened containers
+            let unopened = [];
+            res.Containers.forEach(container => {
+              if (!container.opened) {
+                unopened.push(container);
               }
-             */
-          });
+            });
+
+            // prepare available spinners
+            let spinners = [];
+            if (unopened.length > 0) {
+              res.Items.forEach(item => {
+                if (item.id === unopened[0].item_id) {
+                  spinners.push(item);
+                }
+              });
+            }
+
+            if (spinners.length > 0) {
+              this.item = spinners[0]; // get first spinner
+            } else {
+              let alert = this.alertCtrl.create({
+                title: 'No available spin left!',
+                buttons: ['Ok']
+              });
+              alert.present();
+            }
+          })
         }
         break;
 
@@ -155,7 +144,7 @@ export class SpinwheelPage implements OnInit {
         } else {
           this.gameService.postItems({
             "Character": {
-              "id": this.character.id
+              "id": this.cache.getLocal('character_id')
             },
             "Item": {
               "id": this.item.id,     // ID of the item to take action
@@ -194,22 +183,13 @@ export class SpinwheelPage implements OnInit {
     return result;
   }
 
-  retrieve(type): Promise<any> {
+  retrieve(): Promise<any> {
     return new Promise((resolve, reject) => {
       if (this.cache.getLocal('character_id')) {
         this.gameService.getItems({
-          character_id: this.character.id
+          character_id: this.cache.getLocal('character_id')
         }).subscribe(res => {
-          resolve(res);
-        }, err => {
-          reject(err);
-        });
-      } else {
-        this.gameService.getGames({
-          character_id: this.game.id
-        }).subscribe(res => {
-          console.log(res);
-          // this.gameService.getCharacters()
+          this.eventListener.publish('spinner:update', res);
           resolve(res);
         }, err => {
           reject(err);

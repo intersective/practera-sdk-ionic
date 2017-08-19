@@ -6,10 +6,8 @@
 <ion-content>
   <div class="center">
     <ion-list>
-      <button ion-item (click)="calls('game')">1. Load Game API</button>
-      <button ion-item (click)="calls('character')">2. Load Character API</button>
-      <button ion-item (click)="calls('item')">3. Load Item API</button>
-      <button ion-item (click)="calls('open')">4. Open First Item</button>
+      <button ion-item (click)="calls('item')">1. Load Item API</button>
+      <button ion-item (click)="calls('open')">2. Open First Item</button>
     </ion-list>
 
     <div class="power_controls">
@@ -22,7 +20,6 @@
     </div>
 
     <ion-list>
-      <ion-item *ngIf="statuses.isCompleted">Completed!</ion-item>
       <ion-item>
         SPINS: <span id="spins">{{ statuses.chances }}</span>
       </ion-item>
