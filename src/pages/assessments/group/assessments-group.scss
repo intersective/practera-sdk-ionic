@@ -1,4 +1,8 @@
 assessments-group-page {
+  .scroll-content {
+    background-color: color($colors, secondary, base);
+  }
+
   .btn-save[disabled] {
     display: none;
   }

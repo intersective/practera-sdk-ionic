@@ -1,4 +1,8 @@
 assessments-page {
+  .scroll-content {
+    background-color: color($colors, secondary, base);
+  }
+
   ion-card.no-box-shadow {
     box-shadow: none;
   }
