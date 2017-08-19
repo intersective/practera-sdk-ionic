@@ -3,7 +3,6 @@ import { AlertController, LoadingController, Platform, ModalController } from 'i
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
-import { SpinwheelModalPage } from './spinwheel-modal.page';
 
 import * as Winwheel from 'Winwheel';
 import { TweenLite } from "gsap";
@@ -232,17 +231,18 @@ export class SpinwheelPage implements OnInit {
   /**
    * @description display activity detail modal page
    */
-  private openModal(content?) {
+  private openAlert(content?) {
     let spinner = Object.assign({
-      name: 'You Won!',
-      content: '',
+      name: 'Congratulations',
       description: ''
     }, content || {});
 
-    let spinnerModal = this.modalCtrl.create(SpinwheelModalPage, {
-      spinner: spinner
+    let spinnerAlert = this.alertCtrl.create({
+      title: 'Congratulations',
+      cssClass: 'custom-alert',
+      subTitle: spinner.description
     });
-    spinnerModal.present();
+    spinnerAlert.present();
   }
 
   private setCanvasSize() {
@@ -357,12 +357,7 @@ export class SpinwheelPage implements OnInit {
   finaliseSpinner() {
     let prize = this.wheel.getIndicatedSegment();
     this.statuses.value += prize.value;
-    this.openModal({
-      content: `<div>
-        <h3>Congratulation!</h3>
-        <p *ngIf="false">some pic here?</p>
-      </div>`,
-      description: `Congratulations you’ve won ${prize.value} points.`});
+    this.openAlert({description: `Congratulations you’ve won ${prize.value} points.`});
   }
 
   /**
