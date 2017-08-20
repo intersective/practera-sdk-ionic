@@ -65,6 +65,9 @@
     "TUTORIAL": "Tutorial",
     "TERMS": "Terms of Use"
   },
+  "SPINNER": {
+    "PAGETITLE": "Spin Wheel"
+  },
   "TABS": {
     "ACCOUNT": "Account",
     "DASHBOARD": "Dashboard",

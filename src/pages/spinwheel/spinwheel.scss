@@ -2,6 +2,13 @@
 
 #points {}
 
+.spinwheel {
+  background-image: url(/assets/img/static/wheel_back.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
 .tweenmax-test {
   background-color: red;
   border-radius: 5px;

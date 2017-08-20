@@ -48,7 +48,9 @@ export class SpinwheelPage implements OnInit {
     spinOn: false,
     displayPureCSS: false,
     isSpinning: false,
-    isCompleted: false
+    isCompleted: false,
+    totalEP: 0, // for display (updated only after done spinning)
+    newTotalEP: 0 // for reset of totalEP after spinning
   };
   canvas = {
     width: 0,
@@ -275,6 +277,21 @@ export class SpinwheelPage implements OnInit {
     this.setCanvasSize();
     this.wheel = new Winwheel(this.config);
     this.wheel.draw();
+
+    this.statuses.chances = (this.getUnopened()).length;
+  }
+
+  private getUnopened(retrievedContainer?) {
+    let containers = retrievedContainer || this.cache.getLocalObject('containers');
+
+    let unopened = [];
+    containers.forEach(container => {
+      if (!container.opened) {
+        unopened.push(container);
+      }
+    });
+
+    return unopened;
   }
 
   /**
@@ -330,6 +347,13 @@ export class SpinwheelPage implements OnInit {
    * @returns {void}
    */
   spin() {
+    /*let segmentNumber = (400/ 100);
+    let stopAt = this.wheel.getRandomForSegment(segmentNumber);
+
+    this.wheel.animation.stopAngle = stopAt;
+    this.wheel.rotationAngle = 0; // reset starting point of spinner
+    this.startAnimation();*/
+
     let loading = this.loadingCtrl.create({
       content: loadingMessages.LoadingSpinner.loading
     }),
@@ -342,12 +366,7 @@ export class SpinwheelPage implements OnInit {
       this.eventListener.publish('spinner:update', res); // update badge
 
       // prepare unopened containers
-      let unopened = [];
-      res.Containers.forEach(container => {
-        if (!container.opened) {
-          unopened.push(container);
-        }
-      });
+      let unopened = this.getUnopened(res.Containers);
 
       // prepare available spinners
       let spinners = [];
@@ -364,7 +383,11 @@ export class SpinwheelPage implements OnInit {
         this.stopAt(this.item.id).then(res => {
           loading.dismiss();
 
-          let segmentNumber = (res.Items.total_experience_points/ 100);
+          this.statuses.newTotalEP = res.total_experience_points;
+
+          // get last element from array as new item
+          let newItem = res.Items[res.Items.length - 1];
+          let segmentNumber = newItem.experience_points / 100;
           let stopAt = this.wheel.getRandomForSegment(segmentNumber);
 
           this.wheel.animation.stopAngle = stopAt;
@@ -380,7 +403,7 @@ export class SpinwheelPage implements OnInit {
 
       } else {
         loading.dismiss();
-        alert.data.title = 'No available spin left!';
+        alert.data.title = 'No spin chances available!';
         alert.present();
       }
     }, err => {
@@ -396,6 +419,7 @@ export class SpinwheelPage implements OnInit {
   finaliseSpinner() {
     let prize = this.wheel.getIndicatedSegment();
     this.statuses.value += prize.value;
+    this.statuses.totalEP = this.statuses.newTotalEP; // display new total EP
     this.openAlert({description: `Congratulations you’ve won ${prize.value} points.`});
   }
 
@@ -410,7 +434,6 @@ export class SpinwheelPage implements OnInit {
     let onComplete = () => {
       this.statuses.isSpinning = false;
       this.statuses.isCompleted = true;
-      this.statuses.chances -= 1;
 
       this.stopAnimation();
       this.finaliseSpinner();
@@ -418,6 +441,7 @@ export class SpinwheelPage implements OnInit {
 
     // template logic
     this.statuses.isSpinning = true;
+    this.statuses.chances -= 1;
 
     // Call function to compute the animation properties.
     this.wheel.computeAnimation();
