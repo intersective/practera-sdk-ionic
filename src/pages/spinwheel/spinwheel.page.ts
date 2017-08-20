@@ -4,8 +4,7 @@ import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
 
-import * as Winwheel from 'Winwheel';
-import * as _ from 'lodash';
+import * as Winwheel from 'winwheel';
 import { TweenLite } from "gsap";
 
 @Component({
@@ -85,7 +84,6 @@ export class SpinwheelPage implements OnInit {
   calls(types) {
     let gameId = null;
     let characterId = null;
-    let itemId = null;
 
     switch (types) {
       case "game":
