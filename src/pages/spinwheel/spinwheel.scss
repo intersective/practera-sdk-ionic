@@ -1,0 +1,42 @@
+#spins {}
+
+#points {}
+
+.spinwheel {
+  background-image: url(/assets/img/static/wheel_back.png);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.tweenmax-test {
+  background-color: red;
+  border-radius: 5px;
+  width: 23%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  height: 6em;
+  margin-bottom: 3em;
+}
+
+.spinwheel-pointer {
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  bottom: -5rem;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #f00;
+}
+
+.custom-alert .alert-sub-title {
+    padding-top: 60px;
+    background-image: url(https://s3.amazonaws.com/pix.iemoji.com/images/emoji/apple/ios-10/256/party-popper.png);
+    background-size: 50px;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+    background-position-y: 0%;
+}

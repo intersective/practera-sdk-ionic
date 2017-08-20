@@ -36,6 +36,7 @@ import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -51,6 +52,7 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
 import { RankIconComponent } from '../components/rank/icon';
 // unused but necessary for build
 import { AssessmentsComponent } from '../components/assessments/assessments.component';
@@ -159,6 +161,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TeamPage,
     TestPage,
@@ -195,7 +198,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
-       links: [
+      links: [
         {
           component: LoginPage,
           name: 'Login',
@@ -269,6 +272,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TestPage,
     TermConditionPage,

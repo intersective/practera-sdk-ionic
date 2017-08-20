@@ -526,8 +526,9 @@ export class AssessmentsPage {
     // get latest updated items data api call
     loading.present();
 
-    this.gameService.getGameItems(this.getCharacterID)
-        .subscribe(
+    this.gameService.getItems({
+      character_id: this.getCharacterID
+    }).subscribe(
           data => {
             console.log("Items: ", data.Items);
             this.newItemsData = data.Items;
