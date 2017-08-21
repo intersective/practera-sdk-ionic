@@ -1,36 +1,34 @@
 .activity-detail {
-
   &.header {
-    background-color: $secondary;
+    background-color: color($colors, background, contrast);
     .toolbar-background {
       background-color: transparent;
     }
-
     .header-content {
-      height:10em;
+      height: 10em;
       text-align: center;
       color: $background-color;
       margin-top: 2.5rem;
       margin-bottom: 0;
-
+      border-bottom: 1px solid color($colors, background, base);
       .icon {
         font-size: 10rem;
       }
+      .activity-badge-image > img {
+        width: 40%;
+        margin-top: -22pt;
+      }
     }
   }
-
   .badges {
     img {
       max-height: 8em;
     }
-
     .disabled {
       opacity: 0.5;
       filter: grayscale(100%);
     }
   }
-
-
   .submissions {
     ion-col {
       padding: 0;
@@ -40,10 +38,14 @@
         text-align: right;
       }
     }
-
     ion-chip, ion-icon {
       background-color: color($colors, border);
       width: 5rem;
     }
+  }
+  #submissionIcon {
+    font-size: 6rem;
+    font-weight: 600;
+    color: color($colors, background, contrast);
   }
 }
