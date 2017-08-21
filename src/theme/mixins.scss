@@ -57,7 +57,7 @@
   padding: 0 0.4em;
   height: 3.2rem;
   font-size: 1.2rem;
-  color: color($colors, secondary, base) !important; // default-theme
+  color: color($colors, secondary, base); // default-theme
   background-color: color($colors, button, base); // default-theme
 }
 

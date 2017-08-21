@@ -52,7 +52,7 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
-
+    
     // submission
     this.submissions = [];
     Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References)).subscribe(responses => {
