@@ -316,6 +316,8 @@ $title-font: 'Arvo';
 }
 // 8. General Event Page Styling
 .events {
+  background-color: color($colors, secondary, base);
+
   .list:first-child {
     margin-bottom: 0;
   }
@@ -431,13 +433,13 @@ event {
     font-family: $font-primary; // default-theme
   }
   .event-details {
-    padding: 8px 15px;
+    padding: 8px 8px;
     font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
   }
   .event-logo {
-    padding: 8px 3px;
+    padding: 8px 8px;
   }
 }
 // 9. General Dashboard Page Styling
