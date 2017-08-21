@@ -14,10 +14,10 @@ import { TweenLite } from "gsap";
 export class SpinwheelPage implements OnInit {
   // hardcode prizes
   segments = [
-    {'fillStyle' : '#97ACD9', 'text' : '100', 'value' : 100},
-    {'fillStyle' : '#ABE0F9', 'text' : '200', 'value' : 200},
-    {'fillStyle' : '#96D5D2', 'text' : '300', 'value' : 300},
-    {'fillStyle' : '#C4DF9F', 'text' : '400', 'value' : 400}
+    {'fillStyle' : '#00B5AD', 'text' : '100', 'value' : 100},
+    {'fillStyle' : '#FFCB05', 'text' : '200', 'value' : 200},
+    {'fillStyle' : '#FCAC75', 'text' : '300', 'value' : 300},
+    {'fillStyle' : '#E60028', 'text' : '400', 'value' : 400}
   ];
 
   config = {
