@@ -17,18 +17,20 @@ export class RankingDetailsPage {
   public achievementBadgeImage = '../assets/img/default/default-badge.png';
   public achievementName = 'Achievement';
   public totalPoints = 0;
-  public myRank: any= {};
+  public myRank: any = {};
 
   public emptyAchievementMessage = errMessages.Activities.achievements.empty;
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
-  constructor(private navCtrl: NavController,
+  constructor(private navParams: NavParams,
+              private navCtrl: NavController,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
               private params: NavParams,
               private achievementService: AchievementService){}
   ionViewWillEnter() {
+    this.myRank = this.navParams.get('myRanking') || {};
     let loader = this.loadingCtrl.create();
     loader.present().then(() => {
       this.userAchievements()
