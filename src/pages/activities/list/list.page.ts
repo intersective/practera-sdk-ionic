@@ -152,6 +152,7 @@ export class ActivitiesListPage implements OnInit {
                   this.currentPercentage = this.percentageValue.toFixed(2);
                   // console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Characters[0];
+                  this.cacheService.setLocalObject('character', this.characterData);
                   this.cacheService.setLocal('character_id', this.characterData.id);
                   console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;

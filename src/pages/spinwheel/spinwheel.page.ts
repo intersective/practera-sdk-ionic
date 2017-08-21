@@ -177,6 +177,9 @@ export class SpinwheelPage implements OnInit {
     this.statuses.chances = 10;
     this.statuses.value = 0;
     this.statuses.spinOn = true;
+
+    let character = this.cache.getLocalObject('character');
+    this.statuses.totalEP = character.experience_points || 0;
   }
 
   /**
@@ -385,9 +388,7 @@ export class SpinwheelPage implements OnInit {
 
           this.statuses.newTotalEP = res.total_experience_points;
 
-          // get last element from array as new item
-          let newItem = res.Items[res.Items.length - 1];
-          let segmentNumber = newItem.experience_points / 100;
+          let segmentNumber = res.total_experience_points / 100;
           let stopAt = this.wheel.getRandomForSegment(segmentNumber);
 
           this.wheel.animation.stopAngle = stopAt;
@@ -419,7 +420,9 @@ export class SpinwheelPage implements OnInit {
   finaliseSpinner() {
     let prize = this.wheel.getIndicatedSegment();
     this.statuses.value += prize.value;
-    this.statuses.totalEP = this.statuses.newTotalEP; // display new total EP
+
+    let characterEP = this.cache.getLocalObject('character');
+    this.statuses.totalEP = characterEP.experience_points + this.statuses.newTotalEP; // display new total EP
     this.openAlert({description: `Congratulations you’ve won ${prize.value} points.`});
   }
 
