@@ -588,6 +588,7 @@ event {
       button {
         padding: 6px 14px;
         border-radius: 20px;
+        background-color: color($colors, secondary, base);
       }
     }
     .icon-color-default {

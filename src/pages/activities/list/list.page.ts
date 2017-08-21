@@ -17,6 +17,7 @@ import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { CharacterService } from '../../../services/character.service';
+import { EventService } from '../../../services/event.service';
 import { GameService } from '../../../services/game.service';
 import { SubmissionService } from '../../../services/submission.service';
 // pages
@@ -41,7 +42,11 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 export class ActivitiesListPage implements OnInit {
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
+  public activityIndex: any = 0;
   public activities: any = [];
+  public activityIDs: any = [];
+  public bookedEventsCount: any = 0;
+  public eventsData: any = [];
   public initialItems: any = [];
   public totalAchievements: any = [];
   public currentPoints: number = 0;
@@ -93,6 +98,7 @@ export class ActivitiesListPage implements OnInit {
     public achievementService: AchievementService,
     public cacheService: CacheService,
     public characterService: CharacterService,
+    public eventService: EventService,
     public eventListener: Events,
     public gameService: GameService,
     public submissionService: SubmissionService,
@@ -110,6 +116,10 @@ export class ActivitiesListPage implements OnInit {
     // this.loadingDashboard();
   }
   ionViewWillEnter(){
+    // reset data to 0 when page reloaded before got new data
+    this.bookedEventsCount = 0; 
+    this.characterCurrentExperience = 0;
+    this.currentPercentage = 0;
     this.loadingDashboard();
   }
   // refresher activities
@@ -131,14 +141,22 @@ export class ActivitiesListPage implements OnInit {
     loadingData.present().then(() => {
       getActivities.subscribe(
         results => {
+            // get activities data
             this.activities = results;
             if(this.activities.length == 0){
               this.returnError = true;
             }
+            _.forEach(this.activities, ((element,index) => {
+              this.activityIndex = index + 1;
+              let indeObj = {indexID: this.activityIndex};
+              this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
+              this.activityIDs.push(this.activities[index].Activity.id);
+            }));
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
             let getUserAchievemnt = this.achievementService.getAchievements();
-            Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt])
+            let getUserEvents = this.eventService.getUserEvents("35,35,36,37,38,39,40");
+            Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
               .subscribe(results => {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
@@ -184,13 +202,23 @@ export class ActivitiesListPage implements OnInit {
                       this.cacheService.setLocalObject('initialItems', this.initialItems);
                       // dispatch event
                       this.eventListener.publish('spinner:update', data);
-
                       console.log("Items Data: ", this.initialItems);
                     },
                     err => {
                       console.log("Items Data error: ", err);
                     }
                   );
+                  this.eventsData = results[3];
+                  console.log("Events data: ", this.eventsData);
+                  if(this.eventsData){
+                    _.forEach(this.eventsData, (element, index) => {
+                      if(this.eventsData[index].isBooked == true){
+                        this.bookedEventsCount++;
+                      }
+                    });
+                  }else {
+                    this.bookedEventsCount = 'None';
+                  }
                 });
               },
               err => {

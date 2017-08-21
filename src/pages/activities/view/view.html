@@ -11,8 +11,14 @@
   <ion-list class="header-content">
     <ion-grid>
       <ion-row>
-        <ion-col col-12>
-          <ion-icon name="{{activity.icon || 'globe'}}" item-left></ion-icon>
+        <ion-col col-12 class="activity-badge-image">
+          <!-- <ion-icon name="{{activity.icon || 'globe'}}" item-left></ion-icon> -->
+          <img *ngIf="activityIndex == 1" src="./assets/img/badges/badge01.svg" alt="Activity Badge"/>
+          <img *ngIf="activityIndex == 2" src="./assets/img/badges/badge02.svg" alt="Activity Badge"/>
+          <img *ngIf="activityIndex == 3" src="./assets/img/badges/badge03.svg" alt="Activity Badge"/>
+          <img *ngIf="activityIndex == 4" src="./assets/img/badges/badge04.svg" alt="Activity Badge"/>
+          <img *ngIf="activityIndex == 5" src="./assets/img/badges/badge05.svg" alt="Activity Badge"/>
+          <img *ngIf="activityIndex == 6" src="./assets/img/badges/badge06.svg" alt="Activity Badge"/>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -27,7 +33,7 @@
   </ion-fab>
   <ion-fab top right edge *ngIf="!loadings.submissions">
     <button ion-fab class="primary-button" (click)="goAssessment()">
-      <ion-icon name="add" color="black"></ion-icon>
+      <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
     </button>
   </ion-fab>
 
