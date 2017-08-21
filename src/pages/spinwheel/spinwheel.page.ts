@@ -4,6 +4,7 @@ import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
 
+import * as _ from 'lodash';
 import * as Winwheel from 'winwheel';
 import { TweenLite } from "gsap";
 
@@ -13,12 +14,20 @@ import { TweenLite } from "gsap";
 })
 export class SpinwheelPage implements OnInit {
   // hardcode prizes
-  segments = [
-    {'fillStyle' : '#00B5AD', 'text' : '100', 'value' : 100},
-    {'fillStyle' : '#FFCB05', 'text' : '200', 'value' : 200},
-    {'fillStyle' : '#FCAC75', 'text' : '300', 'value' : 300},
-    {'fillStyle' : '#E60028', 'text' : '400', 'value' : 400}
-  ];
+  segments = {
+    general: [
+      {'fillStyle' : '#00B5AD', 'text' : '100', 'value' : 100},
+    ],
+    normal: [
+      {'fillStyle' : '#FFCB05', 'text' : '200', 'value' : 200},
+    ],
+    rare: [
+      {'fillStyle' : '#FCAC75', 'text' : '300', 'value' : 300},
+    ],
+    ultimate: [
+      {'fillStyle' : '#E60028', 'text' : '400', 'value' : 400}
+    ]
+  };
 
   config = {
     'canvasId'        : 'spinwheel',
@@ -28,7 +37,7 @@ export class SpinwheelPage implements OnInit {
     'textOrientation' : 'vertical',
     'textAlignment'   : 'outer',
     'numSegments'     : 12,
-    'segments'        : this.getSegments(3),
+    'segments'        : this.getSegments(),
     'rotationAngle'   : -15,
     'animation' : {
       'type'     : 'spinToStop',
@@ -188,13 +197,28 @@ export class SpinwheelPage implements OnInit {
    *  font size and test colour overridden on backrupt segments.
    *  atm, we hardcode prizes and communicate with server on the final result
    */
-  private getSegments(repeatable: number = 1) {
+  private getSegments() {
     let segments = this.segments;
 
     let result = [];
-    for (let x = 0; x < repeatable; x++) {
-      result = result.concat(segments);
+    result = result.concat(segments.ultimate);
+
+    for (let x = 0; x < 5; x++) {
+      // general
+      result = result.concat(segments.general);
+
+      // normal
+      if (x < 4) {
+        result = result.concat(segments.normal);
+      }
+
+      // rare
+      if (x === 0 || x === 2) {
+        result = result.concat(segments.rare);
+      }
+
     }
+
     return result;
   }
 
@@ -388,13 +412,19 @@ export class SpinwheelPage implements OnInit {
 
           this.statuses.newTotalEP = res.total_experience_points;
 
-          let segmentNumber = res.total_experience_points / 100;
-          let stopAt = this.wheel.getRandomForSegment(segmentNumber);
+          let relatedSegments = [];
+          this.wheel.segments.forEach(segment => {
+             if (segment && segment.value === res.total_experience_points) {
+               relatedSegments.push(segment);
+             }
+          });
+
+          let segment = relatedSegments[Math.floor(Math.random() * relatedSegments.length)];
+          let stopAt = this.getRandomForSegment(segment);
 
           this.wheel.animation.stopAngle = stopAt;
           this.wheel.rotationAngle = 0; // reset starting point of spinner
           this.startAnimation();
-          loading.dismiss();
         }, err => {
           loading.dismiss();
           alert.data.title = 'Fail to communicate with server';
@@ -408,6 +438,7 @@ export class SpinwheelPage implements OnInit {
         alert.present();
       }
     }, err => {
+      loading.dismiss();
       alert.data.title = 'Insufficient Spin Chances';
       alert.present();
     });
@@ -477,5 +508,23 @@ export class SpinwheelPage implements OnInit {
       }
       self.draw(false);
     }
+  }
+
+  private getRandomForSegment(segmentObject) {
+    let stopAngle = 0;
+
+    if (typeof segmentObject !== 'undefined') {
+      let startAngle = segmentObject.startAngle;
+      let endAngle = segmentObject.endAngle;
+      let range = (endAngle - startAngle) - 2;
+
+      if (range > 0) {
+        stopAngle = (startAngle + 1 + Math.floor((Math.random() * range)));
+      } else {
+        throw 'Segment size is too small to safely get random angle inside it';
+      }
+    }
+
+    return stopAngle;
   }
 }
