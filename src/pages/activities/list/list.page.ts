@@ -107,6 +107,9 @@ export class ActivitiesListPage implements OnInit {
     console.log("item data: ", this.newItemsData);
   }
   ngOnInit() {
+    // this.loadingDashboard();
+  }
+  ionViewWillEnter(){
     this.loadingDashboard();
   }
   // refresher activities

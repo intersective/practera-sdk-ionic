@@ -24,8 +24,9 @@
               </ion-list>
               <button type="submit"
                 ion-button
+                round
                 block
-                color="button"
+                class="primary-button"
                 [disabled]="password!=verify_password || regForm.invalid">
                 {{ 'GENERAL.DONE' | translate }}
               </button>

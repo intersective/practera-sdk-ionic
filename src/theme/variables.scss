@@ -55,9 +55,14 @@ $colors: (
   primary: $primary,
   secondary: $secondary,
   white: #FFF,
+  black: #000,
   button: (
     base: darken($primary-button, 10%),
     contrast: lighten($primary-button, 10%)
+  ),
+  primary-button: (
+    base: $secondary-palette-one,
+    contrast: lighten($secondary-palette-one, 10%)
   ),
   badge-text: #FFF,
   badge-bg: (

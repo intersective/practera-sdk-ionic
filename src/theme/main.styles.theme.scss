@@ -41,6 +41,10 @@ $title-font: 'Arvo';
   word-break: break-word;
 }
 // 5. General Button Styling
+.primary-button {
+  background-color: color($colors, primary-button, base);
+  color: color($colors, text, contrast) !important;
+}
 .general-button {
   background-color: color($colors, button, base);
 }
@@ -175,10 +179,10 @@ $title-font: 'Arvo';
     overflow-y: hidden;
   }
   ion-grid {
-    background-image: url(../assets/img/main/main_bg.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    // background-image: url(../assets/img/main/main_bg.png);
+    // background-size: cover;
+    // background-repeat: no-repeat;
+    // background-position: center;
     .login-btn {
       width: 100%;
       ion-icon {
@@ -210,6 +214,9 @@ $title-font: 'Arvo';
       // text-align: left;
     }
   }
+  .forgot-password-button {
+    font-size: 11pt !important;
+  }
   .general-circle-btn {
     @include circle-btn;
   }
@@ -227,6 +234,11 @@ $title-font: 'Arvo';
       padding: 0px;
       .item-inner {
         border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .forget-password-container {
+      .general-circle-btn {
+        font-size: 11pt;
       }
     }
     .general-circle-btn {
@@ -259,8 +271,7 @@ $title-font: 'Arvo';
   .forget-password-container {
     text-align: center;
     border: none;
-    button {
-      // color: color($colors, button, base); // default-theme
+    .general-circle-btn {
       color: color($colors, text, base);
       margin-top: 24pt;
       font-size: 11pt;
@@ -374,6 +385,15 @@ $title-font: 'Arvo';
   }
   .checkin-btn {
     @include checkinBtn;
+  }
+  .checkin-btn,
+  .book-btn,
+  .cancel-btn,
+  .cancel-btn:hover,
+  .cancel-btn:focus,
+  .cancel-btn:active {
+    background-color: color($colors, primary-button, base) !important;
+    color: color($colors, black) !important;
   }
   .lighter {
     opacity: 0.7;
