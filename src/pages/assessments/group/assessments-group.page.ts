@@ -117,7 +117,7 @@ export class AssessmentsGroupPage {
 
     _.forEach(submission.review, (review) => {
       _.forEach(questions, (question, idx) => {
-        if (review.assessment_question_id === question.id) {
+        if (review.assessment_question_id === question.question_id) {
           // text type
           if (question.type === 'text') {
             questions[idx].review_answer = review;
@@ -148,7 +148,7 @@ export class AssessmentsGroupPage {
     //     _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
     //       _.forEach(questions, (question, idx) => {
     //
-    //         if (reviewAnswer.assessment_question_id === question.id) {
+    //         if (reviewAnswer.assessment_question_id === question.question_id) {
     //           // text type
     //           if (question.type === 'text') {
     //             questions[idx].review_answer = reviewAnswer;
@@ -236,7 +236,14 @@ export class AssessmentsGroupPage {
         group['choices'] = new FormGroup(choices);
       }
 
-      result[question.id] = new FormGroup(group);
+      /**
+       * id and question_id are different id
+       * - id =  has no obvious purpose
+       * - question_id must be used as id for submission
+       *
+       * but for case like this just for index id
+       */
+      result[question.question_id] = new FormGroup(group);
     });
 
     return result;
@@ -262,8 +269,8 @@ export class AssessmentsGroupPage {
 
     return {
       Assessment: {
-          id: submission.assessment_id,
-          context_id: this.getSubmissionContext()
+        id: submission.assessment_id,
+        context_id: this.getSubmissionContext()
       },
       AssessmentSubmissionAnswer: answers
     };
@@ -274,10 +281,10 @@ export class AssessmentsGroupPage {
    */
   storeProgress = () => {
     let answers = {};
-    _.forEach(this.formGroup, (question, id) => {
+    _.forEach(this.formGroup, (question, question_id) => {
       let values = question.getRawValue(),
           answer = {
-            assessment_question_id: id,
+            assessment_question_id: question_id,
             answer: values.answer || values.comment,
 
             // store it if choice answer is available or skip
@@ -286,7 +293,7 @@ export class AssessmentsGroupPage {
 
       // set empty string to remove answer
       answer.answer = (answer.answer) ? answer.answer : '';
-      answers[id] = answer;
+      answers[question_id] = answer;
     });
 
     // final step - store submission locally
@@ -315,11 +322,11 @@ export class AssessmentsGroupPage {
 
     if (!_.isEmpty(savedProgress)) {
 
-      // index "id" is set as question.id in @Function buildFormGroup above
-      _.forEach(newQuestions, (question, id) => {
+      // index "id" is set as question.question_id in @Function buildFormGroup above
+      _.forEach(newQuestions, (question, question_id) => {
         // check integrity of saved answer (question might get updated)
-        if (savedProgress[id] && savedProgress[id].assessment_question_id == id) {
-          newQuestions[id] = this.setValueWith(question, savedProgress[id]);
+        if (savedProgress[question_id] && savedProgress[question_id].assessment_question_id == question_id) {
+          newQuestions[question_id] = this.setValueWith(question, savedProgress[question_id]);
         }
       });
     }

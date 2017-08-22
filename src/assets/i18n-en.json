@@ -24,6 +24,9 @@
     "PAGETITLE": "Forgot Password",
     "SENDBUTTON": "Send to Mailbox"
   },
+  "GAME": {
+    "PAGETITLE": "Spinner Wheel"
+  },
   "GENERAL": {
     "DONE": "Done",
     "DOWNLOAD": "Download",
@@ -62,11 +65,16 @@
     "TUTORIAL": "Tutorial",
     "TERMS": "Terms of Use"
   },
+  "SPINNER": {
+    "PAGETITLE": "Spin Wheel"
+  },
   "TABS": {
     "ACCOUNT": "Account",
     "DASHBOARD": "Dashboard",
     "EVENTS": "Events",
-    "RANKING": "Ranking"
+    "RANKING": "Leaderboard",
+    "ACTIVITIES": "Activities",
+    "SPINNER": "Spinner"
   },
   "TERMCONDITIONS": {
     "PAGETITLE": "Terms and Conditions",

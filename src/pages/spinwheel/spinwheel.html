@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'SPINNER.PAGETITLE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-row>
+        <ion-col align-self-start>
+          Spins left
+        </ion-col>
+        <ion-col align-self-end style="text-align: right;">
+          <strong>{{ statuses.chances }}</strong>
+        </ion-col>
+      </ion-row>
+
+      <ion-row *ngIf="statuses.totalEP > 0">
+        <ion-col align-self-start>
+          Experince points
+        </ion-col>
+        <ion-col align-self-end style="text-align: right;">
+          <strong>{{ statuses.totalEP }}</strong>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+  <div class="center">
+    <button ion-button block outline [disabled]="statuses.isSpinning" (click)="spin()">
+      Spin
+    </button>
+
+    <ion-list *ngIf="false">
+      <ion-item>
+        SPINS: <span id="spins">{{ statuses.chances }}</span>
+      </ion-item>
+      <ion-item>
+        POINTS: <span id="points">{{ statuses.value }}</span>
+      </ion-item>
+    </ion-list>
+
+    <div class="spinwheel">
+      <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
+        <p align="center">
+          Sorry, your browser doesn't support canvas. Please try another.
+        </p>
+      </canvas>
+    </div>
+  </div>
+</ion-content>

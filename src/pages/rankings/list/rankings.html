@@ -6,9 +6,7 @@
 <ion-content class="rankings">
   <ion-list *ngIf="isEmptyList === false">
     <ion-item *ngFor="let listData of listRankingData">
-      <div item-start>
-        {{ listData.rank }}
-      </div>
+      <rankIcon [rank]="listData.rank"></rankIcon>
       <span [ngClass]="{'muted': !listData.name}">
         {{ listData.name || 'Hidden Name' }}
       </span>
@@ -26,9 +24,7 @@
 
   <ion-list class="my-ranking" *ngIf="isEmptyList === false">
     <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
-      <div item-start>
-        {{ myRankingData.rank }}
-      </div>
+      <rankIcon [rank]="myRankingData.rank"></rankIcon>
       {{ 'RANKING.ME' | translate }}
       <div item-end>
         <b>{{ myRankingData.experience_points }}</b>

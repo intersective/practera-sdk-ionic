@@ -7,8 +7,8 @@
 // 1.1 General Color Variables
 $events-download-btn: 1px $border-primary solid;
 // 1.2 General Font Variables
-@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
-@import url(http://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
 $font-primary: 'Roboto';
 $font-secondary: 'Raleway';
 
@@ -70,13 +70,23 @@ $font-secondary: 'Raleway';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
+  color: color($colors, button, base);
+  border-color: color($colors, primary, base);
+}
+.tab-button[aria-selected=true] {
+  color: color($colors, secondary, base);
+  border-top: thick double color($colors, button, base);
+}
+.segment-ios .segment-button,
+.segment-md .segment-button {
+  background-color: color($colors, white, base);
   color: color($colors, primary, base);
   border-color: color($colors, primary, base);
 }
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
   background-color: color($colors, primary, base);
-  color: color($colors, secondary, base);
+  color: color($colors, white, base);
   border-color: color($colors, primary, base);
 }
 .checkbox-md .checkbox-checked,
@@ -92,13 +102,13 @@ $font-secondary: 'Raleway';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, primary, base);
+    background-color: color($colors, white, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
@@ -253,6 +263,8 @@ $font-secondary: 'Raleway';
 }
 // 8. General Event Page Styling
 .events {
+  background-color: color($colors, secondary, base);
+
   .list:first-child {
     margin-bottom: 0;
   }
@@ -368,10 +380,13 @@ event {
     font-family: $font-primary; // default-theme
   }
   .event-details {
-    padding: 8px 15px;
+    padding: 8px 8px;
     font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
+  }
+  .event-logo {
+    padding: 8px 8px;
   }
 }
 // 9. General Dashboard Page Styling
@@ -442,7 +457,7 @@ event {
     .locked {
       border-bottom: 1px solid color($colors, border, contrast);
       p {
-        padding: 12px 0px 12px 12px;
+        padding: 12px 0px 12px 5px;
         margin: 0px;
         min-height: 40px;
         line-height: 20px;

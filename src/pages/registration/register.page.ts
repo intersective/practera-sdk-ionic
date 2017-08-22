@@ -1,8 +1,8 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core'; 
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -25,7 +25,6 @@ const supportEmail = generalVariableMessages.helpMail.email;
   selector: 'register',
   templateUrl: 'register.html',
 })
-
 export class RegisterPage implements OnInit {
   @ViewChild('registrationForm') registrationForm: NgForm;
   user: any = {
@@ -71,7 +70,7 @@ export class RegisterPage implements OnInit {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
       password: ['', [Validators.minLength(8), Validators.required]],
-      verify_password: ['', [Validators.minLength(8), Validators.required]],
+      verify_password: ['', [Validators.minLength(8), Validators.required]]
     });
   }
   ngOnInit() {
@@ -141,7 +140,7 @@ export class RegisterPage implements OnInit {
           this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
               .subscribe(
                 data => {
-                  // get game_id data after login 
+                  // get game_id data after login
                   this.gameService.getGames()
                       .subscribe(
                         data => {

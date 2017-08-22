@@ -46,10 +46,18 @@ export class FilestackService {
     return this.filestack.pick(config);
   }
 
-  pickV1(file, onSuccess, onError?, onProgress?) {
-    this.filepicker.pick(file, success => {
-      return onSuccess(success);
-    }, onError, onProgress);
+  // single file picker
+  pickV1(config, onSuccess, onError?, onProgress?) {
+    if (!config) {
+      config = {
+        // container: 'modal',
+        // mimetypes: ['image/*', 'text/*',…],
+        // maxSize: 1024*1024
+        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+      };
+    }
+
+    this.filepicker.pick(config, onSuccess, onError, onProgress);
   }
 
   getSecurity() {

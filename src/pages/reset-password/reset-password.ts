@@ -6,7 +6,7 @@ import { NavController,
          AlertController,
          ModalController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as _ from 'lodash';
 // services
@@ -16,7 +16,7 @@ import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { ResponsiveService } from '../../services/responsive.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import { FormValidator } from '../../validators/formValidator';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
@@ -72,9 +72,6 @@ export class ResetPasswordPage implements OnInit {
              device, ngOnInit() will disable landscape mode for mobile device
   */
   ngOnInit() {
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ResetpasswordPage');
   }
   ionViewWillEnter() {
     this.verifyKeyEmail();
@@ -140,7 +137,7 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {

@@ -55,8 +55,7 @@ export class LoginPage {
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
-      email: ['', [FormValidator.isValidEmail,
-                   Validators.required]],
+      email: ['', [FormValidator.isValidEmail, Validators.required]],
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
@@ -93,7 +92,7 @@ export class LoginPage {
               self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocalObject('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {

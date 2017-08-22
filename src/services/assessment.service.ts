@@ -268,9 +268,12 @@ export class AssessmentService {
    */
   public normaliseGroup(group) {
     // let result = group;
-    let thisQuestions = group.AssessmentGroupQuestion;
-    thisQuestions = thisQuestions.map(question => {
-      return this.normaliseQuestion(question);
+    let questions = group.AssessmentGroupQuestion;
+    let thisQuestions = [];
+    questions.forEach(question => {
+      if (this.isAccessible(question)) {
+        thisQuestions.push(this.normaliseQuestion(question));
+      }
     });
 
     return {
@@ -281,6 +284,27 @@ export class AssessmentService {
       questions: thisQuestions,
       order: group.order,
     }
+  }
+
+  /**
+   * filter submission by:
+   * - "submitter" as audience
+   * - "submitter" as audience && status as "published"
+   * @name isAccessible
+   * @param {object} question Single normalised assessment
+   *                            object from this.normalise above
+   */
+  private isAccessible(question) {
+    let result = true;
+    if (question.AssessmentQuestion.audience.indexOf('submitter') === -1) {
+      result = false;
+    }
+
+    if (result && question.status === 'published') {
+      result = false;
+    }
+
+    return result;
   }
 
   /*
@@ -326,9 +350,9 @@ export class AssessmentService {
     });
 
     return {
-      id: question.id,
+      id: question.id, // unknown purpose (be careful with this id)
       assessment_id: question.assessment_question_id,
-      question_id: question.assessment_question_id,
+      question_id: question.assessment_question_id, // use this to indicate question
       group_id: question.assessment_group_id,
       name: thisQuestion.name,
       type: thisQuestion.question_type,

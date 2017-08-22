@@ -36,6 +36,7 @@ import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -51,6 +52,12 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
+import { RankIconComponent } from '../components/rank/icon';
+// unused but necessary for build
+import { AssessmentsComponent } from '../components/assessments/assessments.component';
+import { LevelsComponent } from '../components/levels/levels';
+import { QuestionComponent } from '../components/question/question.component';
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
@@ -63,6 +70,7 @@ import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-gro
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
+import { EventsBookingPage } from '../pages/events/booking/booking.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
@@ -73,6 +81,7 @@ import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboa
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { PopoverTextPage } from '../pages/activities/list/popover-text';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
@@ -91,6 +100,8 @@ import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
+// unused but needed for build
+import { OrderByPipe } from '../pipes/OrderBy';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -107,6 +118,7 @@ export function HttpLoaderFactory(http: Http) {
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     ActivityListPopupPage,
+    AssessmentsComponent,
     AssessmentsGroupPage,
     AssessmentsPage,
     EventCheckinPage,
@@ -116,13 +128,16 @@ export function HttpLoaderFactory(http: Http) {
     EventsListPage,
     EventsPreviewPage,
     EventsViewPage,
+    EventsBookingPage,
     FeedbackComponent,
+    RankIconComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
     GalleryPage,
     ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
+    LevelsComponent,
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
@@ -132,8 +147,11 @@ export function HttpLoaderFactory(http: Http) {
     ModalComponent,
     MultipleQuestionComponent,
     MyApp,
+    OrderByPipe,
     OneofQuestionComponent,
     PhotoComponent,
+    PopoverTextPage,
+    QuestionComponent,
     QuestionGroupComponent,
     RankingBadgesPage,
     RankingDetailsPage,
@@ -143,6 +161,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TeamPage,
     TestPage,
@@ -179,7 +198,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
-       links: [
+      links: [
         {
           component: LoginPage,
           name: 'Login',
@@ -203,6 +222,12 @@ export function HttpLoaderFactory(http: Http) {
           name: 'Registration',
           segment: 'registration',
           defaultHistory: [ RegistrationPage ]
+        },
+        {
+          component: TestPage,
+          name: 'Testing',
+          segment: 'testing',
+          defaultHistory: [ TestPage ]
         }
       ]
     })
@@ -238,6 +263,7 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
+    PopoverTextPage,
     RankingBadgesPage,
     RankingDetailsPage,
     RankingsPage,
@@ -246,6 +272,7 @@ export function HttpLoaderFactory(http: Http) {
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TestPage,
     TermConditionPage,

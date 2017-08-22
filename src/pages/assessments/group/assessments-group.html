@@ -41,28 +41,28 @@
     <!-- type: oneOf -->
     <oneof-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'oneof'"></oneof-question>
 
     <!-- type: oneOf -->
     <multiple-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'multiple'"></multiple-question>
 
     <!-- type: file -->
     <file-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'file'"></file-question>
 
     <!-- type: text -->
     <text-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'text'"></text-question>
 
