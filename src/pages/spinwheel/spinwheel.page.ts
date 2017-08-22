@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
+import { Component, NgZone, OnInit, ElementRef } from '@angular/core';
 import { AlertController, LoadingController, Platform, ModalController, Events } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -59,7 +59,7 @@ export class SpinwheelPage implements OnInit {
     isSpinning: false,
     isCompleted: false,
     totalEP: 0, // for display (updated only after done spinning)
-    newTotalEP: 0 // for reset of totalEP after spinning
+    newTotalEP: 0 // for reset of totalEP after spinning,
   };
   canvas = {
     width: 0,
@@ -72,15 +72,17 @@ export class SpinwheelPage implements OnInit {
     public platform: Platform,
     private gameService: GameService,
     private zone: NgZone,
-    private renderer: Renderer2,
+    private el: ElementRef,
     private cache: CacheService,
     private modalCtrl: ModalController,
     private eventListener: Events
   ) {
-    this.canvas = {
-      width: platform.width() * 0.9,
-      height: platform.width(),
-    };
+    platform.ready().then(() => {
+      this.canvas = {
+        width: platform.width() * 0.9,
+        height: platform.width(),
+      };
+    });
   }
 
   ionViewDidEnter() {
@@ -274,8 +276,9 @@ export class SpinwheelPage implements OnInit {
     let radius = canvasWidth / 2;
     let radiusConfig = {
       outer: radius * 0.8,
-      inner: radius * 0.2
+      inner: radius * 0.25
     };
+    // this.statuses.centerLogoSize = `${radiusConfig.inner * 2}px`;
 
     this.config.outerRadius = radiusConfig.outer;
     this.config.innerRadius = radiusConfig.inner;
