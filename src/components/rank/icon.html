@@ -1,9 +1,8 @@
+<div class="rankIcon" *ngIf="rank > 3" item-start>
+  {{ rank }}
+</div>
 <div class="rankIcon">
   <ion-icon *ngIf="rank === 1" name="fa-trophy" class="fa gold" item-start></ion-icon>
   <ion-icon *ngIf="rank === 2" name="fa-trophy" class="fa silver" item-start></ion-icon>
   <ion-icon *ngIf="rank === 3" name="fa-trophy" class="fa bronze" item-start></ion-icon>
-  <ion-icon *ngIf="rank > 3" name="fa-trophy" class="fa" item-start></ion-icon>
-  <div *ngIf="rank > 3" item-start>
-    {{ rank }}
-  </div>
 </div>
