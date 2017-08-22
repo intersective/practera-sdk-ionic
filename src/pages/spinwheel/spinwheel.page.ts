@@ -393,6 +393,7 @@ export class SpinwheelPage implements OnInit {
 
     loading.present();
     this.retrieve().then(res => {
+
       this.eventListener.publish('spinner:update', res); // update badge
 
       // prepare unopened containers
@@ -428,6 +429,11 @@ export class SpinwheelPage implements OnInit {
           this.wheel.animation.stopAngle = stopAt;
           this.wheel.rotationAngle = 0; // reset starting point of spinner
           this.startAnimation();
+          this.retrieve().then((updated) => {
+            // Updated again the tab badge number
+            console.log('After spin update', updated);
+            this.eventListener.publish('spinner:update', updated);
+          });
         }, err => {
           loading.dismiss();
           alert.data.title = 'Fail to communicate with server';
@@ -436,6 +442,8 @@ export class SpinwheelPage implements OnInit {
         });
 
       } else {
+        // Force to zero
+        this.eventListener.publish('spinner:update', res);
         loading.dismiss();
         alert.data.title = 'No spin chances available!';
         alert.present();
