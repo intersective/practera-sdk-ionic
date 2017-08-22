@@ -10,6 +10,13 @@ class ActivityBase {
   id: number;
   name: string;
   description: string;
+  milestone_id?: number;
+  deadline?: string;
+  end?: string;
+  lead_image?: string;
+  is_locked?: boolean;
+  order?: number;
+  video_url?: string;
 }
 
 class ReferenceAssessmentBase {
@@ -19,7 +26,7 @@ class ReferenceAssessmentBase {
 
 class ReferenceBase {
   context_id: number;
-  Assessment: ReferenceAssessmentBase
+  Assessment: ReferenceAssessmentBase;
 }
 
 @Injectable()
@@ -118,46 +125,44 @@ export class ActivityService {
         normalisedActivity: ActivityBase,
         sequence = this.mergeReferenceToSequence(activity);
 
+    normalisedActivity = {
+      id: activity.Activity.id,
+      name: activity.Activity.name,
+      description: activity.Activity.description,
+      milestone_id: activity.Activity.milestone_id,
+      deadline: activity.Activity.deadline,
+      end: activity.Activity.end,
+      lead_image: activity.Activity.lead_image,
+      is_locked: activity.Activity.is_locked,
+      order: activity.Activity.order,
+      video_url: activity.Activity.video_url
+    };
+
     activity =  _.merge(thisActivity, {
-      activity: activity.Activity,
+      // front end should use the one with smallcase instead
+      activity: normalisedActivity,
       sequence: sequence,
       assessment: this.extractAssessment(sequence),
+
+      // raw data (don't touch/edit)
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
       References: activity.References
     });
 
-    if (activity.Activity) {
-      normalisedActivity = {
-        id: activity.Activity.id,
-        name: activity.Activity.name,
-        description: activity.Activity.description
-      }
-    }
-
-    // Not all the API return activity data in capital-case
-    if (activity.activity) {
-      normalisedActivity = {
-        id: activity.activity.id,
-        name: activity.activity.name,
-        description: activity.activity.description
-      }
-    }
-
-    activity.Activity = normalisedActivity;
-
-    // Normalise activity reference
-    activity.References.forEach((reference, idx) => {
+   /* // Normalise activity reference
+    activity.References = activity.References.map(reference => {
       let referenceAssessment: ReferenceAssessmentBase = {
         id: reference.Assessment.id,
         name: reference.Assessment.name,
-      }
-      let normalisedReference: ReferenceBase = {
+      };
+      let result: ReferenceBase = {
         context_id: reference.context_id,
         Assessment: referenceAssessment
       };
-      activity.References[idx] = normalisedReference;
-    });
+
+      return result;
+    });*/
 
     return activity;
   }
