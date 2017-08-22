@@ -117,7 +117,7 @@ export class ActivitiesListPage implements OnInit {
   }
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
-    this.bookedEventsCount = 0; 
+    this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
     this.currentPercentage = 0;
     this.loadingDashboard();
@@ -238,7 +238,7 @@ export class ActivitiesListPage implements OnInit {
     });
   }
   // redirect to activity detail page
-  goToDetail(activity: any, id: any){
+  goToDetail(activity: any){
     this.navCtrl.push(ActivitiesViewPage, {
       achievements: this.achievements,
       activity: activity

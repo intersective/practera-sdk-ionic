@@ -150,7 +150,7 @@ export class ActivityService {
       References: activity.References
     });
 
-   /* // Normalise activity reference
+    // Normalise activity reference
     activity.References = activity.References.map(reference => {
       let referenceAssessment: ReferenceAssessmentBase = {
         id: reference.Assessment.id,
@@ -162,7 +162,7 @@ export class ActivityService {
       };
 
       return result;
-    });*/
+    });
 
     return activity;
   }

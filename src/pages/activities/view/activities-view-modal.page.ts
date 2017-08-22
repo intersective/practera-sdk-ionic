@@ -41,8 +41,7 @@ export class ActivitiesViewModalPage {
 
   ionViewDidEnter(): void {
     this.activity = this.navParams.get('activity');
-    this.activityData = this.activity.Activity;
-    console.log(this.activity.Activity);
+    this.activityData = this.activity;
   }
 
   dismiss() {
