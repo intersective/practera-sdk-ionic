@@ -40,11 +40,28 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage implements OnInit {
+  public initilized_varible(){
+    this.bookedEventsCount = 0; 
+    this.characterCurrentExperience = 0;
+    this.currentPercentage = 0;
+    this.activityIDs = [];
+    this.activityIndexArray = [];
+    this.filteredActivityIDs = [];
+    this.findSubmissions = [[], [], [], [], [], [],[]];
+    this.AverageScore = [0, 0, 0, 0, 0, 0, 0];
+  }
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
+  public activityIndexArray: any = [];
+  public filteredActivityIDs: any = [];
+  public AverageScore: any = [];
+  public totalAverageScore: any = 0;
+  public finalAverageScoreShow: any = '0';
+  public findSubmissions: any = [];
+  public button_show = true;
   public bookedEventsCount: any = 0;
   public eventsData: any = [];
   public initialItems: any = [];
@@ -55,7 +72,7 @@ export class ActivitiesListPage implements OnInit {
   public filteredSubmissions: any = [];
   public characterData: any = [];
   public submissionData: any = [];
-  public characterCurrentExperience: number = 0;
+  public characterCurrentExperience: any = '0';
   public percentageValue: number = 0;
   public submissionPoints: number = 0;
   public returnError: boolean = false;
@@ -77,7 +94,10 @@ export class ActivitiesListPage implements OnInit {
     [317, 318, 319, 320],
     [321, 323, 322, 324],
     [0, 0, 0, 0],
-    [316, 316, 316, 316]
+    [316, 316, 316, 316]    
+  ];
+  public show_score_act: any = [
+    false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
   public changeColor: any = [
@@ -89,8 +109,7 @@ export class ActivitiesListPage implements OnInit {
     [false,false,false,false],
     [false,false,false,false]
   ];
-  // public userAchievemntsIDsObj: any = {};
-  public userAchievemntsIDs: any = [];
+  public userAchievementsIDs: any = [];
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -117,13 +136,12 @@ export class ActivitiesListPage implements OnInit {
   }
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
-    this.bookedEventsCount = 0; 
-    this.characterCurrentExperience = 0;
-    this.currentPercentage = 0;
+    this.initilized_varible();
     this.loadingDashboard();
   }
   // refresher activities
   doRefresh(e) {
+    this.initilized_varible();
     this.loadingDashboard();
     e.complete();
   }
@@ -152,49 +170,52 @@ export class ActivitiesListPage implements OnInit {
               this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
               this.activityIDs.push(this.activities[index].Activity.id);
             }));
+            console.log("this.activityIDs: ", this.activityIDs);
+            // this.activityIDs = this.activityIDs.toString();
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
             let getUserAchievemnt = this.achievementService.getAchievements();
-            let getUserEvents = this.eventService.getUserEvents("35,35,36,37,38,39,40");
+            let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
             Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
               .subscribe(results => {
                 loadingData.dismiss().then(() => {
-                  this.submissionData = results[0];
-                  _.forEach(this.submissionData, element => {
-                    if(element.AssessmentSubmission.status == 'published' || element.AssessmentSubmission.status == 'done'){
-                      if(element.AssessmentSubmission.moderated_score !== null){
-                        this.filteredSubmissions.push(element.AssessmentSubmission);
-                        this.submissionPoints += parseFloat(element.AssessmentSubmission.moderated_score);
-                      }
-                    }
-                  });
-                  let average_score = (this.submissionPoints/this.filteredSubmissions.length)*4; // calculate GPA garde
-                  (average_score > 0) ? this.percentageValue = average_score : this.percentageValue = 0;
-                  this.currentPercentage = this.percentageValue.toFixed(2);
-                  // console.log("Percent: ", this.currentPercentage); // display as string format
                   this.characterData = results[1].Characters[0];
                   this.cacheService.setLocalObject('character', this.characterData);
                   this.cacheService.setLocal('character_id', this.characterData.id);
-                  console.log("character id: ", this.characterData.id);
+                  // console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
-                  // console.log("Experience: ", this.characterCurrentExperience);
+                  if(this.characterData.experience_points == 0) {
+                    this.characterCurrentExperience = '0';
+                  }
                   // achievement list data handling
                   this.getUserAchievementData = results[2];
-                  console.log("this.getUserAchievementData: ", this.getUserAchievementData);
+                  // console.log("this.getUserAchievementData: ", this.getUserAchievementData);
                   _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
-                    this.userAchievemntsIDs[index] = ele.id;
-                    console.log("ID value: ", this.userAchievemntsIDs[index]);
+                    this.userAchievementsIDs[index] = ele.id;
+                    // console.log("ID value: ", this.userAchievemntsIDs[index]);
                   });
                   // find ahievement ID whether inside achievemnt list or not
-                  for(let i=0; i<7; i++){
-                    for(let j=0; j<4; j++){
-                      if(this.userAchievemntsIDs.includes(this.achievementListIDs[i][j])){
-                        this.changeColor[i][j] = true;
-                      }else {
-                        this.changeColor[i][j] = false;
-                      }
+                  this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+                  // console.log("change color: array: ", this.changeColor);
+                  // find all 4 boxes are ticked index value inside changeColor array
+                  _.forEach(this.changeColor, (ele, index) => {
+                    let findTrueIndex: any = _.uniq(ele, 'true');
+                    console.log("findTrueIndex: ", findTrueIndex);
+                    if(findTrueIndex[0] == true && findTrueIndex.length == 1){
+                      this.activityIndexArray.push(index);
                     }
-                  }
+                  });
+                  // submission data handling 
+                  this.submissionData = results[0];
+                  // console.log("Indexes:", this.activityIndexArray);
+                  // match founded array index to activityIDs array and find each of activity IDs
+                  for(let index = 0; index < this.activityIndexArray.length; index++) {
+                    this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
+                  };
+                  // console.log("filteredActivityIDs: ", this.filteredActivityIDs);                   
+                  // find submission based on founded activity IDs
+                  this.displayAverageScore(this.filteredActivityIDs, this.submissionData, this.findSubmissions, this.show_score_act, this.activityIndexArray, this.AverageScore);
+                  // get items API call 
                   this.gameService.getItems({
                     character_id: this.characterData.id
                   }).subscribe(
@@ -203,20 +224,22 @@ export class ActivitiesListPage implements OnInit {
                       this.cacheService.setLocalObject('initialItems', this.initialItems);
                       // dispatch event
                       this.eventListener.publish('spinner:update', data);
-                      console.log("Items Data: ", this.initialItems);
+                      // console.log("Items Data: ", this.initialItems);
                     },
                     err => {
                       console.log("Items Data error: ", err);
                     }
                   );
                   this.eventsData = results[3];
-                  console.log("Events data: ", this.eventsData);
                   if(this.eventsData){
                     _.forEach(this.eventsData, (element, index) => {
                       if(this.eventsData[index].isBooked == true){
                         this.bookedEventsCount++;
-                      }
+                      } 
                     });
+                    if(this.bookedEventsCount == 0){
+                      this.bookedEventsCount = 'None';
+                    }
                   }else {
                     this.bookedEventsCount = 'None';
                   }
@@ -241,7 +264,8 @@ export class ActivitiesListPage implements OnInit {
   goToDetail(activity: any, id: any){
     this.navCtrl.push(ActivitiesViewPage, {
       achievements: this.achievements,
-      activity: activity
+      activity: activity,
+      activityIDs: this.activityIDs
     });
   }
   // view the disabled activity popup
@@ -261,5 +285,46 @@ export class ActivitiesListPage implements OnInit {
   whatsThis() {
     let popover = this.popoverCtrl.create(PopoverTextPage);
     popover.present();
+  }
+  isTicked(userAchievementIDs, hardcodedAchievements){
+    let tick = this.changeColor;
+    for(let i = 0; i < 7; i++){
+      for(let j = 0; j < 4; j++){
+        if(userAchievementIDs.includes(hardcodedAchievements[i][j])){
+          tick[i][j] = true;
+        }else {
+          tick[i][j] = false;
+        }
+      }
+    }
+    return tick;
+  }
+  displayAverageScore(filteredActivityIDs, submissionData, findSubmissions, show_score_act, activityIndexArray, AverageScore){
+    for(let j = 0; j < filteredActivityIDs.length; j++){
+      for(let i = 0; i < submissionData.length; i++){
+        if(submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j] && submissionData[i].AssessmentSubmission.status == 'published'){
+          findSubmissions[j].push(parseFloat(submissionData[i].AssessmentSubmission.moderated_score));                           
+        }
+      }                
+      findSubmissions[j].sort();
+      findSubmissions[j].reverse();
+      show_score_act[activityIndexArray[j]] = true;
+      if(findSubmissions[j].length > 1){
+        AverageScore[activityIndexArray[j]] = (findSubmissions[j][0]+findSubmissions[j][1])*2;
+      }else if(findSubmissions[j].length == 1) {
+        AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
+      }
+      // console.log("average score: ", AverageScore);
+      this.totalAverageScore += AverageScore[activityIndexArray[j]];                
+    }
+    this.totalAverageScore = this.totalAverageScore/6;
+    this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
+    // console.log("totalAverageScore: ", this.totalAverageScore);
+    //check if all activity's score has been displayed
+    if(show_score_act.includes(false)){
+      this.button_show = true;
+    }else {
+      this.button_show = false;
+    }
   }
 }

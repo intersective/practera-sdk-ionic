@@ -12,6 +12,8 @@ import * as _ from 'lodash';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
+  public logo_act1 = "./assets/img/main/logo01.svg";
+  public activityIDsArrary: any = [];
   activity: any = {};
   activityIndex: any = 0;
   assessment: any = {};
@@ -54,7 +56,12 @@ export class ActivitiesViewPage {
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
     this.activityIndex = this.navParams.get('activity').Activity.activity.indexID;
-    console.log("Index ID: ", this.activityIndex);
+    this.activityIDsArrary = this.navParams.get('activityIDs');
+    // This is a hardcode (temporary solution).
+    // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
+    if (this.activityIDsArrary.includes(7632)){
+      this.logo_act1 = "./assets/img/badges/badge01.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
+    }
     // submission
     this.submissions = [];
     Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References)).subscribe(responses => {
