@@ -38,6 +38,7 @@ $secondary-palette-five: #3A74BA;
 $secondary-palette-six: #fc9147;
 $secondary-palette-seven: #43c7f4;
 $secondary-palette-eight: #00b5ac;
+$secondary-palette-nine: #E60028;
 
 
 // App Mixin Functions
@@ -66,8 +67,8 @@ $colors: (
   ),
   badge-text: #FFF,
   badge-bg: (
-    base: lighten(#E60028, 10%),
-    contrast: darken(#E60028, 10%)
+    base: lighten($secondary-palette-nine, 10%),
+    contrast: darken($secondary-palette-nine, 10%)
   ),
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
