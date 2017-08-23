@@ -145,6 +145,11 @@ export class ActivitiesListPage implements OnInit {
     this.loadingDashboard();
   }
 
+  openEvent() {
+    // Move to event page
+    this.navCtrl.parent.select(1);
+  }
+
   // refresher activities
   doRefresh(e) {
     this.initilized_varible();

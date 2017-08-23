@@ -48,7 +48,7 @@
           <li col-4>
             <p class="title">Bookings</p>
             <p class="number" [style.height.px]="47.31">{{ bookedEventsCount || '' }}</p>
-            <p class="link" [navPush]="eventsListPage">Browse Events</p>
+            <p class="link" (click)="openEvent()">Browse Events</p>
           </li>
           <li col-4>
             <p class="title">Points</p>
