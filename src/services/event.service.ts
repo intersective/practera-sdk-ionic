@@ -58,4 +58,8 @@ export class EventService {
   public cancelEventBooking(eventId){
     return this.request.delete(this.bookEventUrl + '?event_id=' + eventId);
   }
+  // get Events (Observable way for dashboard page forkjoin syntax only)
+  public getUserEvents(activityIDs){
+    return this.request.get(this.targetUrl+`?type=session&activity_id=[${activityIDs}]`);
+  }
 }

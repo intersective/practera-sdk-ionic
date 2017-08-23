@@ -169,11 +169,12 @@ export class EventsListPage {
   private _mapWithActivity(events) {
     let result = [];
 
-    events.forEach(event => {
+    result = events.map(event => {
       let thisActivity = this.activities[event.activity_id];
       thisActivity.References = event.References; // must use event's references
-      event.activity = this.activityService.normaliseActivity(thisActivity);
-      result.push(event);
+      return _.merge(event, {
+        activity: this.activityService.normaliseActivity(thisActivity)
+      });
     });
 
     return result;

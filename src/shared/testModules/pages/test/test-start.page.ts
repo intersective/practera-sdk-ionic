@@ -4,7 +4,6 @@ import { NavController } from 'ionic-angular';
 // pages
 import { AchievementsViewPage } from '../../../../pages/achievements/view/achievements-view.page';
 import { AssessmentsGroupPage } from '../../../../pages/assessments/group/assessments-group.page';
-import { ActivitiesClassicListPage } from '../../../../pages/activities-classic/list/activities-classic-list.page';
 import { EventsListPage } from '../../../../pages/events/list/list.page';
 import { EventsDownloadPage } from '../../../../pages/events/download/events-download.page';
 import { GalleryPage } from '../../../../pages/gallery/gallery';
@@ -13,6 +12,7 @@ import { LoginPage } from '../../../../pages/login/login';
 import { RegistrationPage } from '../../../../pages/registration/registration.page';
 import { SettingsPage } from '../../../../pages/settings/settings.page';
 import { EventCheckinPage } from '../../../../pages/events/checkin/event-checkin.page';
+import { SpinwheelPage } from '../../../../pages/spinwheel/spinwheel.page';
 import { TeamPage } from '../../../../pages/team/team';
 
 const activity = {
@@ -371,10 +371,6 @@ const PAGES = [
     page: LoginPage
   },
   {
-    name: 'Activities',
-    page: ActivitiesClassicListPage
-  },
-  {
     name: 'Levels',
     page: LevelsListPage
   },
@@ -402,8 +398,6 @@ export class TestStartPage {
   testPage;
 
   constructor(public nav: NavController) {
-    // console.log('ActivitiesClassicListPage', ActivitiesClassicListPage)
-    // console.log('??', ActivitiesClassicListPage);
   }
 
   goTo(nav) {

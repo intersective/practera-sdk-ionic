@@ -35,8 +35,9 @@
           </ion-list>
           <button ion-button
             type="submit"
+            round
             block
-            color="button"
+            class="primary-button"
             (click)="userLogin()"
             [disabled]="loginForm.invalid">
             {{ 'LOGIN.PAGETITLE' | translate }}

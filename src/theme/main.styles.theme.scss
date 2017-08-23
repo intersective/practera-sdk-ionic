@@ -7,6 +7,18 @@
 // 1.1 General Color Variables
 $events-download-btn: 1px $border-primary solid;
 // 1.2 General Font Variables
+@font-face {
+  font-family: 'Museo-300';
+  src: url('/assets/fonts/Museo-300.woff') format('woff');
+}
+@font-face {
+  font-family: 'Museo-500';
+  src: url('/assets/fonts/Museo-500.woff') format('woff');
+}
+@font-face {
+  font-family: 'Museo-700';
+  src: url('/assets/fonts/Museo-700.woff') format('woff');
+}
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
 $font-primary: 'Roboto';
@@ -41,6 +53,10 @@ $title-font: 'Arvo';
   word-break: break-word;
 }
 // 5. General Button Styling
+.primary-button {
+  background-color: color($colors, primary-button, base);
+  color: color($colors, text, contrast) !important;
+}
 .general-button {
   background-color: color($colors, button, base);
 }
@@ -104,7 +120,7 @@ $title-font: 'Arvo';
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
@@ -175,10 +191,10 @@ $title-font: 'Arvo';
     overflow-y: hidden;
   }
   ion-grid {
-    background-image: url(../assets/img/main/main_bg.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
+    // background-image: url(../assets/img/main/main_bg.png);
+    // background-size: cover;
+    // background-repeat: no-repeat;
+    // background-position: center;
     .login-btn {
       width: 100%;
       ion-icon {
@@ -210,6 +226,9 @@ $title-font: 'Arvo';
       // text-align: left;
     }
   }
+  .forgot-password-button {
+    font-size: 11pt !important;
+  }
   .general-circle-btn {
     @include circle-btn;
   }
@@ -227,6 +246,11 @@ $title-font: 'Arvo';
       padding: 0px;
       .item-inner {
         border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .forget-password-container {
+      .general-circle-btn {
+        font-size: 11pt;
       }
     }
     .general-circle-btn {
@@ -259,8 +283,7 @@ $title-font: 'Arvo';
   .forget-password-container {
     text-align: center;
     border: none;
-    button {
-      // color: color($colors, button, base); // default-theme
+    .general-circle-btn {
       color: color($colors, text, base);
       margin-top: 24pt;
       font-size: 11pt;
@@ -316,6 +339,8 @@ $title-font: 'Arvo';
 }
 // 8. General Event Page Styling
 .events {
+  background-color: color($colors, secondary, base);
+
   .list:first-child {
     margin-bottom: 0;
   }
@@ -375,6 +400,15 @@ $title-font: 'Arvo';
   .checkin-btn {
     @include checkinBtn;
   }
+  .checkin-btn,
+  .book-btn,
+  .cancel-btn,
+  .cancel-btn:hover,
+  .cancel-btn:focus,
+  .cancel-btn:active {
+    background-color: color($colors, primary-button, base) !important;
+    color: color($colors, black) !important;
+  }
   .lighter {
     opacity: 0.7;
   }
@@ -431,13 +465,13 @@ event {
     font-family: $font-primary; // default-theme
   }
   .event-details {
-    padding: 8px 15px;
+    padding: 8px 8px;
     font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
   }
   .event-logo {
-    padding: 8px 3px;
+    padding: 8px 8px;
   }
 }
 // 9. General Dashboard Page Styling
@@ -520,6 +554,25 @@ event {
         color: color($colors, text, base);
         margin: 0 auto;
         padding: 0px;
+        .user-grade {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          ion-badge {
+            font-size: 14pt;
+            padding: 6px 12px;
+            border-radius: 30pt;
+          }
+          button {
+            font-size: 14pt;
+            padding: 6px 18px;
+            border-radius: 18px;
+            background-color: color($colors, secondary);
+            .fa-clock-o {
+              color: color($colors, background, contrast);
+            }
+          }
+        }
         li {
           background-color: color($colors, background, contrast);
           border: 1px solid color($colors, border, base);
@@ -561,13 +614,30 @@ event {
     }
   }
   .activity-list {
+    overflow-y: scroll !important;
+    .activity-title {
+      font-family: 'Museo-300';
+    }
     .assessment-score {
       display: flex;
       justify-content: center;
       align-items: center;
       button {
-        padding: 6px 14px;
+        padding: 2px 9px;
         border-radius: 20px;
+        background-color: color($colors, secondary, base);
+        .fa-clock-o {
+          font-size: 12pt;
+          color: color($colors, background, contrast);
+        }
+      }
+      .better-grade-color {
+        background-color: color($colors, primary-button, base);
+        border-radius: 18pt;
+      }
+      .worse-grade-color {
+        background-color: color($colors, badge-bg, base);
+        border-radius: 18pt;
       }
     }
     .icon-color-default {
@@ -660,6 +730,111 @@ event {
         float: right;
       }
     }
+  }
+}
+// 13. Rankings Page Styling
+.rankings {
+  .scroll-content {
+    bottom: 49px !important;
+  }
+  ion-list:first-child {
+    margin-bottom: 5px;
+  }
+  ion-list {
+    margin: 0px;
+  }
+  ion-col {
+    padding: 0px;
+  }
+  .ranking-list {
+    .user-score {
+      text-align: right;
+      b {
+        font-weight: normal;
+        width: 100%;
+        text-align: right;
+      }
+    }
+  }
+  .my-ranking {
+    border-top: 1px solid color($colors, border, base);
+    position: fixed;
+    bottom: 55px;
+    height: 55px;
+    width: 100%;
+    background: color($colors, secondary, base);
+    .ranking-item {
+      p {
+        border: none;
+        b {
+          font-weight: normal;
+          width: 100%;
+          text-align: right;
+        }
+      }
+    }
+  }
+  ion-list.my-ranking.list.list-md {
+    bottom: 55px;
+  }
+  .ranking-item {
+    width: 100%;
+    display: flex;
+    .blur-hidden-text {
+      color: transparent;
+      text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
+    }
+    ion-icon {
+      font-size: 10pt;
+      font-weight: 900;
+    }
+    ion-icon[name=arrow-forward] {
+      font-weight: normal;
+      font-size: 18pt;
+      padding-left: 8pt;
+      color: #bbb;
+    }
+    .badge-image {
+      width: 60px;
+      height: 60px;
+    }
+    p {
+      display: flex;
+      align-items: center;
+      word-break: break-all;
+      margin: 0px;
+      padding: 15px 0pt;
+      border-bottom: 1px solid color($colors, border, base);
+    }
+    p:first-child{
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+// ranking details page stylings
+rankings-details-page {
+  padding: 0 6pt;
+  .ranking-details {
+    .scroll-content {
+      bottom: 0px !important;
+    }
+  }
+  .ranking-item {
+    p {
+      border: none !important;
+    }
+  }
+  .ranking-detail-item {
+    padding: 2pt 0;
+    border-bottom: 1px solid color($colors, border, base);
+  }
+  .points-display {
+    padding: 2pt 0;
+    display: flex;
+    border-bottom: 1px solid color($colors, border, base);
   }
 }
 //
