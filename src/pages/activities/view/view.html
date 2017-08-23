@@ -59,11 +59,11 @@
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-col align-self-start>
             <h2>Waiting for feedback</h2>
-            <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
+            <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
 
         <p align-self-end class="note">
-          <button block>
+          <button block class="pendingbutton">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </button>
         </p>
@@ -72,7 +72,7 @@
       <ion-row *ngIf='submissionTitles[i].published'>
         <ion-col align-self-start>      
             <h2>{{ submissionTitles[i].result_name }}</h2>
-            <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
+            <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
 
         <p align-self-end class="note">
