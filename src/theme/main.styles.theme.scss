@@ -7,6 +7,18 @@
 // 1.1 General Color Variables
 $events-download-btn: 1px $border-primary solid;
 // 1.2 General Font Variables
+@font-face {
+  font-family: 'Museo-300';
+  src: url('/assets/fonts/Museo-300.woff') format('woff');
+}
+@font-face {
+  font-family: 'Museo-500';
+  src: url('/assets/fonts/Museo-500.woff') format('woff');
+}
+@font-face {
+  font-family: 'Museo-700';
+  src: url('/assets/fonts/Museo-700.woff') format('woff');
+}
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
 $font-primary: 'Roboto';
@@ -542,6 +554,25 @@ event {
         color: color($colors, text, base);
         margin: 0 auto;
         padding: 0px;
+        .user-grade {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          ion-badge {
+            font-size: 14pt;
+            padding: 6px 12px;
+            border-radius: 30pt;
+          }
+          button {
+            font-size: 14pt;
+            padding: 6px 18px;
+            border-radius: 18px;
+            background-color: color($colors, secondary);
+            .fa-clock-o {
+              color: color($colors, background, contrast);
+            }
+          }
+        }
         li {
           background-color: color($colors, background, contrast);
           border: 1px solid color($colors, border, base);
@@ -583,14 +614,30 @@ event {
     }
   }
   .activity-list {
+    overflow-y: scroll !important;
+    .activity-title {
+      font-family: 'Museo-300';
+    }
     .assessment-score {
       display: flex;
       justify-content: center;
       align-items: center;
       button {
-        padding: 6px 14px;
+        padding: 2px 9px;
         border-radius: 20px;
         background-color: color($colors, secondary, base);
+        .fa-clock-o {
+          font-size: 12pt;
+          color: color($colors, background, contrast);
+        }
+      }
+      .better-grade-color {
+        background-color: color($colors, primary-button, base);
+        border-radius: 18pt;
+      }
+      .worse-grade-color {
+        background-color: color($colors, badge-bg, base);
+        border-radius: 18pt;
       }
     }
     .icon-color-default {
