@@ -56,7 +56,6 @@
 
     <ion-item *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
-
         <ion-col align-self-start>
             <h2>Waiting for feedback</h2>
             <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
@@ -74,7 +73,7 @@
         </ion-col>
 
         <ion-col align-self-end class="note">
-              <ion-badge ngClass="submissionTitles[i].result_score > 2 ? 'better-grade-color' : 'worse-grade-color'">
+              <ion-badge [ngClass]="submissionTitles[i].result_score > 2 ? 'better-grade-color' : 'worse-grade-color'">
                 {{ submissionTitles[i].result_score }}
               </ion-badge>
         </ion-col>

@@ -75,15 +75,7 @@ export class ActivitiesViewPage {
           this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
         }
       });
-
       this.submissionTitles = this.getSubmissionTitle(this.submissions);
-
-      if(this.submissionTitles[0].result_score > 2){
-        console.log("true",this.submissionTitles[0].result_score);
-      } else{
-        console.log("false",this.submissionTitles[0].result_score);
-      }
-
       this.loadings.submissions = false;
     });
 
