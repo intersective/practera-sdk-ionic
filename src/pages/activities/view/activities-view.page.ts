@@ -55,7 +55,7 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
-    this.activityIndex = this.navParams.get('activity').Activity.activity.indexID;
+    this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
     this.activityIDsArrary = this.navParams.get('activityIDs');
     // This is a hardcode (temporary solution).
     // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
