@@ -77,6 +77,13 @@ export class ActivitiesViewPage {
       });
 
       this.submissionTitles = this.getSubmissionTitle(this.submissions);
+
+      if(this.submissionTitles[0].result_score > 2){
+        console.log("true",this.submissionTitles[0].result_score);
+      } else{
+        console.log("false",this.submissionTitles[0].result_score);
+      }
+
       this.loadings.submissions = false;
     });
 
@@ -159,29 +166,55 @@ export class ActivitiesViewPage {
   }
 
   getSubmissionTitle(Submissions){
-    let title: any = [];
+    let result: any = [];
+    let result_name = "";
+    let result_score = 0;
+    let published = false;
     for (let index = 0; index<Submissions.length; index++){
       if (Submissions[index].status == "published"){
+        published = true
         switch (Submissions[index].moderated_score){
           case "1":
-            title.push("Outstanding");
+            result_score = 4;
+            result_name = "Outstanding";
+            // console.log("aaa",result);
+            // title.push("Outstanding");
             break;
           case  "0.75":
-            title.push("Commendable");
+            result_score = 3;
+            result_name = "Commendable";
+            //title.push("Commendable");
             break;
           case "0.5":
-            title.push("Competent");
+            result_score = 2;
+            result_name = "Competent";
+            //title.push("Competent");
             break;
           case "0.25":
-            title.push("Developing");
+            result_score = 1;
+            result_name = "Developing";
+            //title.push("Developing");
             break;
           case "0":
-            title.push("Needs Improvement");
+            result_score = 0;
+            result_name = "Needs Improvement";
+            //title.push("Needs Improvement");
         }
-      }else{
-        title.push(false);
+
+      } else{
+        let result_name = "";
+        let result_score = 0;
+        let published = false;
       }
+
+      let result_single: any = {
+        published,
+        result_score,
+        result_name
+      }
+
+      result.push(result_single);
     }
-    return title;
+    return result;
   }
 }

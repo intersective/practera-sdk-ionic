@@ -55,20 +55,29 @@
     </ion-item>
 
     <ion-item *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
-      <ion-row>
+      <ion-row *ngIf='!submissionTitles[i].published'>
 
         <ion-col align-self-start>
-          <div>
-            <h2 *ngIf='submissionTitles[i]'>{{ submissionTitles[i] }}</h2>
-            <h2 *ngIf='!submissionTitles[i]'>Waiting for feedback</h2>
+            <h2>Waiting for feedback</h2>
             <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
-          </div>
         </ion-col>
 
         <ion-col align-self-end class="note">
           <ion-note>{{ submission.status }}</ion-note>
         </ion-col>
+      </ion-row>
 
+      <ion-row *ngIf='submissionTitles[i].published'>
+        <ion-col align-self-start>      
+            <h2>{{ submissionTitles[i].result_name }}</h2>
+            <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
+        </ion-col>
+
+        <ion-col align-self-end class="note">
+              <ion-badge ngClass="submissionTitles[i].result_score > 2 ? 'better-grade-color' : 'worse-grade-color'">
+                {{ submissionTitles[i].result_score }}
+              </ion-badge>
+        </ion-col>
       </ion-row>
     </ion-item>
   </ion-list>
