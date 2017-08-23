@@ -20,6 +20,14 @@
       }
     }
   }
+  .better-grade-color {
+    background-color: color($colors, primary-button, base);
+    border-radius: 18pt;
+  }
+  .worse-grade-color {
+    background-color: color($colors, badge-bg, base);
+    border-radius: 18pt;
+  }
   .badges {
     img {
       max-height: 8em;

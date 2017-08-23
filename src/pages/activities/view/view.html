@@ -47,7 +47,8 @@
 
   <ion-list class="submissions">
     <ion-list-header>
-      {{ 'ACTIVITY.SUBMISSION' | translate }}
+      <!-- {{ 'ACTIVITY.SUBMISSION' | translate }} -->
+      Evidence
     </ion-list-header>
 
     <ion-item *ngIf="loadings.submissions" class="center">
@@ -61,9 +62,11 @@
             <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
         </ion-col>
 
-        <ion-col align-self-end class="note">
-          <ion-note>{{ submission.status }}</ion-note>
-        </ion-col>
+        <p align-self-end class="note">
+          <button block>
+            <i class="fa fa-clock-o" aria-hidden="true"></i>
+          </button>
+        </p>
       </ion-row>
 
       <ion-row *ngIf='submissionTitles[i].published'>
@@ -72,11 +75,11 @@
             <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
         </ion-col>
 
-        <ion-col align-self-end class="note">
+        <p align-self-end class="note">
               <ion-badge [ngClass]="submissionTitles[i].result_score > 2 ? 'better-grade-color' : 'worse-grade-color'">
                 {{ submissionTitles[i].result_score }}
               </ion-badge>
-        </ion-col>
+        <p>
       </ion-row>
     </ion-item>
   </ion-list>
