@@ -75,7 +75,6 @@ export class ActivitiesViewPage {
           this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
         }
       });
-
       this.submissionTitles = this.getSubmissionTitle(this.submissions);
       this.loadings.submissions = false;
     });
@@ -159,29 +158,48 @@ export class ActivitiesViewPage {
   }
 
   getSubmissionTitle(Submissions){
-    let title: any = [];
+    let result: any = [];
+    let result_name = "";
+    let result_score = 0;
+    let published = false;
     for (let index = 0; index<Submissions.length; index++){
       if (Submissions[index].status == "published"){
+        published = true
         switch (Submissions[index].moderated_score){
           case "1":
-            title.push("Outstanding");
+            result_score = 4;
+            result_name = "Outstanding";
             break;
           case  "0.75":
-            title.push("Commendable");
+            result_score = 3;
+            result_name = "Commendable";
             break;
           case "0.5":
-            title.push("Competent");
+            result_score = 2;
+            result_name = "Competent";
             break;
           case "0.25":
-            title.push("Developing");
+            result_score = 1;
+            result_name = "Developing";
             break;
           case "0":
-            title.push("Needs Improvement");
+            result_score = 0;
+            result_name = "Needs Improvement";
         }
-      }else{
-        title.push(false);
+      } else{
+        result_name = "";
+        result_score = 0;
+        published = false;
       }
+
+      let result_single: any = {
+        published,
+        result_score,
+        result_name
+      }
+
+      result.push(result_single);
     }
-    return title;
+    return result;
   }
 }

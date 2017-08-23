@@ -20,6 +20,16 @@
       }
     }
   }
+  .better-grade-color {
+    padding: 0.2em 1em;
+    background-color: color($colors, primary-button, base);
+    border-radius: 18pt;
+  }
+  .worse-grade-color {
+    padding: 0.2em 1em;
+    background-color: color($colors, badge-bg, base);
+    border-radius: 18pt;
+  }
   .badges {
     img {
       max-height: 8em;
@@ -47,5 +57,10 @@
     font-size: 6rem;
     font-weight: 600;
     color: color($colors, background, contrast);
+  }
+  .pendingbutton{
+    padding: 0.3em 1.15em;
+    border-radius: 20px;
+    background-color: #EBEBEB;
   }
 }
