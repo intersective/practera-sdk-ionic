@@ -169,34 +169,27 @@ export class ActivitiesViewPage {
           case "1":
             result_score = 4;
             result_name = "Outstanding";
-            // console.log("aaa",result);
-            // title.push("Outstanding");
             break;
           case  "0.75":
             result_score = 3;
             result_name = "Commendable";
-            //title.push("Commendable");
             break;
           case "0.5":
             result_score = 2;
             result_name = "Competent";
-            //title.push("Competent");
             break;
           case "0.25":
             result_score = 1;
             result_name = "Developing";
-            //title.push("Developing");
             break;
           case "0":
             result_score = 0;
             result_name = "Needs Improvement";
-            //title.push("Needs Improvement");
         }
-
       } else{
-        let result_name = "";
-        let result_score = 0;
-        let published = false;
+        result_name = "";
+        result_score = 0;
+        published = false;
       }
 
       let result_single: any = {
