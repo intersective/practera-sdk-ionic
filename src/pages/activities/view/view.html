@@ -54,11 +54,13 @@
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
 
-    <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})">
+    <ion-item *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row>
 
         <ion-col align-self-start>
           <div>
+            <h2 *ngIf='submissionTitles[i]'>{{ submissionTitles[i] }}</h2>
+            <h2 *ngIf='!submissionTitles[i]'>Waiting for feedback</h2>
             <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
           </div>
         </ion-col>

@@ -14,6 +14,7 @@ import * as _ from 'lodash';
 export class ActivitiesViewPage {
   public logo_act1 = "./assets/img/main/logo01.svg";
   public activityIDsArrary: any = [];
+  public submissionTitles: any = [];
   activity: any = {};
   activityIndex: any = 0;
   assessment: any = {};
@@ -75,8 +76,10 @@ export class ActivitiesViewPage {
         }
       });
 
+      this.submissionTitles = this.getSubmissionTitle(this.submissions);
       this.loadings.submissions = false;
     });
+
 
     // badges
     this.achievements = this.navParams.get('achievements');
@@ -153,5 +156,32 @@ export class ActivitiesViewPage {
         assessment: this.assessment
       });
     }
+  }
+
+  getSubmissionTitle(Submissions){
+    let title: any = [];
+    for (let index = 0; index<Submissions.length; index++){
+      if (Submissions[index].status == "published"){
+        switch (Submissions[index].moderated_score){
+          case "1":
+            title.push("Outstanding");
+            break;
+          case  "0.75":
+            title.push("Commendable");
+            break;
+          case "0.5":
+            title.push("Competent");
+            break;
+          case "0.25":
+            title.push("Developing");
+            break;
+          case "0":
+            title.push("Needs Improvement");
+        }
+      }else{
+        title.push(false);
+      }
+    }
+    return title;
   }
 }
