@@ -12,36 +12,16 @@
   </ion-grid>
 </ion-navbar>
 <ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+  <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
       refreshingSpinner="circles">
     </ion-refresher-content>
-	</ion-refresher>
+  </ion-refresher>
   <ion-grid>
-    <!-- <ion-row class="score-board">
-      <div class="score-board-inner">
-         <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-              <h1>{{ currentPercentage || 0 }}%</h1>
-            </div>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
-              <h1>{{ characterCurrentExperience || 0 }}</h1>
-            </div>
-          </div>
-        </ion-col>
-      </div>
-    </ion-row> -->
     <ion-row class="score-board">
       <ion-col col-12>
-        <img class="dashboard-logo" src="./assets/img/main/logo01.svg" />
+        <img class="dashboard-logo" src="./assets/img/main/logo01.svg" (click)="refreshPage()" />
       </ion-col>
       <ion-col col-12>
         <ul class="dashboard-data">
@@ -81,11 +61,7 @@
           <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
             <div (click)="goToDetail(activity)" class="line-break">
               <p col-7 class="activity-title">{{ activity.Activity.name }}</p>
-              <p col-3 class="ticks">
-                <!-- <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][0]}" aria-hidden="true"></i>
-                <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][1]}" aria-hidden="true"></i>
-                <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][2]}" aria-hidden="true"></i>
-                <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][3]}" aria-hidden="true"></i> -->
+              <p col-3 class="ticks"> 
                 <!-- This is hardcode just for display different numbers, coz ngClass add dynamic variable does not work -->
                 <span *ngIf="i == 0">
                   <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>

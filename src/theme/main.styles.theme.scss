@@ -564,8 +564,8 @@ event {
             border-radius: 30pt;
           }
           button {
-            font-size: 14pt;
-            padding: 6px 18px;
+            font-size: 16pt;
+            padding: 3px 15px;
             border-radius: 18px;
             background-color: color($colors, secondary);
             .fa-clock-o {
@@ -616,7 +616,8 @@ event {
   .activity-list {
     overflow-y: scroll !important;
     .activity-title {
-      font-family: 'Museo-300';
+      color: color($colors, primary);
+      font-family: 'Museo-500';
     }
     .assessment-score {
       display: flex;
@@ -625,11 +626,15 @@ event {
       button {
         padding: 2px 9px;
         border-radius: 20px;
+        width: 32px;
         background-color: color($colors, secondary, base);
         .fa-clock-o {
           font-size: 12pt;
           color: color($colors, background, contrast);
         }
+      }
+      ion-badge {
+        width: 32px;
       }
       .better-grade-color {
         background-color: color($colors, primary-button, base);
@@ -673,7 +678,7 @@ event {
         justify-content: flex-end;
         align-items: center;
         i {
-          font-size: 10pt;
+          font-size: 12pt;
         }
       }
     }
@@ -685,7 +690,7 @@ event {
     .locked {
       border-bottom: 1px solid color($colors, border, contrast);
       p {
-        padding: 12px 0px 12px 5px;
+        padding: 12px 0px 12px 4px;
         margin: 0px;
         min-height: 40px;
         line-height: 20px;
