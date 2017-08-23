@@ -110,6 +110,7 @@ export class ActivitiesListPage implements OnInit {
     [false,false,false,false]
   ];
   public userAchievementsIDs: any = [];
+  public checkUserPointer: boolean = false;
   constructor(
     public navCtrl: NavController,
     public http: Http,
@@ -136,6 +137,10 @@ export class ActivitiesListPage implements OnInit {
   }
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
+    this.initilized_varible();
+    this.loadingDashboard();
+  }
+  refreshPage() {
     this.initilized_varible();
     this.loadingDashboard();
   }
@@ -182,21 +187,17 @@ export class ActivitiesListPage implements OnInit {
                   this.characterData = results[1].Characters[0];
                   this.cacheService.setLocalObject('character', this.characterData);
                   this.cacheService.setLocal('character_id', this.characterData.id);
-                  // console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
                   if(this.characterData.experience_points == 0) {
                     this.characterCurrentExperience = '0';
                   }
                   // achievement list data handling
                   this.getUserAchievementData = results[2];
-                  // console.log("this.getUserAchievementData: ", this.getUserAchievementData);
                   _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
                     this.userAchievementsIDs[index] = ele.id;
-                    // console.log("ID value: ", this.userAchievemntsIDs[index]);
                   });
                   // find ahievement ID whether inside achievemnt list or not
                   this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
-                  // console.log("change color: array: ", this.changeColor);
                   // find all 4 boxes are ticked index value inside changeColor array
                   _.forEach(this.changeColor, (ele, index) => {
                     let findTrueIndex: any = _.uniq(ele, 'true');
@@ -211,8 +212,7 @@ export class ActivitiesListPage implements OnInit {
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
-                  };
-                  // console.log("filteredActivityIDs: ", this.filteredActivityIDs);                   
+                  };                  
                   // find submission based on founded activity IDs
                   this.displayAverageScore(this.filteredActivityIDs, this.submissionData, this.findSubmissions, this.show_score_act, this.activityIndexArray, this.AverageScore);
                   // get items API call 
@@ -224,7 +224,6 @@ export class ActivitiesListPage implements OnInit {
                       this.cacheService.setLocalObject('initialItems', this.initialItems);
                       // dispatch event
                       this.eventListener.publish('spinner:update', data);
-                      // console.log("Items Data: ", this.initialItems);
                     },
                     err => {
                       console.log("Items Data error: ", err);
@@ -314,12 +313,10 @@ export class ActivitiesListPage implements OnInit {
       }else if(findSubmissions[j].length == 1) {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
       }
-      // console.log("average score: ", AverageScore);
       this.totalAverageScore += AverageScore[activityIndexArray[j]];                
     }
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
-    // console.log("totalAverageScore: ", this.totalAverageScore);
     //check if all activity's score has been displayed
     if(show_score_act.includes(false)){
       this.button_show = true;

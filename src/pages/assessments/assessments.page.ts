@@ -529,16 +529,13 @@ export class AssessmentsPage {
     });
 
     // get initial items
-    console.log('Inital Items: ', this.getInitialItems);
     _.forEach(this.getInitialItems, element => {
       let id = element.id;
-      console.log("id value: ", id);
       if(!this.initialItemsCount[id]){
         this.initialItemsCount[id] = 0;
       }
       this.initialItemsCount[id]++;
     });
-    console.log("Count for initial Items: ", this.initialItemsCount);
     // get latest updated items data api call
     loading.present();
 
@@ -546,17 +543,14 @@ export class AssessmentsPage {
       character_id: this.getCharacterID
     }).subscribe(
           data => {
-            console.log("Items: ", data.Items);
             this.newItemsData = data.Items;
             _.forEach(data.Items, (element, index) => {
               let id = element.id;
-              console.log("id value: ", id);
               if(!this.newItemsCount[id]){
                 this.newItemsCount[id] = 0;
               }
               this.newItemsCount[id]++;
             });
-            console.log("Count for final Items: ", this.newItemsCount);
             // compare with previous get_characters() results and generate final index value array result
             _.forEach(this.newItemsCount, (element, id) => {
               if(!this.initialItemsCount[id]){
@@ -568,16 +562,12 @@ export class AssessmentsPage {
                 }
               }
             });
-            console.log("New compared items: ", this.newItemsData);
             _.forEach(this.totalItems, (element, index) => {
               element.id = parseInt(element.id);
             });
-            console.log("Count for new total Items: ", this.totalItems);
             this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
-            console.log("Final items object data: ", this.allItemsData);
             // get the final object with item occurance count value
             let groupData = _.groupBy(this.totalItems, 'id');
-            console.log("Group?? ", groupData);
             if(this.allItemsData.length === 0){
               this.gotNewItems = false;
               this.cacheService.setLocal('gotNewItems', this.gotNewItems);
@@ -588,7 +578,6 @@ export class AssessmentsPage {
             } else {
               _.map(this.allItemsData, (ele) => {
                 this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
-                console.log("Final Combined results: ", this.combinedItems);
               });
               // display items on dashboard page
               this.gotNewItems = true;
@@ -608,7 +597,6 @@ export class AssessmentsPage {
         );
   }
   gotoAssessment(assessmentGroup, activity) {
-    console.log('activity', activity);
     this.navCtrl.push(AssessmentsGroupPage, {
       assessmentGroup,
       activity,
