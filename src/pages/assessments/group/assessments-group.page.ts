@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 import { CacheService } from '../../../shared/cache/cache.service';
@@ -10,7 +10,7 @@ import * as _ from 'lodash';
   selector: 'assessments-group-page',
   templateUrl: './assessments-group.html',
 })
-export class AssessmentsGroupPage {
+export class AssessmentsGroupPage implements OnInit {
   questions = [];
   formGroup;
 
@@ -40,7 +40,7 @@ export class AssessmentsGroupPage {
     public events: Events
   ) {}
 
-  ionViewDidEnter() {
+  ngOnInit() {
     // navigate from activity page
     this.activity = this.navParams.get('activity') || {};
 
@@ -49,7 +49,9 @@ export class AssessmentsGroupPage {
     if (!_.isEmpty(this.event)) {
       this.activity = this.event;
     }
+  }
 
+  ionViewDidEnter() {
     this.assessment = this.activity.assessment; // required for context_id
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
 

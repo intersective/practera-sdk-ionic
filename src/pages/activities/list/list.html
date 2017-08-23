@@ -3,9 +3,9 @@
     <ion-row>
       <ion-col col-12 class="flex-display">
         <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
-        <button *ngIf="anyNewItems == 'true'" 
-          (click)="closeItemsShwon()" 
-          class="close" 
+        <button *ngIf="anyNewItems == 'true'"
+          (click)="closeItemsShwon()"
+          class="close"
           menuClose="right">&times;</button>
       </ion-col>
     </ion-row>
@@ -25,10 +25,10 @@
           <div class="score-inner-box">
             <div>
               <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-              <h1>{{ currentPercentage || 0 }}%</h1>  
+              <h1>{{ currentPercentage || 0 }}%</h1>
             </div>
           </div>
-        </ion-col> 
+        </ion-col>
         <ion-col>
           <div class="score-inner-box">
             <div>
@@ -46,9 +46,9 @@
       <ion-col col-12>
         <ul class="dashboard-data">
           <li col-4>
-            <p class="title">Bookings</p>    
+            <p class="title">Bookings</p>
             <p class="number" [style.height.px]="47.31">{{ bookedEventsCount || '' }}</p>
-            <p class="link" [navPush]="eventsListPage">Browse Events</p>            
+            <p class="link" [navPush]="eventsListPage">Browse Events</p>
           </li>
           <li col-4>
             <p class="title">Points</p>
@@ -79,9 +79,9 @@
         </div>
         <div *ngFor="let activity of activities; let i = index">
           <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
-            <div (click)="goToDetail(activity, activity.Activity.id)" class="line-break">
+            <div (click)="goToDetail(activity)" class="line-break">
               <p col-7 class="activity-title">{{ activity.Activity.name }}</p>
-              <p col-3 class="ticks"> 
+              <p col-3 class="ticks">
                 <!-- <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][0]}" aria-hidden="true"></i>
                 <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][1]}" aria-hidden="true"></i>
                 <i class="fa fa-check-circle icon-color-{{i}}" [ngClass]="{'icon-color-default': !changeColor[i][2]}" aria-hidden="true"></i>
@@ -143,8 +143,8 @@
           <div *ngIf="activity.Activity.is_locked == true" class="locked">
             <i class="fa fa-lock" aria-hidden="true"></i>
             <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
-              {{ activity.Activity.name }} 
-            </p>  
+              {{ activity.Activity.name }}
+            </p>
           </div>
         </div>
       </ion-col>
@@ -159,15 +159,15 @@
           <ion-slides pager="true" class="tutorial-slides" *ngFor="let item of newItemsData">
             <ion-slide>
               <img *ngIf="item.meta !== null" class="item-popup-img" src="{{ item.meta.img }}" alt="item"/>
-              <img *ngIf="item.meta === null || item.meta.img === null" 
-                class="item-popup-img" 
+              <img *ngIf="item.meta === null || item.meta.img === null"
+                class="item-popup-img"
                 src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
               <p class="item-popup-text">
                 {{ item.name }} <span> x{{ item.count[0].count }}</span>
-              </p> 
+              </p>
             </ion-slide>
           </ion-slides>
-          <button class="general-circle-btn" (click)="closeItemsShwon()">OK</button> 
+          <button class="general-circle-btn" (click)="closeItemsShwon()">OK</button>
         </ion-col>
       </ion-row>
     </ion-grid>

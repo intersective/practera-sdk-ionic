@@ -41,7 +41,7 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
 })
 export class ActivitiesListPage implements OnInit {
   public initilized_varible(){
-    this.bookedEventsCount = 0; 
+    this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
     this.currentPercentage = 0;
     this.activityIDs = [];
@@ -94,7 +94,7 @@ export class ActivitiesListPage implements OnInit {
     [317, 318, 319, 320],
     [321, 323, 322, 324],
     [0, 0, 0, 0],
-    [316, 316, 316, 316]    
+    [316, 316, 316, 316]
   ];
   public show_score_act: any = [
     false,false,false,false,false,false,false
@@ -136,9 +136,15 @@ export class ActivitiesListPage implements OnInit {
   }
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
+    this.bookedEventsCount = 0;
+    this.characterCurrentExperience = 0;
+    this.currentPercentage = 0;
+
+    // replicated this.doRefresh
     this.initilized_varible();
     this.loadingDashboard();
   }
+
   // refresher activities
   doRefresh(e) {
     this.initilized_varible();
@@ -205,17 +211,17 @@ export class ActivitiesListPage implements OnInit {
                       this.activityIndexArray.push(index);
                     }
                   });
-                  // submission data handling 
+                  // submission data handling
                   this.submissionData = results[0];
                   // console.log("Indexes:", this.activityIndexArray);
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
                   };
-                  // console.log("filteredActivityIDs: ", this.filteredActivityIDs);                   
+                  // console.log("filteredActivityIDs: ", this.filteredActivityIDs);
                   // find submission based on founded activity IDs
                   this.displayAverageScore(this.filteredActivityIDs, this.submissionData, this.findSubmissions, this.show_score_act, this.activityIndexArray, this.AverageScore);
-                  // get items API call 
+                  // get items API call
                   this.gameService.getItems({
                     character_id: this.characterData.id
                   }).subscribe(
@@ -235,7 +241,7 @@ export class ActivitiesListPage implements OnInit {
                     _.forEach(this.eventsData, (element, index) => {
                       if(this.eventsData[index].isBooked == true){
                         this.bookedEventsCount++;
-                      } 
+                      }
                     });
                     if(this.bookedEventsCount == 0){
                       this.bookedEventsCount = 'None';
@@ -261,7 +267,7 @@ export class ActivitiesListPage implements OnInit {
     });
   }
   // redirect to activity detail page
-  goToDetail(activity: any, id: any){
+  goToDetail(activity: any){
     this.navCtrl.push(ActivitiesViewPage, {
       achievements: this.achievements,
       activity: activity,
@@ -303,9 +309,9 @@ export class ActivitiesListPage implements OnInit {
     for(let j = 0; j < filteredActivityIDs.length; j++){
       for(let i = 0; i < submissionData.length; i++){
         if(submissionData[i].AssessmentSubmission.activity_id == filteredActivityIDs[j] && submissionData[i].AssessmentSubmission.status == 'published'){
-          findSubmissions[j].push(parseFloat(submissionData[i].AssessmentSubmission.moderated_score));                           
+          findSubmissions[j].push(parseFloat(submissionData[i].AssessmentSubmission.moderated_score));
         }
-      }                
+      }
       findSubmissions[j].sort();
       findSubmissions[j].reverse();
       show_score_act[activityIndexArray[j]] = true;
@@ -315,7 +321,7 @@ export class ActivitiesListPage implements OnInit {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
       }
       // console.log("average score: ", AverageScore);
-      this.totalAverageScore += AverageScore[activityIndexArray[j]];                
+      this.totalAverageScore += AverageScore[activityIndexArray[j]];
     }
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
