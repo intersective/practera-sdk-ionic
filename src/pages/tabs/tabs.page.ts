@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Events } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Events, NavController, Nav, Tabs } from 'ionic-angular';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { CacheService } from '../../shared/cache/cache.service';
 import { EventsListPage } from '../events/list/list.page';
@@ -15,6 +15,8 @@ import * as _ from 'lodash';
   providers: []
 })
 export class TabsPage {
+  @ViewChild('myTabs') tabRef: Tabs;
+
   // this tells the tabs component which Pages
   // should be each tab's root Page
   ranking: any = RankingsPage;

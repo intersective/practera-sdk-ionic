@@ -145,6 +145,16 @@ export class ActivitiesListPage implements OnInit {
     this.loadingDashboard();
   }
 
+  openEvent() {
+    // Move to event page
+    this.navCtrl.parent.select(1);
+  }
+
+  openLeaderboard() {
+    // Move to leaderboard page
+    this.navCtrl.parent.select(2);
+  }
+
   // refresher activities
   doRefresh(e) {
     this.initilized_varible();
