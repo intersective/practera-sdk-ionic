@@ -53,7 +53,7 @@
           <li col-4>
             <p class="title">Points</p>
             <p class="number" [style.height.px]="47.31">{{ characterCurrentExperience || '' }}</p>
-            <p class="link" [navPush]="rankingsPage">Leaderboard</p>
+            <p class="link" (click)="openLeaderboard()">Leaderboard</p>
           </li>
           <li col-4>
             <p class="title">Grade</p>
