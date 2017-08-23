@@ -124,7 +124,7 @@ export class EventsViewPage {
     return false ? (this.event.remaining_capacity == this.event.capacity && this.event.isBooked == false) : (this.event.remaining_capacity != this.event.capacity && this.event.isBooked == true)
   }
 
-  book(event): void {
+  book(): void {
     let earnPoints = this.alertCtrl.create({
       message: `<div class="earn-points-box"><h4>Congratulations!</h4><br><img src="./assets/img/success-logo.png" alt="Congratulations logo"><p>You have earned 20 points.</p></div>`,
       buttons: [
@@ -202,22 +202,15 @@ export class EventsViewPage {
    * Event checkin action
    * @param {Object} event single event object return from get_event API
    */
-  checkin(event) {
-    let loading = this.loadingCtrl.create({
-      content: 'loading checkin...'
+  checkin() {
+    // if submission exist
+    console.log(this.submissions);
+    console.log('Event act::', this.event.activity);
+    this.navCtrl.push(AssessmentsPage, {
+      event: this.event,
+      activity: this.event.activity,
+      submissions: this.submissions
     });
-    loading.present().then(() => {
-      // if submission exist
-      console.log(this.submissions);
-      loading.dismiss().then(() => {
-        // this.navCtrl.push(AssessmentsGroupPage, {
-        this.navCtrl.push(AssessmentsPage, {
-          event,
-          activity: event.activity,
-          submissions: this.submissions
-        });
-      });
-    })
   }
 
   /**
