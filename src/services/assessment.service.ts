@@ -32,11 +32,12 @@ export class QuestionBase<T> {
   assessment_id: number;
   name: string;
   type: string;
-  file_type?: string;
-  audience: Array<any>;
+  description: string;
+  required: boolean;
+  audience: string | Array<any>;
+  file_type?: string | any;
   choices?: ChoiceBase<any>[];
   answer?: any;
-  required?: boolean;
   order?: string | number;
 
   constructor(id, assessment_id, name, type) {
@@ -355,11 +356,12 @@ export class AssessmentService {
       name: thisQuestion.name,
       type: thisQuestion.question_type,
       audience: thisQuestion.audience,
+      description: thisQuestion.description,
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
       choices: choices,
       order: question.order,
-      answer: thisQuestion.answer
+      answer: thisQuestion.answer,
     };
   }
 
