@@ -27,12 +27,16 @@
         <ul class="dashboard-data">
           <li col-4>
             <p class="title">Bookings</p>
-            <p class="number" [style.height.px]="47.31">{{ bookedEventsCount || '' }}</p>
+            <p [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+              {{ bookedEventsCount || '' }}
+            </p>
             <p class="link" (click)="openEvent()">Browse Events</p>
           </li>
           <li col-4>
             <p class="title">Points</p>
-            <p class="number" [style.height.px]="47.31">{{ characterCurrentExperience || '' }}</p>
+            <p [ngClass]="userExperiencePoint >= 100000 ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+              {{ characterCurrentExperience || '' }}
+            </p>
             <p class="link" (click)="openLeaderboard()">Leaderboard</p>
           </li>
           <li col-4>
@@ -64,10 +68,10 @@
               <p col-3 class="ticks"> 
                 <!-- This is hardcode just for display different numbers, coz ngClass add dynamic variable does not work -->
                 <span *ngIf="i == 0">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
                 </span>
                 <span *ngIf="i == 1">
                   <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>

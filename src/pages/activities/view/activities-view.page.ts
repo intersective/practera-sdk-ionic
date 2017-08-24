@@ -12,9 +12,14 @@ import * as _ from 'lodash';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  public logo_act1 = "./assets/img/main/logo01.svg";
+  
+  public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
+  public tickArray: any = [];
+  public newTickArray: any = [];
+  public tickedCount: any = 0;
+  public ticksLength: any = 0;
   activity: any = {};
   activityIndex: any = 0;
   assessment: any = {};
@@ -28,7 +33,13 @@ export class ActivitiesViewPage {
   loadings = {
     submissions: false
   };
-
+  initialised_eset() {
+    this.newTickArray = [];
+    this.ticksLength = 0;
+    this.tickedCount = 0;
+    this.activityIndex = 0;
+    this.loadings.submissions = true;
+  }
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -36,13 +47,10 @@ export class ActivitiesViewPage {
     private activityService: ActivityService,
     private submissionService: SubmissionService,
     private alertCtrl: AlertController
-  ) {
-  }
-
+  ) {}
   ionViewWillEnter(): void {
-    this.loadings.submissions = true;
+    this.initialised_eset();
   }
-
   // @TODO: use simple mock data for assessment first
   /**
    * on assessment implementation, to do list:
@@ -57,11 +65,15 @@ export class ActivitiesViewPage {
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
+    console.log("this.activityIndex: ", this.activityIndex-1);
     this.activityIDsArrary = this.navParams.get('activityIDs');
+    this.tickArray = this.navParams.get('tickArray');
+    this.newTickArray = this.tickArray[this.activityIndex-1];
+    this.ticksLength = this.newTickArray.length;
     // This is a hardcode (temporary solution).
     // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
     if (this.activityIDsArrary.includes(7632)){
-      this.logo_act1 = "./assets/img/badges/badge01.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
+      this.logo_act1 = "./assets/img/badges/badge1.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // submission
     this.submissions = [];
@@ -78,8 +90,6 @@ export class ActivitiesViewPage {
       this.submissionTitles = this.getSubmissionTitle(this.submissions);
       this.loadings.submissions = false;
     });
-
-
     // badges
     this.achievements = this.navParams.get('achievements');
     this.activity.badges = this.extractBadges();
@@ -90,8 +100,8 @@ export class ActivitiesViewPage {
         badge.disabled = true;
       }
     });
+    this.badgeData();
   }
-
   // extract "in progress"
   inProgressSubmission() {
     let result = [];
@@ -102,7 +112,6 @@ export class ActivitiesViewPage {
     });
     return result;
   }
-
   private extractBadges(): Array<any> {
     let result = [];
     if (this.achievements.available && this.achievements.available.length > 0) {
@@ -117,7 +126,6 @@ export class ActivitiesViewPage {
     }
     return result;
   }
-
   /**
    * @description display activity detail modal page
    */
@@ -125,7 +133,6 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
-
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity
@@ -156,7 +163,6 @@ export class ActivitiesViewPage {
       });
     }
   }
-
   getSubmissionTitle(Submissions){
     let result: any = [];
     let result_name = "";
@@ -170,7 +176,7 @@ export class ActivitiesViewPage {
             result_score = 4;
             result_name = "Outstanding";
             break;
-          case  "0.75":
+          case "0.75":
             result_score = 3;
             result_name = "Commendable";
             break;
@@ -191,15 +197,22 @@ export class ActivitiesViewPage {
         result_score = 0;
         published = false;
       }
-
       let result_single: any = {
         published,
         result_score,
         result_name
       }
-
       result.push(result_single);
     }
     return result;
+  }
+  badgeData(){
+    _.forEach(this.newTickArray, (element, index) => {
+      if(element == true){
+        this.tickedCount++;
+      }
+    });
+    console.log(this.tickedCount);
+    return this.tickedCount;
   }
 }

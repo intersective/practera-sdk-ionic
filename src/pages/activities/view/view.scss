@@ -5,19 +5,36 @@
       background-color: transparent;
     }
     .header-content {
-      height: 10em;
       text-align: center;
       color: $background-color;
-      margin-top: 2.5rem;
-      margin-bottom: 0;
       border-bottom: 1px solid color($colors, background, base);
       .icon {
         font-size: 10rem;
       }
-      .activity-badge-image > img {
-        width: 10em;
-        margin-top: -22pt;
-      }
+    }
+    .activity-badge-image-1 {
+      background-color: rgba(201, 232, 229, 0.75);
+    }
+    .activity-badge-image-2 {
+      background-color: rgba(255, 238, 197, 0.9);
+    }
+    .activity-badge-image-3 {
+      background-color: rgba(198, 208, 233, 0.9);
+    }
+    .activity-badge-image-4 {
+      background-color: rgba(221, 236, 204, 0.8);
+    }
+    .activity-badge-image-5 {
+      background-color: rgba(179, 225, 240, 0.5);
+    }
+    .activity-badge-image-6 {
+      background-color: rgba(255, 238, 197, 0.9);
+    }
+    .activity-badge-image-7 {
+      background-color: rgba(255, 238, 197, 0.9);
+    }
+    .activity-badge > img {
+      width: 10em;
     }
   }
   .better-grade-color {
@@ -39,6 +56,10 @@
       filter: grayscale(100%);
     }
   }
+  .add-submission {
+    position: relative;
+    top: 140px;
+  }
   .submissions {
     ion-col {
       padding: 0;
@@ -54,13 +75,48 @@
     }
   }
   #submissionIcon {
-    font-size: 6rem;
+    font-size: 5rem;
     font-weight: 600;
     color: color($colors, background, contrast);
   }
-  .pendingbutton{
+  .pendingbutton {
     padding: 0.3em 1.15em;
     border-radius: 20px;
-    background-color: #EBEBEB;
+    background-color: color($colors, secondary);
+  }
+  .medals-display {
+    margin-top: 153px;
+    margin-bottom: 0px;
+    .each-tick {
+      font-size: 30pt;
+      padding: 0 10px;
+    }
+    .each-tick:first-child {
+      padding-left: 0px;
+    }
+    .tick-color-default {
+      color: color($colors, dark, contrast);
+    }
+    .tick-color-1 {
+      color: color($colors, palette-five, base);
+    }
+    .tick-color-2 {
+      color: color($colors, palette-four, contrast);
+    }
+    .tick-color-3 {
+      color: color($colors, palette-three, base);
+    }
+    .tick-color-4 {
+      color: color($colors, palette-one, contrast);
+    }
+    .tick-color-5 {
+      color: color($colors, button, contrast);
+    }
+    .tick-color-6 {
+      color: color($colors, palette-one, base);
+    }
+    .tick-color-7 {
+      color: color($colors, palette-four, base);
+    }
   }
 }
