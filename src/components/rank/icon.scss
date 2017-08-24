@@ -1,5 +1,5 @@
 .rankIcon {
-  display: inline;
+  display: inline-block;
 
   .gold {
     color: rgb(246, 184, 40);
@@ -12,4 +12,7 @@
   .bronze {
     color: rgb(192, 107, 39);
   }
+}
+.adjusted {
+  min-width: 19px;
 }
