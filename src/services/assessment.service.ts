@@ -32,11 +32,12 @@ export class QuestionBase<T> {
   assessment_id: number;
   name: string;
   type: string;
-  file_type?: string;
-  audience: Array<any>;
+  description: string;
+  required: boolean;
+  audience: string | Array<any>;
+  file_type?: string | any;
   choices?: ChoiceBase<any>[];
   answer?: any;
-  required?: boolean;
   order?: string | number;
 
   constructor(id, assessment_id, name, type) {
@@ -271,9 +272,7 @@ export class AssessmentService {
     let questions = group.AssessmentGroupQuestion;
     let thisQuestions = [];
     questions.forEach(question => {
-      if (this.isAccessible(question)) {
-        thisQuestions.push(this.normaliseQuestion(question));
-      }
+      thisQuestions.push(this.normaliseQuestion(question));
     });
 
     return {
@@ -294,13 +293,13 @@ export class AssessmentService {
    * @param {object} question Single normalised assessment
    *                            object from this.normalise above
    */
-  private isAccessible(question) {
+  public isAccessible(question, status) {
     let result = true;
-    if (question.AssessmentQuestion.audience.indexOf('submitter') === -1) {
+    if (question.audience.indexOf('submitter') === -1) {
       result = false;
     }
 
-    if (result && question.status === 'published') {
+    if (result && status === 'published') {
       result = false;
     }
 
@@ -357,11 +356,12 @@ export class AssessmentService {
       name: thisQuestion.name,
       type: thisQuestion.question_type,
       audience: thisQuestion.audience,
+      description: thisQuestion.description,
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
       choices: choices,
       order: question.order,
-      answer: thisQuestion.answer
+      answer: thisQuestion.answer,
     };
   }
 
