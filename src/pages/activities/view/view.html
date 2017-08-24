@@ -58,7 +58,8 @@
     <ion-item *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-col align-self-start>
-            <h2>Waiting for feedback</h2>
+            <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2>
+            <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
             <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
 
