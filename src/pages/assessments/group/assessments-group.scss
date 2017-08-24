@@ -1,4 +1,8 @@
 assessments-group-page {
+  .description > .item-inner {
+    border-bottom: none !important;
+  }
+
   .scroll-content {
     background-color: color($colors, secondary, base);
   }
