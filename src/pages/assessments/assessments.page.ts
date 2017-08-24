@@ -114,26 +114,28 @@ export class AssessmentsPage {
   mapSubmissionsToAssessment(submissions, assessmentsBatch) {
     let result = [];
 
-    result = assessmentsBatch;
     _.forEach(assessmentsBatch, (batch, i) => {
+
+      let assessmentResult = [];
       _.forEach(batch, (assessment, j) => {
         // normalised
         let normalised = this.assessmentService.normalise(assessment);
-        // assessment = this.assessmentService.filterByStatus(assessment, submissions[0].status);
-
-        result[i][j] = normalised;
-        console.log('assessment', normalised);
 
         // groups
+        let assessmentGroupResult = [];
         _.forEach(normalised.AssessmentGroup, (assessmentGroup, k) => {
           // questions
-          let questionsResult = {};
+          let questionsResult = [];
+          let submissionResult : any = {};
           _.forEach(assessmentGroup.questions, (question, l) => {
             // Inject empty answer fields
             // We will know thare are no submission when it is null
-            let answerResult = null,
-              reviewerAnswerResult = null,
-              submissionResult = null;
+            let questionResult : any = {
+              answer: null,
+              reviewerAnswer: null
+            };
+            let answerResult : any = null,
+              reviewerAnswerResult : any = null;
 
             // find submission
             _.forEach(submissions, (submission) => {
@@ -145,45 +147,42 @@ export class AssessmentsPage {
               // find user answer
               _.forEach(submission.answer, (answer) => {
                 if (answer.assessment_question_id === question.question_id) {
-                  answerResult = answer;
+                  questionResult.answer = answer;
                 }
               });
 
               // find reviewer feedback
               _.forEach(submission.review, (reviewerAnswer) => {
                 if (reviewerAnswer.assessment_question_id === question.question_id) {
-                  reviewerAnswerResult = reviewerAnswer;
+                  questionResult.reviewerAnswer = reviewerAnswer;
                 }
               });
             });
 
-            questionsResult[l] = Object.assign(question, {
-              answer: answerResult,
-              reviewerAnswer: reviewerAnswerResult,
-              submission: submissionResult
-            });
+            // set assessmentGroup as accessible (submitter has no permission to view)
+            if (this.isAccessibleBySubmitter(question, submissionResult.status)) {
+              assessmentGroup.accessible = true;
+              questionsResult.push(Object.assign(question, questionResult));
+            }
           });
 
           // Summarise basic answer information
-          // get total number of questions
-          let totalRequiredQuestions = 0
-          _.forEach(assessmentGroup.questions, (q) => {
+          let totalRequiredQuestions = 0;
+          let answeredQuestions = 0;
+          let reviewerFeedback = 0;
+
+          _.forEach(questionsResult, (q) => {
+            // get total number of questions
             if (q.required) {
               totalRequiredQuestions += 1;
             }
-          });
 
-          // get total number of answered questions
-          let answeredQuestions = 0;
-          _.forEach(assessmentGroup.questions, (q) => {
+            // get total number of answered questions
             if (q.required && q.answer && q.answer !== null) {
               answeredQuestions += 1;
             }
-          });
 
-          // get total number of feedback
-          let reviewerFeedback = 0;
-          _.forEach(assessmentGroup.questions, (q) => {
+            // get total number of feedback
             // If API response, the reviewer's answer and comment are empty,
             // front-end don't consider it as a feedback
             if (
@@ -199,11 +198,11 @@ export class AssessmentsPage {
           // Set status
           // let status = result[i][j].AssessmentGroup[k].status = 'incomplete';
           let questionsStatus = [];
-          _.forEach(assessmentGroup.questions, (q) => {
+          _.forEach(questionsResult, (q) => {
             if (q.required && q.answer !== null) {
               if (
                 q.reviewerAnswer !== null &&
-                assessmentGroup.submission.status !== 'pending approval' &&
+                q.submission.status !== 'pending approval' &&
                 (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
               ) {
                 questionsStatus.push('reviewed');
@@ -215,7 +214,7 @@ export class AssessmentsPage {
             if (!q.required && q.answer !== null) {
               if (
                 q.reviewerAnswer !== null &&
-                assessmentGroup.submission.status !== 'pending approval' &&
+                q.submission.status !== 'pending approval' &&
                 (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
               ) {
                 questionsStatus.push('reviewed');
@@ -249,20 +248,44 @@ export class AssessmentsPage {
             status = 'reviewed';
           }
 
-          result[i][j].AssessmentGroup[k] = Object.assign(result[i][j].AssessmentGroup[k], {
-            questions: questionsResult,
-            totalRequiredQuestions: totalRequiredQuestions,
-            answeredQuestions: answeredQuestions,
-            reviewerFeedback: reviewerFeedback,
-            status: status
-          });
+          if (assessmentGroup.accessible) {
+            assessmentGroupResult.push(Object.assign(assessmentGroup, {
+              questions: questionsResult,
+              submission: submissionResult,
+              totalRequiredQuestions: totalRequiredQuestions,
+              answeredQuestions: answeredQuestions,
+              reviewerFeedback: reviewerFeedback,
+              status: status
+            }));
+          }
+
         });
 
-        console.log('assessment 2', result[i][j]);
+        normalised.AssessmentGroup = assessmentGroupResult;
+        assessmentResult.push(normalised);
+        console.log('assessment 2', assessmentResult);
       });
+
+      result.push(assessmentResult);
     });
 
     return result;
+  }
+
+  // filter question by condition (submitter cannot view reviewer question before it is published/reviewed)
+  isAccessibleBySubmitter(question, submissionStatus: string) {
+    let accessible = true;
+    let submitterAllowed = false;
+
+    if (question.audience.indexOf('submitter') !== -1) {
+      submitterAllowed = true;
+    }
+
+    if (!submitterAllowed && submissionStatus !== 'published') {
+      accessible = false;
+    }
+
+    return accessible;
   }
 
   /**
