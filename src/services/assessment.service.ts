@@ -32,11 +32,12 @@ export class QuestionBase<T> {
   assessment_id: number;
   name: string;
   type: string;
-  file_type?: string;
-  audience: Array<any>;
+  description: string;
+  required: boolean;
+  audience: string | Array<any>;
+  file_type?: string | any;
   choices?: ChoiceBase<any>[];
   answer?: any;
-  required?: boolean;
   order?: string | number;
 
   constructor(id, assessment_id, name, type) {
@@ -268,9 +269,10 @@ export class AssessmentService {
    */
   public normaliseGroup(group) {
     // let result = group;
-    let thisQuestions = group.AssessmentGroupQuestion;
-    thisQuestions = thisQuestions.map(question => {
-      return this.normaliseQuestion(question);
+    let questions = group.AssessmentGroupQuestion;
+    let thisQuestions = [];
+    questions.forEach(question => {
+      thisQuestions.push(this.normaliseQuestion(question));
     });
 
     return {
@@ -281,6 +283,27 @@ export class AssessmentService {
       questions: thisQuestions,
       order: group.order,
     }
+  }
+
+  /**
+   * filter submission by:
+   * - "submitter" as audience
+   * - "submitter" as audience && status as "published"
+   * @name isAccessible
+   * @param {object} question Single normalised assessment
+   *                            object from this.normalise above
+   */
+  public isAccessible(question, status) {
+    let result = true;
+    if (question.audience.indexOf('submitter') === -1) {
+      result = false;
+    }
+
+    if (result && status === 'published') {
+      result = false;
+    }
+
+    return result;
   }
 
   /*
@@ -326,18 +349,19 @@ export class AssessmentService {
     });
 
     return {
-      id: question.id,
+      id: question.id, // unknown purpose (be careful with this id)
       assessment_id: question.assessment_question_id,
-      question_id: question.assessment_question_id,
+      question_id: question.assessment_question_id, // use this to indicate question
       group_id: question.assessment_group_id,
       name: thisQuestion.name,
       type: thisQuestion.question_type,
       audience: thisQuestion.audience,
+      description: thisQuestion.description,
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
       choices: choices,
       order: question.order,
-      answer: thisQuestion.answer
+      answer: thisQuestion.answer,
     };
   }
 

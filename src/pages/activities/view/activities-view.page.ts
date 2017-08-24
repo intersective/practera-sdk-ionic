@@ -12,7 +12,11 @@ import * as _ from 'lodash';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
+  public logo_act1 = "./assets/img/main/logo01.svg";
+  public activityIDsArrary: any = [];
+  public submissionTitles: any = [];
   activity: any = {};
+  activityIndex: any = 0;
   assessment: any = {};
   assessments: any = {};
   submissions: Array<any> = [];
@@ -52,7 +56,13 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
-
+    this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
+    this.activityIDsArrary = this.navParams.get('activityIDs');
+    // This is a hardcode (temporary solution).
+    // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
+    if (this.activityIDsArrary.includes(7632)){
+      this.logo_act1 = "./assets/img/badges/badge01.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
+    }
     // submission
     this.submissions = [];
     Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References)).subscribe(responses => {
@@ -62,11 +72,13 @@ export class ActivitiesViewPage {
           this.submissions = submissions.map(submission => {
             return this.submissionService.normalise(submission);
           });
+          this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
         }
       });
-
+      this.submissionTitles = this.getSubmissionTitle(this.submissions);
       this.loadings.submissions = false;
     });
+
 
     // badges
     this.achievements = this.navParams.get('achievements');
@@ -123,7 +135,7 @@ export class ActivitiesViewPage {
    *                 - hasSubmission: to indicateif user is accessing a in
    *                   progress assessment
    */
-  goAssessment(activity, opts = { hasSubmission: false }) {
+  goAssessment(submission?, opts = { hasSubmission: false }) {
     if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
       let alert = this.alertCtrl.create({
         title: 'You have a submission in progress.',
@@ -131,19 +143,72 @@ export class ActivitiesViewPage {
       });
       alert.present();
     } else if (opts.hasSubmission === true) {
-      let inProgress = _.find(this.submissions, {status: 'in progress'});
-
       this.navCtrl.push(AssessmentsPage, {
-        activity,
+        activity: this.activity,
         assessment: this.assessment,
         submissions: this.submissions,
-        inProgress
+        currentSubmission: submission
       });
     } else {
       this.navCtrl.push(AssessmentsPage, {
-        activity,
+        activity: this.activity,
         assessment: this.assessment
       });
     }
+  }
+
+  getSubmissionTitle(Submissions){
+    let result: any = [];
+    let result_name = "";
+    let result_score = 0;
+    let published = false;
+    let inprogress = false
+    for (let index = 0; index<Submissions.length; index++){
+      if (Submissions[index].status == "published"){
+        published = true;
+        inprogress = false;
+        switch (Submissions[index].moderated_score){
+          case "1":
+            result_score = 4;
+            result_name = "Outstanding";
+            break;
+          case  "0.75":
+            result_score = 3;
+            result_name = "Commendable";
+            break;
+          case "0.5":
+            result_score = 2;
+            result_name = "Competent";
+            break;
+          case "0.25":
+            result_score = 1;
+            result_name = "Developing";
+            break;
+          case "0":
+            result_score = 0;
+            result_name = "Needs Improvement";
+        }
+      } else if(Submissions[index].status == "in progress") {
+        result_name = "";
+        result_score = 0;
+        published = false;
+        inprogress = true;
+      } else{
+        result_name = "";
+        result_score = 0;
+        published = false;
+        inprogress = false;
+      }
+
+      let result_single: any = {
+        published,
+        result_score,
+        result_name,
+        inprogress
+      }
+
+      result.push(result_single);
+    }
+    return result;
   }
 }

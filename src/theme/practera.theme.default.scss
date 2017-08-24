@@ -70,13 +70,23 @@ $font-secondary: 'Raleway';
 .tab-button-text,
 .segment-ios .segment-button,
 .segment-md .segment-button {
+  color: color($colors, button, base);
+  border-color: color($colors, primary, base);
+}
+.tab-button[aria-selected=true] {
+  color: color($colors, secondary, base);
+  border-top: thick double color($colors, button, base);
+}
+.segment-ios .segment-button,
+.segment-md .segment-button {
+  background-color: color($colors, white, base);
   color: color($colors, primary, base);
   border-color: color($colors, primary, base);
 }
 .segment-ios .segment-button.segment-activated,
 .segment-md .segment-button.segment-activated {
   background-color: color($colors, primary, base);
-  color: color($colors, secondary, base);
+  color: color($colors, white, base);
   border-color: color($colors, primary, base);
 }
 .checkbox-md .checkbox-checked,
@@ -92,13 +102,13 @@ $font-secondary: 'Raleway';
 .header {
   .toolbar-background-md,
   .toolbar-background-ios {
-    background-color: color($colors, primary, base);
+    background-color: color($colors, white, base);
   }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,
   .toolbar-title-ios {
-    color: color($colors, secondary, base);
+    color: color($colors, primary, base);
   }
   .toolbar-title-md,
   .toolbar-title-ios {
@@ -153,6 +163,24 @@ $font-secondary: 'Raleway';
   }
   .close-btn {
     @include closeBtn;
+  }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
+  // general form
+  .general-form {
+    width: 100%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
   }
 }
 // 7.2 login form box styling (shared module: part 2)
@@ -235,6 +263,8 @@ $font-secondary: 'Raleway';
 }
 // 8. General Event Page Styling
 .events {
+  // background-color: color($colors, secondary, base);
+
   .list:first-child {
     margin-bottom: 0;
   }
@@ -350,10 +380,13 @@ event {
     font-family: $font-primary; // default-theme
   }
   .event-details {
-    padding: 8px 15px;
+    padding: 8px 8px;
     font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
+  }
+  .event-logo {
+    padding: 8px 8px;
   }
 }
 // 9. General Dashboard Page Styling
@@ -424,7 +457,7 @@ event {
     .locked {
       border-bottom: 1px solid color($colors, border, contrast);
       p {
-        padding: 12px 0px 12px 12px;
+        padding: 12px 0px 12px 5px;
         margin: 0px;
         min-height: 40px;
         line-height: 20px;
@@ -484,6 +517,7 @@ event {
   }
 }
 // 13. Rankings Page Styling
+// 13. Rankings Page Styling
 .rankings {
   .scroll-content {
     bottom: 49px !important;
@@ -508,9 +542,22 @@ event {
     }
   }
   .my-ranking {
+    border-top: 1px solid color($colors, border, base);
     position: fixed;
-    bottom: 49px;
+    bottom: 55px;
+    height: 55px;
     width: 100%;
+    background: color($colors, secondary, base);
+    .ranking-item {
+      p {
+        border: none;
+        b {
+          font-weight: normal;
+          width: 100%;
+          text-align: right;
+        }
+      }
+    }
   }
   ion-list.my-ranking.list.list-md {
     bottom: 55px;
@@ -575,6 +622,43 @@ rankings-details-page {
     border-bottom: 1px solid color($colors, border, base);
   }
 }
+// 14.leaderboard settings page styling
+.leaderboard-settings {
+  .hide-settings {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+}
+// 15. items popup general styling
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .tutorial-slides p {
+      margin-top: 12pt;
+    }
+    .tutorial-slides img {
+      width: 50%;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 100%;
+      margin-top: 12pt;
+      padding: 12pt;
+      background-color: color($colors, primary, base);
+      color: color($colors, secondary, base);
+    }
+  }
+}
 // 11. Settings & Tutorial page stylings
 .settings {
   .list-header-md {
@@ -637,7 +721,7 @@ tutorial-page {
     align-items: center;
   }
 }
-// 15. items popup general styling 
+// 15. items popup general styling
 .items-popup {
   .scroll-content {
     overflow-y: hidden;
@@ -646,7 +730,7 @@ tutorial-page {
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;  
+    align-items: center;
     .tutorial-slides p {
       margin-top: 12pt;
     }

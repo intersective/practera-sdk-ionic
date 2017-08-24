@@ -15,6 +15,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
+import { MomentModule } from 'angular2-moment';
+
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -28,13 +30,13 @@ import { GroupEmitterService } from '../components/questions/group-emitter.servi
 import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
-import { RankingService } from '../services/ranking.service';
 import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
+
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
 import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
@@ -50,9 +52,9 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
+import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
 import { RankIconComponent } from '../components/rank/icon';
 // unused but necessary for build
-import { AssessmentsComponent } from '../components/assessments/assessments.component';
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
 // pages
@@ -61,7 +63,6 @@ import { ActivitiesListPage } from '../pages/activities/list/list.page';
 import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
-import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
@@ -72,20 +73,17 @@ import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
-import { GalleryPage } from '../pages/gallery/gallery';
 import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
-import { LoginModalPage } from '../pages/login-modal/login-modal';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { PopoverTextPage } from '../pages/activities/list/popover-text';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
-import { RegistrationModalPage } from '../pages/registration/modal';
 import { RegistrationPage } from '../pages/registration/registration.page';
-import { ResetpasswordModelPage } from '../pages/resetpassword-model/resetpassword-model';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
@@ -100,10 +98,7 @@ import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // unused but needed for build
-import { CalendarPipe } from '../pipes/CalendarPipe';
-import { DateFormatPipe } from '../pipes/DateFormat';
 import { OrderByPipe } from '../pipes/OrderBy';
-import { UrlFilterPipe } from '../pipes/urlfilter.pipe';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -115,16 +110,12 @@ export function HttpLoaderFactory(http: Http) {
 @NgModule({
   declarations: [
     AchievementsViewPage,
-    ActivitiesClassicListPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
     ActivityListPopupPage,
-    AssessmentsComponent,
     AssessmentsGroupPage,
     AssessmentsPage,
-    CalendarPipe,
-    DateFormatPipe,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -137,7 +128,6 @@ export function HttpLoaderFactory(http: Http) {
     RankIconComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
-    GalleryPage,
     ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
@@ -145,7 +135,6 @@ export function HttpLoaderFactory(http: Http) {
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
-    LoginModalPage,
     LoginPage,
     MagicLinkPage,
     MemberComponent,
@@ -155,18 +144,18 @@ export function HttpLoaderFactory(http: Http) {
     OrderByPipe,
     OneofQuestionComponent,
     PhotoComponent,
+    PopoverTextPage,
     QuestionComponent,
     QuestionGroupComponent,
     RankingBadgesPage,
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationModalPage,
     RegistrationPage,
-    ResetpasswordModelPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TeamPage,
     TestPage,
@@ -177,15 +166,15 @@ export function HttpLoaderFactory(http: Http) {
     TimeAgoPipe,
     TruncatePipe,
     UcfirstPipe,
-    UrlFilterPipe,
     EscapeHtmlPipe,
   ],
   imports: [
     BrowserModule,
-    TestModule,
     CacheModule,
-    NotificationModule,
     FormsModule,
+    MomentModule,
+    NotificationModule,
+    TestModule,
     UtilsModule,
     RequestModule.forRoot({
       appKey: Configure.appKey,
@@ -203,7 +192,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
-       links: [
+      links: [
         {
           component: LoginPage,
           name: 'Login',
@@ -227,6 +216,12 @@ export function HttpLoaderFactory(http: Http) {
           name: 'Registration',
           segment: 'registration',
           defaultHistory: [ RegistrationPage ]
+        },
+        {
+          component: TestPage,
+          name: 'Testing',
+          segment: 'testing',
+          defaultHistory: [ TestPage ]
         }
       ]
     })
@@ -236,7 +231,6 @@ export function HttpLoaderFactory(http: Http) {
   ],
   entryComponents: [
     AchievementsViewPage,
-    ActivitiesClassicListPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -252,27 +246,25 @@ export function HttpLoaderFactory(http: Http) {
     EventsViewPage,
     ForgetPasswordPage,
     ItemsPopupPage,
-    GalleryPage,
     LeaderboardSettingsPage,
     LevelComponent,
     LevelsListPage,
     LoadingMarkerComponent,
     LockerComponent,
-    LoginModalPage,
     LoginPage,
     MagicLinkPage,
     ModalComponent,
     MyApp,
+    PopoverTextPage,
     RankingBadgesPage,
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationModalPage,
     RegistrationPage,
-    ResetpasswordModelPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
+    SpinwheelPage,
     TabsPage,
     TestPage,
     TermConditionPage,
@@ -292,7 +284,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
     { provide: NotificationService, useClass: NotificationService },
-    { provide: RankingService, useClass: RankingService },
     { provide: ResponsiveService, useClass: ResponsiveService },
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },

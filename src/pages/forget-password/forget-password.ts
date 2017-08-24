@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController,
-         NavParams,
-         LoadingController,
-         AlertController,
-         ToastController } from 'ionic-angular';
+  NavParams,
+  ViewController,
+  LoadingController,
+  AlertController,
+  ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
@@ -13,6 +14,8 @@ import { loadingMessages, errMessages } from '../../app/messages';
 import { AuthService } from '../../services/auth.service';
 // directives
 import {FormValidator} from '../../validators/formValidator';
+// pages
+import { LoginPage } from '../../pages/login/login';
 @Component({
   selector: 'page-forget-password',
   templateUrl: 'forget-password.html'
@@ -26,6 +29,7 @@ export class ForgetPasswordPage {
   private sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
   constructor(
     private navCtrl: NavController,
+    private viewCtrl: ViewController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
@@ -34,8 +38,7 @@ export class ForgetPasswordPage {
     private toastCtrl: ToastController,
     private formBuilder: FormBuilder) {
       this.forgotPwdFormGroup = formBuilder.group({
-        email: ['', [FormValidator.isValidEmail,
-                    Validators.required]],
+        email: ['', [FormValidator.isValidEmail, Validators.required]]
       });
     }
   ionViewDidLoad() {
@@ -49,37 +52,35 @@ export class ForgetPasswordPage {
 
     let defaultMsg = this.sentEmailMessagePartOne + ` ${this.email} ` + this.sentEmailMessagePartTwo;
 
-    loading.present();
-    // This part is calling post_forget_password() API from backend
-    this.authService.forgotPassword(this.email)
+    loading.present().then(() => {
+      // This part is calling post_forget_password() API from backend
+      this.authService.forgotPassword(this.email)
       .subscribe(data => {
-          loading.dismiss();
-          defaultMsg = data.msg || defaultMsg;
-          const successSMS = this.toastCtrl.create({
-            message: defaultMsg,
-            duration: 5000
+          loading.dismiss().then(() => {
+            defaultMsg = data.msg || defaultMsg;
+            const successSMS = this.toastCtrl.create({
+              message: defaultMsg,
+              duration: 5000
+            });
+            successSMS.present();
           });
-          successSMS.present();
         },
         error => {
-          loading.dismiss();
-          // this.logError(error);
-          defaultMsg = error.msg || defaultMsg;
-          const errorSMS = this.toastCtrl.create({
-            message: defaultMsg,
-            duration: 5000
+          loading.dismiss().then(() => {
+            defaultMsg = error.msg || defaultMsg;
+            const errorSMS = this.toastCtrl.create({
+              message: defaultMsg,
+              duration: 5000
+            });
+            errorSMS.present();
           });
-          errorSMS.present();
         }
-     );
+    );
+    });
   }
-  // logError(error) {
-  //   const alert = this.alertCtrl.create({
-  //     title: 'Email sent failed ..',
-  //     message: error,
-  //     buttons: ['Close']
-  //   });
-  //   alert.present();
-  //   // handle API calling errors display with alert controller
-  // }
+  backButton(){
+    this.navCtrl.setRoot(LoginPage); // go back
+    // history.back();
+    // this.viewCtrl.dismiss();
+  }
 }

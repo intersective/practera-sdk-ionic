@@ -17,12 +17,16 @@ $item-wp-detail-push-show: true;
 
 // General Colors (Shared File)
 // main colors
-$primary: #ebebeb; // #E60028
-$secondary: #000000; // #ffffff
+$primary: #000054; // BLUE
+$secondary: #EBEBEB; // GRAY
+
+// Buttons/tabs
+$primary-button: #3A74BA;
 $primary-text: #000054;
+
 $secondary-text: #000000;
 $primary-bg: #EBEBEB;
-$primary-button: #00B5AD;
+$secondary-bg: #ffffff;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
 $primary-dark: #AFAFAF;
@@ -33,6 +37,8 @@ $secondary-palette-four: #D4EEFC;
 $secondary-palette-five: #3A74BA;
 $secondary-palette-six: #fc9147;
 $secondary-palette-seven: #43c7f4;
+$secondary-palette-eight: #00b5ac;
+$secondary-palette-nine: #E60028;
 
 
 // App Mixin Functions
@@ -47,13 +53,22 @@ $secondary-palette-seven: #43c7f4;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary: (
-     base: $primary,
-     contrast: $secondary-palette-three
+  primary: $primary,
+  secondary: $secondary,
+  white: #FFF,
+  black: #000,
+  button: (
+    base: darken($primary-button, 10%),
+    contrast: lighten($primary-button, 10%)
   ),
-  secondary: (
-     base: $secondary,
-     contrast: $secondary-palette-three
+  primary-button: (
+    base: $secondary-palette-one,
+    contrast: lighten($secondary-palette-one, 10%)
+  ),
+  badge-text: #FFF,
+  badge-bg: (
+    base: lighten($secondary-palette-nine, 10%),
+    contrast: darken($secondary-palette-nine, 10%)
   ),
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
@@ -71,11 +86,6 @@ $colors: (
      base: $primary-text,
      contrast: $secondary-text
   ),
-  button: (
-    base: $primary-text,
-    // base: $secondary-palette-one,
-    contrast: $primary-button
-  ),
   border: (
     base: $border-primary,
     contrast: $border-secondary
@@ -86,7 +96,7 @@ $colors: (
   ),
   background: (
     base: $primary-bg,
-    contrast: $primary-bg
+    contrast: $secondary-bg
   ),
   palette-one: (
     base: $secondary-palette-one,
@@ -104,11 +114,24 @@ $colors: (
     base: $secondary-palette-seven,
     contrast: $secondary-palette-six
   ),
+  palette-five: (
+    base: $secondary-palette-eight,
+    contrast: $secondary-palette-eight
+  )
 );
 
-$item-md-detail-push-color: color($colors, primary-light, base);
-$item-wp-detail-push-color: color($colors, primary-light, base);
-$item-ios-detail-push-color: color($colors, primary-light, base);
+// Small arrow color for list
+$item-md-detail-push-color: color($colors, primary, base);
+$item-wp-detail-push-color: color($colors, primary, base);
+$item-ios-detail-push-color: color($colors, primary, base);
+
+// Badge style
+$badge-ios-background-color: color($colors, badge-bg, base);
+$badge-ios-text-color: color($colors, badge-text, base);
+$badge-md-background-color: color($colors, badge-bg, base);
+$badge-md-text-color: color($colors, badge-text, base);
+$badge-wp-background-color: color($colors, badge-bg, base);
+$badge-wp-text-color: color($colors, badge-text, base);
 
 
 // App iOS Variables

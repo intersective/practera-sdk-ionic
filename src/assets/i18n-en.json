@@ -24,6 +24,9 @@
     "PAGETITLE": "Forgot Password",
     "SENDBUTTON": "Send to Mailbox"
   },
+  "GAME": {
+    "PAGETITLE": "Spinner Wheel"
+  },
   "GENERAL": {
     "DONE": "Done",
     "DOWNLOAD": "Download",
@@ -45,7 +48,7 @@
     "DETAIL": "Ranking Details",
     "ME": "Me",
     "MONTHLYPOINTS": "Points(Monthly)",
-    "PAGETITLE": "Monthly Ranking",
+    "PAGETITLE": "Leaderboard",
     "TOTALPOINTS": "Points(Total)"
   },
   "RESETPASSWORD": {
@@ -61,6 +64,9 @@
     "SWITCHER": "Program Switcher",
     "TUTORIAL": "Tutorial",
     "TERMS": "Terms of Use"
+  },
+  "SPINNER": {
+    "PAGETITLE": "Spin Wheel"
   },
   "TABS": {
     "ACCOUNT": "Account",

@@ -18,5 +18,9 @@
       <div>{{ event.startDisplay }}</div>
       <div style="color:silver">{{ event.activity.name }}</div>
     </ion-col>
+    <ion-col col-4 class="event-logo">
+      <img *ngIf="event.isOriginal" src="assets/img/static/pe-logo-name.svg" />
+      <img *ngIf="!event.isOriginal" src="assets/img/static/pe-logo-recommended.svg" />
+    </ion-col>
   </ion-row>
 </ion-card>

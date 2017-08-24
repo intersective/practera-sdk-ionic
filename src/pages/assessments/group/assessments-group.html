@@ -30,39 +30,35 @@
       <span *ngIf="question.required" class="red">*</span>
     </ion-list>
 
-    <ion-item text-wrap *ngIf="question.description">
+    <ion-item text-wrap *ngIf="question.description" class="description">
       <p [innerHtml]="question.description"></p>
     </ion-item>
-
-    <div *ngFor="let submission of submissions">
-      <pre>{{ submission | json }}</pre>
-    </div>
 
     <!-- type: oneOf -->
     <oneof-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'oneof'"></oneof-question>
 
     <!-- type: oneOf -->
     <multiple-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'multiple'"></multiple-question>
 
     <!-- type: file -->
     <file-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'file'"></file-question>
 
     <!-- type: text -->
     <text-question
       [question]="question"
-      [form]="formGroup[question.id]"
+      [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'text'"></text-question>
 

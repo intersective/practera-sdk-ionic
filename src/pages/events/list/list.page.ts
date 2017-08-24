@@ -55,6 +55,8 @@ export class EventsListPage {
       case 'browses':
         // List all not booked and not ended event in order of start time (asc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
+          // return (moment(event.end).isAfter() && event.isBooked === false);
+          // return (moment().isBefore(moment(event.end)) && event.isBooked === false);
           return (moment(event.end).isAfter() && event.isBooked === false);
         }), 'start', 'asc');
         break;
@@ -167,11 +169,12 @@ export class EventsListPage {
   private _mapWithActivity(events) {
     let result = [];
 
-    events.forEach(event => {
+    result = events.map(event => {
       let thisActivity = this.activities[event.activity_id];
       thisActivity.References = event.References; // must use event's references
-      event.activity = this.activityService.normaliseActivity(thisActivity);
-      result.push(event);
+      return _.merge(event, {
+        activity: this.activityService.normaliseActivity(thisActivity)
+      });
     });
 
     return result;

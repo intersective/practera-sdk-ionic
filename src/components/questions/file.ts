@@ -36,29 +36,34 @@ export class FileQuestionComponent implements OnInit {
   upload(event) {
     let self = this;
 
-    this.fs.pick({
-      maxFiles: 1,
-      storeTo: {
-        location: 's3'
-      }
-    }).then((uploaded: FilestackUpload) => {
+    this.fs.pickV1(null, (uploaded) => {
       self.zone.run(() => {
-        if (uploaded.filesUploaded.length > 0) {
-          let file = uploaded.filesUploaded.shift();
-          file.icon = self.util.getIcon(file.mimetype);
-
-          // post_assessment_submission API requirement "key"
-          file.key = file.handle;
-
-          self.uploaded = file;
-          this.form.controls.answer.setValue(self.uploaded);
-        }
-
-        if (uploaded.filesFailed.length > 0) {
-          console.log(uploaded.filesFailed.length, ' file(s) not uploaded.');
-        }
+        let file = uploaded;
+        file.icon = self.util.getIcon(file.mimetype);
+        self.uploaded = file;
+        this.form.controls.answer.setValue(self.uploaded);
       });
+    }, err => {
+      console.log(err.code);
     });
+  }
+
+  private pickUploaded(uploaded) {
+    let self = this;
+    if (uploaded.filesUploaded.length > 0) {
+      let file = uploaded.filesUploaded.shift();
+      file.icon = self.util.getIcon(file.mimetype);
+
+      // post_assessment_submission API requirement "key"
+      file.key = file.handle;
+
+      self.uploaded = file;
+      this.form.controls.answer.setValue(self.uploaded);
+    }
+
+    if (uploaded.filesFailed.length > 0) {
+      console.log(uploaded.filesFailed.length, ' file(s) not uploaded.');
+    }
   }
 
   private injectIcon = (files: any[]) => {

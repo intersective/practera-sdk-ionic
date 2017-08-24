@@ -11,6 +11,9 @@
 // colours
 .red { color: red; }
 .strong { font-weight: bolder; }
+.muted {
+  opacity: 0.5;
+}
 
 .hr {
   padding-top: 16px;
@@ -158,4 +161,5 @@ ion-fab[center-right] {
 @include makeIcon(fa-zip, $fa-var-file-zip-o)
 @include makeIcon(fa-file, $fa-var-file-o)
 @include makeIcon(fa-files, $fa-var-files-o)
+@include makeIcon(fa-trophy, $fa-var-trophy)
 // END ---- Integrate font-awesome into ionic's ion-icon --- //
