@@ -395,6 +395,7 @@ $title-font: 'Arvo';
   }
   .cancel-btn {
     @include cancelBtn;
+    border-color: color($colors, secondary, base);
   }
   .cancel-btn:hover,
   .cancel-btn:focus,
