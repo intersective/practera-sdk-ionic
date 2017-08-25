@@ -1,4 +1,4 @@
-<ion-header class="activity-detail">
+<ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}">
   <ion-navbar>
     <ion-title>{{ activity.name }}</ion-title>
     <ion-buttons end *ngIf="activity.description">
@@ -7,82 +7,93 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-
-  <ion-list class="header-content">
+  <ion-list class="header-content ">
     <ion-grid>
       <ion-row>
-        <ion-col col-12 class="activity-badge-image">
-          <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge"/>
-          <img *ngIf="activityIndex == 2" src="./assets/img/badges/badge05.svg" alt="Activity Badge"/>
-          <img *ngIf="activityIndex == 3" src="./assets/img/badges/badge02.svg" alt="Activity Badge"/>
-          <img *ngIf="activityIndex == 4" src="./assets/img/badges/badge03.svg" alt="Activity Badge"/>
-          <img *ngIf="activityIndex == 5" src="./assets/img/badges/badge06.svg" alt="Activity Badge"/>
-          <img *ngIf="activityIndex == 6" src="./assets/img/badges/badge04.svg" alt="Activity Badge"/>
-          <img *ngIf="activityIndex == 7" src="./assets/img/main/logo01.svg" alt="Activity Badge"/>
+        <ion-col col-12 class="activity-badge">
+          <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge 1"/>
+          <img *ngIf="activityIndex > 1" 
+            src="./assets/img/badges/badge{{ activityIndex }}.svg" 
+            alt="Activity Badge {{ activityIndex }}"/>
         </ion-col>
       </ion-row>
     </ion-grid>
   </ion-list>
 </ion-header>
-
 <ion-content padding class="activity-detail">
-  <ion-fab top center-right edge *ngIf="false">
-    <button ion-fab color="dark" mini>
+  <ion-list class="medals-display">
+    <ion-row>
+      <p class="medal-statistics">{{ tickedCount }} OF {{ ticksLength }} MEDALS</p>
+    </ion-row>
+    <ion-row class="medal-ticks">
+      <ion-item col-10>
+        <span *ngFor="let tick of newTickArray; let i = index;" class="each-tick tick-color-{{ activityIndex }}">
+          <i class="fa" (click)="achievementPopup(i)"
+            [ngClass]="{'fa-check-circle-o icon-color-5': tick, 'fa-circle-thin tick-color-default': !tick }" 
+            aria-hidden="true">
+          </i>
+        </span>
+      </ion-item>
+      <ion-item col-2 class="badge-default">
+        <ion-badge *ngIf="eachScore != -1" 
+          [ngClass]="eachScore > 2 ? 'better-grade-color' : 'worse-grade-color'">
+          {{ eachScore }}
+        </ion-badge>
+        <button *ngIf="eachScore == -1">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+        </button>
+      </ion-item>  
+    </ion-row>
+  </ion-list>
+  <ion-fab top right edge *ngIf="false">
+    <button ion-fab class="question-mark-button" color="dark" mini>
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
   <ion-fab top right edge *ngIf="!loadings.submissions">
-    <button ion-fab class="primary-button" (click)="goAssessment()">
+    <button ion-fab class="primary-button add-submission" (click)="goAssessment()">
       <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
     </button>
   </ion-fab>
-
-  <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
+  <!-- <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
     <ion-slides pager>
       <ion-slide *ngFor="let badge of activity.badges" [ngClass]="{'disabled': badge.disabled }">
         <img [src]="badge.url">
       </ion-slide>
     </ion-slides>
-  </ion-list>
-
+  </ion-list> -->
   <ion-list class="submissions">
     <ion-list-header>
       <!-- {{ 'ACTIVITY.SUBMISSION' | translate }} -->
       Evidence
     </ion-list-header>
-
     <ion-item *ngIf="loadings.submissions" class="center">
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
-
-    <ion-item *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
+    <ion-item class="submissions-information" *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-col align-self-start>
-            <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2>
-            <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
-            <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
+          <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2>
+          <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
+          <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
-
         <p align-self-end class="note">
           <button block class="pendingbutton">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </button>
         </p>
       </ion-row>
-
       <ion-row *ngIf='submissionTitles[i].published'>
         <ion-col align-self-start>      
-            <h2>{{ submissionTitles[i].result_name }}</h2>
-            <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
+          <h2>{{ submissionTitles[i].result_name }}</h2>
+          <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
-
         <p align-self-end class="note">
-              <ion-badge [ngClass]="submissionTitles[i].result_score > 2 ? 'better-grade-color' : 'worse-grade-color'">
-                {{ submissionTitles[i].result_score }}
-              </ion-badge>
+          <ion-badge [ngClass]="submissionTitles[i].result_score > 2 ? 'better-grade-color' : 'worse-grade-color'">
+            {{ submissionTitles[i].result_score }}
+          </ion-badge>
         <p>
       </ion-row>
     </ion-item>
   </ion-list>
-
 </ion-content>
