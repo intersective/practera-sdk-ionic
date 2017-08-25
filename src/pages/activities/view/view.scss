@@ -1,23 +1,23 @@
 .activity-badge-bg-1 {
-  background-color: rgba(201, 232, 229, 0.75) !important;
+  background-color: rgba(201, 232, 229, 0.75);
 }
 .activity-badge-bg-2 {
-  background-color: rgba(255, 238, 197, 0.9) !important;
+  background-color: rgba(255, 238, 197, 0.9);
 }
 .activity-badge-bg-3 {
-  background-color: rgba(198, 208, 233, 0.9) !important;
+  background-color: rgba(198, 208, 233, 0.9);
 }
 .activity-badge-bg-4 {
-  background-color: rgba(221, 236, 204, 0.8) !important;
+  background-color: rgba(221, 236, 204, 0.8);
 }
 .activity-badge-bg-5 {
-  background-color: rgba(179, 225, 240, 0.5) !important;
+  background-color: rgba(179, 225, 240, 0.5);
 }
 .activity-badge-bg-6 {
-  background-color: rgba(255, 238, 197, 0.9) !important;
+  background-color: rgba(255, 238, 197, 0.9);
 }
 .activity-badge-bg-7 {
-  background-color: rgba(255, 238, 197, 0.9) !important;
+  background-color: rgba(233, 246, 245, 1);
 }
 .activity-badge {
   display: flex;
@@ -33,6 +33,9 @@
   background: transparent;
 }
 .activity-detail {
+  .scroll-content {
+    margin-top: 225px !important;
+  }
   &.header {
     background-color: color($colors, background, contrast);
     .toolbar-background {
@@ -102,6 +105,10 @@
     ion-item {
       padding-left: 0px;
     }
+    ion-list-header {
+      border-top: none;
+      border-bottom: 1px solid color($colors, border);
+    }
     .submissions-information {
       h2, p {
         font-family: 'Museo-500';
@@ -131,7 +138,6 @@
     background-color: color($colors, secondary);
   }
   .medals-display {
-    margin-top: 153px;
     margin-bottom: 0px;
     .medal-statistics {
       margin-bottom: 0px;
@@ -155,7 +161,7 @@
         ion-badge,
         button {
           font-size: 16pt;
-          padding: 3px 15px;
+          padding: 3px 12px;      
           border-radius: 18px;
         }
         button {
@@ -195,5 +201,12 @@
     .tick-color-7 {
       color: color($colors, palette-four, base);
     }
+  }
+}
+@media screen and (max-width: 321px) {
+  // activity detail styling 
+  .badge-default ion-badge {
+    font-size: 14pt !important;
+    padding: 3px 8px !important;
   }
 }
