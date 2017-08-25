@@ -52,6 +52,12 @@ $title-font: 'Arvo';
 .line-break {
   word-break: break-word;
 }
+.font-20pt {
+  font-size: 20pt !important;
+}
+.font-22pt {
+  font-size: 22pt !important;
+}
 // 5. General Button Styling
 .primary-button {
   background-color: color($colors, primary-button, base);
@@ -647,7 +653,6 @@ event {
       }
     }
     .icon-color-default {
-      // color: color($colors, dark, contrast) !important;
       color: color($colors, dark, contrast);
     }
     .icon-color-0 {
@@ -667,6 +672,9 @@ event {
     }
     .icon-color-5 {
       color: color($colors, palette-four, base) !important;
+    }
+    .icon-color-6 {
+      color: color($colors, palette-five, base) !important;
     }
     // just demo start
     .first-checkbox-demo {
@@ -812,7 +820,7 @@ event {
       padding: 15px 0pt;
       border-bottom: 1px solid color($colors, border, base);
     }
-    p:first-child{
+    p:first-child {
       border: none;
       display: flex;
       align-items: center;

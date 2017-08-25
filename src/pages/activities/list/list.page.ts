@@ -48,7 +48,10 @@ export class ActivitiesListPage implements OnInit {
     this.activityIndexArray = [];
     this.filteredActivityIDs = [];
     this.findSubmissions = [[], [], [], [], [], [],[]];
+    this.tickedIDsArray = [[], [], [], [], [], [],[]];
     this.AverageScore = [0, 0, 0, 0, 0, 0, 0];
+    this.userExperiencePoint = 0;
+    this.eachActivityScores = [];
   }
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
@@ -59,6 +62,7 @@ export class ActivitiesListPage implements OnInit {
   public filteredActivityIDs: any = [];
   public AverageScore: any = [];
   public totalAverageScore: any = 0;
+  public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
   public findSubmissions: any = [];
   public button_show = true;
@@ -72,6 +76,8 @@ export class ActivitiesListPage implements OnInit {
   public filteredSubmissions: any = [];
   public characterData: any = [];
   public submissionData: any = [];
+  public sameFontSize: boolean = false;
+  public userExperiencePoint: any = 0;
   public characterCurrentExperience: any = '0';
   public percentageValue: number = 0;
   public submissionPoints: number = 0;
@@ -109,6 +115,7 @@ export class ActivitiesListPage implements OnInit {
     [false,false,false,false],
     [false,false,false,false]
   ];
+  public tickedIDsArray: any = [];
   public userAchievementsIDs: any = [];
   public checkUserPointer: boolean = false;
   constructor(
@@ -137,11 +144,6 @@ export class ActivitiesListPage implements OnInit {
   }
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
-    this.bookedEventsCount = 0;
-    this.characterCurrentExperience = 0;
-    this.currentPercentage = 0;
-
-    // replicated this.doRefresh
     this.initilized_varible();
     this.loadingDashboard();
   }
@@ -189,7 +191,6 @@ export class ActivitiesListPage implements OnInit {
               this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
               this.activityIDs.push(this.activities[index].Activity.id);
             }));
-            console.log("this.activityIDs: ", this.activityIDs);
             // this.activityIDs = this.activityIDs.toString();
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
@@ -201,10 +202,8 @@ export class ActivitiesListPage implements OnInit {
                   this.characterData = results[1].Characters[0];
                   this.cacheService.setLocalObject('character', this.characterData);
                   this.cacheService.setLocal('character_id', this.characterData.id);
-                  this.characterCurrentExperience = this.characterData.experience_points;
-                  if(this.characterData.experience_points == 0) {
-                    this.characterCurrentExperience = '0';
-                  }
+                  // display user experience points
+                  this.showUserExperience(this.characterData.experience_points);
                   // achievement list data handling
                   this.getUserAchievementData = results[2];
                   _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
@@ -215,20 +214,23 @@ export class ActivitiesListPage implements OnInit {
                   // find all 4 boxes are ticked index value inside changeColor array
                   _.forEach(this.changeColor, (ele, index) => {
                     let findTrueIndex: any = _.uniq(ele, 'true');
-                    console.log("findTrueIndex: ", findTrueIndex);
                     if(findTrueIndex[0] == true && findTrueIndex.length == 1){
                       this.activityIndexArray.push(index);
                     }
                   });
                   // submission data handling
                   this.submissionData = results[0];
-                  // console.log("Indexes:", this.activityIndexArray);
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
                   };                  
                   // find submission based on founded activity IDs
-                  this.displayAverageScore(this.filteredActivityIDs, this.submissionData, this.findSubmissions, this.show_score_act, this.activityIndexArray, this.AverageScore);
+                  this.displayAverageScore(this.filteredActivityIDs, 
+                    this.submissionData, 
+                    this.findSubmissions, 
+                    this.show_score_act, 
+                    this.activityIndexArray, 
+                    this.AverageScore);
                   // get items API call
                   this.gameService.getItems({
                     character_id: this.characterData.id
@@ -278,13 +280,16 @@ export class ActivitiesListPage implements OnInit {
     this.navCtrl.push(ActivitiesViewPage, {
       achievements: this.achievements,
       activity: activity,
-      activityIDs: this.activityIDs
+      activityIDs: this.activityIDs,
+      tickArray: this.changeColor,
+      eachFinalScore: this.eachActivityScores.slice(0, 7),
+      newTickIDsArray: this.achievementListIDs
     });
   }
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
-    console.log("Achievement ID: ", unlock_id);
+    // console.log("Achievement ID: ", unlock_id);
     disabledActivityPopup.present();
   }
   // close modal and display as main page
@@ -298,6 +303,24 @@ export class ActivitiesListPage implements OnInit {
   whatsThis() {
     let popover = this.popoverCtrl.create(PopoverTextPage);
     popover.present();
+  }
+  showUserExperience(experience_points){
+    this.userExperiencePoint = experience_points;
+    if(this.userExperiencePoint >= 100000){
+      this.sameFontSize = true;
+    }else {
+      this.sameFontSize = false;
+    }
+    this.characterCurrentExperience = experience_points;
+    if(experience_points >= 100000){
+      this.characterCurrentExperience = (experience_points/1000).toFixed(1)+'K';
+    }
+    if(experience_points >= 1000000){
+      this.characterCurrentExperience = (experience_points/1000000).toFixed(1)+'M';
+    }
+    if(experience_points == 0) {
+      this.characterCurrentExperience = '0';
+    }
   }
   isTicked(userAchievementIDs, hardcodedAchievements){
     let tick = this.changeColor;
@@ -337,5 +360,13 @@ export class ActivitiesListPage implements OnInit {
     }else {
       this.button_show = false;
     }
+    _.forEach(show_score_act, (ele, index=6) => {
+      if(ele == false){
+        this.eachActivityScores[index] = -1;  
+      }else {
+        this.eachActivityScores[index] = AverageScore[index];
+      }
+      this.eachActivityScores.push(this.eachActivityScores[index]);
+    });
   }
 }
