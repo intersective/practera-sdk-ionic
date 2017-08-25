@@ -86,7 +86,6 @@ export class ActivitiesViewPage {
     this.eachScore = this.eachFinalScore[this.activityIndex-1];
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
     this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
-    console.log("this.newTickIDsData: ", this.newTickIDsData);
     // This is a hardcode (temporary solution).
     // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
     if (this.activityIDsArrary.includes(7632)){
@@ -102,7 +101,6 @@ export class ActivitiesViewPage {
                   this.achievementData.push(data[m].Achievement);
               }
             }
-            console.log("achievement data: ", this.achievementData);
           },
           err => {
             console.log(err);
