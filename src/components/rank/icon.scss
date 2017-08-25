@@ -1,5 +1,12 @@
 .rankIcon {
-  display: inline;
+  display: inline-block;
+
+  .ion-ios-fa-trophy:before, .ion-ios-fa-trophy-circle:before,
+  .ion-ios-fa-trophy-circle-outline:before, .ion-ios-fa-trophy-outline:before,
+  .ion-md-fa-trophy:before, .ion-md-fa-trophy-circle:before,
+  .ion-md-fa-trophy-circle-outline:before, .ion-md-fa-trophy-outline:before {
+    font-size: 17px;
+  }
 
   .gold {
     color: rgb(246, 184, 40);
@@ -12,4 +19,8 @@
   .bronze {
     color: rgb(192, 107, 39);
   }
+}
+.adjusted {
+  min-width: 40px;
+  margin-right: 0px !important;
 }

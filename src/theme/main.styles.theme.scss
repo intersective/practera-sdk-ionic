@@ -395,6 +395,7 @@ $title-font: 'Arvo';
   }
   .cancel-btn {
     @include cancelBtn;
+    border-color: color($colors, secondary, base);
   }
   .cancel-btn:hover,
   .cancel-btn:focus,
@@ -772,7 +773,7 @@ event {
   .my-ranking {
     border-top: 1px solid color($colors, border, base);
     position: fixed;
-    bottom: 55px;
+    bottom: 58px;
     height: 55px;
     width: 100%;
     background: color($colors, secondary, base);
