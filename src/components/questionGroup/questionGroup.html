@@ -6,6 +6,9 @@
     </ion-list>
 
     <ion-row class="header">
+      <ion-col text-left *ngIf="group.totalRequiredQuestions === 0">
+        <ion-badge color="background" class="incomplete">Optional</ion-badge>
+      </ion-col>
       <ion-col text-right>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
         <div class="status feedback-available" *ngIf="
