@@ -211,9 +211,11 @@ export class ActivitiesViewPage {
     let result_name = "";
     let result_score = 0;
     let published = false;
+    let inprogress = false
     for (let index = 0; index<Submissions.length; index++){
       if (Submissions[index].status == "published"){
-        published = true
+        published = true;
+        inprogress = false;
         switch (Submissions[index].moderated_score){
           case "1":
             result_score = 4;
@@ -235,15 +237,22 @@ export class ActivitiesViewPage {
             result_score = 0;
             result_name = "Needs Improvement";
         }
+      } else if(Submissions[index].status == "in progress") {
+        result_name = "";
+        result_score = 0;
+        published = false;
+        inprogress = true;
       } else{
         result_name = "";
         result_score = 0;
         published = false;
+        inprogress = false;
       }
       let result_single: any = {
         published,
         result_score,
-        result_name
+        result_name,
+        inprogress
       }
       result.push(result_single);
     }

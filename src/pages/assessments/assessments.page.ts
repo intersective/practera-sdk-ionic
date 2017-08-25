@@ -109,67 +109,80 @@ export class AssessmentsPage {
    * @description mapping assessments and submissions
    * @param {Object} submissions submissions
    * @param {Object} assessments assessments
+   * @returns {Array} objects of compiled assessment + submissions
    */
-  mapSubmissionsToAssessment(submissions, assessments) {
-    _.forEach(assessments, (group, i) => {
-      _.forEach(group, (assessment, j) => {
+  mapSubmissionsToAssessment(submissions, assessmentsBatch) {
+    let result = [];
 
-        // normalise
-        assessments[i][j] = assessment = this.assessmentService.normalise(assessment);
-        console.log('assessment', assessment);
+    _.forEach(assessmentsBatch, (batch, i) => {
 
-        _.forEach(assessment.AssessmentGroup, (assessmentGroup, k) => {
+      let assessmentResult = [];
+      _.forEach(batch, (assessment, j) => {
+        // normalised
+        let normalised = this.assessmentService.normalise(assessment);
+
+        // groups
+        let assessmentGroupResult = [];
+        _.forEach(normalised.AssessmentGroup, (assessmentGroup, k) => {
+          // questions
+          let questionsResult = [];
+          let submissionResult : any = {};
           _.forEach(assessmentGroup.questions, (question, l) => {
             // Inject empty answer fields
             // We will know thare are no submission when it is null
-            assessments[i][j].AssessmentGroup[k].questions[l].answer = null;
-            assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = null;
+            let questionResult : any = {
+              answer: null,
+              reviewerAnswer: null
+            };
+            let answerResult : any = null,
+              reviewerAnswerResult : any = null;
 
             // find submission
             _.forEach(submissions, (submission) => {
               // attach existing submission to assessment group it belongs to
-              let group = this.assessmentGroups[i][j].AssessmentGroup[k];
-              if (group.assessment_id === submission.assessment_id) {
-                this.assessmentGroups[i][j].AssessmentGroup[k].submission = submission;
+              if (assessmentGroup.assessment_id === submission.assessment_id) {
+                submissionResult = submission;
               }
 
               // find user answer
               _.forEach(submission.answer, (answer) => {
                 if (answer.assessment_question_id === question.question_id) {
-                  assessments[i][j].AssessmentGroup[k].questions[l].answer = answer;
+                  questionResult.answer = answer;
                 }
               });
 
               // find reviewer feedback
               _.forEach(submission.review, (reviewerAnswer) => {
                 if (reviewerAnswer.assessment_question_id === question.question_id) {
-                  assessments[i][j].AssessmentGroup[k].questions[l].reviewerAnswer = reviewerAnswer;
+                  questionResult.reviewerAnswer = reviewerAnswer;
                 }
               });
             });
 
+            // set assessmentGroup as accessible (submitter has no permission to view)
+            if (this.isAccessibleBySubmitter(question, submissionResult.status)) {
+              assessmentGroup.accessible = true;
+              questionsResult.push(Object.assign(question, questionResult));
+            }
           });
 
           // Summarise basic answer information
-          // get total number of questions
-          assessments[i][j].AssessmentGroup[k].totalRequiredQuestions = 0;
-          _.forEach(assessmentGroup.questions, (q) => {
+          let totalRequiredQuestions = 0;
+          let answeredQuestions = 0;
+          let reviewerFeedback = 0;
+
+          _.forEach(questionsResult, (q) => {
+            // get total number of questions
             if (q.required) {
-              assessments[i][j].AssessmentGroup[k].totalRequiredQuestions += 1;
+              totalRequiredQuestions += 1;
             }
-          });
 
-          // get total number of answered questions
-          assessments[i][j].AssessmentGroup[k].answeredQuestions = 0;
-          _.forEach(assessmentGroup.questions, (q) => {
+            // get total number of answered questions
             if (q.required && q.answer && q.answer !== null) {
-              assessments[i][j].AssessmentGroup[k].answeredQuestions += 1;
+              answeredQuestions += 1;
             }
-          });
 
-          // get total number of feedback
-          assessments[i][j].AssessmentGroup[k].reviewerFeedback = 0;
-          _.forEach(assessmentGroup.questions, (q) => {
+            // get total number of feedback
             // If API response, the reviewer's answer and comment are empty,
             // front-end don't consider it as a feedback
             if (
@@ -178,18 +191,18 @@ export class AssessmentsPage {
               !_.isEmpty(q.reviewerAnswer.answer) &&
               !_.isEmpty(q.reviewerAnswer.comment)
             ) {
-              assessments[i][j].AssessmentGroup[k].reviewerFeedback += 1;
+              reviewerFeedback += 1;
             }
           });
 
           // Set status
-          // let status = assessments[i][j].AssessmentGroup[k].status = 'incomplete';
+          // let status = result[i][j].AssessmentGroup[k].status = 'incomplete';
           let questionsStatus = [];
-          _.forEach(assessmentGroup.questions, (q) => {
+          _.forEach(questionsResult, (q) => {
             if (q.required && q.answer !== null) {
               if (
                 q.reviewerAnswer !== null &&
-                assessmentGroup.submission.status !== 'pending approval' &&
+                q.submission.status !== 'pending approval' &&
                 (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
               ) {
                 questionsStatus.push('reviewed');
@@ -201,7 +214,7 @@ export class AssessmentsPage {
             if (!q.required && q.answer !== null) {
               if (
                 q.reviewerAnswer !== null &&
-                assessmentGroup.submission.status !== 'pending approval' &&
+                q.submission.status !== 'pending approval' &&
                 (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
               ) {
                 questionsStatus.push('reviewed');
@@ -224,23 +237,55 @@ export class AssessmentsPage {
           });
 
           console.log('questionsStatus', questionsStatus);
-
-          assessments[i][j].AssessmentGroup[k].status = 'incomplete';
+          // get final status by checking all questions' statuses
+          let status = 'incomplete';
           if (_.every(questionsStatus, (v) => {
             return (v === 'completed');
           })) {
-            assessments[i][j].AssessmentGroup[k].status = 'completed';
+            status = 'completed';
           }
           if (_.includes(questionsStatus, 'reviewed')) {
-            assessments[i][j].AssessmentGroup[k].status = 'reviewed';
+            status = 'reviewed';
           }
+
+          if (assessmentGroup.accessible) {
+            assessmentGroupResult.push(Object.assign(assessmentGroup, {
+              questions: questionsResult,
+              submission: submissionResult,
+              totalRequiredQuestions: totalRequiredQuestions,
+              answeredQuestions: answeredQuestions,
+              reviewerFeedback: reviewerFeedback,
+              status: status
+            }));
+          }
+
         });
 
-        console.log('assessment 2', assessment);
+        normalised.AssessmentGroup = assessmentGroupResult;
+        assessmentResult.push(normalised);
+        console.log('assessment 2', assessmentResult);
       });
+
+      result.push(assessmentResult);
     });
 
-    return assessments;
+    return result;
+  }
+
+  // filter question by condition (submitter cannot view reviewer question before it is published/reviewed)
+  isAccessibleBySubmitter(question, submissionStatus: string) {
+    let accessible = true;
+    let submitterAllowed = false;
+
+    if (question.audience.indexOf('submitter') !== -1) {
+      submitterAllowed = true;
+    }
+
+    if (!submitterAllowed && submissionStatus !== 'published') {
+      accessible = false;
+    }
+
+    return accessible;
   }
 
   /**
@@ -330,6 +375,7 @@ export class AssessmentsPage {
 
       // get_assessments request with "assessment_id" & "structured"
       let getAssessment = (assessmentId) => {
+        // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
         return this.assessmentService.getAll({
           search: {
             assessment_id: assessmentId,
