@@ -1,18 +1,19 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 // pages
+import { ActivityAchievementModalPage } from './activity-achievement.modal.page';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
+//services
+import { AchievementService } from '../../../services/achievement.service'; 
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
-
-import * as _ from 'lodash';
 @Component({
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
@@ -20,11 +21,17 @@ export class ActivitiesViewPage {
   public newTickArray: any = [];
   public tickedCount: any = 0;
   public ticksLength: any = 0;
+  public newTickIDsArray: any = [];
+  public newTickIDsData: any = [];
+  public achievementData: any = [];
+  public findAchievementObj: any = [];
   activity: any = {};
   activityIndex: any = 0;
   assessment: any = {};
   assessments: any = {};
   submissions: Array<any> = [];
+  eachFinalScore: any = 0;
+  eachScore: any = 0;
   achievements: any = {
     available: [],
     obtained: {},
@@ -34,16 +41,22 @@ export class ActivitiesViewPage {
     submissions: false
   };
   initialised_eset() {
+    this.findAchievementObj = [];
+    this.achievementData = [];
+    this.newTickIDsArray = [];
+    this.newTickIDsData = [];
     this.newTickArray = [];
     this.ticksLength = 0;
     this.tickedCount = 0;
     this.activityIndex = 0;
+    this.eachFinalScore = 0;
     this.loadings.submissions = true;
   }
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
     private modalCtrl: ModalController,
+    private achievementService: AchievementService,
     private activityService: ActivityService,
     private submissionService: SubmissionService,
     private alertCtrl: AlertController
@@ -65,16 +78,36 @@ export class ActivitiesViewPage {
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
-    console.log("this.activityIndex: ", this.activityIndex-1);
     this.activityIDsArrary = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
     this.newTickArray = this.tickArray[this.activityIndex-1];
     this.ticksLength = this.newTickArray.length;
+    this.eachFinalScore = this.navParams.get('eachFinalScore');
+    this.eachScore = this.eachFinalScore[this.activityIndex-1];
+    this.newTickIDsArray = this.navParams.get('newTickIDsArray');
+    this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
+    console.log("this.newTickIDsData: ", this.newTickIDsData);
     // This is a hardcode (temporary solution).
     // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
     if (this.activityIDsArrary.includes(7632)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
+    // all achievements data
+    this.achievementService.getAll()
+        .subscribe(
+          data => {
+            for(let m = 0; m < data.length; m++){
+              for(let n = 0; n < this.newTickIDsData.length; n++){
+                if(this.newTickIDsData[n] == data[m].Achievement.id)
+                  this.achievementData.push(data[m].Achievement);
+              }
+            }
+            console.log("achievement data: ", this.achievementData);
+          },
+          err => {
+            console.log(err);
+          }
+        );
     // submission
     this.submissions = [];
     Observable.forkJoin(this.submissionService.getSubmissionsByReferences(this.activity.References)).subscribe(responses => {
@@ -101,6 +134,16 @@ export class ActivitiesViewPage {
       }
     });
     this.badgeData();
+  }
+  // achievement popup model 
+  achievementPopup(id){
+    for(let a = 0; a < this.achievementData.length; a++){
+      if(this.achievementData[a].id == this.newTickIDsData[id]){
+        this.findAchievementObj = this.achievementData[a];
+      }
+    }
+    let achievementPopupModal = this.modalCtrl.create(ActivityAchievementModalPage, { achievementData: this.findAchievementObj });
+    achievementPopupModal.present();
   }
   // extract "in progress"
   inProgressSubmission() {
@@ -212,7 +255,6 @@ export class ActivitiesViewPage {
         this.tickedCount++;
       }
     });
-    console.log(this.tickedCount);
     return this.tickedCount;
   }
 }

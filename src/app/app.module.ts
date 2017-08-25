@@ -58,6 +58,7 @@ import { RankIconComponent } from '../components/rank/icon';
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
 // pages
+import { ActivityAchievementModalPage } from '../pages/activities/view/activity-achievement.modal.page';
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
 import { ActivityListPopupPage } from '../pages/activities/list/popup';
@@ -110,6 +111,7 @@ export function HttpLoaderFactory(http: Http) {
 
 @NgModule({
   declarations: [
+    ActivityAchievementModalPage,
     AchievementsViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
@@ -232,6 +234,7 @@ export function HttpLoaderFactory(http: Http) {
     IonicApp
   ],
   entryComponents: [
+    ActivityAchievementModalPage,
     AchievementsViewPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,

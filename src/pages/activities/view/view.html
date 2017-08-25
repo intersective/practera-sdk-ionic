@@ -1,4 +1,4 @@
-<ion-header class="activity-detail">
+<ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}">
   <ion-navbar>
     <ion-title>{{ activity.name }}</ion-title>
     <ion-buttons end *ngIf="activity.description">
@@ -7,7 +7,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-list class="header-content activity-badge-image-{{ activityIndex }}">
+  <ion-list class="header-content ">
     <ion-grid>
       <ion-row>
         <ion-col col-12 class="activity-badge">
@@ -23,19 +23,30 @@
 <ion-content padding class="activity-detail">
   <ion-list class="medals-display">
     <ion-row>
-      <p>{{ tickedCount }} OF {{ ticksLength }} MEDALS</p>
+      <p class="medal-statistics">{{ tickedCount }} OF {{ ticksLength }} MEDALS</p>
     </ion-row>
-    <ion-row>
-      <span *ngFor="let tick of newTickArray" class="each-tick tick-color-{{ activityIndex }}">
-        <i class="fa" 
-          [ngClass]="{'fa-check-circle-o icon-color-5': tick, 'fa-circle-thin tick-color-default': !tick }" 
-          aria-hidden="true">
-        </i>
-      </span>
+    <ion-row class="medal-ticks">
+      <ion-item col-10>
+        <span *ngFor="let tick of newTickArray; let i = index;" class="each-tick tick-color-{{ activityIndex }}">
+          <i class="fa" (click)="achievementPopup(i)"
+            [ngClass]="{'fa-check-circle-o icon-color-5': tick, 'fa-circle-thin tick-color-default': !tick }" 
+            aria-hidden="true">
+          </i>
+        </span>
+      </ion-item>
+      <ion-item col-2 class="badge-default">
+        <ion-badge *ngIf="eachScore != -1" 
+          [ngClass]="eachScore > 2 ? 'better-grade-color' : 'worse-grade-color'">
+          {{ eachScore }}
+        </ion-badge>
+        <button *ngIf="eachScore == -1">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+        </button>
+      </ion-item>  
     </ion-row>
   </ion-list>
-  <ion-fab top center-right edge *ngIf="false">
-    <button ion-fab color="dark" mini>
+  <ion-fab top right edge *ngIf="false">
+    <button ion-fab class="question-mark-button" color="dark" mini>
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
@@ -59,11 +70,11 @@
     <ion-item *ngIf="loadings.submissions" class="center">
       <ion-spinner>Loading submissions...</ion-spinner>
     </ion-item>
-    <ion-item *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
+    <ion-item class="submissions-information" *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-col align-self-start>
-            <h2>Waiting for feedback</h2>
-            <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
+          <h2>Waiting for feedback</h2>
+          <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
         <p align-self-end class="note">
           <button block class="pendingbutton">

@@ -48,7 +48,10 @@ export class ActivitiesListPage implements OnInit {
     this.activityIndexArray = [];
     this.filteredActivityIDs = [];
     this.findSubmissions = [[], [], [], [], [], [],[]];
+    this.tickedIDsArray = [[], [], [], [], [], [],[]];
     this.AverageScore = [0, 0, 0, 0, 0, 0, 0];
+    this.userExperiencePoint = 0;
+    this.eachActivityScores = [];
   }
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
@@ -59,6 +62,7 @@ export class ActivitiesListPage implements OnInit {
   public filteredActivityIDs: any = [];
   public AverageScore: any = [];
   public totalAverageScore: any = 0;
+  public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
   public findSubmissions: any = [];
   public button_show = true;
@@ -103,7 +107,7 @@ export class ActivitiesListPage implements OnInit {
   ];
   public getUserAchievementData: any = [];
   public changeColor: any = [
-    [false,true,true,false],
+    [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
@@ -111,6 +115,7 @@ export class ActivitiesListPage implements OnInit {
     [false,false,false,false],
     [false,false,false,false]
   ];
+  public tickedIDsArray: any = [];
   public userAchievementsIDs: any = [];
   public checkUserPointer: boolean = false;
   constructor(
@@ -139,11 +144,6 @@ export class ActivitiesListPage implements OnInit {
   }
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
-    this.bookedEventsCount = 0;
-    this.characterCurrentExperience = 0;
-    this.currentPercentage = 0;
-
-    // replicated this.doRefresh
     this.initilized_varible();
     this.loadingDashboard();
   }
@@ -191,7 +191,6 @@ export class ActivitiesListPage implements OnInit {
               this.activities[index].Activity = _.extend({}, this.activities[index].Activity, indeObj);
               this.activityIDs.push(this.activities[index].Activity.id);
             }));
-            console.log("this.activityIDs: ", this.activityIDs);
             // this.activityIDs = this.activityIDs.toString();
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
@@ -215,12 +214,10 @@ export class ActivitiesListPage implements OnInit {
                   // find all 4 boxes are ticked index value inside changeColor array
                   _.forEach(this.changeColor, (ele, index) => {
                     let findTrueIndex: any = _.uniq(ele, 'true');
-                    // console.log("findTrueIndex: ", findTrueIndex);
                     if(findTrueIndex[0] == true && findTrueIndex.length == 1){
                       this.activityIndexArray.push(index);
                     }
                   });
-
                   // submission data handling
                   this.submissionData = results[0];
                   // match founded array index to activityIDs array and find each of activity IDs
@@ -284,7 +281,9 @@ export class ActivitiesListPage implements OnInit {
       achievements: this.achievements,
       activity: activity,
       activityIDs: this.activityIDs,
-      tickArray: this.changeColor
+      tickArray: this.changeColor,
+      eachFinalScore: this.eachActivityScores.slice(0, 7),
+      newTickIDsArray: this.achievementListIDs
     });
   }
   // view the disabled activity popup
@@ -306,8 +305,6 @@ export class ActivitiesListPage implements OnInit {
     popover.present();
   }
   showUserExperience(experience_points){
-    // experience_points = 10100100;
-    // experience_points = 100110;
     this.userExperiencePoint = experience_points;
     if(this.userExperiencePoint >= 100000){
       this.sameFontSize = true;
@@ -363,5 +360,13 @@ export class ActivitiesListPage implements OnInit {
     }else {
       this.button_show = false;
     }
+    _.forEach(show_score_act, (ele, index=6) => {
+      if(ele == false){
+        this.eachActivityScores[index] = -1;  
+      }else {
+        this.eachActivityScores[index] = AverageScore[index];
+      }
+      this.eachActivityScores.push(this.eachActivityScores[index]);
+    });
   }
 }
