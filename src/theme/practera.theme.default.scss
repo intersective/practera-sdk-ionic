@@ -9,8 +9,11 @@ $events-download-btn: 1px $border-primary solid;
 // 1.2 General Font Variables
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
-$font-primary: 'Roboto';
-$font-secondary: 'Raleway';
+// @TODO Do we still need Roboto?
+// $font-primary: 'Roboto';
+$font-primary: Arial, "Helvetica Neue", Helvetica, sans-serif;
+// $font-secondary: 'Raleway';
+$font-secondary: Arial, "Helvetica Neue", Helvetica, sans-serif;
 
 // 3. General Tab Styling
 .tab-color {
