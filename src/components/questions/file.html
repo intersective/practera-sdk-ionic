@@ -1,17 +1,17 @@
-<ion-list no-line>
-  <ion-item *ngIf="uploaded">
+<ion-list no-line class="file-question"> 
+  <ion-item *ngIf="uploaded" class="uploaded">
     <ion-icon name="{{uploaded.icon}}" class="fa" item-left></ion-icon>
     {{ uploaded.filename }}
     <a ion-button small item-end href="{{uploaded.url}}" download>Download</a>
   </ion-item>
 
-  <ion-item *ngIf="!uploaded">
+  <ion-item *ngIf="!uploaded" class="unuploaded">
     No uploaded files available.
   </ion-item>
 
   <button ion-button round color="purple" (click)="upload($event)" [disabled]="disabled">Upload</button>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap class="file-description">
     <p>
       Images, testimonials, documents, etc. Any evidence you think can appropriately show that you have applied what you have learnt in the real world.
     </p>

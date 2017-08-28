@@ -724,7 +724,7 @@ event {
     }
   }
 }
-// achievement page styling
+// 13. Achievement page styling
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -745,6 +745,37 @@ event {
       }
     }
   }
+}
+// 14. Assessments Page Styling 
+.groups-question {
+  .assessments-group-text {
+    margin: 0px;
+    ion-list {
+      margin: 0px;
+    }
+  }
+  ion-item.description {
+    padding-left: 0px;
+  }
+}
+.file-question {
+  ion-list {
+    margin: 0px;
+  }
+  .uploaded,
+  .unuploaded,
+  .file-description {
+    padding-left: 0px;
+  }
+  .unuploaded,
+  .item-inner {
+    border: none !important;
+  }
+}
+.general-textarea {
+  padding: 0px;
+  width: 100%; 
+  resize: none;
 }
 // 13. Rankings Page Styling
 .rankings {
