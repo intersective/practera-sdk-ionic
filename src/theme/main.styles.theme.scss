@@ -747,6 +747,17 @@ event {
   }
 }
 // 14. Assessments Page Styling 
+assessments-page {
+  .assessment-title {
+    font-weight: bold;
+    font-family: 'Museo-500';
+    color: color($colors, primary);
+    text-transform: uppercase;
+  }
+  .assessment-description {
+    padding: 14px 0;
+  }
+}
 .groups-question {
   .assessments-group-text {
     margin: 0px;
@@ -770,6 +781,10 @@ event {
   .unuploaded,
   .item-inner {
     border: none !important;
+  }
+  .upload-button {
+    background-color: color($colors, primary-button, base);
+    color: color($colors, text, contrast);
   }
 }
 .general-textarea {
