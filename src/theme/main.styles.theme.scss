@@ -748,6 +748,15 @@ event {
 }
 // 14. Assessments Page Styling 
 assessments-page {
+  ion-card.no-box-shadow {
+    box-shadow: none;
+    ion-card-content {
+      padding-bottom: 0px;
+    }
+  }
+  .btn-submit[disabled] {
+    display: none;
+  }
   .assessment-title {
     font-weight: bold;
     font-family: 'Museo-500';
@@ -755,12 +764,18 @@ assessments-page {
     text-transform: uppercase;
   }
   .assessment-description {
-    padding: 14px 0;
+    padding: 14px 0 0;
   }
 }
 .groups-question {
   .assessments-group-text {
     margin: 0px;
+    h6 {
+      font-weight: bold;
+      font-family: 'Museo-500';
+      color: color($colors, primary);
+      text-transform: uppercase;
+    }
     ion-list {
       margin: 0px;
     }
