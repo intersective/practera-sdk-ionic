@@ -30,6 +30,8 @@ export class EventService {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
       // We assume server datetime response is UTC...
       events[idx].startDisplay = moment.utc(event.start).local().format("dddd, MMM D [at] h:mm A");
+      events[idx].startDisplayDate = moment.utc(event.start).local().format("dddd, MMM D");
+      events[idx].startDisplayTime = moment.utc(event.start).local().format("h:mm A");
     });
 
     return events;
