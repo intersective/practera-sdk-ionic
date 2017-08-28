@@ -25,7 +25,7 @@ export class TabsPage {
   events: any = EventsListPage;
   spinner: any = SpinwheelPage;
   spins: number = null;
-
+  
   constructor(
     public translationService: TranslationService,
     public eventListener: Events,
