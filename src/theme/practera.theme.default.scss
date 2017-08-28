@@ -545,7 +545,7 @@ event {
   .my-ranking {
     border-top: 1px solid color($colors, border, base);
     position: fixed;
-    bottom: 55px;
+    bottom: 40px;
     height: 55px;
     width: 100%;
     background: color($colors, secondary, base);
@@ -560,8 +560,8 @@ event {
       }
     }
   }
-  ion-list.my-ranking.list.list-md {
-    bottom: 55px;
+  ion-list ion-label {
+    margin: 0px;
   }
   .ranking-item {
     width: 100%;

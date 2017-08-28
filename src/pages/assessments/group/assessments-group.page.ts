@@ -118,24 +118,32 @@ export class AssessmentsGroupPage implements OnInit {
     }
 
     _.forEach(submission.review, (review) => {
+
       _.forEach(questions, (question, idx) => {
         if (review.assessment_question_id === question.question_id) {
-          // text type
+          // text type (no merging, text question displayed in plain text)
           if (question.type === 'text') {
             questions[idx].review_answer = review;
           }
 
           // oneof type
+          // combine question, when answered by both reviewer and submitter
           if (question.type === 'oneof') {
             questions[idx].review_answer = review;
+            let submitterAnswer = question.answer;
+
             _.forEach(question.choices, (choice, key) => {
-              if (choice.id == review.answer && choice.id == question.answer.answer) {
-                questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
-              }
-              if (choice.id != review.answer && choice.id == question.answer.answer) {
-                questions[idx].choices[key].name = choice.name + ' (you)';
-              }
-              if (choice.id == review.answer && choice.id != question.answer.answer) {
+              if (!_.isEmpty(submitterAnswer)) {
+                if (choice.id == review.answer && choice.id == submitterAnswer.answer) {
+                  questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+                }
+                else if (choice.id != review.answer && choice.id == submitterAnswer.answer) {
+                  questions[idx].choices[key].name = choice.name + ' (you)';
+                }
+                else if (choice.id == review.answer && choice.id != submitterAnswer.answer) {
+                  questions[idx].choices[key].name = choice.name + ' (reviewer)';
+                }
+              } else if (choice.id == review.answer) { // display reviewer answer
                 questions[idx].choices[key].name = choice.name + ' (reviewer)';
               }
             });

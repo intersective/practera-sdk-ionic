@@ -724,7 +724,7 @@ event {
     }
   }
 }
-// achievement page styling
+// 13. Achievement page styling
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -745,6 +745,52 @@ event {
       }
     }
   }
+}
+// 14. Assessments Page Styling 
+assessments-page {
+  .assessment-title {
+    font-weight: bold;
+    font-family: 'Museo-500';
+    color: color($colors, primary);
+    text-transform: uppercase;
+  }
+  .assessment-description {
+    padding: 14px 0;
+  }
+}
+.groups-question {
+  .assessments-group-text {
+    margin: 0px;
+    ion-list {
+      margin: 0px;
+    }
+  }
+  ion-item.description {
+    padding-left: 0px;
+  }
+}
+.file-question {
+  ion-list {
+    margin: 0px;
+  }
+  .uploaded,
+  .unuploaded,
+  .file-description {
+    padding-left: 0px;
+  }
+  .unuploaded,
+  .item-inner {
+    border: none !important;
+  }
+  .upload-button {
+    background-color: color($colors, primary-button, base);
+    color: color($colors, text, contrast);
+  }
+}
+.general-textarea {
+  padding: 0px;
+  width: 100%; 
+  resize: none;
 }
 // 13. Rankings Page Styling
 .rankings {
@@ -773,7 +819,7 @@ event {
   .my-ranking {
     border-top: 1px solid color($colors, border, base);
     position: fixed;
-    bottom: 55px;
+    bottom: 40px;
     height: 55px;
     width: 100%;
     background: color($colors, secondary, base);
@@ -788,8 +834,8 @@ event {
       }
     }
   }
-  ion-list.my-ranking.list.list-md {
-    bottom: 55px;
+  ion-list ion-label {
+    margin: 0px;
   }
   .ranking-item {
     width: 100%;
@@ -851,7 +897,7 @@ rankings-details-page {
     border-bottom: 1px solid color($colors, border, base);
   }
 }
-//
+// For iphone 5 sized device
 @media screen and (max-width: 321px) {
   // general login registration and reset password
   img.left-image {

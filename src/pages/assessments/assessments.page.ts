@@ -202,7 +202,7 @@ export class AssessmentsPage {
             if (q.required && q.answer !== null) {
               if (
                 q.reviewerAnswer !== null &&
-                q.submission.status !== 'pending approval' &&
+                submissionResult.status !== 'pending approval' &&
                 (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
               ) {
                 questionsStatus.push('reviewed');
@@ -214,7 +214,7 @@ export class AssessmentsPage {
             if (!q.required && q.answer !== null) {
               if (
                 q.reviewerAnswer !== null &&
-                q.submission.status !== 'pending approval' &&
+                submissionResult.status !== 'pending approval' &&
                 (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
               ) {
                 questionsStatus.push('reviewed');
