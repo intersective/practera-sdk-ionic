@@ -14,13 +14,13 @@
     </div>
   </ion-card-content>
   <ion-row>
-    <ion-col col-8 class="event-details">
+    <ion-col col-6 class="event-details">
       <div>{{ event.startDisplay }}</div>
       <div style="color:silver">{{ event.activity.name }}</div>
     </ion-col>
-    <ion-col col-4 class="event-logo">
-      <img *ngIf="event.isOriginal" src="assets/img/static/pe-logo-name.svg" />
-      <img *ngIf="!event.isOriginal" src="assets/img/static/pe-logo-recommended.svg" />
+    <ion-col col-6 class="event-logo">
+      <img *ngIf="event.isOriginal" src="assets/img/static/pe-logo-name.png" />
+      <img *ngIf="!event.isOriginal" src="assets/img/static/pe-logo-recommended.png" />
     </ion-col>
   </ion-row>
 </ion-card>
