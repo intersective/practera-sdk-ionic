@@ -15,10 +15,15 @@
   </ion-list>
   <ion-list class="details">
     <ion-row>
-      <ion-col col-8 class="info">
-        <p><strong>{{ event.startDisplay }}</strong></p>
+      <ion-col col-6 class="info">
+        <p><b>{{ event.startDisplayDate }}</b></p>
+        <p><b>{{ event.startDisplayTime ? 'at ' + event.startDisplayTime : '' }}</b></p>
         <p class="lighter">{{ event.location }}</p>
         <p class="lighter">{{ event.activity.name }}</p>
+      </ion-col>
+      <ion-col col-6>
+        <img *ngIf="event.isOriginal" src="assets/img/static/pe-logo-name.png" />
+        <img *ngIf="!event.isOriginal" src="assets/img/static/pe-logo-recommended.png" />
       </ion-col>
     </ion-row>
   </ion-list>
