@@ -25,7 +25,7 @@ export class TabsPage {
   events: any = EventsListPage;
   spinner: any = SpinwheelPage;
   spins: number = null;
-  
+
   constructor(
     public translationService: TranslationService,
     public eventListener: Events,
@@ -47,7 +47,6 @@ export class TabsPage {
         }
       });
 
-      console.log(spin);
       this.spins = (unopened.length === 0) ? null : unopened.length;
     });
   }

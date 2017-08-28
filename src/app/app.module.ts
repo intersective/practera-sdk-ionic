@@ -53,6 +53,7 @@ import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
 import { RankIconComponent } from '../components/rank/icon';
+import { SegmentComponent } from '../pages/spinwheel/segment.component';
 // unused but necessary for build
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
@@ -160,6 +161,7 @@ export function HttpLoaderFactory(http: Http) {
     SidenavPage,
     SpinwheelPage,
     SpinwheelPopOverPage,
+    SegmentComponent,
     TabsPage,
     TeamPage,
     TestPage,

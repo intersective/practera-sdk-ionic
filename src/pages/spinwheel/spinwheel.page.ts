@@ -285,7 +285,6 @@ export class SpinwheelPage implements OnInit {
     this.runInZone(() => {
       if (this.wheel.tween) {
         this.wheel.tween.kill();
-        console.log('animation stopped');
       }
     });
   }

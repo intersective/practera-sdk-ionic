@@ -1,0 +1,100 @@
+  .score-board {
+    background-color: color($colors, secondary) !important; // default-theme
+    background-size: cover;
+    text-align: center;
+    .score-board-inner {
+      height: 100%;
+    }
+    ion-row:last-child {
+      background-color: color($colors, secondary);
+    }
+    ion-col {
+      .score-inner-box {
+        width: 40%;
+        height: 40%;
+        margin: 5% auto;
+        background-color: color($colors, secondary);
+        div {
+          height: 100%;
+          padding: 10% 0;
+          h4 {
+            font-size: 16pt;
+            font-weight: 400;
+            text-transform: uppercase;
+            margin: 0px;
+            height: 40%;
+          }
+          h1 {
+            margin: 0px;
+            height: 40%;
+            font-size: 28pt;
+            font-weight: bold;
+
+          }
+        }
+      }
+      .dashboard-logo {
+        max-width: 80%;
+      }
+      .dashboard-data {
+        max-width: 90%;
+        display: flex;
+        list-style: none;
+        color: color($colors, text, base);
+        margin: 0 auto;
+        padding: 0px;
+        .user-grade {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          ion-badge {
+            font-size: 14pt;
+            padding: 6px 12px;
+            border-radius: 30pt;
+          }
+          button {
+            font-size: 16pt;
+            padding: 3px 15px;
+            border-radius: 18px;
+            background-color: color($colors, secondary);
+            .fa-clock-o {
+              color: color($colors, background, contrast);
+            }
+          }
+        }
+        li {
+          background-color: color($colors, background, contrast);
+          border: 1px solid color($colors, border, base);
+          p {
+            margin: 0px;
+          }
+          p.title {
+            text-transform: uppercase;
+            color: color($colors, text, base);
+          }
+          p.number {
+            font-size: 22pt;
+            font-weight: 600;
+            padding: 5pt 0;
+            color: color($colors, palette-five, contrast);
+          }
+          p.link {
+            color: color($colors, text, base);
+          }
+        }
+        li:nth-child(1) {
+          border-top-left-radius: 5pt;
+          border-bottom-left-radius: 5pt;
+        }
+        li:nth-child(2) {
+          border-left: none;
+          border-right: none;
+        }
+      }
+    }
+    ion-col:first-child {
+      div {
+        margin-bottom: 0pt;
+      }
+    }
+  }
