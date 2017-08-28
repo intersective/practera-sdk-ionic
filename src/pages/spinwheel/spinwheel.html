@@ -22,9 +22,6 @@
   </ion-list>
 
   <div class="center">
-    <button ion-button block outline [disabled]="statuses.isSpinning" (click)="spin()">
-      Spin
-    </button>
     <div class="spinwheel-pointer"></div>
     <div class="spinwheel" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
       <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
