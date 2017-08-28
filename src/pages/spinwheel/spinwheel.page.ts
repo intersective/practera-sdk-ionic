@@ -303,7 +303,7 @@ export class SpinwheelPage implements OnInit {
    * @name draw
    * @description draw SpinWheel canvas based on given config
    */
-  draw() {
+  private draw() {
     this.setCanvasSize();
     this.wheel = new Winwheel(this.config);
     this.wheel.draw();
@@ -335,6 +335,14 @@ export class SpinwheelPage implements OnInit {
       this.wheel.rotationAngle = this.config.rotationAngle;
       this.draw();
     });
+  }
+
+  tapSpin() {
+    this.spin();
+  }
+
+  swipeSpin() {
+    this.spin();
   }
 
   stopAnimation() {

@@ -26,7 +26,7 @@
       Spin
     </button>
     <div class="spinwheel-pointer"></div>
-    <div class="spinwheel">
+    <div class="spinwheel" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
       <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
         <p align="center">
           Sorry, your browser doesn't support canvas. Please try another.
