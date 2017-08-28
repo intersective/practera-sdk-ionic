@@ -137,12 +137,14 @@ export class ActivitiesListPage implements OnInit {
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');
-    console.log("item data: ", this.newItemsData);
   }
-  ngOnInit() {
-    // this.loadingDashboard();
-  }
+  ngOnInit() {}
   ionViewWillEnter(){
+    if(this.anyNewItems == 'true') {
+      for(let i = 0; i < 5; i++){
+        document.querySelector('a.tab-button').className = "hide-tabbar";
+      }
+    }
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
@@ -155,7 +157,6 @@ export class ActivitiesListPage implements OnInit {
     // Move to event page
     this.navCtrl.parent.select(1);
   }
-
   openLeaderboard() {
     // Move to leaderboard page
     this.navCtrl.parent.select(2);

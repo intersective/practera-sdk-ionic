@@ -6,7 +6,14 @@ questionGroup {
     border-radius: 10px;
     border-color: $border-primary;
   }
-
+  ion-card {
+    ion-label {
+      color: color($colors, palette-four, base);
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
   .header {
     position: relative;
 
@@ -36,16 +43,13 @@ questionGroup {
       text-align: right;
     }
 
-    .completed {
-      color: $toolbar-active-color
-    }
-
-    .incomplete {
-      color: $toolbar-inactive-color
-    }
-
+    .completed,
+    .incomplete,
     .feedback-available {
-      color: color($colors, button, base)
+      color: color($colors, palette-three, contrast);
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 12px;
     }
   }
 

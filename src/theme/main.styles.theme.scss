@@ -78,6 +78,9 @@ $title-font: 'Arvo';
 }
 // 6. General Pages Styling
 // 6.1 Default Theme Settings Start
+.hide-tabbar {
+  opacity: 0;
+}
 .toolbar.toolbar-md,
 .toolbar.toolbar-ios {
   min-height: 50px;
@@ -724,7 +727,7 @@ event {
     }
   }
 }
-// achievement page styling
+// 13. Achievement page styling
 .ahievements-popup {
   .scroll-content {
     overflow: hidden !important;
@@ -746,7 +749,104 @@ event {
     }
   }
 }
-// 13. Rankings Page Styling
+// 14. Assessments Page Styling 
+assessments-page {
+  ion-card.no-box-shadow {
+    box-shadow: none;
+    ion-card-content {
+      padding-bottom: 0px;
+    }
+  }
+  .btn-submit[disabled] {
+    display: none;
+  }
+  .assessment-title {
+    font-weight: bold;
+    font-family: 'Museo-500';
+    color: color($colors, primary);
+    text-transform: uppercase;
+  }
+  .assessment-description {
+    padding: 14px 0 0;
+  }
+}
+.groups-question {
+  .assessments-group-text {
+    margin: 0px;
+    h6 {
+      font-weight: bold;
+      font-family: 'Museo-500';
+      color: color($colors, primary);
+      text-transform: uppercase;
+    }
+    ion-list {
+      margin: 0px;
+    }
+  }
+  ion-item.description {
+    padding-left: 0px;
+  }
+}
+.file-question {
+  ion-list {
+    margin: 0px;
+  }
+  .uploaded,
+  .unuploaded,
+  .file-description {
+    padding-left: 0px;
+  }
+  .unuploaded,
+  .item-inner {
+    border: none !important;
+  }
+  .upload-button {
+    background-color: color($colors, primary-button, base);
+    color: color($colors, text, contrast);
+  }
+}
+.general-textarea {
+  padding: 0px;
+  width: 100%; 
+  resize: none;
+}
+// 15. items popup general styling
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .tutorial-slides p {
+      margin-top: 12pt;
+      font-size: 12pt;
+      text-align: center;
+      padding: 12px 24pt !important;
+    }
+    .tutorial-slides img {
+      width: 50%;
+      display: block;
+      margin: 0 auto;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 80% !important;
+      margin-top: 12pt;
+      margin-left: 10%;
+      padding: 12pt;
+      background-color: color($colors, primary-button, base) !important;
+      color: color($colors, text, contrast) !important;
+      font-size: 14pt;
+      border-radius: 30pt;
+    }
+  }
+}
+// 16. Rankings Page Styling
 .rankings {
   .scroll-content {
     bottom: 49px !important;
@@ -828,7 +928,7 @@ event {
     }
   }
 }
-// ranking details page stylings
+// 17. Ranking details page stylings
 rankings-details-page {
   padding: 0 6pt;
   .ranking-details {

@@ -66,7 +66,6 @@
             <div (click)="goToDetail(activity)" class="line-break">
               <p col-7 class="activity-title">{{ activity.Activity.name }}</p>
               <p col-3 class="ticks"> 
-                <!-- This is hardcode just for display different numbers, coz ngClass add dynamic variable does not work -->
                 <span *ngIf="i == 0">
                   <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
                   <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
@@ -136,18 +135,19 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-slides pager="true" class="tutorial-slides" *ngFor="let item of newItemsData">
-            <ion-slide>
-              <img *ngIf="item.meta !== null" class="item-popup-img" src="{{ item.meta.img }}" alt="item"/>
-              <img *ngIf="item.meta === null || item.meta.img === null"
-                class="item-popup-img"
-                src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
-              <p class="item-popup-text">
-                {{ item.name }} <span> x{{ item.count[0].count }}</span>
-              </p>
-            </ion-slide>
-          </ion-slides>
-          <button class="general-circle-btn" (click)="closeItemsShwon()">OK</button>
+          <div class="tutorial-slides">
+            <img *ngIf="newItemsData[0].meta !== null" class="item-popup-img" src="{{ newItemsData[0].meta.img }}" alt="item"/>
+            <img *ngIf="newItemsData[0].meta === null || newItemsData[0].meta.img === null"
+              class="item-popup-img"
+              src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/> 
+            <p class="item-popup-text">
+              <span *ngIf="newItemsData.length <= 1">Congratulations. You have won {{ newItemsData.length }} Spin.</span>
+              <span *ngIf="newItemsData.length > 1">Congratulations. You have won {{ newItemsData.length }} Spins.</span>
+              <br/><br/> 
+              Please proceed to the Spinner page to use your spins to earn points.
+            </p>
+          </div>
+          <button col-12 class="general-circle-btn" (click)="closeItemsShwon()">OK</button>
         </ion-col>
       </ion-row>
     </ion-grid>
