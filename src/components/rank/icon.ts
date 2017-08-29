@@ -6,6 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RankIconComponent implements OnInit {
   @Input() rank;
+  @Input() isMyRank = false;
 
   constructor() {}
 

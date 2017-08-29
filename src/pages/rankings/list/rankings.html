@@ -1,5 +1,15 @@
 <ion-content class="rankings">
-  <ion-list *ngIf="isEmptyList === false">
+  <ion-grid *ngIf="listRankingData.length === 0" style="margin-top:40%;">
+    <ion-row justify-content-center >
+      <ion-col align-self-start></ion-col>
+      <ion-col align-self-center text-center>
+        <ion-icon name="fa-hourglass" class="fa big"></ion-icon>
+      </ion-col>
+      <ion-col align-self-end></ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-list *ngIf="listRankingData !== 0">
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
       <span [ngClass]="{'muted': !listData.name}">
@@ -11,18 +21,12 @@
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="isEmptyList === true" no-lines>
-    <ion-item>
-      {{ rankingListEmpty }}
-    </ion-item>
-  </ion-list>
-
-  <ion-list class="my-ranking" *ngIf="isEmptyList === false">
+  <ion-list class="my-ranking">
     <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
-      <rankIcon [rank]="myRankingData.rank"></rankIcon>
+      <rankIcon [rank]="myRankingData.rank" [isMyRank]="true"></rankIcon>
       {{ 'RANKING.ME' | translate }}
       <div item-end>
-        <b>{{ myRankingData.experience_points }}</b>
+        <b>{{ myRankingData.experience_points || 0 }}</b>
       </div>
     </ion-item>
   </ion-list>
