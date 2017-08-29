@@ -65,6 +65,7 @@ export class SpinwheelPage implements OnInit {
     width: 0,
     height: 0
   };
+  audio;
 
   constructor(
     public loadingCtrl: LoadingController,
@@ -84,6 +85,9 @@ export class SpinwheelPage implements OnInit {
         height: platform.width(),
       };
     });
+    this.audio = new Audio();
+    this.audio.src = '/assets/files/spinning-bicycle-wheel.mp3';
+    this.audio.load();
   }
 
   ionViewDidEnter() {
@@ -156,10 +160,10 @@ export class SpinwheelPage implements OnInit {
 
 
   private spinningSound(cb: Function) {
-    let audio = new Audio();
-    audio.src = '/assets/files/spinning-bicycle-wheel.mp3';
-    audio.load();
-    audio.play();
+    // let audio = new Audio();
+    // audio.src = '/assets/files/spinning-bicycle-wheel.mp3';
+    // audio.load();
+    this.audio.play();
     return cb();
   }
 
