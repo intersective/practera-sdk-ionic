@@ -1,0 +1,48 @@
+  .number-board {
+    text-align: center;
+
+    ul {
+      height: 8rem;
+      display: flex;
+      list-style: none;
+      color: color($colors, text, base);
+      margin: 0 auto;
+      padding: 0px;
+
+
+      li {
+        background-color: color($colors, background, contrast);
+        border: 1px solid color($colors, border, base);
+
+        h3, h4, h5 {
+          text-transform: uppercase;
+          color: color($colors, text, base);
+        }
+
+        p {
+          margin: 0px;
+
+          &.title {
+            text-transform: uppercase;
+            color: color($colors, text, base);
+          }
+
+          &.content {
+            font-size: 22pt;
+            font-weight: 600;
+            color: color($colors, palette-five, contrast);
+          }
+        }
+      }
+
+      li:first-child() {
+        border-top-left-radius: 5pt;
+        border-bottom-left-radius: 5pt;
+      }
+
+      li:nth-child(2) {
+        border-top-right-radius: 5pt;
+        border-bottom-right-radius: 5pt;
+      }
+    }
+  }

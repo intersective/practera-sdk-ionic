@@ -18,16 +18,16 @@ export class SpinwheelPage implements OnInit {
   // hardcode prizes
   segments = {
     general: [
-      {'fillStyle' : '#FFE293', 'text' : '100', 'value' : 100},
+      {'fillStyle' : '#d4f3fc', 'text' : '100', 'value' : 100},
     ],
     normal: [
-      {'fillStyle' : '#FCAC75', 'text' : '200', 'value' : 200},
+      {'fillStyle' : '#a9e8fa', 'text' : '200', 'value' : 200},
     ],
     rare: [
-      {'fillStyle' : '#FC9147', 'text' : '300', 'value' : 300},
+      {'fillStyle' : '#7dddf8', 'text' : '300', 'value' : 300},
     ],
     ultimate: [
-      {'fillStyle' : '#E60028', 'text' : '400', 'value' : 400}
+      {'fillStyle' : '#52d2f6', 'text' : '400', 'value' : 400}
     ]
   };
   config = {

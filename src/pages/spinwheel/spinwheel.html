@@ -1,34 +1,14 @@
 <ion-content padding>
   <segment>
     <li col-6>
-      <p class="title">Bookings</p>
+      <h5>Spins</h5>
+      <p class="content">{{ statuses.chances }}</p>
     </li>
     <li col-6>
-      <p class="title">Grade</p>
+      <h5>Points</h5>
+      <p class="content">{{ statuses.totalEP }}</p>
     </li>
   </segment>
-
-  <ion-list no-lines>
-    <ion-item>
-      <ion-row>
-        <ion-col align-self-start>
-          Spins left
-        </ion-col>
-        <ion-col align-self-end style="text-align: right;">
-          <strong>{{ statuses.chances }}</strong>
-        </ion-col>
-      </ion-row>
-
-      <ion-row *ngIf="statuses.totalEP > 0">
-        <ion-col align-self-start>
-          Experince points
-        </ion-col>
-        <ion-col align-self-end style="text-align: right;">
-          <strong>{{ statuses.totalEP }}</strong>
-        </ion-col>
-      </ion-row>
-    </ion-item>
-  </ion-list>
 
   <div class="center">
     <div class="spinwheel-pointer"></div>
