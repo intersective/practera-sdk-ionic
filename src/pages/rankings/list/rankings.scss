@@ -1,5 +1,8 @@
 .rankings {
+  .big {
+    color: $primary-bg;
+  }
   .big:before {
-      font-size: 100px;
-    }
+    font-size: 150px;
+  }
 }
