@@ -21,8 +21,11 @@ $events-download-btn: 1px $border-primary solid;
 }
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
-$font-primary: 'Roboto';
-$font-secondary: 'Raleway';
+
+// $font-primary: 'Roboto';
+$font-primary: Arial, "Helvetica Neue", Helvetica, sans-serif;
+// $font-secondary: 'Raleway';
+$font-secondary: Arial, "Helvetica Neue", Helvetica, sans-serif;
 // new font
 @import url('https://fonts.googleapis.com/css?family=Arvo|Cabin|Zilla+Slab+Highlight');
 $title-font: 'Arvo';
@@ -749,7 +752,7 @@ event {
     }
   }
 }
-// 14. Assessments Page Styling 
+// 14. Assessments Page Styling
 assessments-page {
   ion-card.no-box-shadow {
     box-shadow: none;
@@ -807,7 +810,7 @@ assessments-page {
 }
 .general-textarea {
   padding: 0px;
-  width: 100%; 
+  width: 100%;
   resize: none;
 }
 // 15. items popup general styling

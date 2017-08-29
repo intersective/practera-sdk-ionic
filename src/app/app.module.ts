@@ -74,6 +74,7 @@ import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
+import { InstructionPage } from '../pages/activities/list/instruction/instruction.page';
 import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
@@ -132,6 +133,7 @@ export function HttpLoaderFactory(http: Http) {
     RankIconComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
+    InstructionPage,
     ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
@@ -252,6 +254,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
+    InstructionPage,
     ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,

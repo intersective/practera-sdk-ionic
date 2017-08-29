@@ -28,6 +28,7 @@ import { PopoverTextPage } from './popover-text';
 import { TabsPage } from '../../../pages/tabs/tabs.page';
 import { EventsListPage } from '../../events/list/list.page';
 import { RankingsPage } from '../../rankings/list/rankings.page';
+import { InstructionPage } from './instruction/instruction.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 /**
@@ -185,6 +186,10 @@ export class ActivitiesListPage implements OnInit {
             this.activities = results;
             if(this.activities.length == 0){
               this.returnError = true;
+            }
+            if(this.activities.length == 1 && document.cookie == ""){
+              document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+              this.navCtrl.push(InstructionPage);
             }
             _.forEach(this.activities, ((element,index) => {
               this.activityIndex = index + 1;
