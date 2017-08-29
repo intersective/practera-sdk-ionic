@@ -17,8 +17,6 @@ export class RankingsPage {
   public rankingData: any = [];
   public myRankingData: any = [];
   public listRankingData: any = [];
-  public isEmptyList: boolean = false;
-  public rankingListEmpty: any = errMessages.General.empty.empty;
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
   constructor(private navCtrl: NavController,
@@ -49,30 +47,19 @@ export class RankingsPage {
           .subscribe(
             results => {
               loading.dismiss().then(() => {
-                console.log(results);
+                console.log('results', results);
+
                 this.totalData = results;
                 this.rankingData = this.totalData;
                 // We only have 1 character
-                this.myRankingData = this.totalData.MyCharacters[0];
+                this.myRankingData = this.totalData.MyCharacters[0] || {};
                 this.listRankingData = this.totalData.Characters;
-                console.log(this.myRankingData);
-                console.log(this.listRankingData);
-                if (results) {
-                  this.isEmptyList = false;
-                }
-                // _.forEach(this.listRankingData, (element, idx) => {
-                //   if (!element.name) {
-                //     this.listRankingData[idx].name = 'Hidden Name';
-                //   }
-                //   this.isEmptyList = false;
-                // });
+                console.log('this.myRankingData', this.myRankingData);
                 console.log('this.listRankingData', this.listRankingData);
               });
             },
             err => {
               loading.dismiss().then(() => {
-                this.isEmptyList = true;
-                // this.rankingListEmpty = err.msg;
                 console.log('Error: ', err.msg);
                 emptyDataAlert.present();
               });
@@ -81,8 +68,6 @@ export class RankingsPage {
       },
       err => {
         loading.dismiss().then(() => {
-          this.isEmptyList = true;
-          // this.rankingListEmpty = err.msg;
           console.log('Error: ', err.msg);
           emptyDataAlert.present();
         });

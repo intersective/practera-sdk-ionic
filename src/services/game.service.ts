@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
 import { URLSearchParams } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
 
@@ -23,12 +24,25 @@ export class GameService {
     return this.request.get('api/characters', options);
   }
 
-  public getRanking(gameId, characterId = null) {
-    return this.getCharacters(gameId, {
-      search: {
-        action: 'ranking',
-        character_id: characterId
-      }
+  public getRanking(gameId, characterId) {
+    return Observable.forkJoin([
+      this.getCharacters(gameId, {
+        search: {
+          action: 'ranking'
+        }
+      }),
+      this.getCharacters(gameId, {
+        search: {
+          action: 'ranking',
+          character_id: characterId
+        }
+      })
+    ])
+    .map((data: any[]) => {
+      let characters = data[0];
+      let myCharacter = data[1].Characters;
+      characters.MyCharacters = myCharacter
+      return characters;
     });
   }
 

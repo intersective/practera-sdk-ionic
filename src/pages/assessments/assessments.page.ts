@@ -568,7 +568,9 @@ export class AssessmentsPage {
         {
           text: 'OK',
           handler: () => {
-            this.navCtrl.setRoot(ActivitiesListPage); // dashboard page
+            // Move to dashboard
+            this.navCtrl.parent.select(0);
+            // this.navCtrl.setRoot(ActivitiesListPage); // dashboard page
           }
         }
       ]

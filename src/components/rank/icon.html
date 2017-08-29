@@ -1,5 +1,9 @@
+<div class="rankIcon adjusted" *ngIf="!rank" item-start>
+  <ion-icon name="fa-hourglass" class="fa" item-start></ion-icon>
+</div>
 <div class="rankIcon adjusted" *ngIf="rank > 3" item-start>
-  <span>{{ rank }}</span>
+  <span *ngIf="isMyRank === false">{{ rank }}</span>
+  <ion-icon *ngIf="isMyRank === true" name="fa-hourglass" class="fa" item-start></ion-icon>
 </div>
 <div class="rankIcon adjusted" *ngIf="rank <= 3">
   <ion-icon *ngIf="rank === 1" name="fa-trophy" class="fa gold" item-start></ion-icon>
