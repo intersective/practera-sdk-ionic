@@ -1,8 +1,10 @@
 import { Component, NgZone, OnInit, ElementRef } from '@angular/core';
-import { AlertController, LoadingController, Platform, ModalController, Events } from 'ionic-angular';
+import { AlertController, LoadingController, Platform, ModalController, Events, PopoverController } from 'ionic-angular';
 import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { loadingMessages } from '../../app/messages';
+
+import { SpinwheelPopOverPage } from './spinwheel-popover.page';
 
 import * as _ from 'lodash';
 import * as Winwheel from 'winwheel';
@@ -16,23 +18,21 @@ export class SpinwheelPage implements OnInit {
   // hardcode prizes
   segments = {
     general: [
-      {'fillStyle' : '#00B5AD', 'text' : '100', 'value' : 100},
+      {'fillStyle' : '#d4f3fc', 'text' : '100', 'value' : 100},
     ],
     normal: [
-      {'fillStyle' : '#FFCB05', 'text' : '200', 'value' : 200},
+      {'fillStyle' : '#a9e8fa', 'text' : '200', 'value' : 200},
     ],
     rare: [
-      {'fillStyle' : '#FCAC75', 'text' : '300', 'value' : 300},
+      {'fillStyle' : '#7dddf8', 'text' : '300', 'value' : 300},
     ],
     ultimate: [
-      {'fillStyle' : '#E60028', 'text' : '400', 'value' : 400}
+      {'fillStyle' : '#52d2f6', 'text' : '400', 'value' : 400}
     ]
   };
-
   config = {
     'canvasId'        : 'spinwheel',
     'outerRadius'     : 150,
-    'innerRadius'     : 50,
     'textFontSize'    : 24,
     'textOrientation' : 'vertical',
     'textAlignment'   : 'outer',
@@ -70,6 +70,7 @@ export class SpinwheelPage implements OnInit {
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public platform: Platform,
+    public popoverCtrl: PopoverController,
     private gameService: GameService,
     private zone: NgZone,
     private el: ElementRef,
@@ -87,105 +88,33 @@ export class SpinwheelPage implements OnInit {
 
   ionViewDidEnter() {
     this.draw();
+    this.pop();
   }
 
-  // @TODO: split this into useful functions
-  // api calls
-  game: any = {};
-  character: any = {};
-  item: any = {};
-  calls(types) {
-    let gameId = null;
-    let characterId = null;
+  pop() {
+    let cacheKey = 'notified::spinner';
 
-    switch (types) {
-      case "game":
-        this.gameService.getGames().subscribe(res => {
-          console.log(res);
-          this.game = res.Games[0];
-        });
-        break;
+    if (!this.cache.getLocal(cacheKey)) {
+      let type = '';
+      let character = this.cache.getLocalObject('character');
+      let chances = (this.getUnopened()).length;
 
-      case "character":
-        if (this.game.id === null) {
-          console.log('load game API first!');
-        } else {
-          this.gameService.getCharacters(this.game.id).subscribe(res => {
-            console.log(res);
-            this.character = res.Characters[0];
-          });
+      if (character.experience_points === 0) {
+        if (chances === 0) { // first time
+          type = 'withoutSpin';
+        } else if (chances > 0) {
+          type = 'withSpin';
         }
-        break;
 
-      case "item":
-        if (this.character.id === null) {
-          console.log('load character API first!');
-        } else {
-          this.retrieve().then(res => {
-            // prepare unopened containers
-            let unopened = [];
-            res.Containers.forEach(container => {
-              if (!container.opened) {
-                unopened.push(container);
-              }
-            });
-
-            // prepare available spinners
-            let spinners = [];
-            if (unopened.length > 0) {
-              res.Items.forEach(item => {
-                if (item.id === unopened[0].item_id) {
-                  spinners.push(item);
-                }
-              });
-            }
-
-            if (spinners.length > 0) {
-              this.item = spinners[0]; // get first spinner
-            } else {
-              let alert = this.alertCtrl.create({
-                title: 'No available spin left!',
-                buttons: ['Ok']
-              });
-              alert.present();
-            }
-          })
-        }
-        break;
-
-      case "my_item":
-          this.retrieve({
-            filter: "items_all"
-          }).then(res => {
-            console.log(res);
-          });
-        break;
-
-      case "open":
-        if (this.item.id === null) {
-          console.log('load item API first!');
-        } else {
-          this.gameService.postItems({
-            "Character": {
-              "id": this.cache.getLocal('character_id')
-            },
-            "Item": {
-              "id": this.item.id,     // ID of the item to take action
-            }
-          }).subscribe(res => {
-            console.log(res);
-          });
-        }
-        break;
-      default:
-          console.log('nothing loaded');
-        break;
+        this.cache.setLocal(cacheKey, true);
+        let popup = this.popoverCtrl.create(SpinwheelPopOverPage, {statusText: type});
+        popup.present();
+      }
     }
   }
 
   ngOnInit() {
     // preset values
-    this.statuses.chances = 10;
     this.statuses.value = 0;
     this.statuses.spinOn = true;
 
@@ -222,6 +151,16 @@ export class SpinwheelPage implements OnInit {
     }
 
     return result;
+  }
+
+
+
+  private spinningSound(cb: Function) {
+    let audio = new Audio();
+    audio.src = '/assets/files/spinning-bicycle-wheel.mp3';
+    audio.load();
+    audio.play();
+    return cb();
   }
 
   retrieve(options = {}): Promise<any> {
@@ -279,9 +218,7 @@ export class SpinwheelPage implements OnInit {
       inner: radius * 0.25
     };
     // this.statuses.centerLogoSize = `${radiusConfig.inner * 2}px`;
-
     this.config.outerRadius = radiusConfig.outer;
-    this.config.innerRadius = radiusConfig.inner;
 
     if (this.wheel) {
       if (this.wheel.canvas) {
@@ -290,7 +227,6 @@ export class SpinwheelPage implements OnInit {
         this.wheel.canvas.height = canvasHeight;
       }
       this.wheel.outerRadius = radiusConfig.outer;
-      this.wheel.innerRadius = radiusConfig.inner;
     } else {
       this.canvas = {
         width: canvasWidth,
@@ -303,7 +239,7 @@ export class SpinwheelPage implements OnInit {
    * @name draw
    * @description draw SpinWheel canvas based on given config
    */
-  draw() {
+  private draw() {
     this.setCanvasSize();
     this.wheel = new Winwheel(this.config);
     this.wheel.draw();
@@ -337,11 +273,18 @@ export class SpinwheelPage implements OnInit {
     });
   }
 
+  tapSpin() {
+    this.spin();
+  }
+
+  swipeSpin() {
+    this.spin();
+  }
+
   stopAnimation() {
     this.runInZone(() => {
       if (this.wheel.tween) {
         this.wheel.tween.kill();
-        console.log('animation stopped');
       }
     });
   }
@@ -410,8 +353,7 @@ export class SpinwheelPage implements OnInit {
       }
 
       if (spinners.length > 0) {
-        this.item = spinners[0]; // get first spinner
-        this.stopAt(this.item.id).then(res => {
+        this.stopAt(spinners[0].id).then(res => {
           loading.dismiss();
 
           this.statuses.newTotalEP = res.total_experience_points;
@@ -429,10 +371,10 @@ export class SpinwheelPage implements OnInit {
           this.wheel.animation.stopAngle = stopAt;
           this.wheel.rotationAngle = 0; // reset starting point of spinner
           this.startAnimation();
-          this.retrieve().then((updated) => {
-            // Updated again the tab badge number
-            console.log('After spin update', updated);
-            this.eventListener.publish('spinner:update', updated);
+
+          // Another call to update badge number
+          this.retrieve().then((res) => {
+            this.eventListener.publish('spinner:update', res);
           });
         }, err => {
           loading.dismiss();
@@ -491,17 +433,19 @@ export class SpinwheelPage implements OnInit {
     // Call function to compute the animation properties.
     this.wheel.computeAnimation();
 
-    let animation = this.wheel.animation,
-    properties: any = {
-      yoyo: animation.yoyo,
-      repeat: animation.repeat,
-      ease: animation.easing,
-      onUpdate: this.winwheelAnimationLoop,
-      onUpdateScope: this.wheel,
-      onComplete: onComplete
-    };
-    properties[`${animation.propertyName}`] = animation.propertyValue;
-    this.wheel.tween = TweenLite.to(this.wheel, animation.duration, properties);
+    this.spinningSound(() => {
+      let animation = this.wheel.animation,
+      properties: any = {
+        yoyo: animation.yoyo,
+        repeat: animation.repeat,
+        ease: animation.easing,
+        onUpdate: this.winwheelAnimationLoop,
+        onUpdateScope: this.wheel,
+        onComplete: onComplete
+      };
+      properties[`${animation.propertyName}`] = animation.propertyValue;
+      this.wheel.tween = TweenLite.to(this.wheel, animation.duration, properties);
+    });
   }
 
   /**
