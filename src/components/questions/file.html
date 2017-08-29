@@ -1,8 +1,8 @@
-<ion-list no-line class="file-question"> 
+<ion-list no-line class="file-question">
   <ion-item *ngIf="uploaded" class="uploaded">
     <ion-icon name="{{uploaded.icon}}" class="fa" item-left></ion-icon>
     {{ uploaded.filename }}
-    <a ion-button small item-end href="{{uploaded.url}}" download>Download</a>
+    <a ion-button small item-end href="{{uploaded.url}}" target="_blank" download>Download</a>
   </ion-item>
 
   <ion-item *ngIf="!uploaded" class="unuploaded">

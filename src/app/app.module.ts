@@ -52,8 +52,8 @@ import { OneofQuestionComponent } from '../components/questions/oneof';
 import { TextQuestionComponent } from '../components/questions/text';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
-import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
 import { RankIconComponent } from '../components/rank/icon';
+import { SegmentComponent } from '../components/segment/segment.component';
 // unused but necessary for build
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
@@ -74,6 +74,7 @@ import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
+import { InstructionPage } from '../pages/activities/list/instruction/instruction.page';
 import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
@@ -88,6 +89,8 @@ import { RegistrationPage } from '../pages/registration/registration.page';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
+import { SpinwheelPage } from '../pages/spinwheel/spinwheel.page';
+import { SpinwheelPopOverPage } from '../pages/spinwheel/spinwheel-popover.page';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
@@ -130,6 +133,7 @@ export function HttpLoaderFactory(http: Http) {
     RankIconComponent,
     FileQuestionComponent,
     ForgetPasswordPage,
+    InstructionPage,
     ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
@@ -158,6 +162,8 @@ export function HttpLoaderFactory(http: Http) {
     SettingsPage,
     SidenavPage,
     SpinwheelPage,
+    SpinwheelPopOverPage,
+    SegmentComponent,
     TabsPage,
     TeamPage,
     TestPage,
@@ -248,6 +254,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventsViewPage,
     ForgetPasswordPage,
+    InstructionPage,
     ItemsPopupPage,
     LeaderboardSettingsPage,
     LevelComponent,
@@ -268,6 +275,7 @@ export function HttpLoaderFactory(http: Http) {
     SettingsPage,
     SidenavPage,
     SpinwheelPage,
+    SpinwheelPopOverPage,
     TabsPage,
     TestPage,
     TermConditionPage,

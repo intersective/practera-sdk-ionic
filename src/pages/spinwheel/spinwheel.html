@@ -1,32 +1,18 @@
 <ion-content padding>
-  <ion-list no-lines>
-    <ion-item>
-      <ion-row>
-        <ion-col align-self-start>
-          Spins left
-        </ion-col>
-        <ion-col align-self-end style="text-align: right;">
-          <strong>{{ statuses.chances }}</strong>
-        </ion-col>
-      </ion-row>
-
-      <ion-row *ngIf="statuses.totalEP > 0">
-        <ion-col align-self-start>
-          Experince points
-        </ion-col>
-        <ion-col align-self-end style="text-align: right;">
-          <strong>{{ statuses.totalEP }}</strong>
-        </ion-col>
-      </ion-row>
-    </ion-item>
-  </ion-list>
+  <segment>
+    <li col-6>
+      <h5>Spins</h5>
+      <p class="content">{{ statuses.chances }}</p>
+    </li>
+    <li col-6>
+      <h5>Points</h5>
+      <p class="content">{{ statuses.totalEP }}</p>
+    </li>
+  </segment>
 
   <div class="center">
-    <button ion-button block outline [disabled]="statuses.isSpinning" (click)="spin()">
-      Spin
-    </button>
     <div class="spinwheel-pointer"></div>
-    <div class="spinwheel">
+    <div class="spinwheel" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
       <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
         <p align="center">
           Sorry, your browser doesn't support canvas. Please try another.
