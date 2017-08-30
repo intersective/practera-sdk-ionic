@@ -521,11 +521,7 @@ event {
   }
 }
 // 13. Rankings Page Styling
-// 13. Rankings Page Styling
 .rankings {
-  .scroll-content {
-    bottom: 49px !important;
-  }
   ion-list:first-child {
     margin-bottom: 5px;
   }
@@ -546,10 +542,6 @@ event {
     }
   }
   .my-ranking {
-    border-top: 1px solid color($colors, border, base);
-    position: fixed;
-    bottom: 40px;
-    height: 55px;
     width: 100%;
     background: color($colors, secondary, base);
     .ranking-item {
