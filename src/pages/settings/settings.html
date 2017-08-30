@@ -4,8 +4,10 @@
       {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
     </ion-list-header>
     <ion-item>
-      <ion-label *ngIf="!hideMe" text-wrap>Hide my name on leaderboard</ion-label>
-      <ion-label *ngIf="hideMe" text-wrap>Show my name on leaderboard</ion-label>
+      <!-- <ion-label *ngIf="!hideMe" text-wrap>Hide my name on leaderboard</ion-label>
+      <ion-label *ngIf="hideMe" text-wrap>Show my name on leaderboard</ion-label> -->
+      <ion-label text-wrap>Name on leaderboard</ion-label>
+      <ion-label class="opt-label">Visible</ion-label>
       <ion-toggle checked="false" color="primary" [(ngModel)]="hideMe" (ionChange)="changePrivate()"></ion-toggle>
     </ion-item>
     <button ion-item (click)="goToTutorial()">

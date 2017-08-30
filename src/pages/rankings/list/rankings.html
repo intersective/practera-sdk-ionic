@@ -21,13 +21,17 @@
     </ion-item>
   </ion-list>
 
-  <ion-list class="my-ranking">
-    <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
-      <rankIcon [rank]="myRankingData.rank" [isMyRank]="true"></rankIcon>
-      {{ 'RANKING.ME' | translate }}
-      <div item-end>
-        <b>{{ myRankingData.experience_points || 0 }}</b>
-      </div>
-    </ion-item>
-  </ion-list>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-list class="my-ranking" no-lines>
+        <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
+          <rankIcon [rank]="myRankingData.rank" [isMyRank]="true"></rankIcon>
+          {{ 'RANKING.ME' | translate }}
+          <div item-end>
+            <b>{{ myRankingData.experience_points || 0 }}</b>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

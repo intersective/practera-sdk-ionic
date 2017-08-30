@@ -1,0 +1,19 @@
+.settings {
+  .opt-label {
+    flex: none;
+    margin: 11px 0px 11px 0px;
+  }
+
+  ion-toggle.toggle {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  ion-toggle button {
+    padding-left: 0px;
+  }
+
+  .item-toggle .item-inner:after {
+    content: "Hidden";
+  }
+}
