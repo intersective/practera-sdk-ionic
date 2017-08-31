@@ -1,7 +1,11 @@
 <ion-header>
   <ion-navbar>
+    <ion-buttons start>
+      <button ion-button icon-only (click)="closeModal()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{ currentAchievement.name || achievementName }}</ion-title>
-    <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
   </ion-navbar>
 </ion-header>
 <ion-content class="ahievements-popup">

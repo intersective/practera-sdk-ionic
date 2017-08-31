@@ -24,7 +24,7 @@
 }
 @mixin closeBtn {
   font-size: 2.5rem;
-  color: color($colors, secondary, base);
+  color: color($colors, text, contrast);
   font-weight: bold;
   position: relative;
   top: -3px;
