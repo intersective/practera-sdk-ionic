@@ -9,9 +9,9 @@ import {
 } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages';
+import * as moment from 'moment';
 import * as _ from 'lodash';
+import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
@@ -20,6 +20,7 @@ import { CharacterService } from '../../../services/character.service';
 import { EventService } from '../../../services/event.service';
 import { GameService } from '../../../services/game.service';
 import { SubmissionService } from '../../../services/submission.service';
+import { TranslationService } from '../../../shared/translation/translation.service';
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
@@ -254,7 +255,7 @@ export class ActivitiesListPage implements OnInit {
                   this.eventsData = results[3];
                   if(this.eventsData){
                     _.forEach(this.eventsData, (element, index) => {
-                      if(this.eventsData[index].isBooked == true){
+                      if(this.eventsData[index].isBooked == true && moment().isBefore(moment(this.eventsData[index].end))){
                         this.bookedEventsCount++;
                       }
                     });
@@ -295,7 +296,6 @@ export class ActivitiesListPage implements OnInit {
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
-    // console.log("Achievement ID: ", unlock_id);
     disabledActivityPopup.present();
   }
   // close modal and display as main page

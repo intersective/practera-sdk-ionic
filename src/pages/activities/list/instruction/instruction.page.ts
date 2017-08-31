@@ -21,6 +21,5 @@ export class InstructionPage {
   goNext() {
     this.slides.slideNext();
     this.slides.isEnd() == true ? this.hideNextButton = true : this.hideNextButton = false;
-    // console.log(this.hideNextButton);
   }
 }

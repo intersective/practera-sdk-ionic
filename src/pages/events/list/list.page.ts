@@ -103,7 +103,6 @@ export class EventsListPage {
           }
         })
         .then((events) => {
-          console.log('events', events);
           // loadedEvents will never change (private use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
@@ -181,12 +180,10 @@ export class EventsListPage {
   }
   // Check event allow to check-in
   allowCheckIn(event) {
-    console.log('event', event);
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
   }
 
   view(event) {
-    console.log(event);
     this.navCtrl.push(EventsViewPage, {
       event
     });

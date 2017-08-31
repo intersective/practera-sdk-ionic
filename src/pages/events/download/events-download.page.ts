@@ -23,9 +23,6 @@ export class EventsDownloadPage {
 
   ionViewDidEnter() {
     this.event = this.params.get('event');
-    console.log(this.event);
-    console.log(this.fs.version);
-
     this.files = [];
 
     if (this.event && this.event.files) {

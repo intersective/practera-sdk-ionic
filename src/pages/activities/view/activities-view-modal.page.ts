@@ -16,7 +16,6 @@ export class ActivitiesViewModalPage {
   ) {
     this.activity = this.navParams.get('activity');
     this.activityData = this.activity;
-    console.log('video Data: ', this.activityData.video_url);
     this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.activityData.video_url);
   }
   ionViewDidEnter(): void {
