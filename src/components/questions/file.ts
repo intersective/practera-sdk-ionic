@@ -4,6 +4,7 @@ import { FormGroup } from '@angular/forms';
 import { FilestackService, FilestackUpload } from '../../shared/filestack/filestack.service';
 import { UtilsService } from '../../shared/utils/utils.service';
 import { PreviewComponent } from '../preview/preview.component';
+import { WindowRef } from '../../shared/window';
 import * as _ from 'lodash';
 
 @Component({
@@ -20,9 +21,10 @@ export class FileQuestionComponent implements OnInit {
 
   constructor(
     private fs: FilestackService,
-    private util: UtilsService,
     private zone: NgZone,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private win: WindowRef,
+    private utils: UtilsService
   ) {}
 
   /**
@@ -42,7 +44,7 @@ export class FileQuestionComponent implements OnInit {
     this.fs.pickV1(null, (uploaded) => {
       self.zone.run(() => {
         let file = uploaded;
-        file.icon = self.util.getIcon(file.mimetype);
+        file.icon = self.utils.getIcon(file.mimetype);
         self.uploaded = file;
         this.form.controls.answer.setValue(self.uploaded);
       });
@@ -51,16 +53,26 @@ export class FileQuestionComponent implements OnInit {
     });
   }
 
+  /**
+   * @name viewUploaded
+   * @description preview viewable file, otherwise force download
+   * @param {Object} uploaded singled uploaded filestack file object
+   */
   viewUploaded(uploaded) {
-    let previewModal = this.modalCtrl.create(PreviewComponent, {file: uploaded});
-    previewModal.present();
+    if (!this.utils.isViewable(uploaded.mimetype)) {
+      let win = this.win.nativeWindow;
+      let openedWindow = win.open(uploaded.url, '_blank');
+    } else {
+      let previewModal = this.modalCtrl.create(PreviewComponent, {file: uploaded});
+      previewModal.present();
+    }
   }
 
   private pickUploaded(uploaded) {
     let self = this;
     if (uploaded.filesUploaded.length > 0) {
       let file = uploaded.filesUploaded.shift();
-      file.icon = self.util.getIcon(file.mimetype);
+      file.icon = self.utils.getIcon(file.mimetype);
 
       // post_assessment_submission API requirement "key"
       file.key = file.handle;
@@ -77,7 +89,7 @@ export class FileQuestionComponent implements OnInit {
   private injectIcon = (files: any[]) => {
     let result = [];
     files.forEach((file, index) => {
-      file.icon = this.util.getIcon(file.mimetype);
+      file.icon = this.utils.getIcon(file.mimetype);
       result.push(file);
     });
 
