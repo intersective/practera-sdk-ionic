@@ -29,13 +29,14 @@ export class GameService {
       this.getCharacters(gameId, {
         search: {
           action: 'ranking',
-          peroid: 'monthly'
+          period: 'monthly'
         }
       }),
       this.getCharacters(gameId, {
         search: {
           action: 'ranking',
-          peroid: 'monthly',
+          // @TODO Wait until BE fix it...
+          // period: 'monthly',
           character_id: characterId
         }
       })
