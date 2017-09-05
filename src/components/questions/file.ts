@@ -1,12 +1,14 @@
 import { Component, Input, OnInit, NgZone } from '@angular/core';
+import { NavController } from 'ionic-angular';
 import { FormGroup } from '@angular/forms';
 import { FilestackService, FilestackUpload } from '../../shared/filestack/filestack.service';
 import { UtilsService } from '../../shared/utils/utils.service';
+import { PreviewComponent } from '../preview/preview.component';
 import * as _ from 'lodash';
 
 @Component({
   selector: 'file-question',
-  templateUrl: './file.html'
+  templateUrl: './file.html',
 })
 export class FileQuestionComponent implements OnInit {
   @Input() question;
@@ -19,7 +21,8 @@ export class FileQuestionComponent implements OnInit {
   constructor(
     private fs: FilestackService,
     private util: UtilsService,
-    private zone: NgZone
+    private zone: NgZone,
+    private navCtrl: NavController
   ) {}
 
   /**
@@ -46,6 +49,10 @@ export class FileQuestionComponent implements OnInit {
     }, err => {
       console.log(err.code);
     });
+  }
+
+  viewUploaded(uploaded) {
+    this.navCtrl.push(PreviewComponent, {file: uploaded});
   }
 
   private pickUploaded(uploaded) {
