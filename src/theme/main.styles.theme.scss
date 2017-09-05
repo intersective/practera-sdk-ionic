@@ -1002,3 +1002,20 @@ rankings-details-page {
     }
   }
 }
+// disable landscape
+.disable-landscape {
+  .scroll-content {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      margin: 0 auto;
+      display: block;
+    }
+    p {
+      font-size: 17pt;
+      padding: 0 20pt;
+    }
+  }
+}

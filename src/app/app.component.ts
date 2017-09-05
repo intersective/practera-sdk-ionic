@@ -16,6 +16,7 @@ import { MagicLinkPage } from '../pages/magic-link/magic-link';
   templateUrl: 'app.html',
 })
 export class MyApp implements OnInit {
+  public isMobile: boolean = ((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768) ? true : false;
   // rootPage: any = RegistrationPage;
   rootPage: any;
   urlParameters: Array<any> = [];
@@ -32,7 +33,18 @@ export class MyApp implements OnInit {
     platform: Platform,
     authService: AuthService,
     private cache: CacheService
-  ) {}
+  ) {
+    /* Customized Flag Start */
+    // when screen size changed, disable mobile landscape mode
+    // keep desktop (including iPad) devices landscape mode
+    window.onresize = (e) => {
+      if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+        this.isMobile = true;
+      }else {
+        this.isMobile = false;
+      }
+    };
+  }
 
   ngOnInit() {
     let category = [];
@@ -66,5 +78,7 @@ export class MyApp implements OnInit {
       }
     }
   }
-
+  ionViewDidLoad(){
+    
+  }
 }
