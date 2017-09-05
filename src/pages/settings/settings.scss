@@ -1,8 +1,11 @@
 .settings {
+  .bold {
+    font-weight: bold;
+  }
+
   .opt-label {
     flex: none;
     margin: 11px 0px 11px 0px;
-    font-weight: bold;
   }
 
   ion-toggle.toggle {
@@ -14,7 +17,11 @@
     padding-left: 0px;
   }
 
-  .item-toggle .item-inner:after {
+  .item-visible .item-inner:after {
+    content: "Hidden";
+  }
+
+  .item-hidden .item-inner:after {
     content: "Hidden";
     font-weight: bold;
   }
