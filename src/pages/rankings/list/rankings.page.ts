@@ -56,7 +56,7 @@ export class RankingsPage {
             },
             err => {
               loading.dismiss().then(() => {
-                console.log('Error: ', err.msg);
+                console.log('err', err);
                 emptyDataAlert.present();
               });
             }
