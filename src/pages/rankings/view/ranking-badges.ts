@@ -27,7 +27,6 @@ export class RankingBadgesPage {
               private achievementService: AchievementService,
               public translationService: TranslationService){
                 this.currentAchievement = this.navParams.get('achievement');
-                console.log("currentAchievement: ", this.currentAchievement);
               }
   // close disbaled activity popup
   closeModal() {

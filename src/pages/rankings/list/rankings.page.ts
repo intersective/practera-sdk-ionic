@@ -47,15 +47,11 @@ export class RankingsPage {
           .subscribe(
             results => {
               loading.dismiss().then(() => {
-                console.log('results', results);
-
                 this.totalData = results;
                 this.rankingData = this.totalData;
                 // We only have 1 character
                 this.myRankingData = this.totalData.MyCharacters[0] || {};
                 this.listRankingData = this.totalData.Characters;
-                console.log('this.myRankingData', this.myRankingData);
-                console.log('this.listRankingData', this.listRankingData);
               });
             },
             err => {
@@ -74,7 +70,6 @@ export class RankingsPage {
       });
   }
   goRankingDetail(myRanking){
-    console.log('goRankingDetail', myRanking)
     this.navCtrl.push(RankingDetailsPage, {
       myRanking: myRanking
     });

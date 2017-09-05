@@ -82,7 +82,6 @@ export class EventsViewPage {
       this.loadings.checkin = false;
       res.forEach(submission => {
         submission = this.submissionService.normalise(submission);
-        console.log(submission);
         this.submissions.push(submission);
         if (submission.status === 'done') {
           this.completedSubmissions = true;
@@ -204,7 +203,6 @@ export class EventsViewPage {
    */
   checkin() {
     // if submission exist
-    console.log(this.submissions);
     console.log('Event act::', this.event.activity);
     this.navCtrl.push(AssessmentsPage, {
       event: this.event,

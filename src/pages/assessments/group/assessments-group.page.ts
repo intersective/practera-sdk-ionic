@@ -54,12 +54,8 @@ export class AssessmentsGroupPage implements OnInit {
   ionViewDidEnter() {
     this.assessment = this.activity.assessment; // required for context_id
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
-
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submission = this.navParams.get('submission') || {};
-
-    console.log('this.assessmentGroup', this.assessmentGroup);
-
     // preset key used for caching later (locally and remote data)
     this.canUpdateInput = this.isInputEditable(this.submission);
     // this.published = this.assessmentService.isPublished(this.submissions);

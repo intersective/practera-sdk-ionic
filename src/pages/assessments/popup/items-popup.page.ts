@@ -35,7 +35,6 @@ export class ItemsPopupPage {
     // }
     // this.combinedData = this.navParams.get('combined');
     this.combinedData = this.cacheService.getLocalObject('allNewItems');
-    console.log("Final final popup combined data: ", this.combinedData);
     // return this.combinedData.length == 0 ? this.noData = true : this.noData = false
   }
   // close disbaled activity popup
