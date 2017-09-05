@@ -217,7 +217,7 @@ export class ActivitiesListPage implements OnInit {
                     this.userAchievementsIDs[index] = ele.id;
                   });
                   // find ahievement ID whether inside achievemnt list or not
-                  // this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+                  this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
                   // find all 4 boxes are ticked index value inside changeColor array
                   _.forEach(this.changeColor, (ele, index) => {
                     let findTrueIndex: any = _.uniq(ele, 'true');
@@ -230,13 +230,13 @@ export class ActivitiesListPage implements OnInit {
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
-                  };
+                  };                  
                   // find submission based on founded activity IDs
-                  this.displayAverageScore(this.filteredActivityIDs,
-                    this.submissionData,
-                    this.findSubmissions,
-                    this.show_score_act,
-                    this.activityIndexArray,
+                  this.displayAverageScore(this.filteredActivityIDs, 
+                    this.submissionData, 
+                    this.findSubmissions, 
+                    this.show_score_act, 
+                    this.activityIndexArray, 
                     this.AverageScore);
                   // get items API call
                   this.gameService.getItems({
@@ -356,19 +356,19 @@ export class ActivitiesListPage implements OnInit {
       }else if(findSubmissions[j].length == 1) {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
       }
-      this.totalAverageScore += AverageScore[activityIndexArray[j]];
+      this.totalAverageScore += AverageScore[activityIndexArray[j]];                
     }
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
     //check if all activity's score has been displayed
-    // if(show_score_act.includes(false)){
-    //   this.button_show = true;
-    // }else {
+    if(show_score_act.includes(false)){
+      this.button_show = true;
+    }else {
       this.button_show = false;
-    // }
+    }
     _.forEach(show_score_act, (ele, index=6) => {
       if(ele == false){
-        this.eachActivityScores[index] = -1;
+        this.eachActivityScores[index] = -1;  
       }else {
         this.eachActivityScores[index] = AverageScore[index];
       }
