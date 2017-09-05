@@ -62,4 +62,17 @@ export class UtilsService {
     }
     return false;
   }
+
+  // check if a file could be previewed (eg. zip or unknown file is not viewable)
+  isViewable(type: string) {
+    let result = true;
+    if (this.isCompressed(type)) {
+      result = false;
+    }
+
+    if (result && this.getIcon(type) === 'fa-file') {
+      result = false;
+    }
+    return result;
+  }
 }

@@ -21,6 +21,8 @@ export class FilestackPreviewDirective implements OnChanges {
     let url = this.url || el.getAttribute('filestack-preview');
 
     if (url && url.length > 0) {
+      // https://cdn.filestackcontent.com/api/preview/GehliGVTQYO1JEXNfAYk
+      url = url.replace('cdn.filestackcontent.com/', 'cdn.filestackcontent.com/api/preview/');
       url = url.replace('api/file/', 'api/preview/');
       let iframe = this.renderer.createElement(el, 'iframe');
 

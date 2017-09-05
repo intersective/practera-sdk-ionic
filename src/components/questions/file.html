@@ -2,7 +2,7 @@
   <ion-item *ngIf="uploaded" class="uploaded">
     <ion-icon name="{{uploaded.icon}}" class="fa" item-left></ion-icon>
     {{ uploaded.filename }}
-    <a ion-button small item-end href="{{uploaded.url}}" target="_blank" download>Download</a>
+    <button ion-button small item-end (click)="viewUploaded(uploaded)">Download</button>
   </ion-item>
 
   <ion-item *ngIf="!uploaded" class="unuploaded">
