@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, NgZone } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { FormGroup } from '@angular/forms';
 import { FilestackService, FilestackUpload } from '../../shared/filestack/filestack.service';
 import { UtilsService } from '../../shared/utils/utils.service';
@@ -22,7 +22,7 @@ export class FileQuestionComponent implements OnInit {
     private fs: FilestackService,
     private util: UtilsService,
     private zone: NgZone,
-    private navCtrl: NavController
+    private modalCtrl: ModalController
   ) {}
 
   /**
@@ -52,7 +52,8 @@ export class FileQuestionComponent implements OnInit {
   }
 
   viewUploaded(uploaded) {
-    this.navCtrl.push(PreviewComponent, {file: uploaded});
+    let previewModal = this.modalCtrl.create(PreviewComponent, {file: uploaded});
+    previewModal.present();
   }
 
   private pickUploaded(uploaded) {

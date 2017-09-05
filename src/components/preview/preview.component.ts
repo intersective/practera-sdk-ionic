@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { NavParams } from 'ionic-angular';
+import { NavParams, ViewController } from 'ionic-angular';
 
 @Component({
   selector: 'preview',
@@ -10,9 +10,14 @@ export class PreviewComponent {
   preview: any;
 
   constructor(
-    private navParam: NavParams
+    private navParam: NavParams,
+    private viewCtrl: ViewController
   ) {
     this.preview = (this.file) ? this.file : navParam.get('file');
     console.log('preview?::', this.preview);
+  }
+
+  dismiss() {
+    this.viewCtrl.dismiss();
   }
 }
