@@ -28,12 +28,14 @@ export class GameService {
     return Observable.forkJoin([
       this.getCharacters(gameId, {
         search: {
-          action: 'ranking'
+          action: 'ranking',
+          peroid: 'monthly'
         }
       }),
       this.getCharacters(gameId, {
         search: {
           action: 'ranking',
+          peroid: 'monthly',
           character_id: characterId
         }
       })
