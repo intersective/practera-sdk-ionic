@@ -14,7 +14,6 @@ import { Observable } from 'rxjs/Observable';
 //services
 import { AssessmentService } from '../../services/assessment.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { CharacterService } from '../../services/character.service';
 import { GameService } from '../../services/game.service';
 import { SubmissionService } from '../../services/submission.service';
 import { TranslationService } from '../../shared/translation/translation.service';
@@ -64,7 +63,6 @@ export class AssessmentsPage {
     private loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     private assessmentService: AssessmentService,
-    private characterService: CharacterService,
     private cacheService: CacheService,
     private gameService: GameService,
     private submissionService: SubmissionService,
