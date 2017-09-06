@@ -4,7 +4,6 @@ import { TranslationService } from '../../shared/translation/translation.service
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { GameService } from '../../services/game.service';
-import { CharacterService } from '../../services/character.service';
 import { CacheService } from '../../shared/cache/cache.service';
 // pages
 import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-settings.page';
@@ -26,7 +25,6 @@ export class SettingsPage {
     private loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public translationService: TranslationService,
-    public characterService: CharacterService,
     private appCtrl: App,
     private gameService: GameService
   ) {}
@@ -64,7 +62,7 @@ export class SettingsPage {
     const loader = this.loadingCtrl.create();
     loader.present()
     .then(() => {
-      this.characterService.postCharacter({
+      this.gameService.postCharacter({
         Character: {
           id: this.cache.getLocalObject('character_id'),
           meta: {

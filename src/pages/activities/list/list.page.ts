@@ -16,7 +16,6 @@ import { loadingMessages, errMessages } from '../../../app/messages';
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
 import { CacheService } from '../../../shared/cache/cache.service';
-import { CharacterService } from '../../../services/character.service';
 import { EventService } from '../../../services/event.service';
 import { GameService } from '../../../services/game.service';
 import { SubmissionService } from '../../../services/submission.service';
@@ -126,7 +125,6 @@ export class ActivitiesListPage implements OnInit {
     public activityService: ActivityService,
     public achievementService: AchievementService,
     public cacheService: CacheService,
-    public characterService: CharacterService,
     public eventService: EventService,
     public eventListener: Events,
     public gameService: GameService,
@@ -199,13 +197,15 @@ export class ActivitiesListPage implements OnInit {
               this.activityIDs.push(this.activities[index].Activity.id);
             }));
             // this.activityIDs = this.activityIDs.toString();
-            let getCharacter = this.characterService.getCharacter();
+            let gameId = this.cacheService.getLocalObject('game_id');
+            let getCharacter = this.gameService.getCharacters(gameId);
             let getSubmission = this.submissionService.getSubmissionsData();
             let getUserAchievemnt = this.achievementService.getAchievements();
             let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
             Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
               .subscribe(results => {
                 loadingData.dismiss().then(() => {
+                  // Now only support 1 character in a game
                   this.characterData = results[1].Characters[0];
                   this.cacheService.setLocalObject('character', this.characterData);
                   this.cacheService.setLocal('character_id', this.characterData.id);
@@ -230,13 +230,13 @@ export class ActivitiesListPage implements OnInit {
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
-                  };                  
+                  };
                   // find submission based on founded activity IDs
-                  this.displayAverageScore(this.filteredActivityIDs, 
-                    this.submissionData, 
-                    this.findSubmissions, 
-                    this.show_score_act, 
-                    this.activityIndexArray, 
+                  this.displayAverageScore(this.filteredActivityIDs,
+                    this.submissionData,
+                    this.findSubmissions,
+                    this.show_score_act,
+                    this.activityIndexArray,
                     this.AverageScore);
                   // get items API call
                   this.gameService.getItems({
@@ -356,7 +356,7 @@ export class ActivitiesListPage implements OnInit {
       }else if(findSubmissions[j].length == 1) {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
       }
-      this.totalAverageScore += AverageScore[activityIndexArray[j]];                
+      this.totalAverageScore += AverageScore[activityIndexArray[j]];
     }
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
@@ -368,7 +368,7 @@ export class ActivitiesListPage implements OnInit {
     }
     _.forEach(show_score_act, (ele, index=6) => {
       if(ele == false){
-        this.eachActivityScores[index] = -1;  
+        this.eachActivityScores[index] = -1;
       }else {
         this.eachActivityScores[index] = AverageScore[index];
       }
