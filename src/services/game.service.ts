@@ -35,8 +35,7 @@ export class GameService {
       this.getCharacters(gameId, {
         search: {
           action: 'ranking',
-          // @TODO Wait until BE fix it...
-          // period: 'monthly',
+          period: 'monthly',
           character_id: characterId
         }
       })
