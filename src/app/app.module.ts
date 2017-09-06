@@ -22,7 +22,6 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilestackService } from '../shared/filestack/filestack.service';
 import { GameService } from '../services/game.service';
@@ -54,6 +53,7 @@ import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
 import { RankIconComponent } from '../components/rank/icon';
 import { SegmentComponent } from '../components/segment/segment.component';
+import { PreviewComponent } from '../components/preview/preview.component';
 // unused but necessary for build
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
@@ -151,6 +151,7 @@ export function HttpLoaderFactory(http: Http) {
     OneofQuestionComponent,
     PhotoComponent,
     PopoverTextPage,
+    PreviewComponent,
     QuestionComponent,
     QuestionGroupComponent,
     RankingBadgesPage,
@@ -266,6 +267,7 @@ export function HttpLoaderFactory(http: Http) {
     ModalComponent,
     MyApp,
     PopoverTextPage,
+    PreviewComponent,
     RankingBadgesPage,
     RankingDetailsPage,
     RankingsPage,
@@ -287,7 +289,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
-    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
     { provide: FilestackService, useClass: FilestackService },

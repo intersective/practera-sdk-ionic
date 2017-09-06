@@ -10,11 +10,20 @@ export class GameService {
   constructor(
     private request: RequestService
   ) {}
-  // get games
+
+  /**
+   * Get games
+   * @param {object} options
+   */
   public getGames(options = {}) {
     return this.request.get('api/games', options);
   }
 
+  /**
+   * Get character
+   * @param {string} gameId
+   * @param {object} options
+   */
   public getCharacters(gameId, options = {}) {
     options = _.merge({
       search: {
@@ -24,16 +33,33 @@ export class GameService {
     return this.request.get('api/characters', options);
   }
 
+  /**
+   * Post character
+   * @param {object} data
+   */
+  public postCharacter(data) {
+    return this.request.post('api/characters', data, {
+      'Content-Type': 'application/json'
+    });
+  }
+
+  /**
+   * Get ranking
+   * @param {string} gameId
+   * @param {string} characterId
+   */
   public getRanking(gameId, characterId) {
     return Observable.forkJoin([
       this.getCharacters(gameId, {
         search: {
-          action: 'ranking'
+          action: 'ranking',
+          period: 'monthly'
         }
       }),
       this.getCharacters(gameId, {
         search: {
           action: 'ranking',
+          period: 'monthly',
           character_id: characterId
         }
       })
@@ -46,6 +72,10 @@ export class GameService {
     });
   }
 
+  /**
+   * Get items
+   * @param {object} options
+   */
   public getItems(options?) {
     options = _.merge({
       character_id: null,
@@ -54,6 +84,10 @@ export class GameService {
     return this.request.get('api/items.json', {search: options});
   }
 
+  /**
+   * Update items
+   * @param {object} options
+   */
   public postItems(options: any = {
     "Character": {
       "id": null

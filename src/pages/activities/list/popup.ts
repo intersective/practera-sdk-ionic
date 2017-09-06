@@ -31,7 +31,6 @@ export class ActivityListPopupPage {
     public translationService: TranslateService
   ) {
     this.unlock_id = this.navParams.get('unlock_id');
-    // console.log('Unlock id value: ', this.unlock_id);
   }
 
   ionViewWillEnter(){

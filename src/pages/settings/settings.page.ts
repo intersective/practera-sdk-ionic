@@ -3,7 +3,7 @@ import { App, NavController, MenuController, LoadingController, AlertController 
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
-import { CharacterService } from '../../services/character.service';
+import { GameService } from '../../services/game.service';
 import { CacheService } from '../../shared/cache/cache.service';
 // pages
 import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-settings.page';
@@ -17,7 +17,7 @@ import { TermConditionPage } from '../term-condition/term-condition.page';
 export class SettingsPage {
   public helpline = "help@practera.com";
   public logoutMessage: any = loadingMessages.Logout.logout;
-  public hideMe = true;
+  public hideMe: boolean;
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
@@ -25,10 +25,29 @@ export class SettingsPage {
     private loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
     public translationService: TranslationService,
-    public characterService: CharacterService,
-    private appCtrl: App
+    private appCtrl: App,
+    private gameService: GameService
   ) {}
   public settings = [];
+  ionViewWillEnter() {
+    const loading = this.loadingCtrl.create();
+    loading.present();
+
+    let gameId = this.cache.getLocalObject('game_id');
+    this.gameService.getCharacters(gameId)
+      .subscribe((characters) => {
+        let me = characters.Characters[0];
+        if (me.meta.private === 0) {
+          this.hideMe = false;
+        } else {
+          this.hideMe = true;
+        }
+        loading.dismiss();
+      }, (err) => {
+        console.log('err', err);
+        loading.dismiss();
+      });
+  }
   public getUserEmail() {
     return this.cache.getLocalObject('email') || '';
   }
@@ -43,7 +62,7 @@ export class SettingsPage {
     const loader = this.loadingCtrl.create();
     loader.present()
     .then(() => {
-      this.characterService.postCharacter({
+      this.gameService.postCharacter({
         Character: {
           id: this.cache.getLocalObject('character_id'),
           meta: {

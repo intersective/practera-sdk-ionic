@@ -3,12 +3,12 @@
     <ion-list-header>
       {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
     </ion-list-header>
-    <ion-item>
+    <ion-item [ngClass]="{'item-hidden':(hideMe), 'item-visible':(!hideMe)}">
       <!-- <ion-label *ngIf="!hideMe" text-wrap>Hide my name on leaderboard</ion-label>
       <ion-label *ngIf="hideMe" text-wrap>Show my name on leaderboard</ion-label> -->
       <ion-label text-wrap>Name on leaderboard</ion-label>
-      <ion-label class="opt-label">Visible</ion-label>
-      <ion-toggle checked="false" color="primary" [(ngModel)]="hideMe" (ionChange)="changePrivate()"></ion-toggle>
+      <ion-label class="opt-label" [ngClass]="{'bold':(!hideMe)}">Visible</ion-label>
+      <ion-toggle color="primary" [(ngModel)]="hideMe" (ionChange)="changePrivate()"></ion-toggle>
     </ion-item>
     <button ion-item (click)="goToTutorial()">
       <ion-icon name="medkit" item-left></ion-icon> {{ 'SETTINGS.TUTORIAL' | translate }}

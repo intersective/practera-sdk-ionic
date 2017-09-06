@@ -36,7 +36,6 @@ export class ActivityAchievementModalPage {
   ) {}
   ionViewDidEnter(): void {
     this.achievementData = this.navParams.get('achievementData');
-    console.log("this.achievementData: ", this.achievementData);
   }
   dismiss() {
     this.viewCtrl.dismiss();
