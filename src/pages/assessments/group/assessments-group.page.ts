@@ -5,7 +5,6 @@ import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
 
 import * as _ from 'lodash';
-
 @Component({
   selector: 'assessments-group-page',
   templateUrl: './assessments-group.html',

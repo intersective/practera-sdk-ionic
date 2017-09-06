@@ -54,6 +54,7 @@ import { MultipleQuestionComponent } from '../components/questions/multiple';
 import { FeedbackComponent } from '../components/questions/feedback';
 import { RankIconComponent } from '../components/rank/icon';
 import { SegmentComponent } from '../components/segment/segment.component';
+import { PreviewComponent } from '../components/preview/preview.component';
 // unused but necessary for build
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
@@ -151,6 +152,7 @@ export function HttpLoaderFactory(http: Http) {
     OneofQuestionComponent,
     PhotoComponent,
     PopoverTextPage,
+    PreviewComponent,
     QuestionComponent,
     QuestionGroupComponent,
     RankingBadgesPage,
@@ -266,6 +268,7 @@ export function HttpLoaderFactory(http: Http) {
     ModalComponent,
     MyApp,
     PopoverTextPage,
+    PreviewComponent,
     RankingBadgesPage,
     RankingDetailsPage,
     RankingsPage,
