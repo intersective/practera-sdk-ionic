@@ -1,2 +1,8 @@
 <app-notification></app-notification>
-<ion-nav [root]="rootPage" #appNav></ion-nav>
+<ion-nav [hidden]="isMobile == false" [root]="rootPage" #appNav></ion-nav>
+<ion-content [hidden]="isMobile == true" class="disable-landscape">
+  <div class="disable-container">
+    <img src="./assets/img/default/rotate.png" />
+    <p>Whoops! This app is only available in portrait view. Please turn your phone.</p>
+  </div>
+</ion-content>
