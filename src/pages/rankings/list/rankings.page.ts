@@ -50,7 +50,11 @@ export class RankingsPage {
                 this.totalData = results;
                 this.rankingData = this.totalData;
                 // We only have 1 character
-                this.myRankingData = this.totalData.MyCharacters[0] || {};
+                if(this.totalData.MyCharacters){
+                  this.myRankingData = this.totalData.MyCharacters[0];
+                }else {
+                  this.myRankingData = [];  
+                }
                 this.listRankingData = this.totalData.Characters;
               });
             },

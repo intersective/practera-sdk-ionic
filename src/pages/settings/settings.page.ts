@@ -37,10 +37,16 @@ export class SettingsPage {
     this.gameService.getCharacters(gameId)
       .subscribe((characters) => {
         let me = characters.Characters[0];
-        if (me.meta.private === 0) {
+        console.log("me: ", me);
+        if(me.meta == null){
           this.hideMe = false;
-        } else {
-          this.hideMe = true;
+        }
+        if(me.meta != null){
+          if (me.meta.private === 0) {
+            this.hideMe = false;
+          } else {
+            this.hideMe = true;
+          }
         }
         loading.dismiss();
       }, (err) => {
