@@ -783,9 +783,10 @@ assessments-page {
       text-transform: uppercase;
     }
     ion-list {
-      margin: 0px;
+      margin: 14px 0px 0px;
     }
   }
+  ion-item,
   ion-item.description {
     padding-left: 0px;
   }
@@ -807,6 +808,17 @@ assessments-page {
     background-color: color($colors, primary-button, base);
     color: color($colors, text, contrast);
   }
+}
+.feedback {
+  ion-card {
+    width: 100%;
+    margin: 12px 0px; 
+  }
+  // .card-ios,
+  // .card-md {
+  //   width: 100%;
+  //   margin: 12px 0px; 
+  // }
 }
 .general-textarea {
   padding: 0px;
