@@ -64,7 +64,10 @@
         <div *ngFor="let activity of activities; let i = index">
           <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
             <div (click)="goToDetail(activity)" class="line-break">
-              <p col-7 class="activity-title">{{ activity.Activity.name }}</p>
+              <p col-7 class="activity-title">
+                {{ activity.Activity.name }}
+                <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
+              </p>
               <p col-3 class="ticks"> 
                 <span *ngIf="i == 0">
                   <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
