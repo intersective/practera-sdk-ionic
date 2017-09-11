@@ -412,7 +412,8 @@ event {
   }
   .score-board {
     display: block;
-    background-color: color($colors, primary, base); // default-theme
+    // background-color: color($colors, primary, base); // default-theme
+    background-color: #52d2f6;
     background-size: cover;
     text-align: center;
     .score-board-inner {

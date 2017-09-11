@@ -495,7 +495,7 @@ event {
   10%, 90% {
     transform: translate3d(-1px, 0, 0);
   }
-  
+
   20%, 80% {
     transform: translate3d(2px, 0, 0);
   }
@@ -550,7 +550,8 @@ event {
     align-items: center;
   }
   .score-board {
-    background-color: color($colors, secondary) !important; // default-theme
+    // background-color: color($colors, secondary) !important; // default-theme
+    background-color: #52d2f6;
     background-size: cover;
     text-align: center;
     .score-board-inner {
@@ -839,7 +840,7 @@ assessments-page {
 .feedback {
   ion-card {
     width: 100%;
-    margin: 12px 0px; 
+    margin: 12px 0px;
   }
 }
 .general-textarea {
