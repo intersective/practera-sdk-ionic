@@ -419,6 +419,14 @@ event {
     .score-board-inner {
       height: 100%;
     }
+    .tittle-logo {
+      color: #fff;
+      font-size: 50px;
+      font-weight: bolder;
+      text-align: left;
+      margin-left: 25%;
+      font-family: 'Museo-500';
+    }
     ion-row:last-child {
       background-color: color($colors, secondary, base);
     }
