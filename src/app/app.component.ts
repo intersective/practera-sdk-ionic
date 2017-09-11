@@ -16,7 +16,7 @@ import { MagicLinkPage } from '../pages/magic-link/magic-link';
   templateUrl: 'app.html',
 })
 export class MyApp implements OnInit {
-  public isMobile: boolean = ((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768) ? true : false;
+  public isMobile: boolean = ((screen.width < 512 && screen.width < screen.height) || screen.width >= 768) ? true : false;
   // rootPage: any = RegistrationPage;
   rootPage: any;
   urlParameters: Array<any> = [];
@@ -39,7 +39,7 @@ export class MyApp implements OnInit {
     // when screen size changed, disable mobile landscape mode
     // keep desktop (including iPad) devices landscape mode
     window.onresize = (e) => {
-      if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+      if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
         this.isMobile = true;
       }else {
         this.isMobile = false;
