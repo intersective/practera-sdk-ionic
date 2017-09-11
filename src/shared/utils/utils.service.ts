@@ -69,8 +69,7 @@ export class UtilsService {
     if (this.isCompressed(type)) {
       result = false;
     }
-
-    if (result && this.getIcon(type) === 'fa-file') {
+    if (result && (this.getIcon(type) === 'fa-file' || this.getIcon(type) === 'fa-movie' || this.getIcon(type) === 'fa-sound')) {
       result = false;
     }
     return result;
