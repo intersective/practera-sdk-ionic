@@ -5,10 +5,7 @@
   <div *ngIf="isAttendedEvent(event)" class="event-status">
     <div class="event-tag event-attended-tag">Attended</div>
   </div>
-  <ion-card-content class="with-cover"
-    [style.background-image]="'url(' + event.coverUrl + ')'"
-    [style.background-repeat]="'no-repeat'"
-    [style.background-size]="'cover'">
+  <ion-card-content class="with-cover" [style.background-image]="'url(' + event.coverUrl + ')'">
     <div class="event-title">
       {{ event.title }}
     </div>

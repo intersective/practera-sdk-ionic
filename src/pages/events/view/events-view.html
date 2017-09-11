@@ -3,6 +3,7 @@
     <ion-title>{{ event.title }}</ion-title>
   </ion-navbar>
 </ion-header>
+
 <ion-content class="events">
   <ion-list>
     <ion-item class="title-background"
@@ -13,6 +14,7 @@
       </div>
     </ion-item>
   </ion-list>
+
   <ion-list class="details">
     <ion-row>
       <ion-col col-6 class="info">
@@ -27,6 +29,7 @@
       </ion-col>
     </ion-row>
   </ion-list>
+
   <ion-list no-lines>
     <ion-item text-wrap>
       {{ event.description || 'No description available.' }}
@@ -36,6 +39,7 @@
     <button ion-item (click)="gotoDownload(event)" detail-push>{{ 'GENERAL.DOWNLOAD' | translate }}</button>
   </ion-list>
 </ion-content>
+
 <ion-footer class="events">
   <ion-toolbar>
     <p class="lighter spacer-left">{{ bookingStatus }}</p>

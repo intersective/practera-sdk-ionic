@@ -277,8 +277,7 @@ $font-secondary: Arial, "Helvetica Neue", Helvetica, sans-serif;
     background-position: center;
     text-align: center;
     .title {
-      text-shadow: 0 0 1px $border-primary;
-      color: color($colors, secondary, base);
+      color: white;
       font-size: 3.5rem;
       white-space: normal;
     }
@@ -377,13 +376,12 @@ event {
     color: color($colors, secondary, base);
   }
   .event-title {
-    padding: 13px 16px 14px 16px;
     font-size: 32px;
-    line-height: 40px;
     color: white;
     font-family: $font-primary; // default-theme
   }
   .event-details {
+    color: white;
     padding: 8px 8px;
     font-family: $font-primary; // default-theme
     font-size: 14px;

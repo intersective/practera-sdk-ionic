@@ -8,11 +8,26 @@ import { ActivityService } from '../../../services/activity.service';
 import { EventService } from '../../../services/event.service';
 // pages
 import { EventsViewPage } from '../view/events-view.page';
+
+// APIkey
+import CONFIG from '../../../configs/config';
+
 @Component({
   selector: 'events-list-page',
   templateUrl: 'list.html'
 })
 export class EventsListPage {
+  // https://process.filestackapi.com/
+  imageAttrbutes: String = 'resize=width:400/output=f:png,q:70';
+  // imageAttrbutes: String = 'resize=width:400/blur=amount:1/quality=value:85';
+  bgImages: Array<String> = [
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/XOlUDhe6SxmVTdhSd1h2`, // ppl coffee notes tea
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/YjmteXrgSdz7QRG2P7Ng`, // hands ppl woman working
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/HPSLbqb3Qp6B8JV2So9Y`, // coffee desk notes workplace
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/UqH9EXiRtG7vLb48s7UN`, // ppl coffee tea meeting
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/LGRR8ub1SM2G6tDaEPTS`, // ppl woman coffee meeting
+  ];
+
   // loading & error message variables
   private emptyFilterErrMessage = errMessages.Events.filter.empty;
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
@@ -150,8 +165,10 @@ export class EventsListPage {
     let counts = events.length;
 
     _.forEach(events, (value, key) => {
-      let idx = (key % 5) + 1;
-      events[key].coverUrl = '/assets/img/static/event-cover-' + idx + '.jpg';
+      let idx = (key % 5);
+      events[key].coverUrl = this.bgImages[idx];
+      // let idx = (key % 5) + 1;
+      // events[key].coverUrl = '/assets/img/static/event-cover-' + idx + '.jpg';
     });
 
     return events;
