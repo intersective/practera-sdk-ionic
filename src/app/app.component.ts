@@ -39,10 +39,18 @@ export class MyApp implements OnInit {
     // when screen size changed, disable mobile landscape mode
     // keep desktop (including iPad) devices landscape mode
     window.onresize = (e) => {
-      if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
-        this.isMobile = true;
+      if(navigator.userAgent.includes("iPhone")){
+        if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+          this.isMobile = true;
+        }else {
+          this.isMobile = false;
+        }
       }else {
-        this.isMobile = false;
+        if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
+          this.isMobile = true;
+        }else {
+          this.isMobile = false;
+        }
       }
     };
   }
