@@ -66,7 +66,7 @@ export class GameService {
     ])
     .map((data: any[]) => {
       let characters = data[0];
-      let myCharacter = data[1].Characters;
+      let myCharacter = data[1].Characters || [];
       characters.MyCharacters = myCharacter
       return characters;
     });
