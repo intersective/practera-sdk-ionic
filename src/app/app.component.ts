@@ -16,7 +16,23 @@ import { MagicLinkPage } from '../pages/magic-link/magic-link';
   templateUrl: 'app.html',
 })
 export class MyApp implements OnInit {
-  public isMobile: boolean = ((screen.width < 512 && screen.width < screen.height) || screen.width >= 768) ? true : false;
+  initialStatus(){
+    if(navigator.userAgent.includes("iPhone")){
+      if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+        return true;
+      }else {
+        return false;
+      }
+    }else {
+      if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
+        return true;
+      }else {
+        return false;
+      }
+    }
+    
+  }
+  public isMobile: boolean = this.initialStatus();
   // rootPage: any = RegistrationPage;
   rootPage: any;
   urlParameters: Array<any> = [];
