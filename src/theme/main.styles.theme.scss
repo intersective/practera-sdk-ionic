@@ -564,11 +564,20 @@ event {
     align-items: center;
   }
   .score-board {
-    background-color: color($colors, secondary) !important; // default-theme
+    // background-color: color($colors, secondary) !important; // default-theme
+    background-color: #52d2f6;
     background-size: cover;
     text-align: center;
     .score-board-inner {
       height: 100%;
+    }
+    .tittle-logo {
+      color: #fff;
+      font-size: 50px;
+      font-weight: bolder;
+      text-align: left;
+      margin-left: 25%;
+      font-family: 'Museo-500';
     }
     ion-row:last-child {
       background-color: color($colors, secondary);
@@ -641,7 +650,7 @@ event {
             font-size: 22pt;
             font-weight: 600;
             padding: 5pt 0;
-            color: color($colors, palette-five, contrast);
+            color: #52d2f6;
           }
           p.link {
             color: color($colors, text, base);
