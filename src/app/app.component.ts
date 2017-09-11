@@ -23,6 +23,7 @@ export class MyApp implements OnInit {
   do = {
     'testing': TestPage,
     'registration': RegistrationPage,
+    'register': RegistrationPage,
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage
@@ -79,6 +80,6 @@ export class MyApp implements OnInit {
     }
   }
   ionViewDidLoad(){
-    
+
   }
 }
