@@ -1,6 +1,7 @@
 import { Injectable, Component, ViewChild } from '@angular/core';
 import { NavController, LoadingController, Slides } from 'ionic-angular';
-import { ActivitiesListPage } from '../../activities/list/list.page';
+import { SettingsPage } from '../settings.page';
+
 @Injectable()
 @Component({
   selector: 'tutorial-page',
@@ -8,11 +9,12 @@ import { ActivitiesListPage } from '../../activities/list/list.page';
 })
 export class TutorialPage {
   @ViewChild(Slides) slides: Slides;
-  public indexCounter: number = 0; 
+  public indexCounter: number = 0;
   public hideNextButton: boolean = false;
   constructor(public navCtrl: NavController){}
   goDashbaord() {
-    this.navCtrl.setRoot(ActivitiesListPage);
+    // Back to settings
+    this.navCtrl.setRoot(SettingsPage);
   }
   goPrev() {
     this.slides.slidePrev();
