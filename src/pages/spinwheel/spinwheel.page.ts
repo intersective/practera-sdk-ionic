@@ -101,6 +101,8 @@ export class SpinwheelPage implements OnInit {
     if (!this.cache.getLocal(cacheKey)) {
       let type = '';
       let character = this.cache.getLocalObject('character');
+      this.updateExp(character.experience_points);
+
       let chances = (this.getUnopened()).length;
 
       if (character.experience_points === 0) {
@@ -123,7 +125,11 @@ export class SpinwheelPage implements OnInit {
     this.statuses.spinOn = true;
 
     let character = this.cache.getLocalObject('character');
-    this.statuses.totalEP = character.experience_points || 0;
+    this.updateExp(character.experience_points);
+  }
+
+  updateExp(newPoints?) {
+    this.statuses.totalEP = newPoints || 0;
   }
 
   /**
@@ -410,7 +416,7 @@ export class SpinwheelPage implements OnInit {
     this.statuses.value += prize.value;
 
     let characterEP = this.cache.getLocalObject('character');
-    this.statuses.totalEP = characterEP.experience_points + this.statuses.newTotalEP; // display new total EP
+    this.statuses.totalEP += this.statuses.newTotalEP; // display new total EP
     this.openAlert({description: `Congratulations you’ve won ${prize.value} points.`});
   }
 
