@@ -30,7 +30,6 @@ export class MyApp implements OnInit {
         return false;
       }
     }
-    
   }
   public isMobile: boolean = this.initialStatus();
   // rootPage: any = RegistrationPage;
@@ -44,7 +43,6 @@ export class MyApp implements OnInit {
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage
   };
-
   @ViewChild('appNav') nav: NavController;
   constructor(
     platform: Platform,
@@ -55,22 +53,47 @@ export class MyApp implements OnInit {
     // when screen size changed, disable mobile landscape mode
     // keep desktop (including iPad) devices landscape mode
     window.onresize = (e) => {
+      let popoverDOM: any = document.querySelector("ion-popover");
+      let modelDOM: any = document.querySelector("ion-modal");
       if(navigator.userAgent.includes("iPhone")){
         if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
           this.isMobile = true;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 1;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 1;
+          }
         }else {
           this.isMobile = false;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 0;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 0;
+          }
         }
       }else {
         if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
           this.isMobile = true;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 1;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 1;
+          } 
         }else {
           this.isMobile = false;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 0;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 0;
+          }
         }
       }
     };
   }
-
   ngOnInit() {
     let category = [];
     let page;
