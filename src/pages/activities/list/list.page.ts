@@ -101,7 +101,7 @@ export class ActivitiesListPage implements OnInit {
     [317, 318, 319, 320],
     [321, 323, 322, 324],
     [0, 0, 0, 0],
-    [316, 316, 316, 316]
+    [326, 326, 326, 326]
   ];
   public show_score_act: any = [
     false,false,false,false,false,false,false
