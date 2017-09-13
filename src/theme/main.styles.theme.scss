@@ -699,6 +699,10 @@ event {
       ion-badge {
         width: 32px;
       }
+      .best-grade-color {
+        background-color: color($colors, palette-one, contrast);
+        border-radius: 18pt;
+      }
       .better-grade-color {
         background-color: color($colors, primary-button, base);
         border-radius: 18pt;
