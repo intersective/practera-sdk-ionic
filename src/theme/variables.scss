@@ -25,6 +25,7 @@ $primary-button: #3A74BA;
 $primary-text: #000054;
 
 $secondary-text: #000000;
+$dashboard-bg: #c9e9e6;
 $primary-bg: #EBEBEB;
 $secondary-bg: #ffffff;
 $border-primary: #dddddd;
@@ -117,6 +118,10 @@ $colors: (
   palette-five: (
     base: $secondary-palette-eight,
     contrast: $secondary-palette-eight
+  ),
+  dahsboard-bg: (
+    base: $dashboard-bg,
+    contrast: $primary-bg
   )
 );
 
