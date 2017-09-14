@@ -80,9 +80,11 @@ export class SpinwheelPage implements OnInit {
     private eventListener: Events
   ) {
     platform.ready().then(() => {
+      let width = platform.width();
+      width = (width <= 650) ? width : 650;
       this.canvas = {
-        width: platform.width() * 0.9,
-        height: platform.width(),
+        width: width * 0.9,
+        height: width,
       };
     });
     this.audio = new Audio();
@@ -217,8 +219,10 @@ export class SpinwheelPage implements OnInit {
   }
 
   private setCanvasSize() {
-    let width = this.platform.width(),
-      canvasWidth = width * 0.9,
+    let width = this.platform.width();
+    width = (width <= 650) ? width : 650;
+
+    let canvasWidth = width * 0.9,
       canvasHeight = width;
 
     // radius X 2 < max-width of ion-content
