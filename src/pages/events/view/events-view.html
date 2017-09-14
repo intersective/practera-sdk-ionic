@@ -53,18 +53,18 @@
     </ion-buttons>
 
     <ion-buttons end *ngIf="!loadings.checkin && event.remaining_capacity > 0">
-      <button ion-button *ngIf="!event.isBooked && event.isStarted" class="book-btn primary-button" (click)="book()">
-        {{ 'EVENTS.BOOK' | translate }}
-      </button>
-      <button ion-button *ngIf="!event.isBooked && !event.isStarted" class="book-btn primary-button" [attr.disabled]="!event.isStarted ? '' : null">
+      <button ion-button *ngIf="!event.isBooked" class="book-btn primary-button" (click)="book()">
         {{ 'EVENTS.BOOK' | translate }}
       </button>
 
-      <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="checkin-btn primary-button" (click)="checkin()">
-        <span *ngIf="completedSubmissions">
+      <button ion-button *ngIf="event.isBooked && allowCheckIn(event) && completedSubmissions" class="checkin-btn primary-button" (click)="checkin()">
+        <span>
           {{ 'EVENTS.VIEWCHECKIN' | translate }}
         </span>
-        <span *ngIf="!completedSubmissions">
+      </button>
+
+      <button ion-button *ngIf="event.isBooked && allowCheckIn(event) && !completedSubmissions" class="checkin-btn primary-button" [attr.disabled]="(!event.isStarted) ? 'true' : 'false'">
+        <span>
           {{ 'EVENTS.CHECKIN' | translate }}
         </span>
       </button>

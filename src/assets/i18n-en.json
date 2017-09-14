@@ -13,8 +13,8 @@
     "BOOK": "Book",
     "BROWSE": "Browse",
     "CANCELBOOKING": "Cancel Booking",
-    "CHECKIN": "Check-in",
-    "VIEWCHECKIN": "View Check-in",
+    "CHECKIN": "Check-out",
+    "VIEWCHECKIN": "View Check-out",
     "DOWNLOAD": "Download",
     "MYBOOKINGS": "My Bookings",
     "PAGETITLE": "Events"
