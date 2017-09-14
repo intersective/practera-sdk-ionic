@@ -30,29 +30,34 @@ export class SettingsPage {
   ) {}
   public settings = [];
   ionViewWillEnter() {
-    const loading = this.loadingCtrl.create();
-    loading.present();
+    if (this.navCtrl.getPrevious() !== undefined) {
+      // Move to dashboard
+      this.navCtrl.parent.select(0);
+    } else {
+      const loading = this.loadingCtrl.create();
+      loading.present();
 
-    let gameId = this.cache.getLocalObject('game_id');
-    this.gameService.getCharacters(gameId)
-      .subscribe((characters) => {
-        let me = characters.Characters[0];
-        console.log("me: ", me);
-        if(me.meta == null){
-          this.hideMe = false;
-        }
-        if(me.meta != null){
-          if (me.meta.private === 0) {
+      let gameId = this.cache.getLocalObject('game_id');
+      this.gameService.getCharacters(gameId)
+        .subscribe((characters) => {
+          let me = characters.Characters[0];
+          console.log("me: ", me);
+          if(me.meta == null){
             this.hideMe = false;
-          } else {
-            this.hideMe = true;
           }
-        }
-        loading.dismiss();
-      }, (err) => {
-        console.log('err', err);
-        loading.dismiss();
-      });
+          if(me.meta != null){
+            if (me.meta.private === 0) {
+              this.hideMe = false;
+            } else {
+              this.hideMe = true;
+            }
+          }
+          loading.dismiss();
+        }, (err) => {
+          console.log('err', err);
+          loading.dismiss();
+        });
+    }
   }
   public getUserEmail() {
     return this.cache.getLocalObject('email') || '';
