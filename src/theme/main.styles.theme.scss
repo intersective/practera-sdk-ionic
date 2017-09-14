@@ -564,8 +564,7 @@ event {
     align-items: center;
   }
   .score-board {
-    // background-color: color($colors, secondary) !important; // default-theme
-    background-color: #52d2f6;
+    background-color: color($colors, dahsboard-bg, base) !important; // default-theme
     background-size: cover;
     text-align: center;
     .score-board-inner {
@@ -650,7 +649,7 @@ event {
             font-size: 22pt;
             font-weight: 600;
             padding: 5pt 0;
-            color: #52d2f6;
+            color: color($colors, palette-five, base);
           }
           p.link {
             color: color($colors, text, base);
