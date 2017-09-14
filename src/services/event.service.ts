@@ -32,6 +32,9 @@ export class EventService {
       events[idx].startDisplay = moment.utc(event.start).local().format("dddd, MMM D [at] h:mm A");
       events[idx].startDisplayDate = moment.utc(event.start).local().format("dddd, MMM D");
       events[idx].startDisplayTime = moment.utc(event.start).local().format("h:mm A");
+      events[idx].endDisplay = moment.utc(event.end).local().format("dddd, MMM D [at] h:mm A");
+      events[idx].endDisplayDate = moment.utc(event.end).local().format("dddd, MMM D");
+      events[idx].endDisplayTime = moment.utc(event.end).local().format("h:mm A");
     });
 
     return events;
