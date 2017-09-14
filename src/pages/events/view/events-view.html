@@ -19,7 +19,7 @@
     <ion-row>
       <ion-col col-6 class="info">
         <p><b>{{ event.startDisplayDate }}</b></p>
-        <p><b>{{ event.startDisplayTime ? 'at ' + event.startDisplayTime : '' }}</b></p>
+        <p><b>{{ event.startDisplayTime ? 'at ' + event.startDisplayTime : '' }} {{ event.endDisplayTime ? ' - ' + event.endDisplayTime : '' }}</b></p>
         <p class="lighter">{{ event.location }}</p>
         <p class="lighter">{{ event.activity.name }}</p>
       </ion-col>
