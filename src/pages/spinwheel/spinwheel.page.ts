@@ -44,7 +44,7 @@ export class SpinwheelPage implements OnInit {
       'direction': 'clockwise',
       'propertyName': 'rotationAngle',
       'easing'   : 'Power4.easeOut',
-      'duration' : 10, // Duration in seconds.
+      'duration' : 13, // Duration in seconds.
       'spins'    : 3, // Default number of complete spins.
     }
   };
@@ -284,11 +284,15 @@ export class SpinwheelPage implements OnInit {
   }
 
   tapSpin() {
-    this.spin();
+    if (this.statuses.isSpinning === false) {
+      this.spin();
+    }
   }
 
   swipeSpin() {
-    this.spin();
+    if (this.statuses.isSpinning === false) {
+      this.spin();
+    }
   }
 
   stopAnimation() {
@@ -337,6 +341,7 @@ export class SpinwheelPage implements OnInit {
     this.wheel.rotationAngle = 0; // reset starting point of spinner
     this.startAnimation();*/
 
+    this.statuses.isSpinning = true;
     let loading = this.loadingCtrl.create({
       content: loadingMessages.LoadingSpinner.loading
     }),
@@ -431,13 +436,11 @@ export class SpinwheelPage implements OnInit {
     let onComplete = () => {
       this.statuses.isSpinning = false;
       this.statuses.isCompleted = true;
-
       this.stopAnimation();
       this.finaliseSpinner();
     };
 
     // template logic
-    this.statuses.isSpinning = true;
     this.statuses.chances -= 1;
 
     // Call function to compute the animation properties.
