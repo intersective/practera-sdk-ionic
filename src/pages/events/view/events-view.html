@@ -53,7 +53,10 @@
     </ion-buttons>
 
     <ion-buttons end *ngIf="!loadings.checkin && event.remaining_capacity > 0">
-      <button ion-button *ngIf="!event.isBooked" class="book-btn primary-button" (click)="book()">
+      <button ion-button *ngIf="!event.isBooked && event.isStarted" class="book-btn primary-button" (click)="book()">
+        {{ 'EVENTS.BOOK' | translate }}
+      </button>
+      <button ion-button *ngIf="!event.isBooked && !event.isStarted" class="book-btn primary-button" [attr.disabled]="!event.isStarted ? '' : null">
         {{ 'EVENTS.BOOK' | translate }}
       </button>
 

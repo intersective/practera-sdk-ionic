@@ -70,6 +70,12 @@ export class EventsViewPage {
     if (this.event) {
       this.bookingStatus = this.availability(this.event);
     }
+
+    if (moment().isAfter(this.event.start)) {
+      this.event.isStarted = true;
+    } else {
+      this.event.isStarted = false;
+    }
   }
 
   ionViewDidEnter() {
