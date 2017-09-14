@@ -36,7 +36,7 @@
       </ion-item>
       <ion-item col-2 class="badge-default">
         <ion-badge *ngIf="eachScore != -1" 
-          [ngClass]="eachScore > 2 ? 'better-grade-color' : 'worse-grade-color'">
+          [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
           {{ eachScore }}
         </ion-badge>
         <button *ngIf="eachScore == -1">

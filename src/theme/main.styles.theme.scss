@@ -388,13 +388,22 @@ $title-font: 'Arvo';
     margin-bottom: 0.1rem;
     .info {
       > p {
-        margin: 0.5em;
+        margin: 4px 0 0 4px;
       }
+    }
+  }
+  .details-description {
+    ion-item {
+      padding-left: 10px;
     }
   }
   .download {
     border-top: $events-download-btn;
     border-bottom: $events-download-btn;
+    margin: 16px 0px;
+    button {
+      padding-left: 10px;
+    }
   }
   .book-btn {
     @include bookBtn;
@@ -492,13 +501,13 @@ event {
     height: 100%;
   }
   .event-details {
-    padding: 8px 8px;
+    padding: 7px;
     font-family: $font-primary; // default-theme
     font-size: 14px;
     line-height: 20px;
   }
   .event-logo {
-    padding: 8px 8px;
+    padding: 7px;
   }
 }
 // 9. General Dashboard Page Styling
@@ -697,6 +706,10 @@ event {
       }
       ion-badge {
         width: 32px;
+      }
+      .best-grade-color {
+        background-color: color($colors, palette-one, contrast);
+        border-radius: 18pt;
       }
       .better-grade-color {
         background-color: color($colors, primary-button, base);
