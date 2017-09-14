@@ -49,8 +49,9 @@
   padding: 0 0.4em;
   height: 3.2rem;
   font-size: 1.2rem;
-  color: color($colors, button, base); // default-theme
-  border-color: color($colors, button, base); // default-theme
+  // color: color($colors, button, base); // default-theme
+  // border-color: color($colors, button, base); // default-theme
+  background-color: transparent;
 }
 @mixin checkinBtn {
   @include eventBtn;
