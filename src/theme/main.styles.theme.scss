@@ -410,24 +410,20 @@ $title-font: 'Arvo';
   }
   .cancel-btn {
     @include cancelBtn;
-    border-color: color($colors, secondary, base);
+    border: none;
+    text-decoration: underline;
   }
   .cancel-btn:hover,
   .cancel-btn:focus,
   .cancel-btn:active {
-    background-color: color($colors, secondary, base); // default-theme
-    color: color($colors, button, base); // default-theme
-    border-color: color($colors, button, base); // default-theme
+    border: none;
+    color: color($colors, text, base); // default-theme
   }
   .checkin-btn {
     @include checkinBtn;
   }
   .checkin-btn,
-  .book-btn,
-  .cancel-btn,
-  .cancel-btn:hover,
-  .cancel-btn:focus,
-  .cancel-btn:active {
+  .book-btn {
     background-color: color($colors, primary-button, base) !important;
     color: color($colors, black) !important;
   }

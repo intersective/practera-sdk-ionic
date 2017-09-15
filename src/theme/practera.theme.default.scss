@@ -324,14 +324,17 @@ $font-secondary: Arial, "Helvetica Neue", Helvetica, sans-serif;
   }
   .cancel-btn {
     @include cancelBtn;
-    border-color: color($colors, secondary, base);
+    // border-color: color($colors, secondary, base);
+    border: none;
+    text-decoration: underline;
   }
   .cancel-btn:hover,
   .cancel-btn:focus,
   .cancel-btn:active {
-    background-color: color($colors, secondary, base); // default-theme
-    color: color($colors, button, base); // default-theme
-    border-color: color($colors, button, base); // default-theme
+    // background-color: color($colors, secondary, base); // default-theme
+    color: color($colors, text, base); // default-theme
+    // border-color: color($colors, button, base); // default-theme
+    border: none;
   }
   .checkin-btn {
     @include checkinBtn;
