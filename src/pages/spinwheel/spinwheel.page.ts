@@ -44,7 +44,7 @@ export class SpinwheelPage implements OnInit {
       'direction': 'clockwise',
       'propertyName': 'rotationAngle',
       'easing'   : 'Power4.easeOut',
-      'duration' : 10, // Duration in seconds.
+      'duration' : 13, // Duration in seconds.
       'spins'    : 3, // Default number of complete spins.
     }
   };
@@ -80,9 +80,11 @@ export class SpinwheelPage implements OnInit {
     private eventListener: Events
   ) {
     platform.ready().then(() => {
+      let width = platform.width();
+      width = (width <= 650) ? width : 650;
       this.canvas = {
-        width: platform.width() * 0.9,
-        height: platform.width(),
+        width: width * 0.9,
+        height: width,
       };
     });
     this.audio = new Audio();
@@ -217,8 +219,10 @@ export class SpinwheelPage implements OnInit {
   }
 
   private setCanvasSize() {
-    let width = this.platform.width(),
-      canvasWidth = width * 0.9,
+    let width = this.platform.width();
+    width = (width <= 650) ? width : 650;
+
+    let canvasWidth = width * 0.9,
       canvasHeight = width;
 
     // radius X 2 < max-width of ion-content
@@ -284,11 +288,15 @@ export class SpinwheelPage implements OnInit {
   }
 
   tapSpin() {
-    this.spin();
+    if (this.statuses.isSpinning === false) {
+      this.spin();
+    }
   }
 
   swipeSpin() {
-    this.spin();
+    if (this.statuses.isSpinning === false) {
+      this.spin();
+    }
   }
 
   stopAnimation() {
@@ -337,6 +345,7 @@ export class SpinwheelPage implements OnInit {
     this.wheel.rotationAngle = 0; // reset starting point of spinner
     this.startAnimation();*/
 
+    this.statuses.isSpinning = true;
     let loading = this.loadingCtrl.create({
       content: loadingMessages.LoadingSpinner.loading
     }),
@@ -431,13 +440,11 @@ export class SpinwheelPage implements OnInit {
     let onComplete = () => {
       this.statuses.isSpinning = false;
       this.statuses.isCompleted = true;
-
       this.stopAnimation();
       this.finaliseSpinner();
     };
 
     // template logic
-    this.statuses.isSpinning = true;
     this.statuses.chances -= 1;
 
     // Call function to compute the animation properties.
