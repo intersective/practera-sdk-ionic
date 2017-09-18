@@ -9,7 +9,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-list *ngIf="listRankingData !== 0">
+  <ion-list *ngIf="listRankingData !== 0" class="general-ranking">
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
       <span [ngClass]="{'muted': !listData.name}">

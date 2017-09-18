@@ -545,8 +545,21 @@ rankings-details-page {
   }
 }
 rankings-list-page {
-  .scroll-content {
-    bottom: 53px;
+  .list-md > .item-block:first-child,
+  .list-ios > .item-block:first-child,
+  .list-md > .item-block:last-child,
+  .list-ios > .item-block:last-child {
+    border: none;
+  }
+  .general-ranking {
+    ion-item:last-child {
+      margin-bottom: 53px;
+    }
+  }
+  .my-ranking {
+    ion-item:last-child {
+      margin-bottom: 0px;
+    }
   }
 }
 .rankings {
