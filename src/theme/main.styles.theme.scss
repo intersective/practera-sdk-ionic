@@ -915,9 +915,25 @@ assessments-page {
   }
 }
 // 16. Rankings Page Styling
+rankings-details-page {
+  .scroll-content {
+    bottom: 0px;
+  }
+}
+rankings-list-page {
+  .scroll-content {
+    bottom: 53px;
+  }
+}
 .rankings {
-  ion-list:first-child {
-    margin-bottom: 5px;
+  ion-footer {
+    position: fixed;
+    bottom: 53px;
+    ion-toolbar {
+      padding: 0px;
+      height: 53px;
+      background: color($colors, background, contrast);
+    }
   }
   ion-list {
     margin: 0px;
