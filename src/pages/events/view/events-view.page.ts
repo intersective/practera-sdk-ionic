@@ -71,10 +71,9 @@ export class EventsViewPage {
       this.bookingStatus = this.availability(this.event);
     }
 
+    this.event.isStarted = false;
     if (moment().isAfter(this.event.start)) {
       this.event.isStarted = true;
-    } else {
-      this.event.isStarted = false;
     }
   }
 
