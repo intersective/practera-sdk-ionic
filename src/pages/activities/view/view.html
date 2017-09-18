@@ -72,27 +72,29 @@
     </ion-item>
     <ion-item class="submissions-information" *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
-        <ion-col align-self-start>
-          <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2>
+        <ion-item class="submission-title" col-10>
+          <!-- <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2> -->
+          <h2 *ngIf='!submissionTitles[i].inprogress'>{{ submissionTitle[i] | truncate: 50 || 'Waiting for feedback' }}</h2>
           <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
-        </ion-col>
-        <p align-self-end class="note">
+        </ion-item>
+        <ion-item class="note" col-2>
           <button block class="pendingbutton">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </button>
-        </p>
+        </ion-item>
       </ion-row>
       <ion-row *ngIf='submissionTitles[i].published'>
-        <ion-col align-self-start>      
-          <h2>{{ submissionTitles[i].result_name }}</h2>
+        <ion-item class="submission-title" col-10>      
+          <!-- <h2>{{ submissionTitles[i].result_name }}</h2> -->
+          <h2>{{ submissionTitle[i] | truncate: 50 || submissionTitles[i].result_name }}</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
-        </ion-col>
-        <p align-self-end class="note">
+        </ion-item>
+        <ion-item class="note" col-2>
           <ion-badge [ngClass]="{'best-grade-color': submissionTitles[i].result_score >= 3.5, 'better-grade-color': (submissionTitles[i].result_score < 3.5 && submissionTitles[i].result_score >= 2), 'worse-grade-color': submissionTitles[i].result_score < 2 }">
             {{ submissionTitles[i].result_score }}
           </ion-badge>
-        <p>
+        </ion-item>
       </ion-row>
     </ion-item>
   </ion-list>

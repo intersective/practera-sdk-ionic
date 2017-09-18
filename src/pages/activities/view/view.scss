@@ -137,11 +137,26 @@
       h2, p {
         font-family: 'Museo-500';
       }
+      ion-label {
+        margin: 6px 0px;
+      }
+      .submission-title {
+        ion-label {
+          white-space: normal !important;
+        }
+      }
+      .submission-title,
+      .note {
+        .item-inner {
+          border: none;
+        }
+      }
     }
     .note {
       display: flex;
       justify-content: center;
       align-items: center;
+      text-align: right;
       ion-badge {
         border-radius: 18pt;
         width: 32px;

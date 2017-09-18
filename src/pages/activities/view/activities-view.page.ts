@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+// pipes
+import { TruncatePipe } from '../../../pipes/truncate.pipe';
 // pages
 import { ActivityAchievementModalPage } from './activity-achievement.modal.page';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
@@ -17,6 +19,7 @@ export class ActivitiesViewPage {
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
+  public submissionTitle: any = [];
   public tickArray: any = [];
   public newTickArray: any = [];
   public tickedCount: any = 0;
@@ -118,7 +121,10 @@ export class ActivitiesViewPage {
           this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
         }
       });
-      this.submissionTitles = this.getSubmissionTitle(this.submissions);
+      this.submissionTitles = this.getSubmissionStatus(this.submissions);
+      console.log("this.submissionTitles : ", this.submissionTitles);
+      this.submissionTitle = this.getSubmissionTitle(this.submissions);
+      console.log("this.submissionTitle: ", this.submissionTitle);
       this.loadings.submissions = false;
     });
     // badges
@@ -204,13 +210,13 @@ export class ActivitiesViewPage {
       });
     }
   }
-  getSubmissionTitle(Submissions){
+  getSubmissionStatus(Submissions){
     let result: any = [];
     let result_name = "";
     let result_score = 0;
     let published = false;
     let inprogress = false
-    for (let index = 0; index<Submissions.length; index++){
+    for (let index = 0; index < Submissions.length; index++){
       if (Submissions[index].status == "published"){
         published = true;
         inprogress = false;
@@ -255,6 +261,33 @@ export class ActivitiesViewPage {
       result.push(result_single);
     }
     return result;
+  }
+  getSubmissionTitle(Submissions){
+    let assessment_question_id: any = "0";
+    if(Submissions[0].assessment_id == "2044"){
+      assessment_question_id = "20595";
+    }else if(Submissions[0].assessment_id == "2045"){
+      assessment_question_id = "20606";
+    }else if(Submissions[0].assessment_id == "2046"){
+      assessment_question_id = "20617";  
+    }else if(Submissions[0].assessment_id == "2058"){
+      assessment_question_id = "20686";
+    }else if(Submissions[0].assessment_id == "2059"){
+      assessment_question_id = "20697";
+    }else if(Submissions[0].assessment_id == "2049"){
+      assessment_question_id = "20656";
+    }else if(Submissions[0].assessment_id == "2050"){
+      assessment_question_id = "20661";
+    }
+    // console.log("assessment_question_id: ", assessment_question_id);
+    _.forEach(Submissions, (element, index) => {
+      _.forEach(element.answer, (ele, index) => {
+        if(ele.assessment_question_id == assessment_question_id) {
+          this.submissionTitle.push(ele.answer);
+        }
+      })
+    })
+    return this.submissionTitle;
   }
   badgeData(){
     _.forEach(this.newTickArray, (element, index) => {
