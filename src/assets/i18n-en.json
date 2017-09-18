@@ -17,7 +17,8 @@
     "VIEWCHECKIN": "View Check-out",
     "DOWNLOAD": "Download",
     "MYBOOKINGS": "My Bookings",
-    "PAGETITLE": "Events"
+    "PAGETITLE": "Events",
+    "ALL": "All"
   },
   "FORGOTPASSWORD": {
     "INPUTTITLE": "Please enter your email address to reset password",

@@ -27,7 +27,7 @@
       <ion-col col-12>
         <ion-segment [(ngModel)]="filterLocation">
           <ion-segment-button value="all" (ionSelect)="selectedLocation('all')">
-            All
+            {{ 'EVENTS.ALL' | translate }}
           </ion-segment-button>
           <ion-segment-button
             *ngFor="let location of locations; let i = index"

@@ -135,8 +135,6 @@ export class EventsListPage {
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
           this.locations = this._extractLocations(this.loadedEvents);
 
-          console.log('this.locations', this.locations)
-
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
           this.filterEvents();
