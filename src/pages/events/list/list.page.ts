@@ -44,6 +44,8 @@ export class EventsListPage {
   events = []; // ordered events array in filterEvents and to be access through template
   noEvents = false;
   filter = 'browses';
+  filterLocation = 'all';
+  locations = [];
 
   /**
    * @name filterEvents
@@ -76,6 +78,11 @@ export class EventsListPage {
         }), 'start', 'asc');
         break;
     }
+
+    if (this.filterLocation !== 'all') {
+      this.events = _.filter(this.events, ['location', this.filterLocation]);
+    }
+
     if (this.events.length === 0) {
       this.noEvents = true;
     }
@@ -85,6 +92,11 @@ export class EventsListPage {
   // Called when tap on filter tab
   selected(filter) {
     this.filter = filter;
+    this.events = this.filterEvents();
+  }
+
+  selectedLocation(filter) {
+    this.filterLocation = filter;
     this.events = this.filterEvents();
   }
 
@@ -121,6 +133,9 @@ export class EventsListPage {
           // loadedEvents will never change (private use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
+          this.locations = this._extractLocations(this.loadedEvents);
+
+          console.log('this.locations', this.locations)
 
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
@@ -172,6 +187,15 @@ export class EventsListPage {
     });
 
     return events;
+  }
+
+  /**
+   * @name _extractLocations
+   * @description Extract uniq location from events
+   * @param {array} events list of event object respond from get_events API
+   */
+  private _extractLocations(events) {
+    return _.map(_.uniqBy(events, 'location'), 'location');
   }
 
   /**

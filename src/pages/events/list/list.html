@@ -22,6 +22,24 @@
         </ion-segment>
       </ion-col>
     </ion-row>
+
+    <ion-row>
+      <ion-col col-12>
+        <ion-segment [(ngModel)]="filterLocation">
+          <ion-segment-button value="all" (ionSelect)="selectedLocation('all')">
+            All
+          </ion-segment-button>
+          <ion-segment-button
+            *ngFor="let location of locations; let i = index"
+            [value]="location"
+            (ionSelect)="selectedLocation(location)"
+          >
+            {{ location }}
+          </ion-segment-button>
+        </ion-segment>
+      </ion-col>
+    </ion-row>
+
   </ion-grid>
   <ion-list>
     <ion-card *ngIf="showNoEventMessage()">
