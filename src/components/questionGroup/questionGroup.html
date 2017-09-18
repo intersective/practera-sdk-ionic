@@ -9,25 +9,25 @@
       <ion-col text-left *ngIf="group.totalRequiredQuestions === 0">
         <ion-badge color="background" class="incomplete">Optional</ion-badge>
       </ion-col>
-      <ion-col text-right>
+      <ion-col>
         <div class="description" [innerHTML]="group.description | keepHtml"></div>
+
         <div class="status feedback-available" *ngIf="
           group.submission &&
           group.submission.status === 'published' &&
-          group.status === 'reviewed'
-        ">
+          group.status === 'reviewed' ">
           Feedback Available
         </div>
+
         <div class="status completed" *ngIf="
           group.status === 'completed' &&
-          (!group.submission || group.submission.status === 'in progress')
-        ">
+          (!group.submission || group.submission.status === 'in progress') ">
           Completed
         </div>
+
         <div class="status incomplete" *ngIf="
           group.status === 'incomplete' &&
-          (!group.submission || group.submission.status === 'in progress')
-        ">
+          (!group.submission || group.submission.status === 'in progress') ">
           Incomplete
         </div>
       </ion-col>

@@ -73,8 +73,6 @@ export class AssessmentsPage {
     if (!this.activity) {
       throw "Fatal Error: Activity not available";
     }
-
-    console.log('this.activity', this.activity);
   }
 
   ionViewWillEnter() {
@@ -234,7 +232,6 @@ export class AssessmentsPage {
             // }
           });
 
-          console.log('questionsStatus', questionsStatus);
           // get final status by checking all questions' statuses
           let status = 'incomplete';
           if (_.every(questionsStatus, (v) => {
@@ -450,7 +447,6 @@ export class AssessmentsPage {
             let currentSubmission = this.navParams.get('currentSubmission');
             if (currentSubmission) {
               this.submissions = [currentSubmission];
-              console.log(this.navParams.get('currentSubmission'), this.submissions);
             }
 
             // pull new when submission is updated or currentSubmission is empty
@@ -642,6 +638,7 @@ export class AssessmentsPage {
           }
         );
   }
+
   gotoAssessment(assessmentGroup, activity) {
     this.navCtrl.push(AssessmentsGroupPage, {
       assessmentGroup,
