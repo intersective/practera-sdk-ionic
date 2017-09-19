@@ -73,8 +73,8 @@
     <ion-item class="submissions-information" *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>
-          <!-- <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2> -->
-          <h2 *ngIf='!submissionTitles[i].inprogress'>{{ submissionTitle[i] | truncate: 50 || 'Waiting for feedback' }}</h2>
+          <!-- <h2 *ngIf='!submissionTitles[i].inprogress'>{{ submissionTitle[i] | truncate: 50 || 'Waiting for feedback' }}</h2> -->
+          <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for feedback</h2>
           <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
@@ -86,7 +86,6 @@
       </ion-row>
       <ion-row *ngIf='submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>      
-          <!-- <h2>{{ submissionTitles[i].result_name }}</h2> -->
           <h2>{{ submissionTitle[i] | truncate: 50 || submissionTitles[i].result_name }}</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
