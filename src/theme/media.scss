@@ -1,0 +1,74 @@
+// disable landscape
+.disable-landscape {
+  .scroll-content {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      margin: 0 auto;
+      display: block;
+    }
+    p {
+      font-size: 17pt;
+      padding: 0 20pt;
+    }
+  }
+}
+
+// For iphone 5 sized device
+@media screen and (max-width: 321px) {
+  // general login registration and reset password
+  img.left-image {
+    max-width: 15% !important;
+    left: 42.5% !important;
+    top: 0px;
+  }
+  img.right-image {
+    max-width: 15% !important;
+    left: 42.5% !important;
+    bottom: 0px;
+  }
+}
+
+// landscape activity list view
+@media screen and (min-width: 500px) {
+  // general login registration and reset password
+  img.left-image {
+    max-width: 25% !important;
+    left: 37.5% !important;
+    top: 0px;
+  }
+  img.right-image {
+    max-width: 25% !important;
+    left: 37.5% !important;
+    bottom: 0px;
+  }
+  .main-logo {
+    max-width: 55% !important;
+    margin: 0 auto;
+    display: block;
+  }
+  .general-form {
+    padding: 0 15%;
+  }
+  p.login-welcome-text {
+    padding: 0 10%;
+  }
+  // general dashboard
+  .score-board {
+    display: inline-block;
+    .col {
+      .score-inner-box {
+        display: inline-block;
+        height: 80% !important;
+        padding: 0 !important;
+        margin: 2% !important;
+        div {
+          display: inline-block;
+          padding: 0 !important;
+        }
+      }
+    }
+  }
+}

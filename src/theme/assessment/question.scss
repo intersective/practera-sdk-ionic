@@ -1,0 +1,29 @@
+.file-question {
+  ion-list {
+    margin: 0px;
+  }
+  .uploaded,
+  .unuploaded,
+  .file-description {
+    padding-left: 0px;
+  }
+  .unuploaded,
+  .item-inner {
+    border: none !important;
+  }
+  .upload-button {
+    background-color: color($colors, primary-button, base);
+    color: color($colors, text, contrast);
+  }
+}
+.feedback {
+  ion-card {
+    width: 100%;
+    margin: 12px 0px;
+  }
+}
+.general-textarea {
+  padding: 0px;
+  width: 100%;
+  resize: none;
+}

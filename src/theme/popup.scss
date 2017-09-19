@@ -1,0 +1,36 @@
+
+.items-popup {
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  .items-popup-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .tutorial-slides p {
+      margin-top: 12pt;
+      font-size: 12pt;
+      text-align: center;
+      padding: 12px 24pt !important;
+    }
+    .tutorial-slides img {
+      width: 50%;
+      display: block;
+      margin: 0 auto;
+    }
+    .tutorial-slides .swiper-pagination {
+      bottom: 0px;
+    }
+    .general-circle-btn {
+      width: 80% !important;
+      margin-top: 12pt;
+      margin-left: 10%;
+      padding: 12pt;
+      background-color: color($colors, primary-button, base) !important;
+      color: color($colors, text, contrast) !important;
+      font-size: 14pt;
+      border-radius: 30pt;
+    }
+  }
+}
