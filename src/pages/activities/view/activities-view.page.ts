@@ -122,9 +122,7 @@ export class ActivitiesViewPage {
         }
       });
       this.submissionTitles = this.getSubmissionStatus(this.submissions);
-      console.log("this.submissionTitles : ", this.submissionTitles);
       this.submissionTitle = this.getSubmissionTitle(this.submissions);
-      console.log("this.submissionTitle: ", this.submissionTitle);
       this.loadings.submissions = false;
     });
     // badges
@@ -279,7 +277,6 @@ export class ActivitiesViewPage {
     }else if(Submissions[0].assessment_id == "2050"){
       assessment_question_id = "20661";
     }
-    // console.log("assessment_question_id: ", assessment_question_id);
     _.forEach(Submissions, (element, index) => {
       _.forEach(element.answer, (ele, index) => {
         if(ele.assessment_question_id == assessment_question_id) {
