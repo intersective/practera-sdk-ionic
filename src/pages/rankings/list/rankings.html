@@ -4,7 +4,7 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="rankings">
-  <ion-list *ngIf="isEmptyList === false">
+  <ion-list *ngIf="listRankingData !== 0">
     <ion-item *ngFor="let listData of listRankingData">
       <div item-start>
         {{ listData.rank }}
@@ -18,21 +18,19 @@
     </ion-item>
   </ion-list>
 
-  <ion-list *ngIf="isEmptyList === true" no-lines>
-    <ion-item>
-      {{ rankingListEmpty }}
-    </ion-item>
-  </ion-list>
-
-  <ion-list class="my-ranking" *ngIf="isEmptyList === false">
-    <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
-      <div item-start>
-        {{ myRankingData.rank }}
-      </div>
-      {{ 'RANKING.ME' | translate }}
-      <div item-end>
-        <b>{{ myRankingData.experience_points }}</b>
-      </div>
-    </ion-item>
-  </ion-list>
+  <ion-footer>
+    <ion-toolbar>
+      <ion-list class="my-ranking" no-lines>
+        <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
+          <div item-start>
+            {{ myRankingData.rank }}
+          </div>
+          {{ 'RANKING.ME' | translate }}
+          <div item-end>
+            <b>{{ myRankingData.experience_points || 0 }}</b>
+          </div>
+        </ion-item>
+      </ion-list>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>
