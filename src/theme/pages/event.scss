@@ -1,0 +1,155 @@
+// 8. General Event Page Styling
+.events {
+  // background-color: color($colors, secondary, base);
+
+  .list:first-child {
+    margin-bottom: 0;
+  }
+  .title-background {
+    height: 10em;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    .title {
+      color: white;
+      font-size: 3.5rem;
+      white-space: normal;
+      text-shadow: 0 0 1px black;
+    }
+    .status {
+      position: relative;
+    }
+    .tag {
+      position: fixed;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      font-size: 1.3rem;
+      margin-top: 1rem;
+      padding: 0.4rem;
+      right: 0;
+      top: 0;
+      background-color: color($colors, primary, base); // default-theme
+      color: color($colors, secondary, base);
+    }
+  }
+  .details {
+    border-bottom: 0.5px solid rgba(128, 128, 128, 0.2);
+    margin-bottom: 0.1rem;
+    .info {
+      > p {
+        margin: 4px 0 0 4px;
+      }
+    }
+  }
+  .details-description {
+    ion-item {
+      padding-left: 10px;
+    }
+  }
+  .download {
+    border-top: $events-download-btn;
+    border-bottom: $events-download-btn;
+    margin: 16px 0px;
+    button {
+      padding-left: 10px;
+    }
+  }
+  .book-btn {
+    @include bookBtn;
+  }
+  .cancel-btn {
+    @include cancelBtn;
+    border: none;
+    text-decoration: underline;
+  }
+  .cancel-btn:hover,
+  .cancel-btn:focus,
+  .cancel-btn:active {
+    border: none;
+    color: color($colors, text, base); // default-theme
+  }
+  .checkin-btn {
+    @include checkinBtn;
+  }
+  .checkin-btn,
+  .book-btn {
+    background-color: color($colors, primary-button, base) !important;
+    color: color($colors, black) !important;
+  }
+  .lighter {
+    opacity: 0.7;
+  }
+}
+
+
+// single event card styling
+ion-card.rounded {
+  border-radius: 4px;
+}
+event {
+  ion-card-content.with-cover {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    width: 100%;
+    height: 124px;
+    line-height: 124px;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    .event-booked-tag {
+      background-color: color($colors, primary, base); // default-theme
+      color: color($colors, secondary, base);
+      padding: 5px 10px;
+      border-bottom-left-radius: 5px;
+      border-top-left-radius: 5px;
+      position: absolute;
+      right: 0;
+      margin-top: -30px;
+      margin-right: 12px;
+    }
+  }
+  .event-status {
+    position:relative;
+  }
+  .event-tag {
+    position: absolute;
+    padding: 5.1px;
+    font-size: 12px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-top: 10px;
+    right: 0;
+  }
+  .event-booked-tag,
+  .event-attended-tag {
+    background-color: color($colors, primary, base); // default-theme
+    color: color($colors, secondary, base);
+  }
+  .event-title {
+    // padding: 13px 16px 14px 16px;
+    font-size: 32px;
+    color: white;
+    font-family: $font-primary; // default-theme
+    text-align: center;
+
+    // background tint (contrast title text)
+    background: radial-gradient(rgba(0, 0, 0, 0.2), transparent);
+    background-size: cover;
+    background-position: center;
+
+    font-size: 32px;
+    width: inherit;
+    height: 100%;
+  }
+  .event-details {
+    padding: 7px;
+    font-family: $font-primary; // default-theme
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .event-logo {
+    padding: 7px;
+  }
+}

@@ -1,0 +1,21 @@
+.ahievements-popup {
+  .scroll-content {
+    overflow: hidden !important;
+  }
+  .popup-contents {
+    .badge-image {
+      margin: 10% auto;
+      display: block;
+      width: 30%;
+      height: 30%;
+    }
+    .badge-points {
+      border-top: 1px solid color($colors, border, base);
+      border-bottom: 1px solid color($colors, border, base);
+      line-height: 40px;
+      span:last-child {
+        float: right;
+      }
+    }
+  }
+}

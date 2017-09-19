@@ -1,0 +1,20 @@
+assessments-page {
+  ion-card.no-box-shadow {
+    box-shadow: none;
+    ion-card-content {
+      padding-bottom: 0px;
+    }
+  }
+  .btn-submit[disabled] {
+    display: none;
+  }
+  .assessment-title {
+    font-weight: bold;
+    font-family: 'Museo-500';
+    color: color($colors, primary);
+    text-transform: uppercase;
+  }
+  .assessment-description {
+    padding: 14px 0 0;
+  }
+}

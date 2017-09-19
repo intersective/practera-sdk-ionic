@@ -1,156 +1,142 @@
-// http://ionicframework.com/docs/v2/theming/
 
+// 1.1 General Color Variables
+$events-download-btn: 1px $border-primary solid;
+// 1.2 General Font Variables
+@font-face {
+  font-family: 'Museo-300';
+  src: url('/assets/fonts/Museo-300.woff') format('woff');
+}
+@font-face {
+  font-family: 'Museo-500';
+  src: url('/assets/fonts/Museo-500.woff') format('woff');
+}
+@font-face {
+  font-family: 'Museo-700';
+  src: url('/assets/fonts/Museo-700.woff') format('woff');
+}
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
 
-// App Shared Imports
-// --------------------------------------------------
-// These are the imports which make up the design of this app.
-// By default each design mode includes these shared imports.
-// App Shared Sass variables belong in app.variables.scss.
-
-// @import "../pages/page1/page1";
-// @import "../pages/page2/page2";
-// @import "../pages/page3/page3";
-
-* {
+// $font-primary: 'Roboto';
+$font-primary: Arial, "Helvetica Neue", Helvetica, sans-serif;
+// $font-secondary: 'Raleway';
+$font-secondary: Arial, "Helvetica Neue", Helvetica, sans-serif;
+// new font
+@import url('https://fonts.googleapis.com/css?family=Arvo|Cabin|Zilla+Slab+Highlight');
+$title-font: 'Arvo';
+// 3. General Tab Styling
+.tab-color {
+  background-color: color($colors, primary, base);
+  color: color($colors, secondary, base);
+}
+.flex-display {
+  display: flex;
+}
+// 4. General Text styling
+.app-title {
   font-family: $font-primary;
-  // color: color($colors, text, base);
-}
-
-
-.showfull > textarea {
-  width: 100%;
-  overflow: visible !important;
-  resize: none;
-}
-
-/* Utilities */
-.title-wrap {
-  overflow: inherit;
-  text-overflow: none;
-  white-space: pre-wrap;
-}
-
-.inset {
-  &-header {
-    font-weight: 500;
-    font-size: 14px;
-    opacity: 0.7;
-    padding: 2% 3% 1%;
-    margin-bottom: -4px;
-  }
-
-  &-description {
-    font-weight: 400;
-    font-size: 14px;
-    opacity: 0.4;
-    padding: 2% 3% 1%;
-    margin-bottom: -4px;
-  }
-}
-
-.text-center {
+  font-size: 1.7rem;
+  font-weight: 600;
   text-align: center;
 }
-
-.text-small {
-  font-size: 70%;
+.card-title {
+  font-family: $font-primary;
+  font-size: 32px;
 }
-
-.pull-right {
-  float: right !important;
+.general-text {
+  font-family: $font-primary;
+  font-size: 1.3rem;
 }
-.pull-left {
-  float: left !important;
+.line-break {
+  word-break: break-word;
 }
-
-.spacer {
-  margin: 10px;
-  &-bg {
-    margin: 20px;
-  }
-
-  &-top {
-    margin-top: 10px;
-    &-bg {
-      margin-top: 20px;
-    }
-    &-sm {
-      margin-top: 5px;
-    }
-    &-xs {
-      margin-top: 1px;
-    }
-  }
-
-  &-bottom {
-    margin-bottom: 10px;
-    &-bg {
-      margin-bottom: 20px;
-    }
-    &-sm {
-      margin-bottom: 5px;
-    }
-    &-xs {
-      margin-bottom: 1px;
-    }
-  }
-
-  &-left {
-    margin-left: 10px;
-    &-bg {
-      margin-left: 20px;
-    }
-    &-sm {
-      margin-left: 5px;
-    }
-    &-xs {
-      margin-left: 1px;
-    }
-  }
-
-  &-right {
-    margin-right: 10px;
-    &-bg {
-      margin-right: 20px;
-    }
+.font-20pt {
+  font-size: 20pt !important;
+}
+.font-22pt {
+  font-size: 22pt !important;
+}
+// 5. General Button Styling
+.primary-button {
+  background-color: color($colors, primary-button, base);
+  color: color($colors, text, contrast) !important;
+}
+.general-button {
+  background-color: color($colors, button, base);
+}
+.back-button-text {
+  padding-left: 4px;
+}
+.close {
+  font-size: 2.7rem;
+  float: right;
+  background-color: transparent;
+  color: color($colors, text, contrast);
+  display: inline-block;
+}
+// 6. General Pages Styling
+// 6.1 Default Theme Settings Start
+.hide-tabbar {
+  opacity: 0;
+}
+.toolbar.toolbar-md,
+.toolbar.toolbar-ios {
+  min-height: 50px;
+  .grid,
+  .col {
+    padding: 0px;
   }
 }
-
-/* custom styling */
-.warning {
-  text-align: center;
+.tab-button-icon.icon,
+.button-outline-ios,
+.button-outline-md,
+.tabs-ios .tab-button[aria-selected=true] .tab-button-icon,
+.tabs-md .tab-button[aria-selected=true] .tab-button-icon,
+.tab-button-text,
+.segment-ios .segment-button,
+.segment-md .segment-button {
+  color: color($colors, button, base);
+  border-color: color($colors, primary, base);
 }
-
-@mixin makeIcon($arg, $val) {
-  .ion-ios-#{$arg}:before ,
-  .ion-ios-#{$arg}-circle:before ,
-  .ion-ios-#{$arg}-circle-outline:before ,
-  .ion-ios-#{$arg}-outline:before ,
-  .ion-md-#{$arg}:before ,
-  .ion-md-#{$arg}-circle:before ,
-  .ion-md-#{$arg}-circle-outline:before ,
-  .ion-md-#{$arg}-outline:before  {
-    content: $val;
-    font-size: 26px;
+.tab-button[aria-selected=true] {
+  color: color($colors, secondary, base);
+  border-top: thick double color($colors, button, base);
+}
+.segment-ios .segment-button.segment-activated,
+.segment-md .segment-button.segment-activated {
+  background-color: color($colors, primary, base);
+  color: color($colors, secondary, base);
+  border-color: color($colors, primary, base);
+}
+.checkbox-md .checkbox-checked,
+.checkbox-ios .checkbox-checked {
+  border-color: color($colors, primary, base);
+  background-color: color($colors, primary, base);
+}
+.loading-md .spinner-crescent circle,
+.loading-ios .spinner-crescent circle {
+  stroke: color($colors, primary, base);
+}
+// 6.2 Default Theme Settings End
+.header {
+  .toolbar-background-md,
+  .toolbar-background-ios {
+    background-color: color($colors, white, base);
+  }
+  .bar-button-default-md,
+  .bar-button-default-ios,
+  .toolbar-title-md,
+  .toolbar-title-ios {
+    color: color($colors, primary, base);
+  }
+  .toolbar-title-md,
+  .toolbar-title-ios {
+    font-size: 1.7rem;
+  }
+  // 6.3 text input without outline
+  .text-input-ios,
+  .text-input-md,
+  .focus-outline :focus {
+    outline: none !important;
   }
 }
-
-@include makeIcon(fa-pdf, $fa-var-file-pdf-o)
-@include makeIcon(fa-word, $fa-var-file-word-o)
-@include makeIcon(fa-archive, $fa-var-file-archive-o)
-@include makeIcon(fa-audio, $fa-var-file-audio-o)
-@include makeIcon(fa-code, $fa-var-file-code-o)
-@include makeIcon(fa-excel, $fa-var-file-excel-o)
-@include makeIcon(fa-image, $fa-var-file-image-o)
-@include makeIcon(fa-movie, $fa-var-file-movie-o)
-@include makeIcon(fa-photo, $fa-var-file-photo-o)
-@include makeIcon(fa-picture, $fa-var-file-picture-o)
-@include makeIcon(fa-powerpoint, $fa-var-file-powerpoint-o)
-@include makeIcon(fa-sound, $fa-var-file-sound-o)
-@include makeIcon(fa-text, $fa-var-file-text-o)
-@include makeIcon(fa-video, $fa-var-file-video-o)
-@include makeIcon(fa-zip, $fa-var-file-zip-o)
-@include makeIcon(fa-file, $fa-var-file-o)
-@include makeIcon(fa-files, $fa-var-files-o)
-@include makeIcon(fa-trophy, $fa-var-trophy)
-@include makeIcon(fa-hourglass, $fa-var-hourglass)

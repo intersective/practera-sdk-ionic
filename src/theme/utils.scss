@@ -1,10 +1,11 @@
+
+
 // Font-awesome
 @import "font-awesome";
 
-.showfull > textarea {
-  width: 100%;
-  overflow: visible !important;
-  resize: none;
+// alertbox message
+.earn-points-box {
+  text-align: center;
 }
 
 /* Utilities */
@@ -164,3 +165,9 @@ ion-fab[center-right] {
 @include makeIcon(fa-trophy, $fa-var-trophy)
 @include makeIcon(fa-hourglass, $fa-var-hourglass)
 // END ---- Integrate font-awesome into ionic's ion-icon --- //
+
+
+// misc
+.fa-hand-o-left {
+  padding-left: 7pt;
+}
