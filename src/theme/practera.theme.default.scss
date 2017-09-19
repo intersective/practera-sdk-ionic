@@ -501,64 +501,6 @@ event {
     padding-left: 4pt;
   }
 }
-// 13. Rankings Page Styling
-.rankings {
-  ion-list:first-child {
-    margin-bottom: 5px;
-  }
-  ion-list {
-    margin: 0px;
-  }
-  ion-col {
-    padding: 0px;
-  }
-  .ranking-list {
-    .user-score {
-      text-align: right;
-      b {
-        font-weight: normal;
-        width: 100%;
-        text-align: right;
-      }
-    }
-  }
-  .ranking-item {
-    width: 100%;
-    display: flex;
-    .blur-hidden-text {
-      color: transparent;
-      text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
-    }
-    ion-icon {
-      font-size: 10pt;
-      font-weight: 900;
-    }
-    ion-icon[name=arrow-forward] {
-      font-weight: normal;
-      font-size: 18pt;
-      padding-left: 8pt;
-      color: #bbb;
-    }
-    .badge-image {
-      width: 60px;
-      height: 60px;
-    }
-    p {
-      display: flex;
-      align-items: center;
-      word-break: break-all;
-      margin: 0px;
-      padding: 15px 0pt;
-      border-bottom: 1px solid color($colors, border, base);
-    }
-    p:first-child{
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-}
 // ranking details page stylings
 rankings-details-page {
   padding: 0 6pt;
