@@ -312,7 +312,7 @@ export class ActivitiesListPage implements OnInit {
   }
   showUserExperience(experience_points){
     this.userExperiencePoint = experience_points;
-    if(this.userExperiencePoint >= 100000){
+    if(this.userExperiencePoint >= 10000){
       this.sameFontSize = true;
     }else {
       this.sameFontSize = false;
