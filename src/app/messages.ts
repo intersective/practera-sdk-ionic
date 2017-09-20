@@ -4,7 +4,7 @@ export const confirmMessages = {
       "discard": "Are you sure you want to discard all changes?"
     },
     SubmitConfirmation: {
-      "confirm": "Are you sure you want to submit this evidence?"
+      "confirm": "Your submission will be final and cannot be changed afterwards."
     }
   }
 }
@@ -111,7 +111,7 @@ export const loadingMessages = {
     "logout": "See you next time"
   },
   SendingEmail: {
-    "send": "Sending email to us ..." 
+    "send": "Sending email to us ..."
   },
   SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
     "partOne": "We have sent an email to",
