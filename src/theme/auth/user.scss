@@ -25,6 +25,9 @@
     display: block;
     margin: 0 auto;
   }
+  .core-logo {
+    max-width: 30%;
+  }
   .new-user {
     text-decoration: none;
     color: color($colors, text, base);
