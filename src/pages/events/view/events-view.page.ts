@@ -56,7 +56,8 @@ export class EventsViewPage {
   }
 
   private availability(event): string {
-    return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
+    let text = (event.remaining_capacity === 1) ? ' seat available' : ' seats available';
+    return (event.isBooked)? terms.booked : event.remaining_capacity + text;
   }
 
   ionViewWillEnter() {
