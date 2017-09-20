@@ -1,0 +1,95 @@
+.activities {
+  .close-btn {
+    @include closeBtn;
+  }
+  .scroll-content {
+    overflow: hidden;
+  }
+  .scroll-content,
+  .grid,
+  .col {
+    padding: 0px !important;
+    margin: 0px;
+  }
+  .grid {
+    height: 100%;
+    .row {
+      height: 50%;
+    }
+  }
+  .score-board {
+    display: block;
+    background-color: color($colors, primary, base); // default-theme
+    background-size: cover;
+    text-align: center;
+    .score-board-inner {
+      height: 100%;
+    }
+    ion-row:last-child {
+      background-color: color($colors, secondary, base);
+    }
+    ion-col {
+      .score-inner-box {
+        width: 40%;
+        height: 40%;
+        margin: 5% auto;
+        background-color: color($colors, secondary, base);
+        div {
+          height: 100%;
+          padding: 10% 0;
+          h4 {
+            font-size: 16pt;
+            font-weight: 400;
+            text-transform: uppercase;
+            margin: 0px;
+            height: 40%;
+          }
+          h1 {
+            margin: 0px;
+            height: 40%;
+            font-size: 28pt;
+            font-weight: bold;
+
+          }
+        }
+      }
+    }
+    ion-col:first-child {
+      div {
+        margin-bottom: 0pt;
+      }
+    }
+  }
+  .activity-list {
+    ion-col {
+      overflow: scroll;
+    }
+    .unlocked,
+    .locked {
+      border-bottom: 1px solid color($colors, border, contrast);
+      p {
+        padding: 12px 0px 12px 12px;
+        margin: 0px;
+        min-height: 40px;
+        line-height: 20px;
+        max-width: 320px;
+      }
+    }
+    .locked {
+      background-color: color($colors, border, base);
+      background-size: cover;
+      p {
+        opacity: 0.4;
+      }
+      .fa.fa-lock {
+        position: absolute;
+        right: 12px;
+        line-height: 44px;
+        font-size: 14pt;
+      }
+    }
+    .activity-error {
+      padding: 0 12pt;
+    }
+  }
+}
