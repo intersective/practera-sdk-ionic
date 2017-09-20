@@ -213,7 +213,8 @@ export class ActivitiesViewPage {
     let result_name = "";
     let result_score = 0;
     let published = false;
-    let inprogress = false
+    let inprogress = false;
+    let moderated_assessment = false;
     for (let index = 0; index < Submissions.length; index++){
       if (Submissions[index].status == "published"){
         published = true;
@@ -250,11 +251,17 @@ export class ActivitiesViewPage {
         published = false;
         inprogress = false;
       }
+      if (Submissions[index].assessment.assessment_type == "moderated"){
+        moderated_assessment = true;
+      } else {
+        moderated_assessment = false;
+      }
       let result_single: any = {
         published,
         result_score,
         result_name,
-        inprogress
+        inprogress,
+        moderated_assessment
       }
       result.push(result_single);
     }

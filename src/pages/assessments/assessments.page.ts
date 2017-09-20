@@ -531,7 +531,7 @@ export class AssessmentsPage {
 
   clickSubmit() {
     const confirm = this.alertCtrl.create({
-      title: 'Submit evidence',
+      title: 'Confirm Submission',
       message: this.submitConfirmMessage,
       buttons: [
         {
