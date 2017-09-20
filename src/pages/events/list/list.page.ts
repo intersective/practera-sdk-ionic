@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, FabContainer } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../../app/messages';
@@ -95,8 +95,24 @@ export class EventsListPage {
     this.events = this.filterEvents();
   }
 
-  selectedLocation(filter) {
-    this.filterLocation = filter;
+  selectedLocation(filter, fab? : FabContainer) {
+    if (filter) {
+      if (fab) {
+        fab.close();
+      }
+
+      this.filterLocation = filter;
+    }
+    if (fab) { // if filter is empty but fab is clicked
+      if (fab._listsActive) {
+        this.filterLocation = 'all';
+        fab.close();
+      }
+
+      fab.clickHandler(function() {
+        console.log(arguments);
+      });
+    }
     this.events = this.filterEvents();
   }
 
