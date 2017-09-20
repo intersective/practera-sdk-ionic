@@ -469,27 +469,9 @@ event {
   }
 }
 // 10. Achievement page styling
-.ahievements-popup {
-  .scroll-content {
-    overflow: hidden !important;
-  }
-  .popup-contents {
-    .badge-image {
-      margin: 10% auto;
-      display: block;
-      width: 30%;
-      height: 30%;
-    }
-    .badge-points {
-      border-top: 1px solid color($colors, border, base);
-      border-bottom: 1px solid color($colors, border, base);
-      line-height: 40px;
-      span:last-child {
-        float: right;
-      }
-    }
-  }
-}
+@import "./pages/rankings/view-ranking-badges";
+@import "./pages/rankings/view-ranking-details";
+
 .assessments-items-popup {
   display: flex;
   align-items: center;
@@ -500,29 +482,6 @@ event {
   }
   .item-popup-text {
     padding-left: 4pt;
-  }
-}
-// ranking details page stylings
-rankings-details-page {
-  padding: 0 6pt;
-  .ranking-details {
-    .scroll-content {
-      bottom: 0px !important;
-    }
-  }
-  .ranking-item {
-    p {
-      border: none !important;
-    }
-  }
-  .ranking-detail-item {
-    padding: 2pt 0;
-    border-bottom: 1px solid color($colors, border, base);
-  }
-  .points-display {
-    padding: 2pt 0;
-    display: flex;
-    border-bottom: 1px solid color($colors, border, base);
   }
 }
 // 14.leaderboard settings page styling
