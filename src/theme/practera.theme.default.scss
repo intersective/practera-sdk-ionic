@@ -468,7 +468,11 @@ event {
     }
   }
 }
-// 10. Achievement page styling
+
+// Achievements
+@import "./pages/achievements/view";
+
+// Rankings
 @import "./pages/rankings/view-ranking-badges";
 @import "./pages/rankings/view-ranking-details";
 
