@@ -269,7 +269,7 @@ export class ActivitiesViewPage {
   }
   getSubmissionTitle(Submissions){
     let assessment_question_id: any = "0";
-    if(Submissions[0].assessment_id){
+    if(Submissions[0]){
       if(Submissions[0].assessment_id == "2044"){
         assessment_question_id = "20595";
       }else if(Submissions[0].assessment_id == "2045"){
@@ -292,10 +292,8 @@ export class ActivitiesViewPage {
           }
         })
       })
-    }else {
-      this.submissionTitle = [];
+      return this.submissionTitle;
     }
-    return this.submissionTitle;
   }
   badgeData(){
     _.forEach(this.newTickArray, (element, index) => {
