@@ -74,7 +74,8 @@
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>
           <!-- <h2 *ngIf='!submissionTitles[i].inprogress'>{{ submissionTitle[i] | truncate: 50 || 'Waiting for Review' }}</h2> -->
-          <h2 *ngIf='!submissionTitles[i].inprogress'>Waiting for Review</h2>
+          <h2 *ngIf='!submissionTitles[i].inprogress && submissionTitles[i].moderated_assessment'>Waiting for Review</h2>
+          <h2 *ngIf='!submissionTitles[i].inprogress && !submissionTitles[i].moderated_assessment'>Done</h2>
           <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
