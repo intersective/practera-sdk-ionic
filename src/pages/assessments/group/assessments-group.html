@@ -18,7 +18,7 @@
 
   <ion-list text-wrap *ngIf="assessmentGroup" class="assessments-group-text">
     <h6 class="strong center">{{assessmentGroup.name}}</h6>
-    <p [innerHTML]="assessment.description"></p>
+    <div [innerHTML]="assessmentGroup.description| keepHtml"></div>
   </ion-list>
 
   <div *ngFor="let question of questions; let i = index;"
