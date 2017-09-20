@@ -1,0 +1,64 @@
+.events {
+  .list:first-child {
+    margin-bottom: 0;
+  }
+  .title-background {
+    height: 10em;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    .title {
+      text-shadow: 0 0 1px $border-primary;
+      color: color($colors, secondary, base);
+      font-size: 3.5rem;
+      white-space: normal;
+    }
+    .status {
+      position: relative;
+    }
+    .tag {
+      position: fixed;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      font-size: 1.3rem;
+      margin-top: 1rem;
+      padding: 0.4rem;
+      right: 0;
+      top: 0;
+      background-color: color($colors, primary, base); // default-theme
+      color: color($colors, secondary, base);
+    }
+  }
+  .details {
+    border-bottom: 0.5px solid rgba(128, 128, 128, 0.2);
+    margin-bottom: 0.1rem;
+    .info {
+      > p {
+        margin: 0.5em;
+      }
+    }
+  }
+  .download {
+    border-top: $events-download-btn;
+    border-bottom: $events-download-btn;
+  }
+  .book-btn {
+    @include bookBtn;
+  }
+  .cancel-btn {
+    @include cancelBtn;
+  }
+  .cancel-btn:hover,
+  .cancel-btn:focus,
+  .cancel-btn:active {
+    background-color: color($colors, secondary, base); // default-theme
+    color: color($colors, button, base); // default-theme
+    border-color: color($colors, button, base); // default-theme
+  }
+  .checkin-btn {
+    @include checkinBtn;
+  }
+  .lighter {
+    opacity: 0.7;
+  }
+}
