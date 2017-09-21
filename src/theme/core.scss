@@ -92,9 +92,7 @@ $title-font: 'Arvo';
 .button-outline-md,
 .tabs-ios .tab-button[aria-selected=true] .tab-button-icon,
 .tabs-md .tab-button[aria-selected=true] .tab-button-icon,
-.tab-button-text,
-.segment-ios .segment-button,
-.segment-md .segment-button {
+.tab-button-text {
   color: color($colors, button, base);
   border-color: color($colors, primary, base);
 }
@@ -102,12 +100,29 @@ $title-font: 'Arvo';
   color: color($colors, secondary, base);
   border-top: thick double color($colors, button, base);
 }
-.segment-ios .segment-button.segment-activated,
-.segment-md .segment-button.segment-activated {
-  background-color: color($colors, primary, base);
-  color: color($colors, secondary, base);
-  border-color: color($colors, primary, base);
+
+
+// Render segments theme template
+@mixin custom-segments($color-name, $color-base, $color-contrast) {
+  // Event filtration tabs (segments)
+  .segment-ios-#{$color-name}, .segment-md-#{$color-name} {
+    .segment-button {
+      color: $color-base;
+      border-color: $color-base;
+
+      &.activated, &.segment-activated {
+        background-color: $color-base;
+        color: $color-contrast;
+      }
+    }
+  }
 }
+// Generate different segments for each theme colors
+@each $color-name, $color-base, $color-contrast in get-colors($colors) {
+  @include custom-segments($color-name, $color-base, $color-contrast);
+}
+
+
 .checkbox-md .checkbox-checked,
 .checkbox-ios .checkbox-checked {
   border-color: color($colors, primary, base);

@@ -1,0 +1,17 @@
+.location {
+  width: inherit;
+  height: inherit;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto;
+
+  &.hanoi {
+      background-image: url(/assets/icon/hanoi.png);
+  }
+
+  &.saigon {
+      background-image: url(/assets/icon/saigon.png);
+  }
+}

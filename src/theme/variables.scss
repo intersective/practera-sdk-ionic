@@ -16,6 +16,9 @@ $item-wp-detail-push-show: true;
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 // General Colors (Shared File)
+// logo colours
+$teal: #00b5ac;
+
 // main colors
 $primary: #000054; // BLUE
 $secondary: #EBEBEB; // GRAY
@@ -38,8 +41,9 @@ $secondary-palette-four: #D4EEFC;
 $secondary-palette-five: #3A74BA;
 $secondary-palette-six: #fc9147;
 $secondary-palette-seven: #43c7f4;
-$secondary-palette-eight: #00b5ac;
+$secondary-palette-eight: $teal;
 $secondary-palette-nine: #E60028;
+
 
 
 // App Mixin Functions
@@ -117,7 +121,7 @@ $colors: (
   ),
   palette-five: (
     base: $secondary-palette-eight,
-    contrast: $secondary-palette-eight
+    contrast: $secondary-bg
   ),
   dahsboard-bg: (
     base: $dashboard-bg,

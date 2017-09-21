@@ -5,11 +5,11 @@
       refreshingSpinner="circles">
     </ion-refresher-content>
 	</ion-refresher>
-  <div>&nbsp;</div>
+
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <ion-segment [(ngModel)]="filter">
+        <ion-segment [(ngModel)]="filter" color="palette-five">
           <ion-segment-button value="browses" (ionSelect)="selected('browses')">
             {{ 'EVENTS.BROWSE' | translate }}
           </ion-segment-button>
@@ -22,25 +22,8 @@
         </ion-segment>
       </ion-col>
     </ion-row>
-
-    <ion-row>
-      <ion-col col-12>
-        <ion-segment [(ngModel)]="filterLocation">
-          <ion-segment-button value="all" (ionSelect)="selectedLocation('all')">
-            {{ 'EVENTS.ALL' | translate }}
-          </ion-segment-button>
-          <ion-segment-button
-            *ngFor="let location of locations; let i = index"
-            [value]="location"
-            (ionSelect)="selectedLocation(location)"
-          >
-            {{ location }}
-          </ion-segment-button>
-        </ion-segment>
-      </ion-col>
-    </ion-row>
-
   </ion-grid>
+
   <ion-list>
     <ion-card *ngIf="showNoEventMessage()">
       <ion-card-content *ngIf="(filter === 'browses')">
@@ -55,4 +38,21 @@
     </ion-card>
     <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>
   </ion-list>
+
+  <ion-fab right bottom #fab>
+    <button ion-fab color="palette-five" (click)="setIonFab($event, fab)">
+      <ion-icon name="add"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-fab (click)="selectedLocation('Hanoi', fab)">
+        <div class="location hanoi"></div>
+      </button>
+      <button ion-fab (click)="selectedLocation('Saigon', fab)">
+        <div class="location saigon"></div>
+      </button>
+      <button ion-fab (click)="selectedLocation(null, fab)">
+        <p>All</p>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

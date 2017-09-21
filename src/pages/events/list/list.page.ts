@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
+import { NavController, LoadingController, FabContainer } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../../app/messages';
@@ -17,6 +17,7 @@ import CONFIG from '../../../configs/config';
   templateUrl: 'list.html'
 })
 export class EventsListPage {
+
   // https://process.filestackapi.com/
   imageAttrbutes: String = 'resize=width:400/output=f:png,q:70';
   // imageAttrbutes: String = 'resize=width:400/blur=amount:1/quality=value:85';
@@ -32,20 +33,37 @@ export class EventsListPage {
   private emptyFilterErrMessage = errMessages.Events.filter.empty;
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
+
+  fab: any = null;
+  activities = {};
+  events: Array<any> = []; // ordered events from filterEvents and to be access through template
+  noEvents = false;
+  filter = 'browses'; // currently support ['browses', 'attended', 'my-bookings']
+  filterLocation: string = null; // default value for location filtration
+  locations = [];
+  private loadedEvents = []; // Further processed events array, for private use
+
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
     public activityService: ActivityService,
-    public loadingCtrl: LoadingController,
+    public loadingCtrl: LoadingController
   ) {}
 
-  activities = {};
-  private loadedEvents = []; // Further processed events array, for private use
-  events = []; // ordered events array in filterEvents and to be access through template
-  noEvents = false;
-  filter = 'browses';
-  filterLocation = 'all';
-  locations = [];
+  ionViewWillLeave() {
+    if (this.fab) {
+      console.log(this.fab);
+      this.fab.close();
+    }
+  }
+
+  /**
+   * counter ionic's absent of event handling for ion-fab
+   * without event handling, we can't know when the fab button is pressed with which value
+   */
+  setIonFab(e, fab: FabContainer) {
+    this.fab = fab;
+  }
 
   /**
    * @name filterEvents
@@ -79,10 +97,12 @@ export class EventsListPage {
         break;
     }
 
-    if (this.filterLocation !== 'all') {
+    // filter locations (if this.filterLocation is valid)
+    if (this.filterLocation) {
       this.events = _.filter(this.events, ['location', this.filterLocation]);
     }
 
+    // toggle noEvents: boolean based on length of this.events
     if (this.events.length === 0) {
       this.noEvents = true;
     }
@@ -95,9 +115,28 @@ export class EventsListPage {
     this.events = this.filterEvents();
   }
 
-  selectedLocation(filter) {
+  /**
+   * filtration of location
+   * @param {string}       filter keywords (currently support: 'all', 'hanoi', 'saigon')
+   * @param {FabContainer} fab
+   */
+  selectedLocation(filter: string, fab? : FabContainer) {
     this.filterLocation = filter;
-    this.events = this.filterEvents();
+
+    if (filter) {
+      if (fab) {
+        fab.close();
+      }
+    }
+
+    if (fab) { // if filter is empty but fab is clicked
+      this.fab = fab;
+      if (fab._listsActive) {
+        fab.close();
+      }
+    }
+
+    this.filterEvents();
   }
 
   // Check total of events, return "true" when 0 found
