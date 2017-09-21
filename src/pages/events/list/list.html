@@ -5,11 +5,11 @@
       refreshingSpinner="circles">
     </ion-refresher-content>
 	</ion-refresher>
-  <div>&nbsp;</div>
+
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <ion-segment [(ngModel)]="filter">
+        <ion-segment [(ngModel)]="filter" color="palette-five">
           <ion-segment-button value="browses" (ionSelect)="selected('browses')">
             {{ 'EVENTS.BROWSE' | translate }}
           </ion-segment-button>

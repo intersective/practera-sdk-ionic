@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { NavController, LoadingController, FabContainer } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -17,6 +17,8 @@ import CONFIG from '../../../configs/config';
   templateUrl: 'list.html'
 })
 export class EventsListPage {
+  @ViewChild('ion-fab') fab: ElementRef;
+
   // https://process.filestackapi.com/
   imageAttrbutes: String = 'resize=width:400/output=f:png,q:70';
   // imageAttrbutes: String = 'resize=width:400/blur=amount:1/quality=value:85';
@@ -32,20 +34,24 @@ export class EventsListPage {
   private emptyFilterErrMessage = errMessages.Events.filter.empty;
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
+
+  activities = {};
+  events: Array<any> = []; // ordered events from filterEvents and to be access through template
+  noEvents = false;
+  filter = 'browses'; // currently support ['browses', 'attended', 'my-bookings']
+  filterLocation: string = null; // default value for location filtration
+  locations = [];
+  private loadedEvents = []; // Further processed events array, for private use
+
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
     public activityService: ActivityService,
     public loadingCtrl: LoadingController,
-  ) {}
-
-  activities = {};
-  private loadedEvents = []; // Further processed events array, for private use
-  events = []; // ordered events array in filterEvents and to be access through template
-  noEvents = false;
-  filter = 'browses';
-  filterLocation = 'all';
-  locations = [];
+    public renderer: Renderer2
+  ) {
+    console.log(this.fab);
+  }
 
   /**
    * @name filterEvents
@@ -79,10 +85,12 @@ export class EventsListPage {
         break;
     }
 
-    if (this.filterLocation !== 'all') {
+    // filter locations (if this.filterLocation is valid)
+    if (this.filterLocation) {
       this.events = _.filter(this.events, ['location', this.filterLocation]);
     }
 
+    // toggle noEvents: boolean based on length of this.events
     if (this.events.length === 0) {
       this.noEvents = true;
     }
@@ -95,25 +103,27 @@ export class EventsListPage {
     this.events = this.filterEvents();
   }
 
-  selectedLocation(filter, fab? : FabContainer) {
+  /**
+   * filtration of location
+   * @param {string}       filter keywords (currently support: 'all', 'hanoi', 'saigon')
+   * @param {FabContainer} fab
+   */
+  selectedLocation(filter: string, fab? : FabContainer) {
+    this.filterLocation = filter;
+
     if (filter) {
       if (fab) {
         fab.close();
       }
-
-      this.filterLocation = filter;
     }
+
     if (fab) { // if filter is empty but fab is clicked
       if (fab._listsActive) {
-        this.filterLocation = 'all';
         fab.close();
       }
-
-      fab.clickHandler(function() {
-        console.log(arguments);
-      });
     }
-    this.events = this.filterEvents();
+
+    this.filterEvents();
   }
 
   // Check total of events, return "true" when 0 found
