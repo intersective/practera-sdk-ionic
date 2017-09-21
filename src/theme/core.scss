@@ -24,6 +24,25 @@ $font-secondary: Arial, "Helvetica Neue", Helvetica, sans-serif;
 // new font
 @import url('https://fonts.googleapis.com/css?family=Arvo|Cabin|Zilla+Slab+Highlight');
 $title-font: 'Arvo';
+
+// Custom icon font for spinner
+.ion-ios-lucky-wheel,
+.ion-md-lucky-wheel {
+  content: url('/assets/fonts/lucky-wheel.svg');
+  height: 30px;
+  color: #2e5c93;
+  border-color: #000054;
+}
+
+.ion-ios-lucky-wheel-outline,
+.ion-md-lucky-wheel-outline {
+  content: url('/assets/fonts/lucky-wheel.svg');
+  height: 30px;
+  color: #2e5c93;
+  border-color: #000054;
+  opacity: 0.9;
+}
+
 // 3. General Tab Styling
 .tab-color {
   background-color: color($colors, primary, base);
