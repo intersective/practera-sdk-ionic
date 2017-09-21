@@ -40,7 +40,7 @@
   </ion-list>
 
   <ion-fab right bottom #fab>
-    <button ion-fab color="primary">
+    <button ion-fab color="palette-five" (click)="setIonFab($event, fab)">
       <ion-icon name="add"></ion-icon>
     </button>
     <ion-fab-list side="top">
@@ -50,7 +50,7 @@
       <button ion-fab (click)="selectedLocation('Saigon', fab)">
         <div class="location saigon"></div>
       </button>
-      <button ion-fab (click)="selectedLocation('all', fab)">
+      <button ion-fab (click)="selectedLocation(null, fab)">
         <p>All</p>
       </button>
     </ion-fab-list>

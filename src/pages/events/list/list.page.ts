@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController, LoadingController, FabContainer } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -17,7 +17,6 @@ import CONFIG from '../../../configs/config';
   templateUrl: 'list.html'
 })
 export class EventsListPage {
-  @ViewChild('ion-fab') fab: ElementRef;
 
   // https://process.filestackapi.com/
   imageAttrbutes: String = 'resize=width:400/output=f:png,q:70';
@@ -35,6 +34,7 @@ export class EventsListPage {
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
 
+  fab: any = null;
   activities = {};
   events: Array<any> = []; // ordered events from filterEvents and to be access through template
   noEvents = false;
@@ -47,10 +47,22 @@ export class EventsListPage {
     public navCtrl: NavController,
     public eventService: EventService,
     public activityService: ActivityService,
-    public loadingCtrl: LoadingController,
-    public renderer: Renderer2
-  ) {
-    console.log(this.fab);
+    public loadingCtrl: LoadingController
+  ) {}
+
+  ionViewWillLeave() {
+    if (this.fab) {
+      console.log(this.fab);
+      this.fab.close();
+    }
+  }
+
+  /**
+   * counter ionic's absent of event handling for ion-fab
+   * without event handling, we can't know when the fab button is pressed with which value
+   */
+  setIonFab(e, fab: FabContainer) {
+    this.fab = fab;
   }
 
   /**
@@ -118,6 +130,7 @@ export class EventsListPage {
     }
 
     if (fab) { // if filter is empty but fab is clicked
+      this.fab = fab;
       if (fab._listsActive) {
         fab.close();
       }
