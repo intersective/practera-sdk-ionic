@@ -269,29 +269,31 @@ export class ActivitiesViewPage {
   }
   getSubmissionTitle(Submissions){
     let assessment_question_id: any = "0";
-    if(Submissions[0].assessment_id == "2044"){
-      assessment_question_id = "20595";
-    }else if(Submissions[0].assessment_id == "2045"){
-      assessment_question_id = "20606";
-    }else if(Submissions[0].assessment_id == "2046"){
-      assessment_question_id = "20617";  
-    }else if(Submissions[0].assessment_id == "2058"){
-      assessment_question_id = "20686";
-    }else if(Submissions[0].assessment_id == "2059"){
-      assessment_question_id = "20697";
-    }else if(Submissions[0].assessment_id == "2049"){
-      assessment_question_id = "20656";
-    }else if(Submissions[0].assessment_id == "2050"){
-      assessment_question_id = "20661";
-    }
-    _.forEach(Submissions, (element, index) => {
-      _.forEach(element.answer, (ele, index) => {
-        if(ele.assessment_question_id == assessment_question_id) {
-          this.submissionTitle.push(ele.answer);
-        }
+    if(Submissions[0]){
+      if(Submissions[0].assessment_id == "2044"){
+        assessment_question_id = "20595";
+      }else if(Submissions[0].assessment_id == "2045"){
+        assessment_question_id = "20606";
+      }else if(Submissions[0].assessment_id == "2046"){
+        assessment_question_id = "20617";  
+      }else if(Submissions[0].assessment_id == "2058"){
+        assessment_question_id = "20686";
+      }else if(Submissions[0].assessment_id == "2059"){
+        assessment_question_id = "20697";
+      }else if(Submissions[0].assessment_id == "2049"){
+        assessment_question_id = "20656";
+      }else if(Submissions[0].assessment_id == "2050"){
+        assessment_question_id = "20661";
+      }
+      _.forEach(Submissions, (element, index) => {
+        _.forEach(element.answer, (ele, index) => {
+          if(ele.assessment_question_id == assessment_question_id) {
+            this.submissionTitle.push(ele.answer);
+          }
+        })
       })
-    })
-    return this.submissionTitle;
+      return this.submissionTitle;
+    }
   }
   badgeData(){
     _.forEach(this.newTickArray, (element, index) => {

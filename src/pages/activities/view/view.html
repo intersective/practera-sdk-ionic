@@ -87,7 +87,8 @@
       </ion-row>
       <ion-row *ngIf='submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>      
-          <h2>{{ submissionTitle[i] | truncate: 50 || submissionTitles[i].result_name }}</h2>
+          <h2 *ngIf="submissionTitle[i]">{{ submissionTitle[i] | truncate: 50}}</h2>
+          <h2 *ngIf="!submissionTitle[i]">{{ submissionTitles[i].result_name }}</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
         <ion-item class="note" col-2>
