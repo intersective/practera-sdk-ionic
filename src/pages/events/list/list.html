@@ -41,7 +41,8 @@
 
   <ion-fab right bottom #fab>
     <button ion-fab color="palette-five" (click)="setIonFab($event, fab)">
-      <ion-icon name="pin"></ion-icon>
+      <div *ngIf="filterLocation" class="location {{filterLocation.toLowerCase()}}"></div>
+      <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
     </button>
     <ion-fab-list side="top">
       <button ion-fab (click)="selectedLocation('Hanoi', fab)">
