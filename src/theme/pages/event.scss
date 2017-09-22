@@ -28,8 +28,8 @@
       padding: 0.4rem;
       right: 0;
       top: 0;
-      background-color: color($colors, primary, base); // default-theme
-      color: color($colors, secondary, base);
+      background-color: color($colors, palette-five, base); // default-theme
+      color: color($colors, background, contrast);
     }
   }
   .details {
@@ -125,7 +125,7 @@ event {
   .event-booked-tag,
   .event-attended-tag {
     background-color: color($colors, palette-five, base); // default-theme
-    color: color($colors, secondary, base);
+    color: color($colors, background, contrast);
   }
   .event-title {
     // padding: 13px 16px 14px 16px;
