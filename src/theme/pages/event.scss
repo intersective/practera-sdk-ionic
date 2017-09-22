@@ -124,7 +124,7 @@ event {
   }
   .event-booked-tag,
   .event-attended-tag {
-    background-color: color($colors, primary, base); // default-theme
+    background-color: color($colors, palette-five, base); // default-theme
     color: color($colors, secondary, base);
   }
   .event-title {
