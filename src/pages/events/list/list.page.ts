@@ -12,6 +12,11 @@ import { EventsViewPage } from '../view/events-view.page';
 // APIkey
 import CONFIG from '../../../configs/config';
 
+const LOCATIONS = [
+  { code: 'SGS', name: 'Saigon' },
+  { code: 'HN', name: 'Hanoi' },
+];
+
 @Component({
   selector: 'events-list-page',
   templateUrl: 'list.html'
@@ -34,13 +39,13 @@ export class EventsListPage {
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
 
+  locations = LOCATIONS; // preset hardcoded locations from const above
   fab: any = null;
   activities = {};
   events: Array<any> = []; // ordered events from filterEvents and to be access through template
   noEvents = false;
   filter = 'browses'; // currently support ['browses', 'attended', 'my-bookings']
   filterLocation: string = null; // default value for location filtration
-  locations = [];
   private loadedEvents = []; // Further processed events array, for private use
 
   constructor(
@@ -172,7 +177,6 @@ export class EventsListPage {
           // loadedEvents will never change (private use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
-          this.locations = this._extractLocations(this.loadedEvents);
 
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
@@ -227,6 +231,7 @@ export class EventsListPage {
   }
 
   /**
+   * @TODO: we need abbreviation "SGS" & "HN" (Saigon and Hanoi), DB doesn't has this data, so it's hardcoded for this stage
    * @name _extractLocations
    * @description Extract uniq location from events
    * @param {array} events list of event object respond from get_events API
