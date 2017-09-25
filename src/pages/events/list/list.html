@@ -41,14 +41,12 @@
 
   <ion-fab right bottom #fab>
     <button ion-fab color="palette-five" (click)="setIonFab($event, fab)">
-      <ion-icon name="pin"></ion-icon>
+      <p *ngIf="filterLocation">{{ filterLocation }}</p>
+      <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button ion-fab (click)="selectedLocation('Hanoi', fab)">
-        <div class="location hanoi"></div>
-      </button>
-      <button ion-fab (click)="selectedLocation('Saigon', fab)">
-        <div class="location saigon"></div>
+      <button ion-fab *ngFor="let location of locations" (click)="selectedLocation(location.name, fab)">
+        <p>{{ location.code }}</p>
       </button>
       <button ion-fab (click)="selectedLocation(null, fab)">
         <p>All</p>

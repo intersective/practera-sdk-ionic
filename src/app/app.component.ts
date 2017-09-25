@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
+import { Platform, NavController, AlertController } from 'ionic-angular';
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
@@ -12,6 +12,9 @@ import { RegistrationPage } from '../pages/registration/registration.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+
+import { WindowRef } from '../shared/window';
+
 @Component({
   templateUrl: 'app.html',
 })
@@ -45,10 +48,30 @@ export class MyApp implements OnInit {
   };
   @ViewChild('appNav') nav: NavController;
   constructor(
-    platform: Platform,
     authService: AuthService,
-    private cache: CacheService
+    win: WindowRef,
+    zone: NgZone,
+    private platform: Platform,
+    private cache: CacheService,
+    private alertCtrl: AlertController
   ) {
+    if (!platform.is('ios')) {
+      win.nativeWindow.onbeforeunload = (e) => {
+        e.preventDefault();
+        let alert = alertCtrl.create({
+          title: 'Quit App?',
+          subTitle: 'Confirm leaving the app.',
+          buttons: ['Ok'],
+          enableBackdropDismiss: true
+        });
+        zone.run(() => {
+          alert.present().then(() => {
+            console.log(e);
+          });
+        });
+      };
+    }
+
     /* Customized Flag Start */
     // when screen size changed, disable mobile landscape mode
     // keep desktop (including iPad) devices landscape mode
@@ -81,7 +104,7 @@ export class MyApp implements OnInit {
           }
           if(modelDOM){
             modelDOM.style.opacity = 1;
-          } 
+          }
         }else {
           this.isMobile = false;
           if(popoverDOM){
@@ -94,6 +117,7 @@ export class MyApp implements OnInit {
       }
     };
   }
+
   ngOnInit() {
     let category = [];
     let page;
