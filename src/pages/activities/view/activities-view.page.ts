@@ -81,6 +81,7 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
+    console.log("this.activity: ", this.activity);
     console.log("this.assessment: ", this.assessment);
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
     this.activityIDsArrary = this.navParams.get('activityIDs');

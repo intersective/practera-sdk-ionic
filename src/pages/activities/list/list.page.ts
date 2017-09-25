@@ -318,42 +318,42 @@ export class ActivitiesListPage implements OnInit {
     popover.present();
   }
   requestPortfolio(){
-    // let processLoading = this.loadingCtrl.create({
-    //   content: 'loading ..'
-    // });
-    // let requestPortfolioPopup = this.actionSheetCtrl.create({
-    //   title: `Please note, that once you have requested the digital portfolio your grade can not be changed by doing more submissions. It will be final.`,
-    //   buttons:[
-    //     {
-    //       text: 'Cancel',
-    //       role: 'cancel',
-    //       handler: () => {}
-    //     },
-    //     {
-    //       text: 'Confirm',
-    //       role: 'OK',
-    //       handler: () => {
-    //         processLoading.present().then(() => {
-    //           this.assessmentService.getPostProgramAssessment(this.hardcode_assessment_id)
-    //           .subscribe(
-    //             data => {
-    //               console.log("Post Program Assessment data: ", data);
-    //               processLoading.dismiss().then(() => {
-    //                 this.navCtrl.push(AssessmentsPage, {
-    //                   assessment: data
-    //                 });
-    //               });
-    //             },
-    //             err => {
-    //               console.log("Post Program Assessment error: ",err);
-    //             }
-    //           ); // hardcode for Post Program Assessment assessment_id
-    //         });
-    //       }
-    //     },
-    //   ]
-    // });
-    // requestPortfolioPopup.present();
+    let processLoading = this.loadingCtrl.create({
+      content: 'loading ..'
+    });
+    let requestPortfolioPopup = this.actionSheetCtrl.create({
+      title: `Please note, that once you have requested the digital portfolio your grade can not be changed by doing more submissions. It will be final.`,
+      buttons:[
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {}
+        },
+        {
+          text: 'Confirm',
+          role: 'OK',
+          handler: () => {
+            processLoading.present().then(() => {
+              this.assessmentService.getPostProgramAssessment(this.hardcode_assessment_id)
+              .subscribe(
+                data => {
+                  console.log("Post Program Assessment data: ", data.data[0]);
+                  processLoading.dismiss().then(() => {
+                    this.navCtrl.push(AssessmentsPage, {
+                      assessment: data.data[0]
+                    });
+                  });
+                },
+                err => {
+                  console.log("Post Program Assessment error: ",err);
+                }
+              ); // hardcode for Post Program Assessment assessment_id
+            });
+          }
+        },
+      ]
+    });
+    requestPortfolioPopup.present();
   }
   showUserExperience(experience_points){
     this.userExperiencePoint = experience_points;
