@@ -25,7 +25,7 @@
     <ion-toolbar>
       <ion-list class="my-ranking" no-lines>
         <ion-item (click)="goRankingDetail(myRankingData)" detail-push>
-          <rankIcon [rank]="myRankingData.rank" [isMyRank]="true"></rankIcon>
+          <rankIcon [rank]="myRankingData.rank"></rankIcon>
           {{ 'RANKING.ME' | translate }}
           <div item-end>
             <b>{{ myRankingData.experience_points || 0 }}</b>
