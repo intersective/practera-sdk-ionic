@@ -9,7 +9,7 @@ import { ActivityAchievementModalPage } from './activity-achievement.modal.page'
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 //services
-import { AchievementService } from '../../../services/achievement.service'; 
+import { AchievementService } from '../../../services/achievement.service';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
 @Component({
@@ -44,6 +44,7 @@ export class ActivitiesViewPage {
   loadings = {
     submissions: false
   };
+
   initialised_eset() {
     this.findAchievementObj = [];
     this.achievementData = [];
@@ -56,6 +57,7 @@ export class ActivitiesViewPage {
     this.eachFinalScore = 0;
     this.loadings.submissions = true;
   }
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -65,6 +67,7 @@ export class ActivitiesViewPage {
     private submissionService: SubmissionService,
     private alertCtrl: AlertController
   ) {}
+
   ionViewWillEnter(): void {
     this.initialised_eset();
   }
@@ -140,7 +143,7 @@ export class ActivitiesViewPage {
     });
     this.badgeData();
   }
-  // achievement popup model 
+  // achievement popup model
   achievementPopup(id){
     for(let a = 0; a < this.achievementData.length; a++){
       if(this.achievementData[a].id == this.newTickIDsData[id]){
@@ -278,7 +281,7 @@ export class ActivitiesViewPage {
       }else if(Submissions[0].assessment_id == "2045"){
         assessment_question_id = "20606";
       }else if(Submissions[0].assessment_id == "2046"){
-        assessment_question_id = "20617";  
+        assessment_question_id = "20617";
       }else if(Submissions[0].assessment_id == "2058"){
         assessment_question_id = "20686";
       }else if(Submissions[0].assessment_id == "2059"){

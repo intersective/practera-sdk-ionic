@@ -81,6 +81,7 @@ import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { PopoverTextPage } from '../pages/activities/list/popover-text';
+import { PortfolioPage } from '../pages/activities/portfolio/portfolio.page';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
@@ -151,6 +152,7 @@ export function HttpLoaderFactory(http: Http) {
     OneofQuestionComponent,
     PhotoComponent,
     PopoverTextPage,
+    PortfolioPage,
     PreviewComponent,
     QuestionComponent,
     QuestionGroupComponent,
@@ -201,7 +203,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {
-      scrollAssist: false, 
+      scrollAssist: false,
       autoFocusAssist: false
     }, {
       links: [
@@ -270,6 +272,7 @@ export function HttpLoaderFactory(http: Http) {
     ModalComponent,
     MyApp,
     PopoverTextPage,
+    PortfolioPage,
     PreviewComponent,
     RankingBadgesPage,
     RankingDetailsPage,

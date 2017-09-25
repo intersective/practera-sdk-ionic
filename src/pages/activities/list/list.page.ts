@@ -25,7 +25,7 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
-import { AssessmentsPage } from '../../assessments/assessments.page';
+import { PortfolioPage } from '../portfolio/portfolio.page';
 import { ItemsPopupPage } from '../../assessments/popup/items-popup.page';
 import { PopoverTextPage } from './popover-text';
 import { TabsPage } from '../../../pages/tabs/tabs.page';
@@ -337,10 +337,10 @@ export class ActivitiesListPage implements OnInit {
               this.assessmentService.getPostProgramAssessment(this.hardcode_assessment_id)
               .subscribe(
                 data => {
-                  console.log("Post Program Assessment data: ", data.data[0]);
+                  console.log("Post Program Assessment data: ", data);
                   processLoading.dismiss().then(() => {
-                    this.navCtrl.push(AssessmentsPage, {
-                      assessment: data.data[0]
+                    this.navCtrl.push(PortfolioPage, {
+                      assessment: data
                     });
                   });
                 },
