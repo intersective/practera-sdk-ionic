@@ -16,6 +16,7 @@ import { SubmissionService } from '../../../services/submission.service';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
+  public hardcode_activity_id: any = 7632;
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
@@ -80,6 +81,7 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
+    console.log("this.assessment: ", this.assessment);
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
     this.activityIDsArrary = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
@@ -91,7 +93,7 @@ export class ActivitiesViewPage {
     this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
     // This is a hardcode (temporary solution).
     // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
-    if (this.activityIDsArrary.includes(7632)){
+    if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data

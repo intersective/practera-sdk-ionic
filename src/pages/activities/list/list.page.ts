@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
+  ActionSheetController,
   NavController,
   ToastController,
   LoadingController,
@@ -14,6 +15,7 @@ import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../../app/messages';
 // services
 import { ActivityService } from '../../../services/activity.service';
+import { AssessmentService } from '../../../services/assessment.service';
 import { AchievementService } from '../../../services/achievement.service';
 import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
@@ -23,6 +25,7 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 // pages
 import { ActivitiesViewPage } from '../view/activities-view.page';
 import { ActivityListPopupPage } from './popup';
+import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ItemsPopupPage } from '../../assessments/popup/items-popup.page';
 import { PopoverTextPage } from './popover-text';
 import { TabsPage } from '../../../pages/tabs/tabs.page';
@@ -54,6 +57,7 @@ export class ActivitiesListPage implements OnInit {
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
   }
+  public hardcode_assessment_id: any = 2134;
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
   public activityIndex: any = 0;
@@ -66,7 +70,8 @@ export class ActivitiesListPage implements OnInit {
   public eachActivityScores: any = [];
   public finalAverageScoreShow: any = '0';
   public findSubmissions: any = [];
-  public button_show = true;
+  public button_show: boolean = true;
+  public portfolio_request: boolean = false;
   public bookedEventsCount: any = 0;
   public eventsData: any = [];
   public initialItems: any = [];
@@ -123,12 +128,14 @@ export class ActivitiesListPage implements OnInit {
     public navCtrl: NavController,
     public http: Http,
     public activityService: ActivityService,
+    public assessmentService: AssessmentService,
     public achievementService: AchievementService,
     public cacheService: CacheService,
     public eventService: EventService,
     public eventListener: Events,
     public gameService: GameService,
     public submissionService: SubmissionService,
+    private actionSheetCtrl: ActionSheetController,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -310,6 +317,44 @@ export class ActivitiesListPage implements OnInit {
     let popover = this.popoverCtrl.create(PopoverTextPage);
     popover.present();
   }
+  requestPortfolio(){
+    // let processLoading = this.loadingCtrl.create({
+    //   content: 'loading ..'
+    // });
+    // let requestPortfolioPopup = this.actionSheetCtrl.create({
+    //   title: `Please note, that once you have requested the digital portfolio your grade can not be changed by doing more submissions. It will be final.`,
+    //   buttons:[
+    //     {
+    //       text: 'Cancel',
+    //       role: 'cancel',
+    //       handler: () => {}
+    //     },
+    //     {
+    //       text: 'Confirm',
+    //       role: 'OK',
+    //       handler: () => {
+    //         processLoading.present().then(() => {
+    //           this.assessmentService.getPostProgramAssessment(this.hardcode_assessment_id)
+    //           .subscribe(
+    //             data => {
+    //               console.log("Post Program Assessment data: ", data);
+    //               processLoading.dismiss().then(() => {
+    //                 this.navCtrl.push(AssessmentsPage, {
+    //                   assessment: data
+    //                 });
+    //               });
+    //             },
+    //             err => {
+    //               console.log("Post Program Assessment error: ",err);
+    //             }
+    //           ); // hardcode for Post Program Assessment assessment_id
+    //         });
+    //       }
+    //     },
+    //   ]
+    // });
+    // requestPortfolioPopup.present();
+  }
   showUserExperience(experience_points){
     this.userExperiencePoint = experience_points;
     if(this.userExperiencePoint >= 10000){
@@ -365,6 +410,11 @@ export class ActivitiesListPage implements OnInit {
       this.button_show = true;
     }else {
       this.button_show = false;
+    }
+    if(this.button_show == true){
+      this.portfolio_request = true;
+    }else {
+      this.portfolio_request = false;
     }
     _.forEach(show_score_act, (ele, index=6) => {
       if(ele == false){

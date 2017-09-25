@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
-
+import { Http, Headers } from '@angular/http';
 import * as _ from 'lodash';
-
+// services
+import { CacheService } from '../shared/cache/cache.service';
 class Assessment {
   id: number;
   context_id: number;
@@ -56,8 +57,12 @@ export class Submission {
 
 @Injectable()
 export class AssessmentService {
-  constructor(private request: RequestService) {}
-
+  constructor(private cacheService: CacheService,
+              private request: RequestService,
+              private http: Http) {}
+  private prefixUrl: any = this.request.getPrefixUrl(); 
+  private appkey = this.request.getAppkey();
+  private assessment_url = 'api/assessments.json';
   /**
    * @description check feedback can show
    * @type {boolen}
@@ -79,7 +84,7 @@ export class AssessmentService {
 
   // listAll()
   public getAll(options?: any) {
-    return this.request.get('api/assessments.json', options);
+    return this.request.get(this.assessment_url, options);
   }
 
   /**
@@ -403,4 +408,14 @@ export class AssessmentService {
       weight: choice.weight
     };
   }
+
+  // get post program assessment
+  public getPostProgramAssessment(assessment_id){
+    let url = this.prefixUrl+this.assessment_url+`?assessment_id=${assessment_id}`;
+    let headers = new Headers();
+    headers.append('appkey', this.appkey);
+    headers.append('apikey', this.cacheService.getLocalObject('apikey'));
+    headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
+    return this.http.get(url, { headers: headers }).map(res => res.json());
+  }  
 }
