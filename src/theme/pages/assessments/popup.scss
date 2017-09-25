@@ -1,0 +1,12 @@
+.assessments-items-popup {
+  display: flex;
+  align-items: center;
+  padding-left: 12pt;
+  .item-popup-img {
+    width: 20pt;
+    height: 20pt;
+  }
+  .item-popup-text {
+    padding-left: 4pt;
+  }
+}

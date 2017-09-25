@@ -321,6 +321,7 @@ event {
 
 // Assessments
 @import "./pages/assessments/group";
+@import "./pages/assessments/popup";
 @import "./pages/assessments/assessments";
 
 // Events
@@ -330,18 +331,7 @@ event {
 @import "./pages/rankings/view-ranking-badges";
 @import "./pages/rankings/view-ranking-details";
 
-.assessments-items-popup {
-  display: flex;
-  align-items: center;
-  padding-left: 12pt;
-  .item-popup-img {
-    width: 20pt;
-    height: 20pt;
-  }
-  .item-popup-text {
-    padding-left: 4pt;
-  }
-}
+
 // 14.leaderboard settings page styling
 .leaderboard-settings {
   .hide-settings {
