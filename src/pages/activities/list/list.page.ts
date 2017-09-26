@@ -348,7 +348,6 @@ export class ActivitiesListPage implements OnInit {
             };
 
             this.navCtrl.push(AssessmentsPage, {
-              references: refs.References,
               activity: refs
             });
           }
