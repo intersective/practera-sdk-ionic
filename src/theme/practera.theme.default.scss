@@ -112,28 +112,6 @@ $font-secondary: 'Raleway';
     outline: none !important;
   }
 }
-// 7. General Login/Registration/ResetPassword/MagicLink Page Styling
-// 7.1 login module general styling (shared module: part 1)
-.default-center-container {
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  ion-row {
-    width: 100%;
-    text-align: center;
-    .default-logo {
-      width: 128pt;
-      height: 128pt;
-    }
-    h3 {
-      color: color($colors, button, base);
-      z-index: 3;
-      font-size: 22pt;
-      padding-bottom: 12pt;
-    }
-  }
-}
 
 // 7.3 login warn message display styling (shared module: part 3)
 .mode-warn {
@@ -230,8 +208,9 @@ event {
 
 // Authenticate
 // Involved login, forget-password, and registration pages
-@import "./pages/authenticate/login-module";
+@import "./pages/authenticate/default-center-container";
 @import "./pages/authenticate/login-container";
+@import "./pages/authenticate/login-module";
 
 // Events
 @import "./pages/events/list";
