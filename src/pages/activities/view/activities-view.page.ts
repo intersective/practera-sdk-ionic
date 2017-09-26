@@ -29,6 +29,7 @@ export class ActivitiesViewPage {
   public newTickIDsData: any = [];
   public achievementData: any = [];
   public findAchievementObj: any = [];
+  public portfolioView: boolean = false;
   activity: any = {};
   activityIndex: any = 0;
   assessment: any = {};
@@ -66,8 +67,9 @@ export class ActivitiesViewPage {
     private activityService: ActivityService,
     private submissionService: SubmissionService,
     private alertCtrl: AlertController
-  ) {}
-
+  ) {
+    this.portfolioView = this.navParams.get('portfolioView');
+  }
   ionViewWillEnter(): void {
     this.initialised_eset();
   }
@@ -84,8 +86,6 @@ export class ActivitiesViewPage {
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
     this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
-    console.log("this.activity: ", this.activity);
-    console.log("this.assessment: ", this.assessment);
     this.activityIndex = this.navParams.get('activity').Activity.Activity.indexID;
     this.activityIDsArrary = this.navParams.get('activityIDs');
     this.tickArray = this.navParams.get('tickArray');
@@ -124,7 +124,17 @@ export class ActivitiesViewPage {
           this.submissions = submissions.map(submission => {
             return this.submissionService.normalise(submission);
           });
-          this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
+          if(this.portfolioView == true){
+            let result = [];
+            (this.submissions || []).forEach(submission => {
+              if (submission.status !== 'in progress') {
+                result.push(submission);
+              }
+            });
+            this.submissions = result;
+          }else {
+            this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
+          }
         }
       });
       this.submissionTitles = this.getSubmissionStatus(this.submissions);
