@@ -146,6 +146,7 @@ ion-card.rounded {
 
 // Settings
 @import "./pages/settings/leaderboard";
+@import "./pages/settings/tutorial";
 
 // 15. items popup general styling
 .items-popup {
@@ -179,62 +180,6 @@ ion-card.rounded {
 .settings {
   .list-header-md {
     border: none;
-  }
-}
-tutorial-page {
-  .header-md::after,
-  .tabs-md[tabsPlacement="top"] > .tabbar::after, .footer-md::before,
-  .tabs-md[tabsPlacement="bottom"] > .tabbar::before {
-    background-image: none;
-  }
-}
-.tutorial-slides {
-  h1 {
-    padding-bottom: 20pt;
-  }
-  p {
-    padding: 0 36pt;
-    margin-top: -12pt;
-  }
-  img {
-    width: 36%;
-  }
-  button.general-circle-btn {
-    width: 80%;
-    margin: 0 auto;
-  }
-  .swiper-pagination {
-    bottom: 16pt;
-  }
-}
-.skip-button {
-  border: none;
-  float: right;
-}
-.slides-button {
-  .toolbar-background {
-    background-color: color($colors, secondary, base);
-    border: none;
-  }
-  .next-button,
-  .skip-button {
-    float: right;
-  }
-  .prev-button,
-  .next-button,
-  .skip-button {
-    background-color: color($colors, secondary, base) !important;
-    color: color($colors, primary, base);
-    box-shadow: none;
-  }
-}
-// 14.leaderboard settings page styling
-.leaderboard-settings {
-  .hide-settings {
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
   }
 }
 // 15. items popup general styling
