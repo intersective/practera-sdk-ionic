@@ -286,31 +286,37 @@ export class AssessmentsPage {
     return results;
   }
 
-  loadQuestions(): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      // get_assessments request with "assessment_id" & "structured"
-      let getAssessment = (assessmentId) => {
-        // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
-        return this.assessmentService.getAll({
-          search: {
-            assessment_id: assessmentId,
-            structured: true
-          }
-        });
-      };
-
-      // Congregation of assessment ids to fulfill get_assessments API's param requirement
-      let tasks = [];
-      _.forEach(this.activity.References, (reference) => {
-        if (
-          reference.Assessment &&
-          reference.Assessment.id
-        ) {
-          return tasks.push(getAssessment(reference.Assessment.id));
+  /**
+   * stack of tasks prepared to handle multiple activity references (ids)
+   */
+  preStackTasks() {
+    // get_assessments request with "assessment_id" & "structured"
+    let getAssessment = (assessmentId) => {
+      // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
+      return this.assessmentService.getAll({
+        search: {
+          assessment_id: assessmentId,
+          structured: true
         }
       });
+    };
 
+    // Congregation of assessment ids to fulfill get_assessments API's param requirement
+    let tasks = [];
+    _.forEach(this.activity.References, (reference) => {
+      if (
+        reference.Assessment &&
+        reference.Assessment.id
+      ) {
+        tasks.push(getAssessment(reference.Assessment.id));
+      }
+    });
+
+    return tasks;
+  }
+
+  loadQuestions(): Promise<any> {
+    return new Promise((resolve, reject) => {
       /**
        * merging submission into question inside of assessment array objects
        * - set question statuses (quantity of total answered)
@@ -327,13 +333,10 @@ export class AssessmentsPage {
           _.forEach(groups, assessment => {
             let groupWithAnswers = 0;
             _.forEach(assessment.AssessmentGroup, group => {
-              // console.log('group.answeredQuestions', group.answeredQuestions);
-              // console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
               if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
-            // console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
             if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
               this.allowSubmit = true;
             }
@@ -358,9 +361,8 @@ export class AssessmentsPage {
       };
 
       // first batch API requests (get_assessments)
-      Observable.forkJoin(tasks)
-        .subscribe(
-          (assessments: any) => {
+      Observable.forkJoin(this.preStackTasks())
+        .subscribe(assessments => {
             this.submissions = this.navParams.get('submissions');
 
             // check if this is from single submission view

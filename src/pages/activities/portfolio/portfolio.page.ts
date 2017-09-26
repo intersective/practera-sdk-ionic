@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, LoadingController } from 'ionic-angular';
+import { NavParams, LoadingController, NavController } from 'ionic-angular';
 import { AssessmentService } from '../../../services/assessment.service';
+import { AssessmentsGroupPage } from '../../assessments/group/assessments-group.page'
 
 import * as _ from 'lodash';
 
@@ -15,6 +16,7 @@ export class PortfolioPage implements OnInit {
 
   constructor(
     private navParams: NavParams,
+    private navCtrl: NavController,
     public assessmentService :AssessmentService,
     public loadingCtrl: LoadingController
   ) {}
@@ -194,5 +196,14 @@ export class PortfolioPage implements OnInit {
     }
 
     return accessible;
+  }
+
+  gotoAssessment(assessmentGroup, activity) {
+    this.navCtrl.push(AssessmentsGroupPage, {
+      assessmentGroup,
+      activity,
+      submission: assessmentGroup.submission, // use back the one back from ActivityViewPage
+      submissions: this.submissions
+    });
   }
 }
