@@ -1,5 +1,3 @@
-@import './pages/rankings/list';
-@import './pages/events';
 // Font-awesome
 @import "font-awesome";
 // Default Theme: Practera Theme
@@ -142,6 +140,7 @@ ion-card.rounded {
 @import "./pages/events/view";
 
 // Rankings
+@import './pages/rankings/list';
 @import "./pages/rankings/view-ranking-badges";
 @import "./pages/rankings/view-ranking-details";
 
