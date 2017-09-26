@@ -394,8 +394,8 @@ export class AssessmentsPage {
     loading.present().then(() => {
       let tasks = [];
       _.forEach(this.submissions, (submission) => {
-        console.log('submission', submission);
 
+          // @TODO: investigate what causes absent of assessment_id/id/context_id
           if (
             submission &&
             submission.assessment_id &&
