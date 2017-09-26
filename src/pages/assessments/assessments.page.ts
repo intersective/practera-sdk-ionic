@@ -76,7 +76,6 @@ export class AssessmentsPage {
   }
 
   ionViewWillEnter() {
-
     let loader = this.loadingCtrl.create();
     loader.present().then(() => {
       this.loadQuestions()
@@ -227,7 +226,7 @@ export class AssessmentsPage {
            */
           let submissions = [];
           _.forEach(allSubmissions, group => {
-            _.forEach(group, (submission) => {
+            _.forEach(group, submission => {
                 submissions.push(this.submissionService.normalise(submission));
             });
           });
@@ -297,21 +296,13 @@ export class AssessmentsPage {
       });
     };
 
-    let tasks: Array<any> | any = [];
-    if (this.activity.References.length > 1) {
-      // Congregate assessment ids for rxjs forkJoin (batch API requests)
-      _.forEach(this.activity.References, ref => {
-        if (ref.Assessment && ref.Assessment.id) {
-          tasks.push(getAssessment(ref.Assessment.id));
-        }
-      });
-    } else {
-      // if only has single assessment available
-      let assessment = this.activity.References || {};
-      if (assessment[0].Assessment && assessment[0].Assessment.id) {
-        tasks = getAssessment(assessment[0].Assessment.id);
+    let tasks: Array<any> = [];
+    // Congregate assessment ids for rxjs forkJoin (batch API requests)
+    _.forEach(this.activity.References, ref => {
+      if (ref.Assessment && ref.Assessment.id) {
+        tasks.push(getAssessment(ref.Assessment.id));
       }
-    }
+    });
 
     return tasks;
   }
@@ -386,7 +377,6 @@ export class AssessmentsPage {
       // first batch API requests (get_assessments)
       Observable.forkJoin(this.preStackTasks())
         .subscribe(setSubmissionAndAssessment, err => {
-          console.log('err', err);
           reject(err);
         });
     });

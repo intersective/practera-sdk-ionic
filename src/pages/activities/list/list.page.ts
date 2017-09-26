@@ -334,42 +334,23 @@ export class ActivitiesListPage implements OnInit {
           text: 'Confirm',
           role: 'OK',
           handler: () => {
-            let assessment = {
-                context_id: 2473
-            };
             let refs = {
               References: [{
                 Assessment: {
-                  id: 2132,
+                  id: this.hardcode_assessment_id,
                   name: "Personal Edge pre-program questionnaire"
                 },
                 context_id: 2473
               }],
-              assessment
+              assessment: {
+                context_id: 2473
+              }
             };
-            this.navCtrl.push(AssessmentsPage, {
-              context_id: 2473,
-            // this.navCtrl.push(PortfolioPage, {
-              // assessments: data,
-              activity: refs
-              // submissions: this.navParams.get('submissions'),
-              // currentSubmission: this.navParams.get('currentSubmission'),
-              // event: this.navParams.get('event'),
-            });
-            /*processLoading.present().then(() => {
 
-              this.assessmentService.getPostProgramAssessment(this.hardcode_assessment_id)
-              .subscribe(
-                data => {
-                  console.log("Post Program Assessment data: ", data);
-                  processLoading.dismiss().then(() => {
-                  });
-                },
-                err => {
-                  console.log("Post Program Assessment error: ",err);
-                }
-              ); // hardcode for Post Program Assessment assessment_id
-            });*/
+            this.navCtrl.push(AssessmentsPage, {
+              references: refs.References,
+              activity: refs
+            });
           }
         },
       ]
