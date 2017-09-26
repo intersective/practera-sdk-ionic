@@ -340,7 +340,7 @@ export class ActivitiesListPage implements OnInit {
                   console.log("Post Program Assessment data: ", data);
                   processLoading.dismiss().then(() => {
                     this.navCtrl.push(PortfolioPage, {
-                      assessment: data
+                      assessments: data
                     });
                   });
                 },

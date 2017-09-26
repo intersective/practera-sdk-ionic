@@ -16,6 +16,15 @@ class Answer {
   choices?: Array<any>;
 }
 
+export class questionsResult {
+  required: Boolean;
+  answer: any;
+  reviewerAnswer: {
+    answer: any;
+    comment: any;
+  };
+}
+
 export class ChoiceBase<T> {
   id: number;
   value?: number; // or choice id, usually same as "id" above
@@ -420,5 +429,88 @@ export class AssessmentService {
     // headers.append('apikey', this.cacheService.getLocalObject('apikey'));
     // headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
     return this.request.get(`api/assessments.json?assessment_id=${assessment_id}&structured=true`);
+  }
+
+  // helpers
+  public getStatus(questionsResult, submissionResult): string {
+    let questionsStatus = [];
+    _.forEach(questionsResult, q => {
+      if (q.required && q.answer !== null) {
+        if (
+          q.reviewerAnswer !== null &&
+          submissionResult.status !== 'pending approval' &&
+          (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+        ) {
+          questionsStatus.push('reviewed');
+        } else {
+          questionsStatus.push('completed');
+        }
+      }
+
+      if (!q.required && q.answer !== null) {
+        if (
+          q.reviewerAnswer !== null &&
+          submissionResult.status !== 'pending approval' &&
+          (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+        ) {
+          questionsStatus.push('reviewed');
+        } else {
+          questionsStatus.push('completed');
+        }
+      }
+
+      if (q.answer === null) {
+        questionsStatus.push('incomplete');
+      }
+    });
+
+    // get final status by checking all questions' statuses
+    let status = 'incomplete';
+    if (_.every(questionsStatus, (v) => {
+      return (v === 'completed');
+    })) {
+      status = 'completed';
+    }
+    if (_.includes(questionsStatus, 'reviewed')) {
+      status = 'reviewed';
+    }
+
+    return status;
+  }
+
+  public getSummaries(questionsResult: Array<questionsResult>) {
+    let totalRequiredQuestions = 0;
+    let answeredQuestions = 0;
+    let reviewerFeedback = 0;
+
+    _.forEach(questionsResult, (q) => {
+      // get total number of questions
+      if (q.required) {
+        totalRequiredQuestions += 1;
+      }
+
+      // get total number of answered questions
+      if (q.required && q.answer && q.answer !== null) {
+        answeredQuestions += 1;
+      }
+
+      // get total number of feedback
+      // If API response, the reviewer's answer and comment are empty,
+      // front-end don't consider it as a feedback
+      if (
+        q.reviewerAnswer &&
+        q.reviewerAnswer !== null &&
+        !_.isEmpty(q.reviewerAnswer.answer) &&
+        !_.isEmpty(q.reviewerAnswer.comment)
+      ) {
+        reviewerFeedback += 1;
+      }
+    });
+
+    return {
+      totalRequiredQuestions,
+      answeredQuestions,
+      reviewerFeedback
+    };
   }
 }
