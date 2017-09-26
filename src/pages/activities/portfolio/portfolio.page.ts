@@ -97,7 +97,6 @@ export class PortfolioPage implements OnInit {
     });
   }
 
-
   /**
    * @description mapping assessments and submissions
    * @param {Object} submissions submissions
@@ -175,7 +174,6 @@ export class PortfolioPage implements OnInit {
 
       normalised.AssessmentGroup = assessmentGroupResult;
       result.push(normalised);
-      console.log('assessment 2', result);
     });
 
     return result;
