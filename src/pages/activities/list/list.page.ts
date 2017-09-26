@@ -106,7 +106,7 @@ export class ActivitiesListPage implements OnInit {
             let getCharacter = this.characterService.getCharacter();
             let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
-              .subscribe(results => { 
+              .subscribe(results => {
                 loadingData.dismiss().then(() => {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, element => {
@@ -126,17 +126,19 @@ export class ActivitiesListPage implements OnInit {
                   console.log("character id: ", this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
                   // console.log("Experience: ", this.characterCurrentExperience);
-                  this.gameService.getGameItems(this.characterData.id)
-                                  .subscribe(
-                                    data => {
-                                      this.initialItems = data.Items;
-                                      this.cacheService.setLocalObject('initialItems', this.initialItems);
-                                      console.log("Items Data: ", this.initialItems);
-                                    },
-                                    err => {
-                                      console.log("Items Data error: ", err);
-                                    }
-                                  );
+                  this.gameService.getItems({
+                    character_id: this.characterData.id
+                  })
+                  .subscribe(
+                    data => {
+                      this.initialItems = data.Items;
+                      this.cacheService.setLocalObject('initialItems', this.initialItems);
+                      console.log("Items Data: ", this.initialItems);
+                    },
+                    err => {
+                      console.log("Items Data error: ", err);
+                    }
+                  );
                 });
               },
               err => {
