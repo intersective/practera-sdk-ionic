@@ -348,12 +348,10 @@ export class ActivitiesListPage implements OnInit {
               assessment
             };
             this.navCtrl.push(AssessmentsPage, {
+              context_id: 2473,
             // this.navCtrl.push(PortfolioPage, {
               // assessments: data,
-              activity: refs,
-              submissions: {
-                context_id: 2473
-              }
+              activity: refs
               // submissions: this.navParams.get('submissions'),
               // currentSubmission: this.navParams.get('currentSubmission'),
               // event: this.navParams.get('event'),

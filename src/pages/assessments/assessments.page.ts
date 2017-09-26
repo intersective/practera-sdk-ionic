@@ -82,10 +82,7 @@ export class AssessmentsPage {
       this.loadQuestions()
       .then(() => {
         loader.dismiss();
-      }, err => {
-        console.log('log::', err);
-      })
-      .catch((err) => {
+      }).catch(err => {
         console.log(err);
         loader.dismiss();
       });
@@ -124,8 +121,7 @@ export class AssessmentsPage {
           let questionsResult = [];
           let submissionResult : any = {};
           _.forEach(assessmentGroup.questions, question => {
-            // Inject empty answer fields
-            // We will know thare are no submission when it is null
+            // force answers as null by default (for checkings)
             let questionResult : any = {
               answer: null,
               reviewerAnswer: null
@@ -237,7 +233,6 @@ export class AssessmentsPage {
           });
 
           this.submissions = this.filterSubmissions(submissions);
-          console.log('this.submissions', this.submissions);
           resolve(submissions);
         }, err => {
           console.log('err', err);
@@ -261,8 +256,11 @@ export class AssessmentsPage {
       }
     });
 
-    // prepare statuses for different condition filtering
-    let hasInProgress = _.find(submissions, {status: 'in progress'}); // "in progress" never > 1
+    // prepare statuses of submissions for different condition filtering (activity & event)
+    // Statuses: `in progress`, `done`
+
+    // "in progress" never > 1 (cuz "_.find" return only 1 found value)
+    let hasInProgress = _.find(submissions, {status: 'in progress'});
     let isNew = (!currentSubmission && (filteredSubmissions.length === 0 || !_.isEmpty(hasInProgress)));
     let isDone = _.find(submissions, {status: 'done'}); // "done" for view checkin
     let isCheckin = (this.navParams.get('event') && isDone);
