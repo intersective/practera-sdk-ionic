@@ -9,13 +9,14 @@ import { ActivityAchievementModalPage } from './activity-achievement.modal.page'
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 //services
-import { AchievementService } from '../../../services/achievement.service'; 
+import { AchievementService } from '../../../services/achievement.service';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
 @Component({
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
+  public hardcode_activity_id: any = 7632;
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
@@ -28,6 +29,7 @@ export class ActivitiesViewPage {
   public newTickIDsData: any = [];
   public achievementData: any = [];
   public findAchievementObj: any = [];
+  public portfolioView: boolean = false;
   activity: any = {};
   activityIndex: any = 0;
   assessment: any = {};
@@ -43,6 +45,7 @@ export class ActivitiesViewPage {
   loadings = {
     submissions: false
   };
+
   initialised_eset() {
     this.findAchievementObj = [];
     this.achievementData = [];
@@ -55,6 +58,7 @@ export class ActivitiesViewPage {
     this.eachFinalScore = 0;
     this.loadings.submissions = true;
   }
+
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
@@ -63,7 +67,9 @@ export class ActivitiesViewPage {
     private activityService: ActivityService,
     private submissionService: SubmissionService,
     private alertCtrl: AlertController
-  ) {}
+  ) {
+    this.portfolioView = this.navParams.get('portfolioView');
+  }
   ionViewWillEnter(): void {
     this.initialised_eset();
   }
@@ -91,7 +97,7 @@ export class ActivitiesViewPage {
     this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
     // This is a hardcode (temporary solution).
     // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
-    if (this.activityIDsArrary.includes(7632)){
+    if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
       this.logo_act1 = "./assets/img/badges/badge1.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data
@@ -118,7 +124,17 @@ export class ActivitiesViewPage {
           this.submissions = submissions.map(submission => {
             return this.submissionService.normalise(submission);
           });
-          this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
+          if(this.portfolioView == true){
+            let result = [];
+            (this.submissions || []).forEach(submission => {
+              if (submission.status !== 'in progress') {
+                result.push(submission);
+              }
+            });
+            this.submissions = result;
+          }else {
+            this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
+          }
         }
       });
       this.submissionTitles = this.getSubmissionStatus(this.submissions);
@@ -137,7 +153,7 @@ export class ActivitiesViewPage {
     });
     this.badgeData();
   }
-  // achievement popup model 
+  // achievement popup model
   achievementPopup(id){
     for(let a = 0; a < this.achievementData.length; a++){
       if(this.achievementData[a].id == this.newTickIDsData[id]){
@@ -275,7 +291,7 @@ export class ActivitiesViewPage {
       }else if(Submissions[0].assessment_id == "2045"){
         assessment_question_id = "20606";
       }else if(Submissions[0].assessment_id == "2046"){
-        assessment_question_id = "20617";  
+        assessment_question_id = "20617";
       }else if(Submissions[0].assessment_id == "2058"){
         assessment_question_id = "20686";
       }else if(Submissions[0].assessment_id == "2059"){

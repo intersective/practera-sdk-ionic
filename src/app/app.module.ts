@@ -201,7 +201,7 @@ export function HttpLoaderFactory(http: Http) {
     }),
     TranslationModule,
     IonicModule.forRoot(MyApp, {
-      scrollAssist: false, 
+      scrollAssist: false,
       autoFocusAssist: false
     }, {
       links: [

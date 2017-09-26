@@ -82,10 +82,7 @@ export class AssessmentsPage {
       this.loadQuestions()
       .then(() => {
         loader.dismiss();
-      }, err => {
-        console.log('log::', err);
-      })
-      .catch((err) => {
+      }).catch(err => {
         console.log(err);
         loader.dismiss();
       });
@@ -119,19 +116,16 @@ export class AssessmentsPage {
 
         // groups
         let assessmentGroupResult = [];
-        _.forEach(normalised.AssessmentGroup, (assessmentGroup, k) => {
+        _.forEach(normalised.AssessmentGroup, assessmentGroup => {
           // questions
           let questionsResult = [];
           let submissionResult : any = {};
-          _.forEach(assessmentGroup.questions, (question, l) => {
-            // Inject empty answer fields
-            // We will know thare are no submission when it is null
+          _.forEach(assessmentGroup.questions, question => {
+            // force answers as null by default (for checkings)
             let questionResult : any = {
               answer: null,
               reviewerAnswer: null
             };
-            let answerResult : any = null,
-              reviewerAnswerResult : any = null;
 
             // find submission
             _.forEach(submissions, (submission) => {
@@ -162,103 +156,21 @@ export class AssessmentsPage {
             }
           });
 
-          // Summarise basic answer information
-          let totalRequiredQuestions = 0;
-          let answeredQuestions = 0;
-          let reviewerFeedback = 0;
-
-          _.forEach(questionsResult, (q) => {
-            // get total number of questions
-            if (q.required) {
-              totalRequiredQuestions += 1;
-            }
-
-            // get total number of answered questions
-            if (q.required && q.answer && q.answer !== null) {
-              answeredQuestions += 1;
-            }
-
-            // get total number of feedback
-            // If API response, the reviewer's answer and comment are empty,
-            // front-end don't consider it as a feedback
-            if (
-              q.reviewerAnswer &&
-              q.reviewerAnswer !== null &&
-              !_.isEmpty(q.reviewerAnswer.answer) &&
-              !_.isEmpty(q.reviewerAnswer.comment)
-            ) {
-              reviewerFeedback += 1;
-            }
-          });
-
-          // Set status
-          // let status = result[i][j].AssessmentGroup[k].status = 'incomplete';
-          let questionsStatus = [];
-          _.forEach(questionsResult, (q) => {
-            if (q.required && q.answer !== null) {
-              if (
-                q.reviewerAnswer !== null &&
-                submissionResult.status !== 'pending approval' &&
-                (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
-              ) {
-                questionsStatus.push('reviewed');
-              } else {
-                questionsStatus.push('completed');
-              }
-            }
-
-            if (!q.required && q.answer !== null) {
-              if (
-                q.reviewerAnswer !== null &&
-                submissionResult.status !== 'pending approval' &&
-                (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
-              ) {
-                questionsStatus.push('reviewed');
-              } else {
-                questionsStatus.push('completed');
-              }
-            }
-
-            if (q.answer === null) {
-              questionsStatus.push('incomplete');
-            }
-
-            // if (q.required && q.answer === null) {
-            //   questionsStatus.push('incomplete');
-            // }
-            //
-            // if (!q.required && q.answer === null) {
-            //   questionsStatus.push('completed');
-            // }
-          });
-
-          // get final status by checking all questions' statuses
-          let status = 'incomplete';
-          if (_.every(questionsStatus, (v) => {
-            return (v === 'completed');
-          })) {
-            status = 'completed';
-          }
-          if (_.includes(questionsStatus, 'reviewed')) {
-            status = 'reviewed';
-          }
-
+          let summaries = this.assessmentService.getSummaries(questionsResult);
           if (assessmentGroup.accessible) {
             assessmentGroupResult.push(Object.assign(assessmentGroup, {
               questions: questionsResult,
               submission: submissionResult,
-              totalRequiredQuestions: totalRequiredQuestions,
-              answeredQuestions: answeredQuestions,
-              reviewerFeedback: reviewerFeedback,
-              status: status
+              totalRequiredQuestions: summaries.totalRequiredQuestions,
+              answeredQuestions: summaries.answeredQuestions,
+              reviewerFeedback: summaries.reviewerFeedback,
+              status: this.assessmentService.getStatus(questionsResult, submissionResult)
             }));
           }
-
         });
 
         normalised.AssessmentGroup = assessmentGroupResult;
         assessmentResult.push(normalised);
-        console.log('assessment 2', assessmentResult);
       });
 
       result.push(assessmentResult);
@@ -298,19 +210,21 @@ export class AssessmentsPage {
           this.activity.References
         ))
         .subscribe(allSubmissions => {
-          // allSubmissions - response format: [ // context_ids
-          //   [ // assessment group 1
-          //     assessment1,
-          //     assessment2,
-          //     ...
-          //   ],
-          //   [ // assessment group 2
-          //     assessment1,
-          //     assessment2,
-          //     ...
-          //   ],
-          //   ...
-          // ]
+          /** allSubmissions - response format:
+           *  [ // context_ids
+           *    [ // assessment group 1
+           *      assessment1,
+           *      assessment2,
+           *      ...
+           *    ],
+           *    [ // assessment group 2
+           *      assessment1,
+           *      assessment2,
+           *      ...
+           *    ],
+           *    ...
+           *  ]
+           */
           let submissions = [];
           _.forEach(allSubmissions, group => {
             _.forEach(group, (submission) => {
@@ -319,7 +233,6 @@ export class AssessmentsPage {
           });
 
           this.submissions = this.filterSubmissions(submissions);
-          console.log('this.submissions', this.submissions);
           resolve(submissions);
         }, err => {
           console.log('err', err);
@@ -343,8 +256,11 @@ export class AssessmentsPage {
       }
     });
 
-    // prepare statuses for different condition filtering
-    let hasInProgress = _.find(submissions, {status: 'in progress'}); // "in progress" never > 1
+    // prepare statuses of submissions for different condition filtering (activity & event)
+    // Statuses: `in progress`, `done`
+
+    // "in progress" never > 1 (cuz "_.find" return only 1 found value)
+    let hasInProgress = _.find(submissions, {status: 'in progress'});
     let isNew = (!currentSubmission && (filteredSubmissions.length === 0 || !_.isEmpty(hasInProgress)));
     let isDone = _.find(submissions, {status: 'done'}); // "done" for view checkin
     let isCheckin = (this.navParams.get('event') && isDone);
@@ -365,40 +281,52 @@ export class AssessmentsPage {
     return results;
   }
 
-  loadQuestions(): Promise<any> {
-    return new Promise((resolve, reject) => {
-
-      // get_assessments request with "assessment_id" & "structured"
-      let getAssessment = (assessmentId) => {
-        // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
-        return this.assessmentService.getAll({
-          search: {
-            assessment_id: assessmentId,
-            structured: true
-          }
-        });
-      };
-
-      // Congregation of assessment ids to fulfill get_assessments API's param requirement
-      let tasks = [];
-      _.forEach(this.activity.References, (reference) => {
-        if (
-          reference.Assessment &&
-          reference.Assessment.id
-        ) {
-          return tasks.push(getAssessment(reference.Assessment.id));
+  /**
+   * @name preStackTasks
+   * @description stack of tasks prepared to handle multiple activity references (ids)
+   */
+  preStackTasks() {
+    // get_assessments request with "assessment_id" & "structured"
+    let getAssessment = (assessmentId) => {
+      // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
+      return this.assessmentService.getAll({
+        search: {
+          assessment_id: assessmentId,
+          structured: true
         }
       });
+    };
 
+    let tasks: Array<any> | any = [];
+    if (this.activity.References.length > 1) {
+      // Congregate assessment ids for rxjs forkJoin (batch API requests)
+      _.forEach(this.activity.References, ref => {
+        if (ref.Assessment && ref.Assessment.id) {
+          tasks.push(getAssessment(ref.Assessment.id));
+        }
+      });
+    } else {
+      // if only has single assessment available
+      let assessment = this.activity.References || {};
+      if (assessment[0].Assessment && assessment[0].Assessment.id) {
+        tasks = getAssessment(assessment[0].Assessment.id);
+      }
+    }
+
+    return tasks;
+  }
+
+  loadQuestions(): Promise<any> {
+    return new Promise((resolve, reject) => {
       /**
        * merging submission into question inside of assessment array objects
        * - set question statuses (quantity of total answered)
        * - set submission button status
        */
-      let preprocessAssessmentSubmission = () => {
+      let preprocessAssessmentSubmission = (assessments) => {
         this.assessmentGroups = this.mapSubmissionsToAssessment(
           this.submissions,
-          this.assessmentGroups
+          assessments
         );
 
         // Only allow submit when all required question have answered.
@@ -406,13 +334,10 @@ export class AssessmentsPage {
           _.forEach(groups, assessment => {
             let groupWithAnswers = 0;
             _.forEach(assessment.AssessmentGroup, group => {
-              // console.log('group.answeredQuestions', group.answeredQuestions);
-              // console.log('group.totalRequiredQuestions', group.totalRequiredQuestions);
               if (group.answeredQuestions >= group.totalRequiredQuestions) {
                 groupWithAnswers += 1;
               }
             });
-            // console.log('groupWithAnswers', groupWithAnswers, _.size(assessment.AssessmentGroup));
             if (groupWithAnswers >= _.size(assessment.AssessmentGroup)) {
               this.allowSubmit = true;
             }
@@ -436,36 +361,34 @@ export class AssessmentsPage {
         });
       };
 
-      // first batch API requests (get_assessments)
-      Observable.forkJoin(tasks)
-        .subscribe(
-          (assessments: any) => {
-            this.assessmentGroups = assessments;
-            this.submissions = this.navParams.get('submissions');
+      let setSubmissionAndAssessment = (assessments) => {
+        this.submissions = this.navParams.get('submissions');
 
-            // check if this is from single submission view
-            let currentSubmission = this.navParams.get('currentSubmission');
-            if (currentSubmission) {
-              this.submissions = [currentSubmission];
-            }
+        // check if this is from single submission view
+        let currentSubmission = this.navParams.get('currentSubmission');
+        if (currentSubmission) {
+          this.submissions = [currentSubmission];
+        }
 
-            // pull new when submission is updated or currentSubmission is empty
-            if (this.submissionUpdated || !currentSubmission) {
-              this.pullSubmissions().then(res => {
-                preprocessAssessmentSubmission();
-              }, err => {
-                reject(err);
-              });
-              this.submissionUpdated = false;
-            } else {
-              preprocessAssessmentSubmission();
-            }
-          },
-          (err) => {
-            console.log('err', err);
+        // pull new when submission is updated or currentSubmission is empty
+        if (this.submissionUpdated || !currentSubmission) {
+          this.pullSubmissions().then(res => {
+            preprocessAssessmentSubmission(assessments);
+          }, err => {
             reject(err);
-          }
-        );
+          });
+          this.submissionUpdated = false;
+        } else {
+          preprocessAssessmentSubmission(assessments);
+        }
+      };
+
+      // first batch API requests (get_assessments)
+      Observable.forkJoin(this.preStackTasks())
+        .subscribe(setSubmissionAndAssessment, err => {
+          console.log('err', err);
+          reject(err);
+        });
     });
   }
 
@@ -552,7 +475,7 @@ export class AssessmentsPage {
   }
 
   // items popup
-  popupAfterSubmit(){
+  popupAfterSubmit() {
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
     });

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
+import { Observable } from 'rxjs/Observable';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -211,7 +212,7 @@ export class SubmissionService {
    * extract reference IDs and prepare Observables to retrieve submissions
    * @param {array} references References array responded with get_activities() api
    */
-  public getSubmissionsByReferences(references) {
+  public getSubmissionsByReferences(references: Array<{context_id : Number}>): Array<Observable<any>> {
     let tasks = []; // multiple API requests
 
     // get_submissions API to retrieve submitted answer
