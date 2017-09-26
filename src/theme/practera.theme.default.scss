@@ -113,65 +113,10 @@ $font-secondary: 'Raleway';
   }
 }
 
-// alertbox message
-.earn-points-box {
-  text-align: center;
-}
 // single event card styling
 ion-card.rounded {
   border-radius: 4px;
 }
-event {
-  ion-card-content.with-cover {
-    width: 100%;
-    height: 124px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .event-booked-tag {
-      background-color: color($colors, primary, base); // default-theme
-      color: color($colors, secondary, base);
-      padding: 5px 10px;
-      border-bottom-left-radius: 5px;
-      border-top-left-radius: 5px;
-      position: absolute;
-      right: 0;
-      margin-top: -30px;
-      margin-right: 12px;
-    }
-  }
-  .event-status {
-    position:relative;
-  }
-  .event-tag {
-    position: absolute;
-    padding: 5.1px;
-    font-size: 12px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-    margin-top: 10px;
-    right: 0;
-  }
-  .event-booked-tag,
-  .event-attended-tag {
-    background-color: color($colors, primary, base); // default-theme
-    color: color($colors, secondary, base);
-  }
-  .event-title {
-    padding: 13px 16px 14px 16px;
-    font-size: 32px;
-    line-height: 40px;
-    color: white;
-    font-family: $font-primary; // default-theme
-  }
-  .event-details {
-    padding: 8px 15px;
-    font-family: $font-primary; // default-theme
-    font-size: 14px;
-    line-height: 20px;
-  }
-}
-
 
 // Achievements
 @import "./pages/achievements/view";
@@ -193,6 +138,7 @@ event {
 
 // Events
 @import "./pages/events/list";
+@import "./pages/events/view";
 
 // Rankings
 @import "./pages/rankings/view-ranking-badges";
