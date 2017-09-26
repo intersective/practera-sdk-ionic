@@ -144,16 +144,9 @@ ion-card.rounded {
 @import "./pages/rankings/view-ranking-badges";
 @import "./pages/rankings/view-ranking-details";
 
+// Settings
+@import "./pages/settings/leaderboard";
 
-// 14.leaderboard settings page styling
-.leaderboard-settings {
-  .hide-settings {
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-  }
-}
 // 15. items popup general styling
 .items-popup {
   .scroll-content {
