@@ -147,6 +147,7 @@ ion-card.rounded {
 // Settings
 @import "./pages/settings/leaderboard";
 @import "./pages/settings/tutorial";
+@import "./pages/settings/settings";
 
 // 15. items popup general styling
 .items-popup {
@@ -176,12 +177,7 @@ ion-card.rounded {
     }
   }
 }
-// 11. Settings & Tutorial page stylings
-.settings {
-  .list-header-md {
-    border: none;
-  }
-}
+
 // 15. items popup general styling
 .items-popup {
   .scroll-content {
