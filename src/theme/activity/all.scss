@@ -124,6 +124,7 @@
           }
           p.link {
             color: color($colors, text, base);
+            text-decoration: none;
           }
         }
         li:nth-child(1) {

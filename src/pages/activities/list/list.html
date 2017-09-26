@@ -49,8 +49,13 @@
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
               </button>
             </p>
-            <p *ngIf="!portfolio_request" class="link" (click)="whatsThis()">What's this?</p>
-            <p *ngIf="portfolio_request" class="link" (click)="requestPortfolio()">Request Portfolio</p>
+            <div *ngIf="!view_portfolio">
+              <p *ngIf="!portfolio_request" class="link" (click)="whatsThis()">What's this?</p>
+              <p *ngIf="portfolio_request" class="link" (click)="requestPortfolio()">Request Portfolio</p>
+            </div>
+            <div *ngIf="view_portfolio">
+              <a class="link" href="{{viewPortfolioLink}}">View Portfolio</a>
+            </div>
           </li>
         </ul>
       </ion-col>

@@ -72,6 +72,7 @@ export class ActivitiesListPage implements OnInit {
   public findSubmissions: any = [];
   public button_show: boolean = true;
   public portfolio_request: boolean = false;
+  public view_portfolio: boolean = false;
   public bookedEventsCount: any = 0;
   public eventsData: any = [];
   public initialItems: any = [];
@@ -90,6 +91,9 @@ export class ActivitiesListPage implements OnInit {
   public returnError: boolean = false;
   public rankingsPage = RankingsPage;
   public eventsListPage = EventsListPage;
+  public program_id = this.cacheService.getLocal('program_id');
+  public email = this.cacheService.getLocal('email').replace(/\"/g, "");
+  public viewPortfolioLink: any = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
@@ -144,6 +148,7 @@ export class ActivitiesListPage implements OnInit {
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');
+    console.log(this.program_id + ", " + this.email + ", " + this.viewPortfolioLink);
   }
   ngOnInit() {}
   ionViewWillEnter(){
@@ -233,7 +238,20 @@ export class ActivitiesListPage implements OnInit {
                     }
                   });
                   // submission data handling
+                  let findPostProgramAssessmentSubmission: any = [];
                   this.submissionData = results[0];
+                  _.forEach(this.submissionData, (element, index) => {
+                    if(element.Assessment.id == 2134){
+                      findPostProgramAssessmentSubmission.push(true);
+                    }else {
+                      findPostProgramAssessmentSubmission.push(false);
+                    }
+                  });
+                  if(findPostProgramAssessmentSubmission.indexOf(true) > -1){
+                    this.view_portfolio = true;
+                  } else {
+                    this.view_portfolio = false;
+                  }
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
@@ -297,7 +315,8 @@ export class ActivitiesListPage implements OnInit {
       activityIDs: this.activityIDs,
       tickArray: this.changeColor,
       eachFinalScore: this.eachActivityScores.slice(0, 7),
-      newTickIDsArray: this.achievementListIDs
+      newTickIDsArray: this.achievementListIDs,
+      portfolioView: this.view_portfolio
     });
   }
   // view the disabled activity popup
