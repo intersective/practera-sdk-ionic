@@ -122,8 +122,10 @@
             padding: 5pt 0;
             color: color($colors, palette-five, base);
           }
-          p.link {
+          p.link,
+          a.link {
             color: color($colors, text, base);
+            text-decoration: none;
           }
         }
         li:nth-child(1) {
