@@ -55,7 +55,7 @@ export class MyApp implements OnInit {
     private cache: CacheService,
     private alertCtrl: AlertController
   ) {
-    if (!platform.is('ios')) {
+    /*if (!platform.is('ios')) {
       win.nativeWindow.onbeforeunload = (e) => {
         e.preventDefault();
         let alert = alertCtrl.create({
@@ -70,7 +70,7 @@ export class MyApp implements OnInit {
           });
         });
       };
-    }
+    }*/
 
     /* Customized Flag Start */
     // when screen size changed, disable mobile landscape mode
