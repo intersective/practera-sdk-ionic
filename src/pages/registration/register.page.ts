@@ -208,6 +208,9 @@ export class RegisterPage implements OnInit {
   }
   // check password minmimum length
   checkMinLength(){
+    if (!this.password || !this.verify_password) {
+      return this.minLengthCheck = false;
+    }
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
   // check password mismacth issue
