@@ -150,20 +150,4 @@ ion-card.rounded {
 @import "./pages/settings/settings";
 
 // landscape activity list view
-@media screen and (min-width: 500px) {
-  .score-board {
-    display: inline-block;
-    .col {
-      .score-inner-box {
-        display: inline-block;
-        height: 80% !important;
-        padding: 0 !important;
-        margin: 2% !important;
-        div {
-          display: inline-block;
-          padding: 0 !important;
-        }
-      }
-    }
-  }
-}
+@import "./screen";
