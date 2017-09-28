@@ -14,6 +14,7 @@ import { RankingDetailsPage } from '../view/ranking-details.page';
 })
 export class RankingsPage {
   public totalData: any = [];
+  public totalPoints: any = 0
   public rankingData: any = [];
   public myRankingData: any = [];
   public listRankingData: any = [];
@@ -43,6 +44,9 @@ export class RankingsPage {
       .subscribe((characters) => {
         // Now only have one character per project
         let me = characters.Characters[0];
+        // total points
+        this.totalPoints = me.experience_points;
+        // monthly points
         this.gameService.getRanking(gameId, me.id)
           .subscribe(
             results => {
@@ -75,7 +79,9 @@ export class RankingsPage {
   }
   goRankingDetail(myRanking){
     this.navCtrl.push(RankingDetailsPage, {
-      myRanking: myRanking
+      myRanking: myRanking,
+      monthlyPoints: this.myRankingData.experience_points,
+      totalPoints: this.totalPoints
     });
   }
 }

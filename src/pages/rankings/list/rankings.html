@@ -1,5 +1,10 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'RANKING.MAINPAGETITLE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
 <ion-content class="rankings">
-  <ion-grid *ngIf="listRankingData.length === 0" style="margin-top:40%;">
+  <ion-grid *ngIf="listRankingData.length === 0" style="margin-top: 40%;">
     <ion-row justify-content-center >
       <ion-col align-self-start></ion-col>
       <ion-col align-self-center text-center>
@@ -8,7 +13,6 @@
       <ion-col align-self-end></ion-col>
     </ion-row>
   </ion-grid>
-
   <ion-list *ngIf="listRankingData !== 0" class="general-ranking">
     <ion-item *ngFor="let listData of listRankingData">
       <rankIcon [rank]="listData.rank"></rankIcon>
@@ -20,7 +24,6 @@
       </div>
     </ion-item>
   </ion-list>
-
   <ion-footer>
     <ion-toolbar>
       <ion-list class="my-ranking" no-lines>
