@@ -5,14 +5,12 @@
 </ion-header>
 
 <ion-content class="events">
-  <ion-list>
-    <ion-item class="title-background"
-      [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
-      <p class="title">{{ event.title }}</p>
-      <div *ngIf="event.isBooked" class="status">
-        <div class="tag">{{ (event.isAttended) ? 'Attended' : 'Booked' }}</div>
-      </div>
-    </ion-item>
+  <ion-list class="title-background"
+    [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
+    <div *ngIf="event.isBooked" class="status">
+      <div class="tag" color="palette-five">{{ (event.isAttended) ? 'Attended' : 'Booked' }}</div>
+    </div>
+    <div class="title">{{ event.title }}</div>
   </ion-list>
 
   <ion-list class="details">
