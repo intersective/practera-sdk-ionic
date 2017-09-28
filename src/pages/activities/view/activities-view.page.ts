@@ -16,7 +16,7 @@ import { SubmissionService } from '../../../services/submission.service';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  public hardcode_activity_id: any = 7632;
+  public hardcode_activity_id: any = 7850;
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
@@ -286,18 +286,18 @@ export class ActivitiesViewPage {
   getSubmissionTitle(Submissions){
     let assessment_question_id: any = "0";
     if(Submissions[0]){
-      if(Submissions[0].assessment_id == "2044"){
-        assessment_question_id = "20595";
-      }else if(Submissions[0].assessment_id == "2045"){
-        assessment_question_id = "20606";
-      }else if(Submissions[0].assessment_id == "2046"){
-        assessment_question_id = "20617";
-      }else if(Submissions[0].assessment_id == "2058"){
-        assessment_question_id = "20686";
-      }else if(Submissions[0].assessment_id == "2059"){
-        assessment_question_id = "20697";
-      }else if(Submissions[0].assessment_id == "2049"){
-        assessment_question_id = "20656";
+      if(Submissions[0].assessment_id == "2124"){
+        assessment_question_id = "21316";
+      }else if(Submissions[0].assessment_id == "2125"){
+        assessment_question_id = "21327";
+      }else if(Submissions[0].assessment_id == "2126"){
+        assessment_question_id = "21338";
+      }else if(Submissions[0].assessment_id == "2127"){
+        assessment_question_id = "21349";
+      }else if(Submissions[0].assessment_id == "2128"){
+        assessment_question_id = "21360";
+      }else if(Submissions[0].assessment_id == "2129"){
+        assessment_question_id = "21371";
       }else if(Submissions[0].assessment_id == "2050"){
         assessment_question_id = "20661";
       }

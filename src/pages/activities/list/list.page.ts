@@ -59,6 +59,7 @@ export class ActivitiesListPage implements OnInit {
     this.eachActivityScores = [];
   }
   public hardcode_assessment_id: any = 2134;
+  public hardcode_context_id: any = 2532;
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
   public activityIndex: any = 0;
@@ -105,13 +106,13 @@ export class ActivitiesListPage implements OnInit {
     available: []
   };
   public achievementListIDs: any = [
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [317, 318, 319, 320],
-    [321, 323, 322, 324],
-    [0, 0, 0, 0],
-    [326, 326, 326, 326]
+    [355, 356, 353, 354],
+    [351, 352, 349, 350],
+    [370, 371, 368, 369],
+    [344, 345, 342, 343],
+    [361, 362, 359, 360],
+    [365, 366, 363, 364],
+    [341, 341, 341, 341]
   ];
   public show_score_act: any = [
     false,false,false,false,false,false,false
@@ -242,7 +243,7 @@ export class ActivitiesListPage implements OnInit {
                   let findPostProgramAssessmentSubmission: any = [];
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, (element, index) => {
-                    if(element.Assessment.id == 2134){ // hardcode for post program assessment_id
+                    if(element.Assessment.id == this.hardcode_assessment_id){ // hardcode for post program assessment_id
                       findPostProgramAssessmentSubmission.push(true);
                     }else {
                       findPostProgramAssessmentSubmission.push(false);
@@ -359,10 +360,10 @@ export class ActivitiesListPage implements OnInit {
                   id: this.hardcode_assessment_id,
                   name: "Personal Edge pre-program questionnaire"
                 },
-                context_id: 2473 // hardcode for context_id
+                context_id: this.hardcode_context_id // hardcode for context_id
               }],
               assessment: {
-                context_id: 2473
+                context_id: this.hardcode_context_id // hardcode for context_id
               }
             };
 
