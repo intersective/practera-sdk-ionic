@@ -2,10 +2,10 @@ import { Directive, ElementRef, Renderer, Input, OnChanges } from '@angular/core
 import { WindowRef } from '../window';
 
 @Directive({
-  selector: '[filestack-preview]'
+  selector: '[file-preview]'
 })
-export class FilestackPreviewDirective implements OnChanges {
-  @Input('filestack-preview') url: string;
+export class FilePreviewDirective implements OnChanges {
+  @Input('file-preview') url: string;
 
   constructor(
     private el: ElementRef,
@@ -18,7 +18,7 @@ export class FilestackPreviewDirective implements OnChanges {
 
   ngOnChanges () {
     let el  = this.el.nativeElement;
-    let url = this.url || el.getAttribute('filestack-preview');
+    let url = this.url || el.getAttribute('file-preview');
 
     if (url && url.length > 0) {
       url = url.replace('api/file/', 'api/preview/');

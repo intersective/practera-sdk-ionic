@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { FilestackService } from '../../../shared/filestack/filestack.service';
+import { FilepickerService } from '../../../shared/filepicker/filepicker.service';
 import { EventsPreviewPage } from './events-preview.page';
 import { UtilsService } from '../../../shared/utils/utils.service';
 import { WindowRef } from '../../../shared/window';
@@ -15,7 +15,7 @@ export class EventsDownloadPage {
   constructor(
     private navCtrl: NavController,
     private params: NavParams,
-    private fs: FilestackService,
+    private fs: FilepickerService,
     private win: WindowRef,
     private utils: UtilsService
   ) {

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, NgZone } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FilestackService, FilestackUpload } from '../../shared/filestack/filestack.service';
+import { FilepickerService, FilepickerUpload } from '../../shared/filepicker/filepicker.service';
 import { UtilsService } from '../../shared/utils/utils.service';
 import * as _ from 'lodash';
 
@@ -17,7 +17,7 @@ export class FileQuestionComponent implements OnInit {
   // uploaded: Array<any> = []; // uploaded files
 
   constructor(
-    private fs: FilestackService,
+    private fs: FilepickerService,
     private util: UtilsService,
     private zone: NgZone
   ) {}
@@ -41,7 +41,7 @@ export class FileQuestionComponent implements OnInit {
       storeTo: {
         location: 's3'
       }
-    }).then((uploaded: FilestackUpload) => {
+    }).then((uploaded: FilepickerUpload) => {
       self.zone.run(() => {
         if (uploaded.filesUploaded.length > 0) {
           let file = uploaded.filesUploaded.shift();
