@@ -17,8 +17,8 @@ export class RankingDetailsPage {
   public achievementBadgeImage = '../assets/img/default/default-badge.png';
   public achievementName = 'Achievement';
   public totalPoints = 0;
+  public monthlyPoints = 0;
   public myRank: any = {};
-
   public emptyAchievementMessage = errMessages.Activities.achievements.empty;
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
@@ -28,7 +28,9 @@ export class RankingDetailsPage {
               private alertCtrl: AlertController,
               private modalCtrl: ModalController,
               private params: NavParams,
-              private achievementService: AchievementService){}
+              private achievementService: AchievementService){
+                this.getUserAchievementData();
+              }
   ionViewWillEnter() {
     this.myRank = this.navParams.get('myRanking') || {};
     let loader = this.loadingCtrl.create();
@@ -47,7 +49,6 @@ export class RankingDetailsPage {
       this.achievementService.getAchievements()
         .subscribe(
           (data) => {
-            console.log('achievemnts', data);
             if (data) {
               // Filter achievemnts
               _.forEach(data.Achievement, element => {
@@ -64,6 +65,10 @@ export class RankingDetailsPage {
           }
         );
     });
+  }
+  getUserAchievementData(){
+    this.totalPoints = this.navParams.get('totalPoints') || 0;
+    this.monthlyPoints = this.navParams.get('monthlyPoints') || 0;
   }
   goToBadgeDetailsPage(achievementData){
     let goRankingBadgesPopup = this.modalCtrl.create(RankingBadgesPage, { achievement: achievementData });

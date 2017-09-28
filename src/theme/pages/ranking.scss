@@ -73,6 +73,15 @@ rankings-list-page {
   ion-list ion-label {
     margin: 0px;
   }
+  .ranking-points {
+    ion-item {
+      padding-left: 0px;
+      border-top: none;
+    }
+    ion-label {
+      padding-left: 16px;
+    }  
+  }
   .ranking-item {
     width: 100%;
     display: flex;
