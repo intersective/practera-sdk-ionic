@@ -1,6 +1,6 @@
 import { ModuleWithProviders, NgModule, SkipSelf, Optional } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FilepickerConfig, FilepickerService } from './Filepicker.service';
+import { FilepickerConfig, FilepickerService } from './filepicker.service';
 import { FilePreviewDirective } from './file-preview.directive';
 
 @NgModule({

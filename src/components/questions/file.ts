@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, NgZone } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { FilepickerService, FilepickerUpload } from '../../shared/Filepicker/Filepicker.service';
+import { FilepickerService, FilepickerUpload } from '../../shared/filepicker/filepicker.service';
 import { UtilsService } from '../../shared/utils/utils.service';
 import * as _ from 'lodash';
 
