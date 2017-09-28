@@ -1,15 +1,17 @@
 <ion-card class="rounded">
-  <div *ngIf="isBookedEvent(event)" class="event-status">
-    <div class="event-tag event-booked-tag">Booked</div>
+  <div *ngIf="isBookedEvent(event)" class="status">
+    <div class="tag" color="palette-five">Booked</div>
   </div>
-  <div *ngIf="isAttendedEvent(event)" class="event-status">
-    <div class="event-tag event-attended-tag">Attended</div>
+  <div *ngIf="isAttendedEvent(event)" class="status">
+    <div class="tag" color="palette-five">Attended</div>
   </div>
+
   <ion-card-content class="with-cover" [style.background-image]="'url(' + event.coverUrl + ')'">
     <div class="event-title">
       {{ event.title }}
     </div>
   </ion-card-content>
+
   <ion-row>
     <ion-col col-6 class="event-details">
       <div>{{ event.startDisplayDate }}</div>

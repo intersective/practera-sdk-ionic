@@ -7,20 +7,34 @@
   }
   .title-background {
     height: 10em;
-    background-size: cover;
-    background-position: center;
     text-align: center;
+
+    // // background tint (contrast title text)
+    // background-size: cover;
+    // background-position: center;
+    // width: inherit;
     .title {
-      color: white;
+      line-height: 4em;
       font-size: 3.5rem;
-      white-space: normal;
-      text-shadow: 0 0 1px black;
+      color: white;
+      font-family: $font-primary; // default-theme
+      text-align: center;
+
+      // background tint (contrast title text)
+      background: radial-gradient(rgba(0, 0, 0, 0.5), transparent);
+      background-size: cover;
+      background-position: center;
+
+      width: inherit;
+      height: 100%;
     }
     .status {
       position: relative;
     }
     .tag {
-      position: fixed;
+      background-color: color($colors, palette-five, base); // default-theme
+      color: color($colors, background, contrast);
+      position: absolute;
       border-top-left-radius: 5px;
       border-bottom-left-radius: 5px;
       font-size: 1.3rem;
@@ -28,8 +42,6 @@
       padding: 0.4rem;
       right: 0;
       top: 0;
-      background-color: color($colors, palette-five, base); // default-theme
-      color: color($colors, background, contrast);
     }
   }
   .details {
@@ -97,23 +109,13 @@ event {
     justify-content: center;
     align-items: center;
     padding: 0px;
-
-    .event-booked-tag {
-      background-color: color($colors, primary, base); // default-theme
-      color: color($colors, secondary, base);
-      padding: 5px 10px;
-      border-bottom-left-radius: 5px;
-      border-top-left-radius: 5px;
-      position: absolute;
-      right: 0;
-      margin-top: -30px;
-      margin-right: 12px;
-    }
   }
-  .event-status {
-    position:relative;
+  .status {
+    position: relative;
   }
-  .event-tag {
+  .tag {
+    background-color: color($colors, palette-five, base); // default-theme
+    color: color($colors, background, contrast);
     position: absolute;
     padding: 5.1px;
     font-size: 12px;
@@ -122,24 +124,17 @@ event {
     margin-top: 10px;
     right: 0;
   }
-  .event-booked-tag,
-  .event-attended-tag {
-    background-color: color($colors, palette-five, base); // default-theme
-    color: color($colors, background, contrast);
-  }
   .event-title {
-    // padding: 13px 16px 14px 16px;
     font-size: 32px;
     color: white;
     font-family: $font-primary; // default-theme
     text-align: center;
 
     // background tint (contrast title text)
-    background: radial-gradient(rgba(0, 0, 0, 0.2), transparent);
+    background: radial-gradient(rgba(0, 0, 0, 0.5), transparent);
     background-size: cover;
     background-position: center;
 
-    font-size: 32px;
     width: inherit;
     height: 100%;
   }
