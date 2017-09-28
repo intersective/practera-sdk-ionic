@@ -1,0 +1,117 @@
+// Font-awesome
+@import "font-awesome";
+// Default Theme: Practera Theme
+@import './theme/variables';
+// 1. General Variables
+// 1.1 General Color Variables
+$events-download-btn: 1px $border-primary solid;
+// 1.2 General Font Variables
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,700,600italic);
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,700,600italic);
+$font-primary: 'Roboto';
+$font-secondary: 'Raleway';
+
+// 3. General Tab Styling
+.tab-color {
+  background-color: color($colors, primary, base);
+  color: color($colors, secondary, base);
+}
+.flex-display {
+  display: flex;
+}
+// 4. General Text styling
+.app-title {
+  font-family: $font-primary;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center;
+}
+.card-title {
+  font-family: $font-primary;
+  font-size: 32px;
+}
+.general-text {
+  font-family: $font-primary;
+  font-size: 1.3rem;
+}
+.error-message {
+  padding: 6px;
+}
+.line-break {
+  word-break: break-word;
+}
+// 5. General Button Styling
+.general-button {
+  background-color: color($colors, button, base);
+}
+.close {
+  font-size: 2.7rem;
+  float: right;
+  background-color: transparent;
+  color: color($colors, secondary, base);
+  display: inline-block;
+}
+// 6. General Pages Styling
+// 6.1 Default Theme Settings Start
+.toolbar.toolbar-md,
+.toolbar.toolbar-ios {
+  min-height: 50px;
+  .grid,
+  .col {
+    padding: 0px;
+  }
+}
+.tab-button-icon.icon,
+.button-outline-ios,
+.button-outline-md,
+.tabs-ios .tab-button[aria-selected=true] .tab-button-icon,
+.tabs-md .tab-button[aria-selected=true] .tab-button-icon,
+.tab-button-text,
+.segment-ios .segment-button,
+.segment-md .segment-button {
+  color: color($colors, primary, base);
+  border-color: color($colors, primary, base);
+}
+.segment-ios .segment-button.segment-activated,
+.segment-md .segment-button.segment-activated {
+  background-color: color($colors, primary, base);
+  color: color($colors, secondary, base);
+  border-color: color($colors, primary, base);
+}
+.checkbox-md .checkbox-checked,
+.checkbox-ios .checkbox-checked {
+  border-color: color($colors, primary, base);
+  background-color: color($colors, primary, base);
+}
+.loading-md .spinner-crescent circle,
+.loading-ios .spinner-crescent circle {
+  stroke: color($colors, primary, base);
+}
+// 6.2 Default Theme Settings End
+.header {
+  .toolbar-background-md,
+  .toolbar-background-ios {
+    background-color: color($colors, primary, base);
+  }
+  .bar-button-default-md,
+  .bar-button-default-ios,
+  .toolbar-title-md,
+  .toolbar-title-ios {
+    color: color($colors, secondary, base);
+  }
+  .toolbar-title-md,
+  .toolbar-title-ios {
+    font-size: 1.7rem;
+  }
+  // 6.3 text input without outline
+  .text-input-ios,
+  .text-input-md,
+  .focus-outline :focus {
+    outline: none !important;
+  }
+}
+
+// single event card styling
+ion-card.rounded {
+  border-radius: 4px;
+}
