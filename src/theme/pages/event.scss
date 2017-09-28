@@ -55,8 +55,8 @@ event, .events {
     margin-bottom: 0;
   }
   .title-background {
+    @extend ion-card-content.with-cover;
     height: 10em;
-    text-align: center;
 
     .title {
       @extend .event-title;
