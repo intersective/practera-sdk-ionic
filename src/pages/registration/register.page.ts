@@ -215,6 +215,9 @@ export class RegisterPage implements OnInit {
     return this.verifyPwd = true;
   }
   pwdMatchCheck() {
-    return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+    if (!this.password) {
+      return this.isPwdMatch = false;
+    }
+    return (this.password != this.verify_password) ? this.isPwdMatch = true : this.isPwdMatch = false;
   }
 }
