@@ -1,24 +1,24 @@
 import { Injectable, Optional } from '@angular/core';
 
-declare var filestack: any;
-declare var filepicker: any;
+declare var filestack: any; // v3 filestack
+declare var filepicker: any; // v2 filestack
 
-export class FilestackUpload {
+export class FilepickerUpload {
   filesFailed: Array<any>;
   filesUploaded: Array<any>;
 }
 
 @Injectable()
-export class FilestackConfig {
+export class FilepickerConfig {
   apikey = null;
 }
 
-export class FilestackService {
+export class FilepickerService {
   private filestack: any;
   private filepicker: any;
   version: any;
 
-  constructor(@Optional() config: FilestackConfig) {
+  constructor(@Optional() config: FilepickerConfig) {
     this.filestack = filestack.init(config.apikey);
     this.version = filestack.version;
 

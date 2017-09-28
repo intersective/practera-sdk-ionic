@@ -7,7 +7,7 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { CacheModule } from '../shared/cache/cache.module';
 import { NotificationModule } from '../shared/notification/notification.module';
 import { MyApp } from './app.component';
-import { FilestackModule } from '../shared/filestack/filestack.module';
+import { FilepickerModule } from '../shared/filepicker/filepicker.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
@@ -24,7 +24,7 @@ import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
 import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
-import { FilestackService } from '../shared/filestack/filestack.service';
+import { FilepickerService } from '../shared/filepicker/filepicker.service';
 import { GameService } from '../services/game.service';
 import { GroupEmitterService } from '../components/questions/group-emitter.service';
 import { LevelService } from '../services/level.service';
@@ -34,6 +34,7 @@ import { RequestModule } from '../shared/request/request.module';
 import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
+
 import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
 // components
@@ -167,7 +168,7 @@ export function HttpLoaderFactory(http: Http) {
       appKey: Configure.appKey,
       prefixUrl: Configure.prefixUrl
     }),
-    FilestackModule.forRoot({
+    FilepickerModule.forRoot({
       apikey: Configure.filestack.apiKey
     }),
     TranslateModule.forRoot({
@@ -260,7 +261,7 @@ export function HttpLoaderFactory(http: Http) {
     { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
-    { provide: FilestackService, useClass: FilestackService },
+    { provide: FilepickerService, useClass: FilepickerService },
     { provide: LevelService, useClass: LevelService },
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
