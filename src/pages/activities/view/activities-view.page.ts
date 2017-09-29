@@ -21,6 +21,7 @@ export class ActivitiesViewPage {
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
   public submissionTitle: any = [];
+  public newSubmissionTitle: any = [];
   public tickArray: any = [];
   public newTickArray: any = [];
   public tickedCount: any = 0;
@@ -303,12 +304,16 @@ export class ActivitiesViewPage {
       }
       _.forEach(Submissions, (element, index) => {
         _.forEach(element.answer, (ele, index) => {
-          if(ele.assessment_question_id == assessment_question_id) {
-            this.submissionTitle.push(ele.answer);
+          if(ele.assessment_question_id !== assessment_question_id) {
+            if(ele.answer){
+              this.newSubmissionTitle.push(ele.answer);
+            }else {
+              this.newSubmissionTitle = [];
+            } 
           }
         })
-      })
-      return this.submissionTitle;
+      });
+      return this.newSubmissionTitle;
     }
   }
   badgeData(){
