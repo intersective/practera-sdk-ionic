@@ -77,19 +77,19 @@ export class EventsListPage {
    * my-bookings: active event & booked
    * browses: list of available events
    */
-  filterEvents() {
+  filterEvents() { 
     this.noEvents = false;
     switch(this.filter) {
       case 'attended':
         // List all ended event in order of end time (desc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          return (event.isBooked === true && moment().isAfter(moment(event.end)));
+          return (event.isBooked === true && moment().isAfter(moment.utc(event.end).local())); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'desc');
         break;
       case 'my-bookings':
         // List all booked event in order of start time (desc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          return (event.isBooked === true && moment().isBefore(moment(event.end)));
+          return (event.isBooked === true && moment().isBefore(moment.utc(event.end).local())); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'asc');
         break;
       case 'browses':
@@ -97,7 +97,7 @@ export class EventsListPage {
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
           // return (moment(event.end).isAfter() && event.isBooked === false);
           // return (moment().isBefore(moment(event.end)) && event.isBooked === false);
-          return (moment(event.end).isAfter() && event.isBooked === false);
+          return (moment.utc(event.end).local().isAfter() && event.isBooked === false); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'asc');
         break;
     }
