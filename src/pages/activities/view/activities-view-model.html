@@ -15,9 +15,10 @@
   </ion-list>
   <ion-card *ngIf="activityData.video_url">
     <ion-card-content>
-      <video controls width="100%" height="100%">
+      <!-- <video controls width="100%" height="100%">
         <source src='{{ activityData.video_url }}' autostart="false">
-      </video>
+      </video> -->
+      <iframe width="100%" height="200px" [src]="activityData.video_url" frameborder="0" allowfullscreen></iframe>
     </ion-card-content>
   </ion-card>
 </ion-content>

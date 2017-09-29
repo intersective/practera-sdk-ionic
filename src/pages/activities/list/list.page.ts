@@ -93,8 +93,8 @@ export class ActivitiesListPage implements OnInit {
   public returnError: boolean = false;
   public rankingsPage = RankingsPage;
   public eventsListPage = EventsListPage;
-  public program_id = this.cacheService.getLocal('program_id');
-  public email = this.cacheService.getLocal('email').replace(/\"/g, "");
+  public program_id = this.cacheService.getLocal('program_id') || "1";
+  public email = this.cacheService.getLocal('email').replace(/\"/g, "") || "test@test.com";
   public viewPortfolioLink: any = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
