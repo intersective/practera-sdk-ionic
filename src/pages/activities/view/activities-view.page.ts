@@ -206,7 +206,7 @@ export class ActivitiesViewPage {
   goAssessment(submission?, opts = { hasSubmission: false }) {
     if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
       let alert = this.alertCtrl.create({
-        title: 'You have a submission in progress.',
+        title: 'You already have started a new submission! Please tap on "In Progress" below to continue with it.',
         buttons: ["Ok"]
       });
       alert.present();
