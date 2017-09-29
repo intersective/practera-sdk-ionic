@@ -26,6 +26,11 @@ event, .events {
     margin-top: 10px;
     right: 0;
   }
+  .event-view-tag {
+    top: -124px;
+    margin-top: 0px;
+    z-index: 10;
+  }
   .event-title {
     font-size: 32px;
     color: white;
