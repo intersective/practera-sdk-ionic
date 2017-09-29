@@ -31,6 +31,7 @@ export class EventsViewPage {
     checkin: true
   };
   public event: any = {};
+  public eventTag: string = null;
   public bookingStatus: string = '';
   public justBooked: boolean = false;
   public booked_text: string = 'Booked';
@@ -53,6 +54,8 @@ export class EventsViewPage {
     private submissionService: SubmissionService
   ) {
     this.event = navParams.get('event');
+    this.eventTag = navParams.get('tag');
+    console.log("this.event: ", this.eventTag);
   }
 
   private availability(event): string {
