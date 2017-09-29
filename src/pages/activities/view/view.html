@@ -50,7 +50,7 @@
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false">
+  <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && submitOnce == true">
     <button ion-fab class="primary-button add-submission" [ngClass]="submissions.length > 0 ? '' : 'pulse-button'" (click)="goAssessment()">
       <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
     </button>

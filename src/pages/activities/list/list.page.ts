@@ -54,7 +54,7 @@ export class ActivitiesListPage implements OnInit {
     this.filteredActivityIDs = [];
     this.findSubmissions = [[], [], [], [], [], [],[]];
     this.tickedIDsArray = [[], [], [], [], [], [],[]];
-    this.AverageScore = [0, 0, 0, 0, 0, 0, 0];
+    this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
   }
@@ -420,6 +420,9 @@ export class ActivitiesListPage implements OnInit {
         AverageScore[activityIndexArray[j]] = (findSubmissions[j][0]+findSubmissions[j][1])*2;
       }else if(findSubmissions[j].length == 1) {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
+      }
+      if(activityIndexArray[j] == 6){
+        AverageScore[activityIndexArray[j]] = 0;
       }
       this.totalAverageScore += AverageScore[activityIndexArray[j]];
     }
