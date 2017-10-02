@@ -16,6 +16,7 @@ class ActivityBase {
   lead_image?: string;
   is_locked?: boolean;
   order?: number;
+  instructions?: string;
   video_url?: string;
 }
 
@@ -135,6 +136,7 @@ export class ActivityService {
       lead_image: activity.Activity.lead_image,
       is_locked: activity.Activity.is_locked,
       order: activity.Activity.order,
+      instructions: activity.Activity.instructions,
       video_url: activity.Activity.video_url
     };
 

@@ -194,6 +194,20 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
+
+  /**
+   * hide or show the "Plus" button (navigation to create new assessment submission)
+   */
+  allowSubmission(assessment, submissions) {
+    let isAllow = true;
+    // when is_repeatable is false, then don't allow more than one submission of assessment
+    if (!assessment.is_repeatable && submissions.length > 0) {
+      isAllow = false;
+    }
+
+    return isAllow;
+  }
+
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity
