@@ -1,3 +1,6 @@
+/**
+ * @TODO: I believe we can delete this now
+ */
 import { Component } from '@angular/core';
 import { NavController, ToastController, LoadingController } from 'ionic-angular';
 
@@ -10,7 +13,8 @@ declare var _: any;
   templateUrl: './list.html'
 })
 export class ActivitiesClassicListPage {
-  private activities: Array<any> = [];
+
+  activities: Array<any> = [];
 
   constructor(
     private navCtrl: NavController,
@@ -38,7 +42,7 @@ export class ActivitiesClassicListPage {
   /**
    * normalise activities
    */
-  private normaliseActivities(activities): Array<any> {
+   normaliseActivities(activities): Array<any> {
     let result = [];
 
     activities.forEach((act, index) => {
@@ -78,7 +82,7 @@ export class ActivitiesClassicListPage {
       });
   }
 
-  public doRefresh(refresher) {
+  doRefresh(refresher) {
     this._pullData(this.activities, () => {
       if (refresher) {
         refresher.complete();
@@ -103,19 +107,19 @@ export class ActivitiesClassicListPage {
     });
   }
 
-  public hasReservation(activity) {
+  hasReservation(activity) {
     return false;
   }
 
-  public viewTicket(activity) {
+  viewTicket(activity) {
 
   }
 
-  public book(activity) {
+  book(activity) {
 
   }
 
-  public gotoActivity(activity) {
+  gotoActivity(activity) {
     console.log(activity);
     this.navCtrl.push(ActivitiesViewPage, {activity});
   }

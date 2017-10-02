@@ -35,24 +35,24 @@ import { TruncatePipe } from '../../../pipes/truncate.pipe';
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage implements OnInit {
-  public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
-  public newItemsData: any = [];
-  public activities: any = [];
-  public initialItems: any = [];
-  public totalAchievements: any = [];
-  public currentPoints: number = 0;
-  public maxPoints: number = 0;
-  public currentPercentage: any = '0';
-  public filteredSubmissions: any = [];
-  public characterData: any = [];
-  public submissionData: any = [];
-  public characterCurrentExperience: number = 0;
-  public percentageValue: number = 0;
-  public submissionPoints: number = 0;
-  public returnError: boolean = false;
+  private anyNewItems: any = this.cacheService.getLocal('gotNewItems');
+  private newItemsData: any = [];
+  private activities: any = [];
+  private initialItems: any = [];
+  private totalAchievements: any = [];
+  private currentPoints: number = 0;
+  private maxPoints: number = 0;
+  private currentPercentage: any = '0';
+  private filteredSubmissions: any = [];
+  private characterData: any = [];
+  private submissionData: any = [];
+  private characterCurrentExperience: number = 0;
+  private percentageValue: number = 0;
+  private submissionPoints: number = 0;
+  private returnError: boolean = false;
   // loading & err message variables
-  public activitiesLoadingErr: any = errMessages.General.loading.load;
-  public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+  private activitiesLoadingErr: any = errMessages.General.loading.load;
+  private activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
   // Achievements
   private achievements = {
     maxPoint: {},
@@ -60,18 +60,18 @@ export class ActivitiesListPage implements OnInit {
     available: []
   };
   constructor(
-    public navCtrl: NavController,
-    public http: Http,
-    public activityService: ActivityService,
-    public achievementService: AchievementService,
-    public cacheService: CacheService,
-    public characterService: CharacterService,
-    public gameService: GameService,
-    public submissionService: SubmissionService,
-    public toastCtrl: ToastController,
-    public loadingCtrl: LoadingController,
-    public modalCtrl: ModalController,
-    public translationService: TranslationService
+    private navCtrl: NavController,
+    private http: Http,
+    private activityService: ActivityService,
+    private achievementService: AchievementService,
+    private cacheService: CacheService,
+    private characterService: CharacterService,
+    private gameService: GameService,
+    private submissionService: SubmissionService,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController,
+    private translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');

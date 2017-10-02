@@ -13,22 +13,27 @@ import { EventsViewPage } from '../view/events-view.page';
   templateUrl: 'list.html'
 })
 export class EventsListPage {
-  // loading & error message variables
-  private emptyFilterErrMessage = errMessages.Events.filter.empty;
-  private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
-  private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
-  constructor(
-    public navCtrl: NavController,
-    public eventService: EventService,
-    public activityService: ActivityService,
-    public loadingCtrl: LoadingController,
-  ) {}
 
-  activities = {};
-  private loadedEvents = []; // Further processed events array, for private use
-  events = []; // ordered events array in filterEvents and to be access through template
-  noEvents = false;
+
+
+
+  activities: any = {};
+  loadedEvents: any = []; // Further processed events array, for private use
+  events: any = []; // ordered events array in filterEvents and to be access through template
+  noEvents: boolean = false;
   filter = 'browses';
+
+  // loading & error message variables
+  emptyFilterErrMessage = errMessages.Events.filter.empty;
+  noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
+
+  constructor(
+    private navCtrl: NavController,
+    private eventService: EventService,
+    private activityService: ActivityService,
+    private loadingCtrl: LoadingController,
+  ) {}
 
   /**
    * @name filterEvents

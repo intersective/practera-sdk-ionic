@@ -11,16 +11,16 @@ import { AchievementService } from '../../../services/achievement.service';
   templateUrl: 'popup.html'
 })
 export class ActivityListPopupPage {
-  public unlock_id: any;
-  public achievementData: any = null;
-  public badgeUrl: string;
-  public description: string;
-  public points: string;
-  public achievementName: string;
-  public enableData: boolean = null;
-  public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
-  public achievementsLoadingErr: any = errMessages.General.loading.load;
-  public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
+  private unlock_id: any;
+  private achievementData: any = null;
+  private badgeUrl: string;
+  private description: string;
+  private points: string;
+  private achievementName: string;
+  private enableData: boolean = null;
+  private loadingMessage: any = loadingMessages.LoadingSpinner.loading;
+  private achievementsLoadingErr: any = errMessages.General.loading.load;
+  private achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
 
   constructor(
     private viewCtrl: ViewController,
@@ -28,7 +28,7 @@ export class ActivityListPopupPage {
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     private achievementService: AchievementService,
-    public translationService: TranslateService
+    private translationService: TranslateService
   ) {
     this.unlock_id = this.navParams.get('unlock_id');
     // console.log('Unlock id value: ', this.unlock_id);

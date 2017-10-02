@@ -15,10 +15,10 @@ import { TabsPage } from '../../../pages/tabs/tabs.page';
   templateUrl: 'items-popup.html'
 })
 export class ItemsPopupPage {
-  public combinedData: any = [];
-  // public pageTitle: string = '';
-  // public noData: boolean = null;
-  public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
+
+  combinedData: any = [];
+  loadingMessage: any = loadingMessages.LoadingSpinner.loading;
+
   constructor(
     private viewCtrl: ViewController,
     private navCtrl: NavController,

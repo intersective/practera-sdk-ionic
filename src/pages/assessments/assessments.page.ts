@@ -32,7 +32,6 @@ export class AssessmentsPage {
 
   activity: any = {};
   answers: any = {};
-
   assessment: any = {};
   assessmentGroups: any = [];
   assessmentQuestions: any = [];
@@ -50,11 +49,12 @@ export class AssessmentsPage {
   combinedItems: any = [];
   noItems: boolean = null;
   outputData: any = [];
-  public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   submissionUpdated: boolean = false; // event listener flag
-  // confirm message variables
-  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
-  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
+
+  // messages variables
+  loadingMessages: any = loadingMessages.LoadingSpinner.loading;
+  discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
 
   constructor(
     private navParams: NavParams,

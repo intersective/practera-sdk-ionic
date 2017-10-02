@@ -20,11 +20,12 @@ let _mock = {
   templateUrl: './achievements-view.html'
 })
 export class AchievementsViewPage {
-  public achievement: any;
+
+  achievement: any;
 
   constructor(
     private params: NavParams,
-    public translationService: TranslationService
+    private translationService: TranslationService
   ) {
     this.achievement = {};
   }
