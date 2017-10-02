@@ -16,7 +16,6 @@ export class AssessmentsGroupPage implements OnInit {
   // used when navigate from event view page
   event: any;
 
-  //@TODO: decide which one to use
   activity: any;
   submission: Submission;
   assessment: any;
@@ -36,7 +35,7 @@ export class AssessmentsGroupPage implements OnInit {
     private assessmentService: AssessmentService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    public events: Events
+    private events: Events
   ) {}
 
   ngOnInit() {

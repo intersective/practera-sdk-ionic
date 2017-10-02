@@ -61,13 +61,13 @@ export class AssessmentsPage {
     private alertCtrl: AlertController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    public modalCtrl: ModalController,
+    private modalCtrl: ModalController,
     private assessmentService: AssessmentService,
     private cacheService: CacheService,
     private gameService: GameService,
     private submissionService: SubmissionService,
     private translationService: TranslationService,
-    public events: Events
+    private events: Events
   ) {
     this.activity = this.navParams.get('activity');
     if (!this.activity) {

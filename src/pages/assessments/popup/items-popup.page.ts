@@ -7,7 +7,7 @@ import * as _ from 'lodash';
 // services
 import { CacheService } from '../../../shared/cache/cache.service';
 import { TranslateService } from '@ngx-translate/core';
-// pages 
+// pages
 import { TabsPage } from '../../../pages/tabs/tabs.page';
 @Injectable()
 @Component({
@@ -24,8 +24,8 @@ export class ItemsPopupPage {
     private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
-    public cacheService: CacheService,
-    public translationService: TranslateService
+    private cacheService: CacheService,
+    private translationService: TranslateService
   ) {}
   ionViewWillEnter(){
     // if (this.cacheService.getLocal('isEventSubmission') == 'true') {
