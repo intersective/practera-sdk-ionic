@@ -10,18 +10,17 @@ import * as _ from 'lodash';
   templateUrl: 'team.html'
 })
 export class TeamPage {
+  team = {};
+  members = [];
 
   constructor(
-    public navCtrl: NavController,
-    public toastCtrl: ToastController,
-    public teamService: TeamService
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private teamService: TeamService
   ) {}
 
-  public team = {};
-  public members = [];
-
   // @TODO: Move to shared function later...
-  private _error(err) {
+  _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,
@@ -55,7 +54,7 @@ export class TeamPage {
     });
   }
 
-  public doRefresh(refresher) {
+  doRefresh(refresher) {
     this._pullData(refresher);
   }
 

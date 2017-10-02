@@ -1,5 +1,6 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Tabs, NavParams, NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
+
 import { loadingMessages, errMessages } from '../../../app/messages';
 import { TranslationService } from '../../../shared/translation/translation.service';
 // services
@@ -17,7 +18,6 @@ import { EventCheckinPage } from '../checkin/event-checkin.page';
 
 // We no need custom page for checkin anymore
 // import { EventCheckinPage } from '../checkin/event-checkin.page';
-
 import * as moment from 'moment';
 
 const terms = {
@@ -27,24 +27,24 @@ const terms = {
   templateUrl: './events-view.html'
 })
 export class EventsViewPage {
-  public loadings = {
+  loadings: any = {
     checkin: true
   };
-  public event: any = {};
-  public bookingStatus: string = '';
-  public justBooked: boolean = false;
-  public booked_text: string = 'Booked';
-  public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
-  public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
-  public completedSubmissions: boolean = false;
-  private submissions: Array<any> = [];
+  event: any = {};
+  bookingStatus: string = '';
+  justBooked: boolean = false;
+  booked_text: string = 'Booked';
+  bookEventErrMessage: any = errMessages.Events.bookEvents.book;
+  cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
+  completedSubmissions: boolean = false;
+  submissions: Array<any> = [];
 
   constructor(
     private navParams: NavParams,
     private navCtrl: NavController,
     private cache: CacheService,
     private eventService: EventService,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController,
@@ -55,7 +55,7 @@ export class EventsViewPage {
     this.event = navParams.get('event');
   }
 
-  private availability(event): string {
+  availability(event): string {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
   }
 
@@ -99,7 +99,7 @@ export class EventsViewPage {
    * @description each event has only one assessment
    * @param {Array} references References array response from get_activity API
    */
-  private extractAssessment(references: Array<any>) {
+  extractAssessment(references: Array<any>) {
     let ref = references[0];
     ref.Assessment.context_id = ref.context_id;
 

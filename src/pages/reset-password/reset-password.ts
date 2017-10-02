@@ -5,9 +5,10 @@ import { NavController,
          LoadingController,
          AlertController,
          ModalController } from 'ionic-angular';
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
 import { FormBuilder, Validators } from '@angular/forms';
+
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages';
 import * as _ from 'lodash';
 // services
 import { AuthService } from '../../services/auth.service';
@@ -26,25 +27,26 @@ import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpas
   templateUrl: 'reset-password.html'
 })
 export class ResetPasswordPage implements OnInit {
-  public keyVal: string;
-  public emailVal: string;
-  private windowHeight: number = window.innerHeight / 3;
-  private isLandscaped: boolean = false;
-  public password: string;
-  public verify_password: string;
-  private verifySuccess: boolean = null;
-  private resetPwdFormGroup: any;
-  private verifyPwd: boolean = false;
-  private minLengthCheck: boolean = true;
-  public milestone_id: string;
-  private isPwdMatch: boolean = false;
+  keyVal: string;
+  emailVal: string;
+  windowHeight: number = window.innerHeight / 3;
+  isLandscaped: boolean = false;
+  password: string;
+  verify_password: string;
+  verifySuccess: boolean = null;
+  resetPwdFormGroup: any;
+  verifyPwd: boolean = false;
+  minLengthCheck: boolean = true;
+  milestone_id: string;
+  isPwdMatch: boolean = false;
   // loading & error message variables
-  private invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
-  private verifyUserMessage = loadingMessages.VerifyUser.verify;
-  private successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
-  private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
-  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+  verifyUserMessage = loadingMessages.VerifyUser.verify;
+  successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+
   constructor(private navCtrl: NavController,
     private navParams: NavParams,
     private alertCtrl: AlertController,
@@ -55,13 +57,14 @@ export class ResetPasswordPage implements OnInit {
     private milestoneService: MilestoneService,
     private cacheService: CacheService,
     private gameService: GameService,
-    public translationService: TranslationService) {
+    private translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
           password: ['', [Validators.minLength(8), Validators.required]],
           verify_password: ['', [Validators.minLength(8), Validators.required]],
       })
     }
+
   /**
    * Detect user device type (mobile or desktop) on initial page load
    * Purpose: Initially page loaded, this peice code will detect user screen
@@ -73,12 +76,15 @@ export class ResetPasswordPage implements OnInit {
   */
   ngOnInit() {
   }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ResetpasswordPage');
   }
+
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
+
   /**
    * to verify user is whether typed or clicked the email link
    * Purpose: if user is typed the email link key and email, user is not allowed
@@ -115,6 +121,7 @@ export class ResetPasswordPage implements OnInit {
         }, 5000);
       });
   }
+
   /**
    * to update password in db
    * Purpose: store new password for user
@@ -140,7 +147,7 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {
@@ -207,6 +214,7 @@ export class ResetPasswordPage implements OnInit {
       });
     });
   }
+
   // after password set, auto login error alertbox
   loginError(error) {
     const alertLogin = this.alertCtrl.create({
@@ -216,14 +224,17 @@ export class ResetPasswordPage implements OnInit {
     });
     alertLogin.present();
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
   }

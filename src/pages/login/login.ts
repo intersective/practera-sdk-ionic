@@ -8,6 +8,7 @@ import { NavController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+
 import * as _ from 'lodash';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
@@ -28,16 +29,17 @@ import { ForgetPasswordPage } from '../../pages/forget-password/forget-password'
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  public email: string;
-  public password: any;
-  public userName: string;
-  public userImage: string;
-  public API_KEY: string;
-  public milestone_id: string;
-  public loginFormGroup: any;
-  public forgetpasswordPage = ForgetPasswordPage;
-  public loginLoadingMessages: any = loadingMessages.Login.login;
-  public invalidLoginMessage: any = errMessages.Login.login;
+  email: string;
+  password: any;
+  userName: string;
+  userImage: string;
+  API_KEY: string;
+  milestone_id: string;
+  loginFormGroup: any;
+  forgetpasswordPage = ForgetPasswordPage;
+  loginLoadingMessages: any = loadingMessages.Login.login;
+  invalidLoginMessage: any = errMessages.Login.login;
+
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -47,7 +49,7 @@ export class LoginPage {
     private viewCtrl: ViewController,
     private authService: AuthService,
     private gameService: GameService,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
     private config: RequestServiceConfig,
     private formBuilder: FormBuilder,
     private milestoneService: MilestoneService,
@@ -60,6 +62,7 @@ export class LoginPage {
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
   ionViewCanLeave(): boolean {
     // user is authorized
     console.log('authorized');
@@ -70,6 +73,7 @@ export class LoginPage {
       return false;
     }
   }
+
   /**
    * user login function to authenticate user with email and password
    */
@@ -93,7 +97,7 @@ export class LoginPage {
               self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocalObject('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {
@@ -161,6 +165,7 @@ export class LoginPage {
       });
     });
   }
+
   /**
    * Insert post_auth() api result into localStorage
    * @param {object} data result from API request
@@ -180,6 +185,7 @@ export class LoginPage {
     console.log("cache data: " + cacheProcesses);
     return Observable.from(cacheProcesses);
   }
+
   /**
    * Insert get_user() api result into localStorage
    * @param {object} user result from API request
@@ -196,6 +202,7 @@ export class LoginPage {
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
   }
+
   /**
    * @TODO we'll come back to this logging workflow later in this development
    *
@@ -211,6 +218,7 @@ export class LoginPage {
     alert.present();
     // handle API calling errors display with alert controller
   }
+
   /**
    * forget password page link function
    */

@@ -5,10 +5,12 @@ import { NavController,
          AlertController,
          ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+
 import 'rxjs/Rx';
+import { Observable } from 'rxjs/Observable';
+
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
@@ -21,27 +23,29 @@ export class ForgetPasswordPage {
   email: string;
   forgotPwdFormGroup: any;
   // loading & error message variables
-  private sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
-  private sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
-  private sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
+  sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
+  sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
+  sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
     private authService: AuthService,
     private toastCtrl: ToastController,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder
+  ) {
       this.forgotPwdFormGroup = formBuilder.group({
         email: ['', [FormValidator.isValidEmail,
                     Validators.required]],
       });
-    }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ForgetPasswordPage');
   }
-  userForgotPassword(){
+
+  ionViewDidLoad() {
+  }
+
+  userForgotPassword() {
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: this.sendingEmailLoadingMessage
@@ -73,13 +77,4 @@ export class ForgetPasswordPage {
         }
      );
   }
-  // logError(error) {
-  //   const alert = this.alertCtrl.create({
-  //     title: 'Email sent failed ..',
-  //     message: error,
-  //     buttons: ['Close']
-  //   });
-  //   alert.present();
-  //   // handle API calling errors display with alert controller
-  // }
 }

@@ -8,9 +8,9 @@ import { ActivitiesListPage } from '../../activities/list/list.page';
 })
 export class TutorialPage {
   @ViewChild(Slides) slides: Slides;
-  public indexCounter: number = 0; 
-  public hideNextButton: boolean = false;
-  constructor(public navCtrl: NavController){}
+  indexCounter: number = 0;
+  hideNextButton: boolean = false;
+  constructor(private navCtrl: NavController){}
   goDashbaord() {
     this.navCtrl.setRoot(ActivitiesListPage);
   }

@@ -4,8 +4,9 @@ import { NavController,
          LoadingController,
          AlertController } from 'ionic-angular';
 import 'rxjs/Rx';
+
 import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -19,12 +20,13 @@ import { LoginPage } from '../login/login';
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  private verifySuccess = null;
-  private auth_token: string;
-  public milestone_id: string;
+  verifySuccess = null;
+  auth_token: string;
+  milestone_id: string;
   // loading & error messages variables
-  private loginLoadingMessage: any = loadingMessages.Login.login;
-  private misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  loginLoadingMessage: any = loadingMessages.Login.login;
+  misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+
   constructor(
     private navCtrl: NavController,
     private navParams: NavParams,
@@ -40,9 +42,11 @@ export class MagicLinkPage {
     console.log('ionViewDidLoad MagiclinkPage');
     this.auth_token = this.navParams.get('auth_token');
   }
+
   ionViewWillEnter(){
     this.magicLinkAccess();
   }
+
   magicLinkAccess(){
     let observable = this.authService.magicLinkLogin(this.auth_token);
     const loading = this.loadingCtrl.create({
@@ -58,7 +62,7 @@ export class MagicLinkPage {
       this.cacheService.setLocalObject('apikey', data.apikey);
       this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
       this.cacheService.setLocalObject('teams', data.Teams);
-      // get game_id data after login 
+      // get game_id data after login
       this.gameService.getGames()
           .subscribe(
             data => {

@@ -6,10 +6,9 @@ import { CacheService } from '../../../shared/cache/cache.service';
   templateUrl: 'leaderboard-settings.html'
 })
 export class LeaderboardSettingsPage {
-  public username: string = this.cacheService.getLocalObject('name') || '';
-  public useremail: string = this.cacheService.getLocalObject('email') || '';
-  public isHide: boolean = false;
-  constructor(private cacheService: CacheService){
+  username: string = this.cacheService.getLocalObject('name') || '';
+  useremail: string = this.cacheService.getLocalObject('email') || '';
+  isHide: boolean = false;
 
-  }
+  constructor(private cacheService: CacheService){}
 }

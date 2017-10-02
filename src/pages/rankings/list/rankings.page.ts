@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
@@ -13,20 +14,23 @@ import { RankingDetailsPage } from '../view/ranking-details.page';
   templateUrl: 'rankings.html'
 })
 export class RankingsPage {
-  public totalData: any = [];
-  public rankingData: any = [];
-  public myRankingData: any = [];
-  public listRankingData: any = [];
-  public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
-  public emptyErrorMessage: any = errMessages.General.loading.load;
+  totalData: any = [];
+  rankingData: any = [];
+  myRankingData: any = [];
+  listRankingData: any = [];
+  loadingMessages: any = loadingMessages.LoadingSpinner.loading;
+  emptyErrorMessage: any = errMessages.General.loading.load;
+
   constructor(private navCtrl: NavController,
               private loadingCtrl: LoadingController,
               private alertCtrl: AlertController,
               private gameService: GameService,
               private cacheService: CacheService){}
+
   ionViewWillEnter(){
     this.RankingData();
   }
+
   RankingData(){
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
@@ -73,6 +77,7 @@ export class RankingsPage {
         });
       });
   }
+
   goRankingDetail(myRanking){
     this.navCtrl.push(RankingDetailsPage, {
       myRanking: myRanking

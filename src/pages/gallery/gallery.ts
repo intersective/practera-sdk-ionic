@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
-
 import { NavController, ToastController } from 'ionic-angular';
 
 import * as _ from 'lodash';
 import * as moment from 'moment';
-
 import { AssessmentService } from '../../services/assessment.service';
 import { SubmissionService } from '../../services/submission.service';
 
@@ -45,13 +43,13 @@ export class GalleryPage {
     ]
   }
 
-  private refresher = null;
+  refresher = null;
 
   constructor(
-    public navCtrl: NavController,
-    public toastCtrl: ToastController,
-    public assessmentService: AssessmentService,
-    public submissionService: SubmissionService
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private assessmentService: AssessmentService,
+    private submissionService: SubmissionService
   ) {}
 
   // @TODO: Move to shared function later...
@@ -70,7 +68,7 @@ export class GalleryPage {
     toast.present();
   }
 
-  private _pullData() {
+  _pullData() {
     this.assessmentService.getAll().toPromise()
     .then((result) => {
       this.assessments = result;
@@ -111,7 +109,7 @@ export class GalleryPage {
     });
   }
 
-  public doRefresh(refresher) {
+  doRefresh(refresher) {
     this.refresher = refresher;
     this._pullData();
 

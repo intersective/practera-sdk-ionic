@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import { CacheService } from '../../shared/cache/cache.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { RequestService } from '../../shared/request/request.service';
@@ -21,19 +22,21 @@ export class RegistrationPage implements OnInit {
   };
   term: String;
   content: SafeResourceUrl;
-  private prefixUrl: any = this.request.getPrefixUrl();
+  prefixUrl: any = this.request.getPrefixUrl();
   // loadinbg & error message variables
-  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+  verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+
   constructor(
-    public nav: NavController,
+    private nav: NavController,
     private params: NavParams,
     private authService: AuthService,
     private sanitizer: DomSanitizer,
     private notification: NotificationService,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
     private alertCtrl: AlertController,
     private cache: CacheService,
     private request: RequestService) {}
+
   displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
@@ -52,6 +55,7 @@ export class RegistrationPage implements OnInit {
     });
     alert.present();
   }
+
   ngOnInit() {
     // check if email and activation_code are provided in the url/params
     if (!decodeURIComponent(this.params.get('email')) || !this.params.get('key')) {
@@ -83,6 +87,7 @@ export class RegistrationPage implements OnInit {
       });
     }
   }
+
   ionViewDidEnter(): void {
     this.authService.getTerms().subscribe(res => {
       console.log("terms data: ", res);
@@ -91,6 +96,7 @@ export class RegistrationPage implements OnInit {
     });
     this.params.get('test');
   }
+
   ionViewDidLoad(): void {
     let category = [];
     /*if (document.URL.indexOf("?") !== -1) {

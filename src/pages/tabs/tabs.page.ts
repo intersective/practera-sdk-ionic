@@ -17,5 +17,5 @@ export class TabsPage {
   dashboard: any = ActivitiesListPage;
   settings: any = SettingsPage;
   events: any = EventsListPage;
-  constructor(public translationService: TranslationService) {}
+  constructor(private translationService: TranslationService) {}
 }

@@ -1,8 +1,8 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core'; 
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -33,31 +33,32 @@ export class RegisterPage implements OnInit {
     verify_password: ''
   };
   submitted: boolean = false;
-  private regForm: any;
-  private pwdMacthBool: boolean = false;
-  private verifyPwd: boolean = false;
-  private verifySuccess: boolean = null;
-  private isPwdMatch: boolean = false;
-  private changeContent: boolean = false;
-  private minLengthCheck: boolean = true;
-  private clickSuspended: boolean = false;
-  private milestone_id: string;
-  private password: string;
-  private verify_password: string;
+  regForm: any;
+  pwdMacthBool: boolean = false;
+  verifyPwd: boolean = false;
+  verifySuccess: boolean = null;
+  isPwdMatch: boolean = false;
+  changeContent: boolean = false;
+  minLengthCheck: boolean = true;
+  clickSuspended: boolean = false;
+  milestone_id: string;
+  password: string;
+  verify_password: string;
   // loading & error messages variables
-  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
-  private successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  private passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
-  private registrationErrMessage: any = errMessages.Registration.error.error;
-  private invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
-  private noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
-  private registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
-  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+  successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
+  passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  registrationErrMessage: any = errMessages.Registration.error.error;
+  invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
-    public navCtrl: NavController,
-    public alertCtrl: AlertController,
+    private navCtrl: NavController,
+    private alertCtrl: AlertController,
     private viewCtrl: ViewController,
     private notificationService: NotificationService,
     private navParams: NavParams,
@@ -65,7 +66,7 @@ export class RegisterPage implements OnInit {
     private authService: AuthService,
     private cache: CacheService,
     private gameService: GameService,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
     private milestone: MilestoneService,
   ) {
     // validation for both password values: required & minlength is 8
@@ -74,15 +75,18 @@ export class RegisterPage implements OnInit {
       verify_password: ['', [Validators.minLength(8), Validators.required]],
     });
   }
+
   ngOnInit() {
   }
-  public displayAlert(message) {
+
+  displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Test',
       message: message,
       buttons: ['OK']
     });
   }
+
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
@@ -141,7 +145,7 @@ export class RegisterPage implements OnInit {
           this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
               .subscribe(
                 data => {
-                  // get game_id data after login 
+                  // get game_id data after login
                   this.gameService.getGames()
                       .subscribe(
                         data => {
@@ -193,6 +197,7 @@ export class RegisterPage implements OnInit {
       });
     }
   }
+
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
@@ -202,19 +207,23 @@ export class RegisterPage implements OnInit {
     this.cache.setLocal('timelineID', data.Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   goToLogin() {
     this.cache.clear().then(() => {
       this.navCtrl.push(LoginPage);
     });
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
   }

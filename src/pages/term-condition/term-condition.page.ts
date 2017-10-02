@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
@@ -16,23 +16,27 @@ import { TabsPage } from '../tabs/tabs.page';
 export class TermConditionPage {
   @Input('content') content?: SafeResourceUrl;
   @Input('user') user: any;
+
   agreed:boolean = false;
-  private checkAccessMethod: boolean = false;
+  checkAccessMethod: boolean = false;
   // loading & error message variables
-  private helpEmailMessage = generalVariableMessages.helpMail.email;
-  private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
-  private verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
+  helpEmailMessage = generalVariableMessages.helpMail.email;
+  disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
+  verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
+
   constructor(
-    public nav: NavController,
+    private nav: NavController,
     private alertCtrl: AlertController,
     private authService: AuthService,
     private notificationService: NotificationService,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
   ) {}
-  private accessMethod(){
+
+  accessMethod(){
     return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
   }
-  private displayError(errorMessage?: any): void {
+
+  displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
       subTitle: errorMessage,
@@ -42,12 +46,15 @@ export class TermConditionPage {
     });
     alert.present();
   }
-  private backToSAccountPage() {
+
+  backToSAccountPage() {
     this.nav.popToRoot();
   }
+
   ionViewDidEnter() {
     console.log(this.user);
   }
+
   agree(user): void {
     if (this.agreed === true) {
       this.nav.push(RegisterPage, user);
@@ -80,11 +87,13 @@ export class TermConditionPage {
   toggleAgree(): void {
     this.agreed = !this.agreed;
   }
+
   navToRegister(): void {
     if (this.agreed === true) {
       console.log(this.nav.getViews());
     }
   }
+
   onTermError(err): void {
     const supportEmail = this.helpEmailMessage;
     if ((err.data || {}).msg) {
@@ -102,6 +111,7 @@ export class TermConditionPage {
       });
     }
   }
+
   // temporary fix for direct signin
   signIn(): void {
     this.nav.push(TabsPage);

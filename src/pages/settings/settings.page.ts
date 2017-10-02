@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { CacheService } from '../../shared/cache/cache.service';
 // pages
@@ -14,30 +14,35 @@ import { TermConditionPage } from '../term-condition/term-condition.page';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-  public helpline = "help@practera.com";
-  public logoutMessage: any = loadingMessages.Logout.logout;
+  helpline = "help@practera.com";
+  logoutMessage: any = loadingMessages.Logout.logout;
+  settings = [];
   constructor(
     private cache: CacheService,
     private navCtrl: NavController,
     private menuCtrl: MenuController,
     private loadingCtrl: LoadingController,
-    public translationService: TranslationService,
+    private translationService: TranslationService,
     private appCtrl: App
   ) {}
-  public settings = [];
-  public getUserEmail() {
+
+  getUserEmail() {
     return this.cache.getLocalObject('email') || '';
   }
-  public goLeaderBoardSettings(){
+
+  goLeaderBoardSettings(){
     this.navCtrl.push(LeaderboardSettingsPage);
   }
-  public goToTutorial() {
+
+  goToTutorial() {
     this.navCtrl.push(TutorialPage);
   }
-  public goToTermConditions() {
+
+  goToTermConditions() {
     this.navCtrl.push(TermConditionPage);
   }
-  public logout() {
+
+  logout() {
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
       content: this.logoutMessage
