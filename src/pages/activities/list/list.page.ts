@@ -35,6 +35,8 @@ import { RankingsPage } from '../../rankings/list/rankings.page';
 import { InstructionPage } from './instruction/instruction.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
+import { WindowRef } from '../../../shared/window';
+
 /**
  * @TODO: remove after development is complete
  * flag to tell whether should UI popup toast error message at the bottom
@@ -75,7 +77,7 @@ export class ActivitiesListPage implements OnInit {
   public button_show: boolean = true;
   public portfolio_request: boolean = false;
   public view_portfolio: boolean = false;
-  public bookedEventsCount: any = 0;
+  public bookedEventsCount: number = 0;
   public eventsData: any = [];
   public initialItems: any = [];
   public totalAchievements: any = [];
@@ -146,7 +148,8 @@ export class ActivitiesListPage implements OnInit {
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public popoverCtrl: PopoverController,
-    public translationService: TranslationService
+    public translationService: TranslationService,
+    public win: WindowRef
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');
@@ -174,6 +177,21 @@ export class ActivitiesListPage implements OnInit {
   openLeaderboard() {
     // Move to leaderboard page
     this.navCtrl.parent.select(2);
+  }
+  openPortfolio() {
+    // Move to portfolio page
+    if (this.view_portfolio) {
+      // go/open url in window viewPortfolioLink
+      // @TODO: open url in new window isn't supported in PWA mode, this happen to be same behavior for opening link through <a> (anchor element) too!
+      let win = this.win.nativeWindow;
+      let openedWindow = win.open(this.viewPortfolioLink, '_blank');
+    } else {
+      if (this.portfolio_request) {
+        this.requestPortfolio();
+      } else {
+        this.whatsThis();
+      }
+    }
   }
   // refresher activities
   doRefresh(e) {
@@ -280,17 +298,14 @@ export class ActivitiesListPage implements OnInit {
                     }
                   );
                   this.eventsData = results[3];
-                  if(this.eventsData){
+                  if (this.eventsData){
                     _.forEach(this.eventsData, (element, index) => {
                       if(this.eventsData[index].isBooked == true && moment().isBefore(moment(this.eventsData[index].end))){
                         this.bookedEventsCount++;
                       }
                     });
-                    if(this.bookedEventsCount == 0){
-                      this.bookedEventsCount = 'None';
-                    }
-                  }else {
-                    this.bookedEventsCount = 'None';
+                  } else {
+                    this.bookedEventsCount = 0;
                   }
                 });
               },
