@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
-
+import { Http, Headers } from '@angular/http';
 import * as _ from 'lodash';
-
+// services
+import { CacheService } from '../shared/cache/cache.service';
 class Assessment {
   id: number;
   context_id: number;
@@ -13,6 +14,15 @@ class Answer {
   assessment_question_id: number;
   answer: String | Object | Array<any>;
   choices?: Array<any>;
+}
+
+export class questionsResult {
+  required: Boolean;
+  answer: any;
+  reviewerAnswer: {
+    answer: any;
+    comment: any;
+  };
 }
 
 export class ChoiceBase<T> {
@@ -32,11 +42,12 @@ export class QuestionBase<T> {
   assessment_id: number;
   name: string;
   type: string;
-  file_type?: string;
-  audience: Array<any>;
+  description: string;
+  required: boolean;
+  audience: string | Array<any>;
+  file_type?: string | any;
   choices?: ChoiceBase<any>[];
   answer?: any;
-  required?: boolean;
   order?: string | number;
 
   constructor(id, assessment_id, name, type) {
@@ -55,8 +66,12 @@ export class Submission {
 
 @Injectable()
 export class AssessmentService {
-  constructor(private request: RequestService) {}
-
+  constructor(private cacheService: CacheService,
+              private request: RequestService,
+              private http: Http) {}
+  private prefixUrl: any = this.request.getPrefixUrl();
+  private appkey = this.request.getAppkey();
+  private assessment_url = 'api/assessments.json';
   /**
    * @description check feedback can show
    * @type {boolen}
@@ -268,9 +283,10 @@ export class AssessmentService {
    */
   public normaliseGroup(group) {
     // let result = group;
-    let thisQuestions = group.AssessmentGroupQuestion;
-    thisQuestions = thisQuestions.map(question => {
-      return this.normaliseQuestion(question);
+    let questions = group.AssessmentGroupQuestion;
+    let thisQuestions = [];
+    questions.forEach(question => {
+      thisQuestions.push(this.normaliseQuestion(question));
     });
 
     return {
@@ -281,6 +297,27 @@ export class AssessmentService {
       questions: thisQuestions,
       order: group.order,
     }
+  }
+
+  /**
+   * filter submission by:
+   * - "submitter" as audience
+   * - "submitter" as audience && status as "published"
+   * @name isAccessible
+   * @param {object} question Single normalised assessment
+   *                            object from this.normalise above
+   */
+  public isAccessible(question, status) {
+    let result = true;
+    if (question.audience.indexOf('submitter') === -1) {
+      result = false;
+    }
+
+    if (result && status === 'published') {
+      result = false;
+    }
+
+    return result;
   }
 
   /*
@@ -326,18 +363,19 @@ export class AssessmentService {
     });
 
     return {
-      id: question.id,
+      id: question.id, // unknown purpose (be careful with this id)
       assessment_id: question.assessment_question_id,
-      question_id: question.assessment_question_id,
+      question_id: question.assessment_question_id, // use this to indicate question
       group_id: question.assessment_group_id,
       name: thisQuestion.name,
       type: thisQuestion.question_type,
       audience: thisQuestion.audience,
+      description: thisQuestion.description,
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
       choices: choices,
       order: question.order,
-      answer: thisQuestion.answer
+      answer: thisQuestion.answer,
     };
   }
 
@@ -377,6 +415,102 @@ export class AssessmentService {
       explanation: choice.explanation,
       order: choice.order,
       weight: choice.weight
+    };
+  }
+
+  /**
+   * hardcode communication to different server
+   * @param {[type]} assessment_id [description]
+   */
+  public getPostProgramAssessment(assessment_id) {
+    // let url = `${this.prefixUrl}api/assessments.json?assessment_id=${assessment_id}&structured=true`;
+    // let headers = new Headers();
+    // headers.append('appkey', this.appkey);
+    // headers.append('apikey', this.cacheService.getLocalObject('apikey'));
+    // headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
+    return this.request.get(`api/assessments.json?assessment_id=${assessment_id}&structured=true`);
+  }
+
+  // helpers
+  public getStatus(questionsResult, submissionResult): string {
+    let questionsStatus = [];
+    _.forEach(questionsResult, q => {
+      if (q.required && q.answer !== null) {
+        if (
+          q.reviewerAnswer !== null &&
+          submissionResult.status !== 'pending approval' &&
+          (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+        ) {
+          questionsStatus.push('reviewed');
+        } else {
+          questionsStatus.push('completed');
+        }
+      }
+
+      if (!q.required && q.answer !== null) {
+        if (
+          q.reviewerAnswer !== null &&
+          submissionResult.status !== 'pending approval' &&
+          (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
+        ) {
+          questionsStatus.push('reviewed');
+        } else {
+          questionsStatus.push('completed');
+        }
+      }
+
+      if (q.answer === null) {
+        questionsStatus.push('incomplete');
+      }
+    });
+
+    // get final status by checking all questions' statuses
+    let status = 'incomplete';
+    if (_.every(questionsStatus, (v) => {
+      return (v === 'completed');
+    })) {
+      status = 'completed';
+    }
+    if (_.includes(questionsStatus, 'reviewed')) {
+      status = 'reviewed';
+    }
+
+    return status;
+  }
+
+  public getSummaries(questionsResult: Array<questionsResult>) {
+    let totalRequiredQuestions = 0;
+    let answeredQuestions = 0;
+    let reviewerFeedback = 0;
+
+    _.forEach(questionsResult, (q) => {
+      // get total number of questions
+      if (q.required) {
+        totalRequiredQuestions += 1;
+      }
+
+      // get total number of answered questions
+      if (q.required && q.answer && q.answer !== null) {
+        answeredQuestions += 1;
+      }
+
+      // get total number of feedback
+      // If API response, the reviewer's answer and comment are empty,
+      // front-end don't consider it as a feedback
+      if (
+        q.reviewerAnswer &&
+        q.reviewerAnswer !== null &&
+        !_.isEmpty(q.reviewerAnswer.answer) &&
+        !_.isEmpty(q.reviewerAnswer.comment)
+      ) {
+        reviewerFeedback += 1;
+      }
+    });
+
+    return {
+      totalRequiredQuestions,
+      answeredQuestions,
+      reviewerFeedback
     };
   }
 }
