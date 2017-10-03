@@ -46,7 +46,6 @@ export class ActivitiesViewPage {
   public loadings = {
     submissions: false
   };
-  public submitOnce: boolean = true;
   initialised_eset() {
     this.findAchievementObj = [];
     this.achievementData = [];
@@ -58,7 +57,6 @@ export class ActivitiesViewPage {
     this.activityIndex = 0;
     this.eachFinalScore = 0;
     this.loadings.submissions = true;
-    this.submitOnce = true;
   }
 
   constructor(
@@ -137,11 +135,6 @@ export class ActivitiesViewPage {
           }else {
             this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
           }
-          (this.submissions || []).forEach(submission => {
-            if(submission.assessment.is_repeatable == false){
-              this.submitOnce = false;
-            }  
-          });
         }
       });
       this.submissionTitles = this.getSubmissionStatus(this.submissions);
@@ -201,6 +194,20 @@ export class ActivitiesViewPage {
     let detailModal = this.modalCtrl.create(ActivitiesViewModalPage, {activity: this.activity});
     detailModal.present();
   }
+
+  /**
+   * hide or show the "Plus" button (navigation to create new assessment submission)
+   */
+  allowSubmission(assessment, submissions) {
+    let isAllow = true;
+    // when is_repeatable is false, then don't allow more than one submission of assessment
+    if (!assessment.is_repeatable && submissions.length > 0) {
+      isAllow = false;
+    }
+
+    return isAllow;
+  }
+
   /**
    * @name goAssessment
    * @description direct to assessment page of a selected activity
@@ -315,7 +322,7 @@ export class ActivitiesViewPage {
               this.newSubmissionTitle.push(ele.answer);
             }else {
               this.newSubmissionTitle = [];
-            } 
+            }
           }
         })
       });
