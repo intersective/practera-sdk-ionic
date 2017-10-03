@@ -27,18 +27,14 @@ export class ItemsPopupPage {
     private cacheService: CacheService,
     private translationService: TranslateService
   ) {}
+
   ionViewWillEnter(){
-    // if (this.cacheService.getLocal('isEventSubmission') == 'true') {
-    //   this.pageTitle = 'Checkin Successful!';
-    // }else {
-    //   this.pageTitle = 'Submit Success!';
-    // }
-    // this.combinedData = this.navParams.get('combined');
     this.combinedData = this.cacheService.getLocalObject('allNewItems');
-    console.log("Final final popup combined data: ", this.combinedData);
-    // return this.combinedData.length == 0 ? this.noData = true : this.noData = false
   }
-  // close disbaled activity popup
+
+  /**
+   * @description close disbaled activity popup
+   */
   closeModal() {
     this.viewCtrl.dismiss();
     this.navCtrl.setRoot(TabsPage);
