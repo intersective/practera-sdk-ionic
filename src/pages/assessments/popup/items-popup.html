@@ -3,7 +3,6 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12 class="flex-display">
-            <!-- <ion-title>{{ pageTitle }}</ion-title>   -->
             <ion-title>Items Popup</ion-title>  
           <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
         </ion-col>
@@ -12,10 +11,6 @@
   </ion-navbar>
 </ion-header>
 <ion-content id="itemsPopup">
-  <!-- <div *ngIf="noData == true">
-    <p>No Items earned ..</p>
-  </div>
-  <div *ngIf="noData == false">  -->
    <div> 
     <div class="assessments-items-popup" *ngFor="let item of combinedData">
       <img *ngIf="item.meta !== null" class="item-popup-img" src="item.meta.img" alt="item"/>

@@ -3,7 +3,8 @@
     "PAGETITLE": "Dashboard",
     "POINTS": "Points",
     "PROGRESS": "Progress",
-    "SUBMISSION": "Submission"
+    "SUBMISSION": "Submission",
+    "EVIDENCE": "Evidence"
   },
   "ASSESSMENT": {
     "PAGETITLE": "Assessment"

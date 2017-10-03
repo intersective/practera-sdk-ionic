@@ -437,7 +437,7 @@ export class ActivitiesListPage implements OnInit {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
       }
       if(activityIndexArray[j] == 6){
-        AverageScore[activityIndexArray[j]] = 0;
+        AverageScore[activityIndexArray[j]] = 4;
       }
       this.totalAverageScore += AverageScore[activityIndexArray[j]];
     }
