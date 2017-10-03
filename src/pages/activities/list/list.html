@@ -26,35 +26,42 @@
       <ion-col col-12>
         <ul class="dashboard-data">
           <li col-4>
-            <p class="title">Bookings</p>
-            <p [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
-              {{ bookedEventsCount || '' }}
-            </p>
-            <p class="link" (click)="openEvent()">Browse Events</p>
-          </li>
-          <li col-4>
-            <p class="title">Points</p>
-            <p [ngClass]="userExperiencePoint >= 10000 ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
-              {{ characterCurrentExperience || '' }}
-            </p>
-            <p class="link" (click)="openLeaderboard()">Leaderboard</p>
-          </li>
-          <li col-4>
-            <p class="title">Grade</p>
-            <p [style.height.px]="47.31" class="number user-grade">
-              <ion-badge *ngIf="!button_show" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
-                {{ finalAverageScoreShow }}
-              </ion-badge>
-              <button block *ngIf="button_show">
-                <i class="fa fa-clock-o" aria-hidden="true"></i>
-              </button>
-            </p>
-            <div *ngIf="!view_portfolio">
-              <p *ngIf="!portfolio_request" class="link" (click)="whatsThis()">What's this?</p>
-              <p *ngIf="portfolio_request" class="link" (click)="requestPortfolio()">Request Portfolio</p>
+            <div (click)="openEvent()">
+              <p class="title">Bookings</p>
+              <p *ngIf="bookedEventsCount != 0" [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+                {{bookedEventsCount}}
+              </p>
+              <ion-icon class="number" [style.height.px]="47.31" style="font-size: 4.5rem" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
+              <p class="link">Book an Event</p>
             </div>
-            <div *ngIf="view_portfolio">
-              <a class="link" target="_blank" href="{{viewPortfolioLink}}">View Portfolio</a>
+          </li>
+          <li col-4>
+            <div (click)="openLeaderboard()">
+              <p class="title">Points</p>
+              <p [ngClass]="userExperiencePoint >= 10000 ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+                {{ characterCurrentExperience || '' }}
+              </p>
+              <p class="link">Leaderboard</p>
+            </div>
+          </li>
+          <li col-4>
+            <div (click)="openPortfolio()">
+              <p class="title">Grade</p>
+              <p [style.height.px]="47.31" class="number user-grade">
+                <ion-badge *ngIf="!button_show" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
+                  {{ finalAverageScoreShow }}
+                </ion-badge>
+                <button block *ngIf="button_show">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </button>
+              </p>
+              <div *ngIf="!view_portfolio">
+                <p *ngIf="!portfolio_request" class="link">What's this?</p>
+                <p *ngIf="portfolio_request" class="link">Request Portfolio</p>
+              </div>
+              <div *ngIf="view_portfolio">
+                <p class="link">View Portfolio</p>
+              </div>
             </div>
           </li>
         </ul>

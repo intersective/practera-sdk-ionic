@@ -12,8 +12,8 @@
       <ion-row>
         <ion-col col-12 class="activity-badge">
           <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge 1"/>
-          <img *ngIf="activityIndex > 1" 
-            src="./assets/img/badges/badge{{ activityIndex }}.svg" 
+          <img *ngIf="activityIndex > 1"
+            src="./assets/img/badges/badge{{ activityIndex }}.svg"
             alt="Activity Badge {{ activityIndex }}"/>
         </ion-col>
       </ion-row>
@@ -29,28 +29,30 @@
       <ion-item col-10>
         <span *ngFor="let tick of newTickArray; let i = index;" class="each-tick tick-color-{{ activityIndex }}">
           <i class="fa" (click)="achievementPopup(i)"
-            [ngClass]="{'fa-check-circle-o icon-color-5': tick, 'fa-circle-thin tick-color-default': !tick }" 
+            [ngClass]="{'fa-check-circle-o icon-color-5': tick, 'fa-circle-thin tick-color-default': !tick }"
             aria-hidden="true">
           </i>
         </span>
       </ion-item>
       <ion-item col-2 class="badge-default">
-        <ion-badge *ngIf="eachScore != -1" 
+        <ion-badge *ngIf="eachScore != -1"
           [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
           {{ eachScore }}
         </ion-badge>
         <button *ngIf="eachScore == -1">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
         </button>
-      </ion-item>  
+      </ion-item>
     </ion-row>
   </ion-list>
+
   <ion-fab top right edge *ngIf="false">
     <button ion-fab class="question-mark-button" color="dark" mini>
       <ion-icon name="help" color="secondary"></ion-icon>
     </button>
   </ion-fab>
-  <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && submitOnce == true">
+
+  <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && allowSubmission(assessment, submissions)">
     <button ion-fab class="primary-button add-submission" [ngClass]="submissions.length > 0 ? '' : 'pulse-button'" (click)="goAssessment()">
       <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
     </button>
@@ -86,7 +88,7 @@
         </ion-item>
       </ion-row>
       <ion-row *ngIf='submissionTitles[i].published'>
-        <ion-item class="submission-title" col-10>      
+        <ion-item class="submission-title" col-10>
           <h2 *ngIf="submissionTitle[i]">{{ submissionTitle[i] | truncate: 50}}</h2>
           <h2 *ngIf="!submissionTitle[i]">{{ submissionTitles[i].result_name }}</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
