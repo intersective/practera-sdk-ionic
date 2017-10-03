@@ -60,6 +60,7 @@ export class ActivitiesListPage implements OnInit {
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
     this.totalAverageScore = 0;
+    this.findDataStatus = [];
   }
   public hardcode_assessment_id: any = 2134;
   public hardcode_context_id: any = 2532;
@@ -86,6 +87,7 @@ export class ActivitiesListPage implements OnInit {
   public maxPoints: number = 0;
   public currentPercentage: any = '0';
   public filteredSubmissions: any = [];
+  public findDataStatus: any = [];
   public characterData: any = [];
   public submissionData: any = [];
   public sameFontSize: boolean = false;
@@ -97,7 +99,7 @@ export class ActivitiesListPage implements OnInit {
   public rankingsPage = RankingsPage;
   public eventsListPage = EventsListPage;
   public program_id: any = this.cacheService.getLocal('program_id') || "1";
-  public email: any = this.cacheService.getLocal('email').replace(/\"/g, "") || "test@test.com";
+  public email: any = this.cacheService.getLocal('email') || "test@test.com";
   public viewPortfolioLink: any = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
@@ -152,6 +154,9 @@ export class ActivitiesListPage implements OnInit {
     public translationService: TranslationService,
     public win: WindowRef
   ) {
+    if(this.email){
+      this.cacheService.getLocal('email').replace(/\"/g, "");
+    }
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');
   }
@@ -235,7 +240,7 @@ export class ActivitiesListPage implements OnInit {
             let getUserAchievemnt = this.achievementService.getAchievements();
             let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
             Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
-              .subscribe(results => { // save API request results as a single integrated object
+              .subscribe(results => { // save API request results as a single integrated object 
                 loadingData.dismiss().then(() => {
                   // Now only support 1 character in a game
                   this.characterData = results[1].Characters[0];
@@ -262,15 +267,13 @@ export class ActivitiesListPage implements OnInit {
                   this.submissionData = results[0];
                   _.forEach(this.submissionData, (element, index) => {
                     if(element.Assessment.id == this.hardcode_assessment_id){ // hardcode for post program assessment_id
-                      findPostProgramAssessmentSubmission.push(true);
-                    }else {
-                      findPostProgramAssessmentSubmission.push(false);
+                      this.findDataStatus = element.AssessmentSubmission.status;
                     }
                   });
-                  if(findPostProgramAssessmentSubmission.indexOf(true) > -1){
-                    this.view_portfolio = true;
-                  } else {
+                  if(this.findDataStatus != "done"){
                     this.view_portfolio = false;
+                  }else {
+                    this.view_portfolio = true;
                   }
                   // match founded array index to activityIDs array and find each of activity IDs
                   for(let index = 0; index < this.activityIndexArray.length; index++) {
@@ -378,7 +381,6 @@ export class ActivitiesListPage implements OnInit {
                 context_id: this.hardcode_context_id // hardcode for context_id
               }],
               assessment: {
-                id: this.hardcode_assessment_id,
                 context_id: this.hardcode_context_id // hardcode for context_id
               }
             };
