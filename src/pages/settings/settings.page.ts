@@ -41,7 +41,6 @@ export class SettingsPage {
       this.gameService.getCharacters(gameId)
         .subscribe((characters) => {
           let me = characters.Characters[0];
-          console.log("me: ", me);
           if(me.meta == null){
             this.hideMe = false;
           }

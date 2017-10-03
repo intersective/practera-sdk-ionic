@@ -41,9 +41,7 @@ export class ForgetPasswordPage {
         email: ['', [FormValidator.isValidEmail, Validators.required]]
       });
     }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ForgetPasswordPage');
-  }
+  ionViewDidLoad() {}
   userForgotPassword(){
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,

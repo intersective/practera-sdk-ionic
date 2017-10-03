@@ -10,7 +10,6 @@
     <div class="title">{{ event.title }}</div>
   </ion-list>
   <div *ngIf="event.isBooked" class="status">
-    <!-- <div class="tag event-view-tag" color="palette-five">{{ (event.isAttended) ? 'Attended' : 'Booked' }}</div> -->
     <div *ngIf="eventTag" class="tag event-view-tag" color="palette-five">{{ eventTag }}</div>
   </div>
   <ion-list class="details">

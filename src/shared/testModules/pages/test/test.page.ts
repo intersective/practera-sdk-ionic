@@ -1,6 +1,4 @@
 import { Component, ViewChild } from '@angular/core';
-// import { TestStartPage } from './test-start.page';
-
 @Component({
   selector: 'full-test',
   template: `<ion-header>
@@ -15,10 +13,10 @@ import { Component, ViewChild } from '@angular/core';
 })
 export class TestPage {
   @ViewChild('something') nav;
-/*  constructor(page: TestStartPage) {
+  /*  
+    constructor(page: TestStartPage) {
     this.rootPage = page;
   }*/
-
   something() {
     console.log(this.nav);
   }

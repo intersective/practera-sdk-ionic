@@ -55,7 +55,6 @@ export class EventsViewPage {
   ) {
     this.event = navParams.get('event');
     this.eventTag = navParams.get('tag');
-    console.log("this.event: ", this.eventTag);
   }
 
   private availability(event): string {
@@ -260,7 +259,7 @@ export class EventsViewPage {
           text: 'Close',
           role: 'cancel',
           handler: () => {
-            // console.log('Close this window ..');
+            
           }
         }
       ]

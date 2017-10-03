@@ -52,14 +52,13 @@ export class ActivityListPopupPage {
         .subscribe(
           data => {
             if(data.length > 0){
-              this.enableData = true;
-              this.achievementData = data.find(res => res.Achievement.id === this.unlock_id).Achievement;
-              this.achievementName = this.achievementData.name;
-              this.badgeUrl = this.achievementData.badge;
-              this.description = this.achievementData.description;
-              this.points = this.achievementData.points;
               loader.dismiss().then(() => {
-                console.log(this.achievementData);
+                this.enableData = true;
+                this.achievementData = data.find(res => res.Achievement.id === this.unlock_id).Achievement;
+                this.achievementName = this.achievementData.name;
+                this.badgeUrl = this.achievementData.badge;
+                this.description = this.achievementData.description;
+                this.points = this.achievementData.points;
               });
             }else {
               this.enableData = false;

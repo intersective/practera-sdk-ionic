@@ -58,7 +58,6 @@ export class EventsListPage {
 
   ionViewWillLeave() {
     if (this.fab) {
-      console.log(this.fab);
       this.fab.close();
     }
   }

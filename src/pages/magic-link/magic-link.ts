@@ -53,7 +53,6 @@ export class MagicLinkPage {
     observable.subscribe(data => {
       // localStorage.setItem('isAuthenticated', 'true');
       // this.navCtrl.push(TabsPage);
-      // console.log("Successfully logged in");
       data = data.data;
       this.cacheService.setLocalObject('apikey', data.apikey);
       this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
@@ -62,9 +61,7 @@ export class MagicLinkPage {
       this.gameService.getGames()
           .subscribe(
             data => {
-              console.log("game data: ", data);
               _.map(data, (element) => {
-                console.log("game id: ", element[0].id);
                 this.cacheService.setLocal('game_id', element[0].id);
               });
             },
@@ -89,10 +86,8 @@ export class MagicLinkPage {
       this.milestoneService.getMilestones()
         .subscribe(
           data => {
-            console.log(data.data[0].id);
             this.milestone_id = data.data[0].id;
             this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-            console.log("milestone id: " + data.data[0].id);
             loading.dismiss();
             this.navCtrl.push(TabsPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
@@ -115,7 +110,6 @@ export class MagicLinkPage {
         this.navCtrl.push(LoginPage).then(() => {
           window.history.replaceState({}, '', window.location.origin);
         });
-        // console.log("Login failed");
         this.cacheService.removeLocal('isAuthenticated');
         this.cacheService.write('isAuthenticated', false);
       });
