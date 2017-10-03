@@ -61,7 +61,6 @@ export class LoginPage {
   }
   ionViewCanLeave(): boolean {
     // user is authorized
-    console.log('authorized');
     let authorized = true;
     if (authorized){
       return true;
@@ -96,9 +95,7 @@ export class LoginPage {
               this.gameService.getGames()
                   .subscribe(
                     data => {
-                      console.log("game data: ", data);
                       _.map(data, (element) => {
-                        console.log("game id: ", element[0].id);
                         this.cacheService.setLocal('game_id', element[0].id);
                       });
                     },
@@ -134,10 +131,8 @@ export class LoginPage {
                   .subscribe(
                     data => {
                       loading.dismiss().then(() => {
-                        console.log(data.data[0].id);
                         this.milestone_id = data.data[0].id;
                         self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        console.log("milestone id: " + data.data[0].id);
                         this.navCtrl.push(TabsPage).then(() => {
                           this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                           window.history.replaceState({}, '', window.location.origin);
@@ -176,7 +171,6 @@ export class LoginPage {
     cacheProcesses.push(this.cacheService.write('teams', data.Teams));
     this.cacheService.setLocal('apikey', data.apikey);
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);
-    console.log("cache data: " + cacheProcesses);
     return Observable.from(cacheProcesses);
   }
   /**
@@ -191,7 +185,6 @@ export class LoginPage {
     this.cacheService.write('userData', userData);
     this.cacheService.setLocalObject('userData', userData);
     this.API_KEY = user.data.apikey;
-    // console.log("Timeline ID: " + user.data.Timelines[0].Timeline.id);
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
   }

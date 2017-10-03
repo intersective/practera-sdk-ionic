@@ -428,7 +428,6 @@ export class AssessmentsPage {
         .subscribe(
           (assessments: any) => {
             loading.dismiss().then(_ => {
-              console.log('assessments', assessments);
               this.allowSubmit = false;
               this.popupAfterSubmit();
             });

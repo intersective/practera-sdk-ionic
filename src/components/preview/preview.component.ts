@@ -14,7 +14,6 @@ export class PreviewComponent {
     private viewCtrl: ViewController
   ) {
     this.preview = (this.file) ? this.file : navParam.get('file');
-    console.log('preview?::', this.preview);
   }
 
   dismiss() {

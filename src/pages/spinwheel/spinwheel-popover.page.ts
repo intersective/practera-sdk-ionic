@@ -16,7 +16,7 @@ export class SpinwheelPopOverPage implements OnInit {
   constructor(public viewCtrl: ViewController) {}
 
   ngOnInit() {
-    let data = this.viewCtrl.data; console.log(this.viewCtrl);
+    let data = this.viewCtrl.data;
     this.statusText = this.status[`${data.statusText}`];
   }
 }

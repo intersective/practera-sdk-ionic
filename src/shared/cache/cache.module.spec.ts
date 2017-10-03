@@ -53,7 +53,6 @@ describe('Cache read/write test', () => {
 
     fixture.componentInstance.load('paralle')
     .then((content) => {
-      // console.log('c', content)
       expect(content).toEqual({
         writeOne: 'one',
         writeTwo: 'two'
