@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 
-// Others
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
 import * as _ from 'lodash';
@@ -11,6 +10,7 @@ import * as _ from 'lodash';
   templateUrl: './assessments-group.html',
 })
 export class AssessmentsGroupPage implements OnInit {
+
   activity: any;
   answers: any; // to render & display submitted answers
   assessment: any;
@@ -19,7 +19,7 @@ export class AssessmentsGroupPage implements OnInit {
   canUpdateInput: boolean = false;
   event: any;
   formGroup: any;
-  inProgress: any;
+  inProgress: boolean | any;
   published: boolean = false;
   questions: any = [];
   submission: Submission;
@@ -278,6 +278,8 @@ export class AssessmentsGroupPage implements OnInit {
 
   /**
    * @description retrieve saved progress from localStorage
+   * @param {Array} questions
+   * @param {Object} answers
    */
   retrieveProgress = (questions: Array<any>, answers?) => {
     let cachedProgress = answers || {},

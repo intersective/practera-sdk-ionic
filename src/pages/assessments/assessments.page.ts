@@ -171,7 +171,12 @@ export class AssessmentsPage {
     return result;
   }
 
-  // filter question by condition (submitter cannot view reviewer question before it is published/reviewed)
+  /**
+   * @description filter question by condition (submitter cannot view reviewer
+   *              question before it is published/reviewed)
+   * @param {object} question
+   * @param {string} status
+   */
   isAccessibleBySubmitter(question, submissionStatus: string) {
     let accessible = true;
     let submitterAllowed = false;
@@ -194,7 +199,7 @@ export class AssessmentsPage {
    *
    * @return {Promise<any>}
    */
-  public pullSubmissions(): Promise<any> {
+   pullSubmissions(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 2nd batch API requests (get_submissions)
       Observable.forkJoin(
@@ -233,7 +238,11 @@ export class AssessmentsPage {
     });
   }
 
-  private filterSubmissions(submissions) {
+  /**
+   * @description filter submissions data
+   * @param {Array} submissions
+   */
+  filterSubmissions(submissions) {
     let results = []; // filtered submissions
 
     // check if a submission is specified (from previous page, from NavParams)
@@ -301,6 +310,9 @@ export class AssessmentsPage {
     return tasks;
   }
 
+  /**
+   * @description loading question from API
+   */
   loadQuestions(): Promise<any> {
     return new Promise((resolve, reject) => {
       /**
@@ -377,7 +389,7 @@ export class AssessmentsPage {
   }
 
   /**
-   * submit answer and change submission status to done
+   * @description submit answer and change submission status to done
    */
   doSubmit() {
     let loading = this.loadingCtrl.create({
@@ -434,6 +446,9 @@ export class AssessmentsPage {
     });
   }
 
+  /**
+   * @description Submit anwsers
+   */
   clickSubmit() {
     const confirm = this.alertCtrl.create({
       title: 'Confirm Submission',
@@ -456,7 +471,9 @@ export class AssessmentsPage {
     confirm.present();
   }
 
-  // items popup
+  /**
+   * @description  items popup
+   */
   popupAfterSubmit() {
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
@@ -544,6 +561,11 @@ export class AssessmentsPage {
         );
   }
 
+  /**
+   * @description Move to assessment group page
+   * @param {Object} assessment group
+   * @param {Object} activity
+   */
   gotoAssessment(assessmentGroup, activity) {
     this.navCtrl.push(AssessmentsGroupPage, {
       assessmentGroup,
