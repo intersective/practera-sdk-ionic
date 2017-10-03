@@ -57,6 +57,7 @@
       <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
     </button>
   </ion-fab>
+  <!--This piece of code needs to be keot in case changing back -->
   <!-- <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
     <ion-slides pager>
       <ion-slide *ngFor="let badge of activity.badges" [ngClass]="{'disabled': badge.disabled }">
@@ -66,8 +67,7 @@
   </ion-list> -->
   <ion-list class="submissions">
     <ion-list-header>
-      <!-- {{ 'ACTIVITY.SUBMISSION' | translate }} -->
-      Evidence
+      {{ 'ACTIVITY.EVIDENCE' | translate }}
     </ion-list-header>
     <ion-item *ngIf="loadings.submissions" class="center">
       <ion-spinner>Loading submissions...</ion-spinner>
@@ -75,7 +75,6 @@
     <ion-item class="submissions-information" *ngFor="let submission of submissions; let i = index" (click)="goAssessment(submission, {hasSubmission: true})">
       <ion-row *ngIf='!submissionTitles[i].published'>
         <ion-item class="submission-title" col-10>
-          <!-- <h2 *ngIf='!submissionTitles[i].inprogress'>{{ submissionTitle[i] | truncate: 50 || 'Waiting for Review' }}</h2> -->
           <h2 *ngIf='!submissionTitles[i].inprogress && submissionTitles[i].moderated_assessment'>Waiting for Review</h2>
           <h2 *ngIf='!submissionTitles[i].inprogress && !submissionTitles[i].moderated_assessment'>Done</h2>
           <h2 *ngIf='submissionTitles[i].inprogress'>In Progress</h2>
