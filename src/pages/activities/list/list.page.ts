@@ -337,7 +337,7 @@ export class ActivitiesListPage implements OnInit {
     let popover = this.popoverCtrl.create(PopoverTextPage);
     popover.present();
   }
-  requestPortfolio(){
+  requestPortfolio(){ // request protfolio link action sheet box display functionality
     let processLoading = this.loadingCtrl.create({
       content: 'loading ..'
     });
