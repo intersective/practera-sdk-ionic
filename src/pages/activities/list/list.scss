@@ -1,3 +1,39 @@
 .close-btn {
   @include closeBtn;
 }
+
+.pulse {
+  padding: 5px;
+  border-radius: 25%;
+  box-shadow: 0 0 0 $teal;
+  animation: pulse 2s infinite;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 $teal;
+  }
+  70% {
+      -webkit-box-shadow: 0 0 0 10px $teal;
+  }
+  100% {
+      -webkit-box-shadow: 0 0 0 0 $teal;
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 $teal;
+    box-shadow: 0 0 0 0 $teal;
+  }
+  70% {
+      -moz-box-shadow: 0 0 0 10px $teal;
+      box-shadow: 0 0 0 10px $teal;
+  }
+  100% {
+      -moz-box-shadow: 0 0 0 0 $teal;
+      box-shadow: 0 0 0 0 $teal;
+  }
+}

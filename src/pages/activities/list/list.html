@@ -31,7 +31,7 @@
               <p *ngIf="bookedEventsCount != 0" [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
                 {{bookedEventsCount}}
               </p>
-              <ion-icon class="number" [style.height.px]="47.31" style="font-size: 4.5rem" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
+              <ion-icon class="number pulse" [style.height.px]="47.31" style="font-size: 4.5rem" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
               <p *ngIf="bookedEventsCount === 0" class="link">Book an Event</p>
               <p *ngIf="bookedEventsCount > 0" class="link">Browse Events</p>
             </div>
