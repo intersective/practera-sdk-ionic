@@ -32,7 +32,8 @@
                 {{bookedEventsCount}}
               </p>
               <ion-icon class="number" [style.height.px]="47.31" style="font-size: 4.5rem" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
-              <p class="link">Book an Event</p>
+              <p *ngIf="bookedEventsCount === 0" class="link">Book an Event</p>
+              <p *ngIf="bookedEventsCount > 0" class="link">Browse Events</p>
             </div>
           </li>
           <li col-4>
