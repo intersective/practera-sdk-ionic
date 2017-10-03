@@ -21,6 +21,7 @@ export class ActivitiesViewPage {
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
   public submissionTitle: any = [];
+  public newSubmissionTitle: any = [];
   public tickArray: any = [];
   public newTickArray: any = [];
   public tickedCount: any = 0;
@@ -30,22 +31,22 @@ export class ActivitiesViewPage {
   public achievementData: any = [];
   public findAchievementObj: any = [];
   public portfolioView: boolean = false;
-  activity: any = {};
-  activityIndex: any = 0;
-  assessment: any = {};
-  assessments: any = {};
-  submissions: Array<any> = [];
-  eachFinalScore: any = 0;
-  eachScore: any = 0;
-  achievements: any = {
+  public activity: any = {};
+  public activityIndex: any = 0;
+  public assessment: any = {};
+  public assessments: any = {};
+  public submissions: Array<any> = [];
+  public eachFinalScore: any = 0;
+  public eachScore: any = 0;
+  public achievements: any = {
     available: [],
     obtained: {},
     maxPoints: {}
   };
-  loadings = {
+  public loadings = {
     submissions: false
   };
-
+  public submitOnce: boolean = true;
   initialised_eset() {
     this.findAchievementObj = [];
     this.achievementData = [];
@@ -57,6 +58,7 @@ export class ActivitiesViewPage {
     this.activityIndex = 0;
     this.eachFinalScore = 0;
     this.loadings.submissions = true;
+    this.submitOnce = true;
   }
 
   constructor(
@@ -135,6 +137,11 @@ export class ActivitiesViewPage {
           }else {
             this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
           }
+          (this.submissions || []).forEach(submission => {
+            if(submission.assessment.is_repeatable == false){
+              this.submitOnce = false;
+            }  
+          });
         }
       });
       this.submissionTitles = this.getSubmissionStatus(this.submissions);
@@ -303,12 +310,16 @@ export class ActivitiesViewPage {
       }
       _.forEach(Submissions, (element, index) => {
         _.forEach(element.answer, (ele, index) => {
-          if(ele.assessment_question_id == assessment_question_id) {
-            this.submissionTitle.push(ele.answer);
+          if(ele.assessment_question_id !== assessment_question_id) {
+            if(ele.answer){
+              this.newSubmissionTitle.push(ele.answer);
+            }else {
+              this.newSubmissionTitle = [];
+            } 
           }
         })
-      })
-      return this.submissionTitle;
+      });
+      return this.newSubmissionTitle;
     }
   }
   badgeData(){

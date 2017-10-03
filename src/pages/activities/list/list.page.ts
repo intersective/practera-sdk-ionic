@@ -54,7 +54,7 @@ export class ActivitiesListPage implements OnInit {
     this.filteredActivityIDs = [];
     this.findSubmissions = [[], [], [], [], [], [],[]];
     this.tickedIDsArray = [[], [], [], [], [], [],[]];
-    this.AverageScore = [0, 0, 0, 0, 0, 0, 0];
+    this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
   }
@@ -93,8 +93,8 @@ export class ActivitiesListPage implements OnInit {
   public returnError: boolean = false;
   public rankingsPage = RankingsPage;
   public eventsListPage = EventsListPage;
-  public program_id = this.cacheService.getLocal('program_id') || "1";
-  public email = this.cacheService.getLocal('email').replace(/\"/g, "") || "test@test.com";
+  public program_id: any = this.cacheService.getLocal('program_id') || "1";
+  public email: any = this.cacheService.getLocal('email').replace(/\"/g, "") || "test@test.com";
   public viewPortfolioLink: any = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
   // loading & err message variables
   public activitiesLoadingErr: any = errMessages.General.loading.load;
@@ -150,7 +150,6 @@ export class ActivitiesListPage implements OnInit {
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');
-    console.log(this.program_id + ", " + this.email + ", " + this.viewPortfolioLink);
   }
   ngOnInit() {}
   ionViewWillEnter(){
@@ -421,6 +420,9 @@ export class ActivitiesListPage implements OnInit {
         AverageScore[activityIndexArray[j]] = (findSubmissions[j][0]+findSubmissions[j][1])*2;
       }else if(findSubmissions[j].length == 1) {
         AverageScore[activityIndexArray[j]] = findSubmissions[j][0] * 4;
+      }
+      if(activityIndexArray[j] == 6){
+        AverageScore[activityIndexArray[j]] = 0;
       }
       this.totalAverageScore += AverageScore[activityIndexArray[j]];
     }
