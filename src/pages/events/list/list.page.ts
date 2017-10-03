@@ -38,7 +38,8 @@ export class EventsListPage {
   private emptyFilterErrMessage = errMessages.Events.filter.empty;
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
-
+  // setup event tag based on conditions
+  private eventTag: string = null;  
   locations = LOCATIONS; // preset hardcoded locations from const above
   fab: any = null;
   activities = {};
@@ -81,12 +82,14 @@ export class EventsListPage {
     this.noEvents = false;
     switch(this.filter) {
       case 'attended':
+        this.eventTag = "Attended";
         // List all ended event in order of end time (desc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
           return (event.isBooked === true && moment().isAfter(moment.utc(event.end).local())); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'desc');
         break;
       case 'my-bookings':
+        this.eventTag = "Booked";
         // List all booked event in order of start time (desc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
           return (event.isBooked === true && moment().isBefore(moment.utc(event.end).local())); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
@@ -95,8 +98,6 @@ export class EventsListPage {
       case 'browses':
         // List all not booked and not ended event in order of start time (asc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          // return (moment(event.end).isAfter() && event.isBooked === false);
-          // return (moment().isBefore(moment(event.end)) && event.isBooked === false);
           return (moment.utc(event.end).local().isAfter() && event.isBooked === false); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'asc');
         break;
@@ -268,7 +269,8 @@ export class EventsListPage {
 
   view(event) {
     this.navCtrl.push(EventsViewPage, {
-      event
+      event,
+      tag: this.eventTag
     });
   }
 }

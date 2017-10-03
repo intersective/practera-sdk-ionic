@@ -21,6 +21,7 @@ export class ActivitiesViewPage {
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
   public submissionTitle: any = [];
+  public newSubmissionTitle: any = [];
   public tickArray: any = [];
   public newTickArray: any = [];
   public tickedCount: any = 0;
@@ -30,22 +31,21 @@ export class ActivitiesViewPage {
   public achievementData: any = [];
   public findAchievementObj: any = [];
   public portfolioView: boolean = false;
-  activity: any = {};
-  activityIndex: any = 0;
-  assessment: any = {};
-  assessments: any = {};
-  submissions: Array<any> = [];
-  eachFinalScore: any = 0;
-  eachScore: any = 0;
-  achievements: any = {
+  public activity: any = {};
+  public activityIndex: any = 0;
+  public assessment: any = {};
+  public assessments: any = {};
+  public submissions: Array<any> = [];
+  public eachFinalScore: any = 0;
+  public eachScore: any = 0;
+  public achievements: any = {
     available: [],
     obtained: {},
     maxPoints: {}
   };
-  loadings = {
+  public loadings = {
     submissions: false
   };
-
   initialised_eset() {
     this.findAchievementObj = [];
     this.achievementData = [];
@@ -220,7 +220,7 @@ export class ActivitiesViewPage {
   goAssessment(submission?, opts = { hasSubmission: false }) {
     if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
       let alert = this.alertCtrl.create({
-        title: 'You have a submission in progress.',
+        title: 'You already have started a new submission! Please tap on "In Progress" below to continue with it.',
         buttons: ["Ok"]
       });
       alert.present();
@@ -317,12 +317,16 @@ export class ActivitiesViewPage {
       }
       _.forEach(Submissions, (element, index) => {
         _.forEach(element.answer, (ele, index) => {
-          if(ele.assessment_question_id == assessment_question_id) {
-            this.submissionTitle.push(ele.answer);
+          if(ele.assessment_question_id !== assessment_question_id) {
+            if(ele.answer){
+              this.newSubmissionTitle.push(ele.answer);
+            }else {
+              this.newSubmissionTitle = [];
+            }
           }
         })
-      })
-      return this.submissionTitle;
+      });
+      return this.newSubmissionTitle;
     }
   }
   badgeData(){
