@@ -168,11 +168,11 @@ export class ActivitiesListPage implements OnInit {
   }
   openEvent() {
     // Move to event page
-    this.navCtrl.parent.select(1);
+    this.navCtrl.parent.select(1); // go to event tab page
   }
   openLeaderboard() {
     // Move to leaderboard page
-    this.navCtrl.parent.select(2);
+    this.navCtrl.parent.select(2); // go to leaderboard tab page
   }
   // refresher activities
   doRefresh(e) {
@@ -216,7 +216,7 @@ export class ActivitiesListPage implements OnInit {
             let getUserAchievemnt = this.achievementService.getAchievements();
             let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
             Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
-              .subscribe(results => {
+              .subscribe(results => { // save API request results as a single integrated object 
                 loadingData.dismiss().then(() => {
                   // Now only support 1 character in a game
                   this.characterData = results[1].Characters[0];

@@ -144,8 +144,8 @@ export class ActivitiesViewPage {
           });
         }
       });
-      this.submissionTitles = this.getSubmissionStatus(this.submissions);
-      this.submissionTitle = this.getSubmissionTitle(this.submissions);
+      this.submissionTitles = this.getSubmissionStatus(this.submissions); // get user assessment status based on its achieved marks
+      this.submissionTitle = this.getSubmissionTitle(this.submissions); // get user named assessment submission title
       this.loadings.submissions = false;
     });
     // badges
@@ -231,7 +231,7 @@ export class ActivitiesViewPage {
       });
     }
   }
-  getSubmissionStatus(Submissions){
+  getSubmissionStatus(Submissions){ // get user assessment status based on its achieved marks
     let result: any = [];
     let result_name = "";
     let result_score = 0;
@@ -290,7 +290,7 @@ export class ActivitiesViewPage {
     }
     return result;
   }
-  getSubmissionTitle(Submissions){
+  getSubmissionTitle(Submissions){ // get user named assessment submission title
     let assessment_question_id: any = "0";
     if(Submissions[0]){
       if(Submissions[0].assessment_id == "2124"){
