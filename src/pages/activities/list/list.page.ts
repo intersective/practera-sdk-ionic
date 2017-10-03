@@ -240,7 +240,7 @@ export class ActivitiesListPage implements OnInit {
             let getUserAchievemnt = this.achievementService.getAchievements();
             let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
             Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
-              .subscribe(results => { // save API request results as a single integrated object 
+              .subscribe(results => { // save API request results as a single integrated object
                 loadingData.dismiss().then(() => {
                   // Now only support 1 character in a game
                   this.characterData = results[1].Characters[0];
@@ -381,6 +381,7 @@ export class ActivitiesListPage implements OnInit {
                 context_id: this.hardcode_context_id // hardcode for context_id
               }],
               assessment: {
+                id: this.hardcode_assessment_id,
                 context_id: this.hardcode_context_id // hardcode for context_id
               }
             };
