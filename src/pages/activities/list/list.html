@@ -49,7 +49,7 @@
             <div (click)="openPortfolio()">
               <p class="title">Grade</p>
               <p [style.height.px]="47.31" class="number user-grade">
-                <ion-badge *ngIf="!button_show" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
+                <ion-badge *ngIf="!button_show" [ngClass]="{'best-grade-color': totalAverageScore >= 3.5, 'better-grade-color': (totalAverageScore < 3.5 && totalAverageScore >= 2), 'worse-grade-color': totalAverageScore < 2 }">
                   {{ finalAverageScoreShow }}
                 </ion-badge>
                 <button block *ngIf="button_show">

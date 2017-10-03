@@ -59,6 +59,7 @@ export class ActivitiesListPage implements OnInit {
     this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
+    this.totalAverageScore = 0;
   }
   public hardcode_assessment_id: any = 2134;
   public hardcode_context_id: any = 2532;
@@ -234,7 +235,7 @@ export class ActivitiesListPage implements OnInit {
             let getUserAchievemnt = this.achievementService.getAchievements();
             let getUserEvents = this.eventService.getUserEvents(this.activityIDs);
             Observable.forkJoin([getSubmission, getCharacter, getUserAchievemnt, getUserEvents])
-              .subscribe(results => { // save API request results as a single integrated object 
+              .subscribe(results => { // save API request results as a single integrated object
                 loadingData.dismiss().then(() => {
                   // Now only support 1 character in a game
                   this.characterData = results[1].Characters[0];
@@ -377,6 +378,7 @@ export class ActivitiesListPage implements OnInit {
                 context_id: this.hardcode_context_id // hardcode for context_id
               }],
               assessment: {
+                id: this.hardcode_assessment_id,
                 context_id: this.hardcode_context_id // hardcode for context_id
               }
             };
@@ -439,7 +441,9 @@ export class ActivitiesListPage implements OnInit {
       if(activityIndexArray[j] == 6){
         AverageScore[activityIndexArray[j]] = 4;
       }
-      this.totalAverageScore += AverageScore[activityIndexArray[j]];
+      if(activityIndexArray[j] <= 5){ // add up together about each acitity average score
+        this.totalAverageScore += AverageScore[activityIndexArray[j]];
+      }
     }
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);
