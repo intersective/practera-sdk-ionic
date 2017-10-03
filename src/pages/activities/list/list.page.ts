@@ -59,6 +59,7 @@ export class ActivitiesListPage implements OnInit {
     this.AverageScore = [0, 0, 0, 0, 0, 0, 4];
     this.userExperiencePoint = 0;
     this.eachActivityScores = [];
+    this.totalAverageScore = 0;
   }
   public hardcode_assessment_id: any = 2134;
   public hardcode_context_id: any = 2532;
@@ -439,7 +440,9 @@ export class ActivitiesListPage implements OnInit {
       if(activityIndexArray[j] == 6){
         AverageScore[activityIndexArray[j]] = 4;
       }
-      this.totalAverageScore += AverageScore[activityIndexArray[j]];
+      if(activityIndexArray[j] <= 5){ // add up together about each acitity average score
+        this.totalAverageScore += AverageScore[activityIndexArray[j]];
+      }
     }
     this.totalAverageScore = this.totalAverageScore/6;
     this.finalAverageScoreShow = this.totalAverageScore.toFixed(2);

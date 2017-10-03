@@ -298,26 +298,26 @@ export class ActivitiesViewPage {
     return result;
   }
   getSubmissionTitle(Submissions){ // get user named assessment submission title
-    let assessment_question_id: any = "0";
+    let assessment_question_id: any = 0;
     if(Submissions[0]){
-      if(Submissions[0].assessment_id == "2124"){
-        assessment_question_id = "21316";
-      }else if(Submissions[0].assessment_id == "2125"){
-        assessment_question_id = "21327";
-      }else if(Submissions[0].assessment_id == "2126"){
-        assessment_question_id = "21338";
-      }else if(Submissions[0].assessment_id == "2127"){
-        assessment_question_id = "21349";
-      }else if(Submissions[0].assessment_id == "2128"){
-        assessment_question_id = "21360";
-      }else if(Submissions[0].assessment_id == "2129"){
-        assessment_question_id = "21371";
-      }else if(Submissions[0].assessment_id == "2050"){
-        assessment_question_id = "20661";
+      if(Submissions[0].assessment_id == 2124){
+        assessment_question_id = 21316;
+      }else if(Submissions[0].assessment_id == 2125){
+        assessment_question_id = 21327;
+      }else if(Submissions[0].assessment_id == 2126){
+        assessment_question_id = 21338;
+      }else if(Submissions[0].assessment_id == 2127){
+        assessment_question_id = 21349;
+      }else if(Submissions[0].assessment_id == 2128){
+        assessment_question_id = 21360;
+      }else if(Submissions[0].assessment_id == 2129){
+        assessment_question_id = 21371;
+      }else if(Submissions[0].assessment_id == 2050){
+        assessment_question_id = 20661;
       }
       _.forEach(Submissions, (element, index) => {
         _.forEach(element.answer, (ele, index) => {
-          if(ele.assessment_question_id !== assessment_question_id) {
+          if(ele.assessment_question_id === assessment_question_id) {
             if(ele.answer){
               this.newSubmissionTitle.push(ele.answer);
             }else {
