@@ -81,9 +81,12 @@
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
         <ion-item class="note" col-2>
-          <button block class="pendingbutton">
+          <button block class="pendingbutton" *ngIf="submission.status !== 'done'">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </button>
+          <ion-badge *ngIf="submission.status === 'done'" [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
+            4
+          </ion-badge>
         </ion-item>
       </ion-row>
       <ion-row *ngIf='submissionTitles[i].published'>
