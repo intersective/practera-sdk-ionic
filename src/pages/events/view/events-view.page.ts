@@ -57,7 +57,7 @@ export class EventsViewPage {
     this.eventTag = navParams.get('tag');
   }
 
-  private availability(event): string {
+  availability(event): string {
     let text = (event.remaining_capacity === 1) ? ' seat available' : ' seats available';
     return (event.isBooked)? terms.booked : event.remaining_capacity + text;
   }
@@ -65,6 +65,10 @@ export class EventsViewPage {
   ionViewWillEnter() {
     this.loadings.checkin = true;
     this.submissions = []; // reset submissions
+
+    if (!this.event.References && this.event.activity.References) {
+      this.event.References = this.event.activity.References;
+    }
 
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
@@ -97,7 +101,6 @@ export class EventsViewPage {
       });
     }, err => {
       this.loadings.checkin = false;
-      console.log(err);
     });
   }
 
@@ -106,7 +109,7 @@ export class EventsViewPage {
    * @description each event has only one assessment
    * @param {Array} references References array response from get_activity API
    */
-  private extractAssessment(references: Array<any>) {
+   extractAssessment(references: Array<any>) {
     let ref = references[0];
     ref.Assessment.context_id = ref.context_id;
 
@@ -259,7 +262,7 @@ export class EventsViewPage {
           text: 'Close',
           role: 'cancel',
           handler: () => {
-            
+
           }
         }
       ]

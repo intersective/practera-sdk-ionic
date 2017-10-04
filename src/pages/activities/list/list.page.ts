@@ -280,7 +280,7 @@ export class ActivitiesListPage implements OnInit {
                     this.view_portfolio = true;
                   }
                   // match founded array index to activityIDs array and find each of activity IDs
-                  for(let index = 0; index < this.activityIndexArray.length; index++) {
+                  for(let index = 0, len = this.activityIndexArray.length; index < len; index++) {
                     this.filteredActivityIDs.push(this.activityIDs[this.activityIndexArray[index]]);
                   };
                   // find submission based on founded activity IDs
