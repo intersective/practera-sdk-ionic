@@ -58,8 +58,8 @@
   .cancel-btn:focus,
   .cancel-btn:active {
     background-color: color($colors, secondary, base); // default-theme
-    color: color($colors, button, base); // default-theme
-    border-color: color($colors, button, base); // default-theme
+    color: color($colors, practera-thick); // default-theme
+    border-color: color($colors, practera-thick); // default-theme
   }
   .checkin-btn {
     @include checkinBtn;

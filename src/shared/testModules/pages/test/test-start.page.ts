@@ -14,8 +14,13 @@ import { RegistrationPage } from '../../../../pages/registration/registration.pa
 import { SettingsPage } from '../../../../pages/settings/settings.page';
 import { EventCheckinPage } from '../../../../pages/events/checkin/event-checkin.page';
 import { TeamPage } from '../../../../pages/team/team';
+import { CelebrationPage } from '../../../../pages/spinwheel/celebration.page';
 
 const PAGES = [
+  {
+    name: 'celebration',
+    page: CelebrationPage
+  },
   {
     name: 'Check-in',
     page: EventCheckinPage,
