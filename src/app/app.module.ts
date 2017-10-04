@@ -87,6 +87,7 @@ import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
+import { CelebrationPage } from '../pages/spinwheel/celebration.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
@@ -110,6 +111,7 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    CelebrationPage,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
@@ -226,6 +228,7 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    CelebrationPage,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
