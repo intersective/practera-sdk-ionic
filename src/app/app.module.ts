@@ -162,8 +162,8 @@ export function HttpLoaderFactory(http: Http) {
     FormsModule,
     MomentModule,
     NotificationModule,
-    TestModule,
     UtilsModule,
+    TestModule,
     RequestModule.forRoot({
       appKey: Configure.appKey,
       prefixUrl: Configure.prefixUrl
@@ -204,6 +204,12 @@ export function HttpLoaderFactory(http: Http) {
           name: 'Registration',
           segment: 'registration',
           defaultHistory: [ RegistrationPage ]
+        },
+        {
+          component: TestPage,
+          name: 'Testing',
+          segment: 'test',
+          defaultHistory: [TestPage]
         }
       ]
     })
