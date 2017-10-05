@@ -24,7 +24,9 @@
       (click)="goToBadgeDetailsPage(eachAchievement)"
       detail-push>
       <ion-thumbnail item-start>
-        <img src="{{ eachAchievement.badge || achievementBadgeImage }}">
+        <img *ngIf="eachAchievement.badge" src="{{ eachAchievement.badge }}">
+        <img *ngIf="!eachAchievement.badge && eachAchievement.meta.image" src="{{ eachAchievement.meta.image }}">
+        <img *ngIf="!eachAchievement.badge && !eachAchievement.meta.image" src="{{ achievementBadgeImage }}"/>
       </ion-thumbnail>
       <h2 text-wrap>{{ eachAchievement.name || achievementName }}</h2>
     </ion-item>

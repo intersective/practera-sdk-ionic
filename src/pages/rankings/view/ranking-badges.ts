@@ -14,6 +14,7 @@ import { RankingDetailsPage } from '../view/ranking-details.page';
 export class RankingBadgesPage {
   public currentAchievement: any = null;
   public badgeUrl: string = '../assets/img/default/default-badge.png';
+  public imageURL: string = '';
   public description: string = "No Description Yet ..";
   public points: number = 0;
   public achievementName: string = "Achievement";
@@ -27,6 +28,15 @@ export class RankingBadgesPage {
               private achievementService: AchievementService,
               public translationService: TranslationService){
                 this.currentAchievement = this.navParams.get('achievement');
+                if(this.currentAchievement.badge){
+                  this.imageURL = this.currentAchievement.badge;
+                }else {
+                  if(this.currentAchievement.meta.image){
+                    this.imageURL = this.currentAchievement.meta.image;
+                  }else {
+                    this.imageURL = this.badgeUrl;  
+                  }
+                }
               }
   // close disbaled activity popup
   closeModal() {
