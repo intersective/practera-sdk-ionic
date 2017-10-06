@@ -16,6 +16,7 @@ import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
+import { LinkyModule } from 'angular-linky';
 
 // services
 import { AchievementService } from '../services/achievement.service';
@@ -182,6 +183,7 @@ export function HttpLoaderFactory(http: Http) {
     CacheModule,
     FormsModule,
     MomentModule,
+    LinkyModule,
     NotificationModule,
     TestModule,
     UtilsModule,
