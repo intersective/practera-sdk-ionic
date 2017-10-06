@@ -316,7 +316,6 @@ export class AssessmentService {
     if (result && status === 'published') {
       result = false;
     }
-
     return result;
   }
 
@@ -462,8 +461,12 @@ export class AssessmentService {
       if (q.answer === null) {
         questionsStatus.push('incomplete');
       }
-    });
 
+      if(q.answer === null && q.audience == '["reviewer"]'){
+        questionsStatus.push('reviewed');
+      }
+    });
+    
     // get final status by checking all questions' statuses
     let status = 'incomplete';
     if (_.every(questionsStatus, (v) => {
