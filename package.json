@@ -30,6 +30,7 @@
     "@ngx-translate/core": "^7.0.0",
     "@ngx-translate/http-loader": "^0.1.0",
     "@types/greensock": "^1.15.32",
+    "angular-linky": "^1.2.2",
     "angular2-local-storage": "^0.2.0",
     "angular2-moment": "1.4.0",
     "d3": "^3.5.17",
