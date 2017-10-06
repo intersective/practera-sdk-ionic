@@ -29,7 +29,8 @@
 
   <ion-list no-lines class="details-description">
     <ion-item text-wrap>
-      {{ event.description || 'No description available.' }}
+      <span *ngIf="event.description" [innerHTML]=" event.description | linky"></span>
+      <span *ngIf="!event.description">No description available.</span>
     </ion-item>
   </ion-list>
   <ion-list inset class="download" *ngIf="event.files && event.files.length > 0">
