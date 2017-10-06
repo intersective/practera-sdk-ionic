@@ -39,7 +39,7 @@ export class EventsListPage {
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
   // setup event tag based on conditions
-  private eventTag: string = null;  
+  private eventTag: string = null;
   locations = LOCATIONS; // preset hardcoded locations from const above
   fab: any = null;
   activities = {};
@@ -77,7 +77,7 @@ export class EventsListPage {
    * my-bookings: active event & booked
    * browses: list of available events
    */
-  filterEvents() { 
+  filterEvents() {
     this.noEvents = false;
     switch(this.filter) {
       case 'attended':
@@ -250,6 +250,11 @@ export class EventsListPage {
    */
   private _mapWithActivity(events) {
     let result = [];
+
+    // remove events without a `References` object attached
+    events = _.filter(events, event => {
+      return !!event.References;
+    });
 
     result = events.map(event => {
       let thisActivity = this.activities[event.activity_id];
