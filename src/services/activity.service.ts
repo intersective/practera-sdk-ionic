@@ -152,21 +152,35 @@ export class ActivityService {
       References: activity.References
     });
 
-    // Normalise activity reference
-    activity.References = activity.References.map(reference => {
+    // Normalise activity reference (References object is optional, updated on 6 October 2017)
+    if (activity.References) {
+      activity.References = this.normaliseReferences(activity.References);
+    }
+
+    return activity;
+  }
+
+  /**
+   * @name normaliseReferences
+   * @description simplify references object for value access
+   * @param {Array} references references array objects in an single activity
+   */
+  normaliseReferences(references) {
+    let result: Array<ReferenceBase>;
+
+    result = references.map(reference => {
       let referenceAssessment: ReferenceAssessmentBase = {
         id: reference.Assessment.id,
         name: reference.Assessment.name,
       };
-      let result: ReferenceBase = {
+
+      return {
         context_id: reference.context_id,
         Assessment: referenceAssessment
       };
-
-      return result;
     });
 
-    return activity;
+    return result;
   }
 
   /*
@@ -203,9 +217,14 @@ export class ActivityService {
     return result;
   }
 
-  /*
-    @name mergeReferenceToSequence
 
+  /**
+   * @name mergeReferenceToSequence
+   * @description merge context_id into assessments
+   * @type {Object} activity single activity object
+   * @example conversion formats below
+   */
+  /*
     turns:
     [
       {
@@ -287,17 +306,20 @@ export class ActivityService {
       }
     }
    */
-  private mergeReferenceToSequence(activity) {
-    let refs = this.rebuildReferences(activity.References);
-
+  private mergeReferenceToSequence(activity): Object {
     // @NOTE: first "[0]" sequence is the assessment of an activity
     let sequence = (activity.ActivitySequence) ? activity.ActivitySequence[0] : {};
 
-    if (!_.isEmpty(sequence)) {
-      // activity.ActivitySequence.forEach(seq => {
-        let modelId = sequence.model_id;
-        sequence.context_id = refs[modelId];
-      // });
+    // `References` object is optional now, updated on 6 October 2017
+    if (activity.References) {
+      let refs = this.rebuildReferences(activity.References);
+      if (!_.isEmpty(sequence)) {
+        // @NOTE: API only support first ActivitySequence atm
+        // activity.ActivitySequence.forEach(seq => {
+          let modelId = sequence.model_id;
+          sequence.context_id = refs[modelId];
+        // });
+      }
     }
     return sequence;
   }

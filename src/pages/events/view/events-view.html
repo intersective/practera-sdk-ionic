@@ -54,26 +54,25 @@
         {{ 'EVENTS.BOOK' | translate }}
       </button>
 
-      <button ion-button *ngIf="event.isBooked && allowCheckIn(event) && completedSubmissions" class="checkin-btn primary-button" (click)="checkin()">
-        <span>
-          {{ 'EVENTS.VIEWCHECKIN' | translate }}
-        </span>
-      </button>
+      <div *ngIf="event.isBooked">
+        <button ion-button *ngIf="(event.References && event.References.length > 0) && completedSubmissions" class="checkin-btn primary-button" (click)="checkin()">
+          <span>
+            {{ 'EVENTS.VIEWCHECKIN' | translate }}
+          </span>
+        </button>
 
-      <button ion-button *ngIf="event.isBooked && allowCheckIn(event) && !completedSubmissions" class="checkin-btn primary-button" (click)="checkin()" [attr.disabled]="(event.isStarted) ? null : true">
-        <span>
-          {{ 'EVENTS.CHECKIN' | translate }}
-        </span>
-      </button>
+        <button ion-button *ngIf="(event.References && event.References.length > 0) && !completedSubmissions" class="checkin-btn primary-button" (click)="checkin()" [attr.disabled]="(event.isStarted) ? null : true">
+          <span>
+            {{ 'EVENTS.CHECKIN' | translate }}
+          </span>
+        </button>
 
-      <button ion-button *ngIf="
-        event.isBooked &&
-        allowCheckIn(event) &&
-        !completedSubmissions &&
-        !event.isAttended
-      " class="cancel-btn" outline (click)="cancelBooking(event)">
-          {{ 'EVENTS.CANCELBOOKING' | translate }}
-      </button>
+        <button ion-button *ngIf="!completedSubmissions && !event.isAttended" class="cancel-btn" outline (click)="cancelBooking(event)">
+          <span>
+            {{ 'EVENTS.CANCELBOOKING' | translate }}
+          </span>
+        </button>
+      </div>
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
