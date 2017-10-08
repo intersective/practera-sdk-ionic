@@ -63,7 +63,6 @@ export class EventsViewPage {
   }
 
   ionViewWillEnter() {
-    this.loadings.checkin = true;
     this.submissions = []; // reset submissions
 
     if (!this.event.References && this.event.activity.References) {
@@ -82,26 +81,31 @@ export class EventsViewPage {
     if (moment().isAfter(this.event.start)) {
       this.event.isStarted = true;
     }
-  }
 
-  ionViewDidEnter() {
+    // Make submission API call
     this.completedSubmissions = false;
-    this.submissionService.getSubmissions({
-      search: {
-        context_id: this.event.context_id
-      }
-    }).subscribe(res => {
-      this.loadings.checkin = false;
-      res.forEach(submission => {
-        submission = this.submissionService.normalise(submission);
-        this.submissions.push(submission);
-        if (submission.status === 'done') {
-          this.completedSubmissions = true;
+    // Don't allow submission API call when References (context_id) is not available
+    if (this.event.References) {
+      this.loadings.checkin = true;
+      this.submissionService.getSubmissions({
+        search: {
+          context_id: this.event.context_id
         }
+      }).subscribe(res => {
+        this.loadings.checkin = false;
+        res.forEach(submission => {
+          submission = this.submissionService.normalise(submission);
+          this.submissions.push(submission);
+          if (submission.status === 'done') {
+            this.completedSubmissions = true;
+          }
+        });
+      }, err => {
+        this.loadings.checkin = false;
       });
-    }, err => {
+    } else {
       this.loadings.checkin = false;
-    });
+    }
   }
 
   /**
@@ -193,19 +197,6 @@ export class EventsViewPage {
       ]
     });
     bookPopup.present();
-  }
-
-  /**
-   * @note existence of References array determines if an event is
-   *       a checkin type
-   * @description examine event to allow check in
-   * @param {Object} event
-   */
-  allowCheckIn(event) {
-    if (event.References && event.References.length > 0) {
-      return true;
-    }
-    return false;
   }
 
   /**
