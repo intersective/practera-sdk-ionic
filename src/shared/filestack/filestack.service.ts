@@ -3,6 +3,11 @@ import { Injectable, Optional } from '@angular/core';
 declare var filestack: any;
 declare var filepicker: any;
 
+export class FilestackUpload {
+  filesFailed: Array<any>;
+  filesUploaded: Array<any>;
+}
+
 @Injectable()
 export class FilestackConfig {
   apikey = null;
@@ -19,17 +24,40 @@ export class FilestackService {
 
     this.filepicker = filepicker;
     this.filepicker.setKey(config.apikey);
-    console.log(this.filestack);
   }
 
-  pick(file): Promise<any> {
-    return this.filestack.pick(file);
+  /**
+   * display pick/upload popup for file upload,
+   * refer to filestack documentation for more config information
+   * @link https://www.filestack.com/docs/javascript-api/pick-v3
+   * @param  {object} config filestack object
+   * @return {Promise} single resolved object
+   */
+  pick(config?): Promise<any> {
+    if (!config) {
+      config = {
+        maxFiles: 5, // default by max 5 files
+        storeTo: {
+          location: 's3'
+        }
+      };
+    }
+
+    return this.filestack.pick(config);
   }
 
-  pickV1(file, onSuccess, onError?, onProgress?) {
-    this.filepicker.pick(file, success => {
-      return onSuccess(success);
-    }, onError, onProgress);
+  // single file picker
+  pickV1(config, onSuccess, onError?, onProgress?) {
+    if (!config) {
+      config = {
+        // container: 'modal',
+        // mimetypes: ['image/*', 'text/*',…],
+        // maxSize: 1024*1024
+        services: ['COMPUTER', 'FACEBOOK', 'INSTAGRAM', 'GOOGLE_DRIVE', 'DROPBOX']
+      };
+    }
+
+    this.filepicker.pick(config, onSuccess, onError, onProgress);
   }
 
   getSecurity() {

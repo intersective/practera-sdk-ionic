@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, NavController } from 'ionic-angular';
+import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
+import { Platform, NavController, AlertController } from 'ionic-angular';
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
@@ -9,37 +9,120 @@ import { SidenavPage } from '../pages/sidenav/sidenav';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { RegistrationPage } from '../pages/registration/registration.page';
+import { TestPage } from '../pages/tabs/test.page';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+
+import { WindowRef } from '../shared/window';
+
 @Component({
   templateUrl: 'app.html',
 })
 export class MyApp implements OnInit {
+  initialStatus(){
+    if(navigator.userAgent.includes("iPhone")){
+      if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+        return true;
+      }else {
+        return false;
+      }
+    }else {
+      if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
+        return true;
+      }else {
+        return false;
+      }
+    }
+  }
+  public isMobile: boolean = this.initialStatus();
   // rootPage: any = RegistrationPage;
   rootPage: any;
   urlParameters: Array<any> = [];
   do = {
+    'testing': TestPage,
     'registration': RegistrationPage,
+    'register': RegistrationPage,
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
-    'secure': MagicLinkPage,
+    'secure': MagicLinkPage
   };
   @ViewChild('appNav') nav: NavController;
   constructor(
-    platform: Platform,
     authService: AuthService,
-    private cache: CacheService
+    win: WindowRef,
+    zone: NgZone,
+    private platform: Platform,
+    private cache: CacheService,
+    private alertCtrl: AlertController
   ) {
-    platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      // ionic-native is removed, as we dont need to use cordova
-    });
+    /*if (!platform.is('ios')) {
+      win.nativeWindow.onbeforeunload = (e) => {
+        e.preventDefault();
+        let alert = alertCtrl.create({
+          title: 'Quit App?',
+          subTitle: 'Confirm leaving the app.',
+          buttons: ['Ok'],
+          enableBackdropDismiss: true
+        });
+        zone.run(() => {
+          alert.present().then(() => {
+            console.log(e);
+          });
+        });
+      };
+    }*/
+
+    /* Customized Flag Start */
+    // when screen size changed, disable mobile landscape mode
+    // keep desktop (including iPad) devices landscape mode
+    window.onresize = (e) => {
+      let popoverDOM: any = document.querySelector("ion-popover");
+      let modelDOM: any = document.querySelector("ion-modal");
+      if(navigator.userAgent.includes("iPhone")){
+        if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+          this.isMobile = true;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 1;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 1;
+          }
+        }else {
+          this.isMobile = false;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 0;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 0;
+          }
+        }
+      }else {
+        if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
+          this.isMobile = true;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 1;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 1;
+          }
+        }else {
+          this.isMobile = false;
+          if(popoverDOM){
+            popoverDOM.style.opacity = 0;
+          }
+          if(modelDOM){
+            modelDOM.style.opacity = 0;
+          }
+        }
+      }
+    };
   }
+
   ngOnInit() {
     let category = [];
     let page;
     let navParams = {};
+
     if (document.URL.indexOf("?") !== -1) {
       let splitURL = document.URL.split("?");
       let splitParams = splitURL[1].split("&");
@@ -56,6 +139,7 @@ export class MyApp implements OnInit {
         navParams[singleURLParam[0]] = singleURLParam[1];
       });
     }
+
     if (page) {
       this.nav.setRoot(page, navParams);
     } else {
@@ -65,5 +149,8 @@ export class MyApp implements OnInit {
         this.nav.setRoot(LoginPage, navParams);
       }
     }
+  }
+  ionViewDidLoad(){
+
   }
 }

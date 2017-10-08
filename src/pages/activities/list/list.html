@@ -1,35 +1,72 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Dashboard</ion-title>
-  </ion-navbar>
-</ion-header>
-<ion-content class="activities" scroll="false">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
+<ion-navbar>
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 class="flex-display">
+        <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
+        <button *ngIf="anyNewItems == 'true'"
+          (click)="closeItemsShwon()"
+          class="close"
+          menuClose="right">&times;</button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-navbar>
+<ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
+  <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
       refreshingSpinner="circles">
     </ion-refresher-content>
-	</ion-refresher>
+  </ion-refresher>
   <ion-grid>
     <ion-row class="score-board">
-      <div class="score-board-inner">
-        <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-              <h1>{{ pointPercentage }}%</h1>  
+      <ion-col col-12>
+        <img class="dashboard-logo" src="./assets/img/main/logo01.svg" (click)="refreshPage()" />
+      </ion-col>
+      <ion-col col-12>
+        <ul class="dashboard-data">
+          <li col-4>
+            <div (click)="openEvent()">
+              <p class="title">Bookings</p>
+              <p *ngIf="bookedEventsCount != 0" [ngClass]="sameFontSize == true ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+                {{bookedEventsCount}}
+              </p>
+              <ion-icon class="event-btn-icon event-btn-pulse" [style.height.px]="47.31" *ngIf="bookedEventsCount === 0" name="md-calendar"></ion-icon>
+              <p *ngIf="bookedEventsCount === 0" class="link">Book an Event</p>
+              <p *ngIf="bookedEventsCount > 0" class="link">Browse Events</p>
             </div>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div class="score-inner-box">
-            <div>
-              <h4>{{ 'ACTIVITY.POINTS' | translate }}</h4>
-              <h1>{{ currentPoints }}</h1>
+          </li>
+          <li col-4>
+            <div (click)="openLeaderboard()">
+              <p class="title">Points</p>
+              <p [ngClass]="userExperiencePoint >= 10000 ? 'font-20pt': 'font-22pt'" class="number" [style.height.px]="47.31">
+                {{ characterCurrentExperience || '' }}
+              </p>
+              <p class="link">Leaderboard</p>
             </div>
-          </div>
-        </ion-col>
-      </div>
+          </li>
+          <li col-4>
+            <div (click)="openPortfolio()">
+              <p class="title">Grade</p>
+              <p [style.height.px]="47.31" class="number user-grade">
+                <ion-badge *ngIf="!button_show" [ngClass]="{'best-grade-color': totalAverageScore >= 3.5, 'better-grade-color': (totalAverageScore < 3.5 && totalAverageScore >= 2), 'worse-grade-color': totalAverageScore < 2 }">
+                  {{ finalAverageScoreShow }}
+                </ion-badge>
+                <button block *ngIf="button_show">
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </button>
+              </p>
+              <div *ngIf="!view_portfolio">
+                <p *ngIf="!portfolio_request" class="link">What's this?</p>
+                <p *ngIf="portfolio_request" class="link">Request Portfolio</p>
+              </div>
+              <div *ngIf="view_portfolio">
+                <p class="link">View Portfolio</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </ion-col>
     </ion-row>
     <ion-row class="activity-list">
       <ion-col>
@@ -38,20 +75,98 @@
             {{ activitiesLoadingErr }}
           </p>
         </div>
-        <div *ngFor="let activity of activities">
-          <div *ngIf="activity.Activity.is_locked == false" class="unlocked">
-            <p (click)="goToDetail(activity, activity.Activity.id)" class="line-break">
-              {{ activity.Activity.name }}
-            </p>
+        <div *ngFor="let activity of activities; let i = index">
+          <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
+            <div (click)="goToDetail(activity)" class="line-break">
+              <p col-7 class="activity-title">
+                {{ activity.Activity.name }}
+                <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
+              </p>
+              <p col-3 class="ticks">
+                <span *ngIf="i == 0">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 1">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 2">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 3">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 4">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 5">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+                <span *ngIf="i == 6">
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+                </span>
+              </p>
+              <p col-2 class="assessment-score">
+                <button block *ngIf="!show_score_act[i]" >
+                  <i class="fa fa-clock-o" aria-hidden="true"></i>
+                </button>
+                <ion-badge *ngIf="show_score_act[i]" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
+                  {{ AverageScore[i] }}
+                </ion-badge>
+              </p>
+            </div>
           </div>
           <div *ngIf="activity.Activity.is_locked == true" class="locked">
             <i class="fa fa-lock" aria-hidden="true"></i>
             <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
-              {{ activity.Activity.name }} 
-            </p>  
+              {{ activity.Activity.name }}
+            </p>
           </div>
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
+</ion-content>
+<ion-content *ngIf="anyNewItems == 'true'" id="itemsPopup" class="items-popup">
+  <ion-list class="items-popup-data">
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <div class="tutorial-slides">
+            <img *ngIf="newItemsData[0].meta !== null" class="item-popup-img" src="{{ newItemsData[0].meta.img }}" alt="item"/>
+            <img *ngIf="newItemsData[0].meta === null || newItemsData[0].meta.img === null"
+              class="item-popup-img"
+              src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
+            <p class="item-popup-text">
+              <span *ngIf="newItemsData.length <= 1">Congratulations. You have won {{ newItemsData.length }} Spin.</span>
+              <span *ngIf="newItemsData.length > 1">Congratulations. You have won {{ newItemsData.length }} Spins.</span>
+              <br/><br/>
+              Please proceed to the Spinner page to use your spins to earn points.
+            </p>
+          </div>
+          <button col-12 class="general-circle-btn" (click)="closeItemsShwon()">OK</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>

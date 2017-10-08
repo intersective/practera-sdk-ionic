@@ -1,31 +1,39 @@
 <div class="questionGroup">
   <ion-card class="rounded">
-    <ion-card-content>
-      <div class="header">
-        <button ion-button icon-only small clear class="pull-right">
-          <ion-icon name="ios-arrow-forward-outline" color="primary-light"></ion-icon>
-        </button>
 
-        <span class="title" [innerHTML]="questionGroup.name"></span>
-      </div>
+    <ion-list>
+      <button ion-item text-wrap no-lines>{{ group.name }}</button>
+    </ion-list>
 
-      <div class="answer">
-        This is answer hardcoded and display in row.
-        <div *ngIf="questionGroup.answer">
-          <div *ngIf="questionGroup.answer.type === 'file'">
-            <div *ngIf="questionGroup.answer.files.length === 1">
-              {{ questionGroup.answer.files.length + ' file uploaded.' }}
-            </div>
-            <div *ngIf="question.answer.files.length !== 1">
-              {{ questionGroup.answer.files.length + ' files uploaded.' }}
-            </div>
-          </div>
+    <ion-row class="header">
+      <ion-col text-left *ngIf="group.totalRequiredQuestions === 0">
+        <ion-badge color="background" class="incomplete">Optional</ion-badge>
+      </ion-col>
+      <ion-col>
+        <div class="description" [innerHTML]="group.description | keepHtml"></div>
 
-          <div *ngIf="questionGroup.answer.type === 'oneof'">
-            {{ questionGroup.answer.answers[0].context | truncate: 150 }}
-          </div>
+        <div class="status feedback-available" *ngIf="
+          group.submission &&
+          group.submission.status === 'published' &&
+          group.status === 'reviewed' ">
+          Feedback Available
         </div>
-      </div>
-    </ion-card-content>
+
+        <div class="status completed" *ngIf="
+          group.totalRequiredQuestions > 0 &&
+          group.status === 'completed' &&
+          (!group.submission || group.submission.status === 'in progress') ">
+          Completed
+        </div>
+
+        <div class="status incomplete" *ngIf="
+          group.totalRequiredQuestions > 0 &&
+          group.status === 'incomplete' &&
+          (!group.submission || group.submission.status === 'in progress') ">
+          Incomplete
+        </div>
+      </ion-col>
+    </ion-row>
+
   </ion-card>
 </div>

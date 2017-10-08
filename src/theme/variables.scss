@@ -16,16 +16,34 @@ $item-wp-detail-push-show: true;
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 // General Colors (Shared File)
-$primary: #22c7fa;
-$secondary: #ffffff;
-$danger: #f53d3d;
-$light: #f4f4f4;
-$primary-dark: #000000;
-$secondary-dark: #222222;
+// logo colours
+$teal: #00b5ac;
+
+// main colors
+$primary: #000054; // BLUE
+$secondary: #EBEBEB; // GRAY
+
+// Buttons/tabs
+$primary-button: #3A74BA;
+$primary-text: #000054;
+
+$secondary-text: #000000;
+$dashboard-bg: #c9e9e6;
+$primary-bg: #EBEBEB;
+$secondary-bg: #ffffff;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
-$button: #4470a5;
-$soft-green: #49BA81;
+$primary-dark: #AFAFAF;
+$secondary-palette-one: #FFCB05;
+$secondary-palette-two: #8CC747;
+$secondary-palette-three: #C9E9E6;
+$secondary-palette-four: #D4EEFC;
+$secondary-palette-five: #3A74BA;
+$secondary-palette-six: #fc9147;
+$secondary-palette-seven: #43c7f4;
+$secondary-palette-eight: $teal;
+$secondary-palette-nine: #E60028;
+
 
 
 // App Mixin Functions
@@ -40,9 +58,22 @@ $soft-green: #49BA81;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary: (
-     base: $primary,
-     contrast: $light
+  primary: $primary,
+  secondary: $secondary,
+  white: #FFF,
+  black: #000,
+  button: (
+    base: darken($primary-button, 10%),
+    contrast: lighten($primary-button, 10%)
+  ),
+  primary-button: (
+    base: $secondary-palette-one,
+    contrast: lighten($secondary-palette-one, 10%)
+  ),
+  badge-text: #FFF,
+  badge-bg: (
+    base: lighten($secondary-palette-nine, 10%),
+    contrast: darken($secondary-palette-nine, 10%)
   ),
   primary-light: (
      base: lighten($primary, 10%),   // make 10% lighter than primary
@@ -52,35 +83,64 @@ $colors: (
      base: darken($primary, 10%), // make 10% darker than primary
      contrast: lighten($secondary, 10%) // lighten for contrast?
   ),
-  secondary: (
-     base: $secondary,
-     contrast: $light
-  ),
-  danger: (
-     base: $danger,
-     contrast: $secondary
-  ),
   light: (
-     base: $light,
-     contrast: $secondary
+     base: $secondary-palette-three,
+     contrast: $secondary-palette-four
   ),
-  dark: (
-     base: $primary-dark,
-     contrast: $secondary
-  ),
-  button: (
-    base: $button,
-    contrast: $secondary
+  text: (
+     base: $primary-text,
+     contrast: $secondary-text
   ),
   border: (
     base: $border-primary,
     contrast: $border-secondary
   ),
-  soft-green: (
-     base: $soft-green,
-     contrast: darken($soft-green, 10%) // darken for contrast?
+  dark: ( // main secondary palette colors
+    base: $secondary-palette-one,
+    contrast: $primary-dark
   ),
+  background: (
+    base: $primary-bg,
+    contrast: $secondary-bg
+  ),
+  palette-one: (
+    base: $secondary-palette-one,
+    contrast: $secondary-palette-two
+  ),
+  palette-two: (
+    base: $secondary-palette-three,
+    contrast: $secondary-palette-four
+  ),
+  palette-three: (
+    base: $secondary-palette-five,
+    contrast: $secondary-palette-six
+  ),
+  palette-four: (
+    base: $secondary-palette-seven,
+    contrast: $secondary-palette-six
+  ),
+  palette-five: (
+    base: $secondary-palette-eight,
+    contrast: $secondary-bg
+  ),
+  dahsboard-bg: (
+    base: $dashboard-bg,
+    contrast: $primary-bg
+  )
 );
+
+// Small arrow color for list
+$item-md-detail-push-color: color($colors, primary, base);
+$item-wp-detail-push-color: color($colors, primary, base);
+$item-ios-detail-push-color: color($colors, primary, base);
+
+// Badge style
+$badge-ios-background-color: color($colors, badge-bg, base);
+$badge-ios-text-color: color($colors, badge-text, base);
+$badge-md-background-color: color($colors, badge-bg, base);
+$badge-md-text-color: color($colors, badge-text, base);
+$badge-wp-background-color: color($colors, badge-bg, base);
+$badge-wp-text-color: color($colors, badge-text, base);
 
 
 // App iOS Variables
@@ -127,4 +187,3 @@ $colors: (
 
 // @import "roboto";
 // @import "noto-sans";
-

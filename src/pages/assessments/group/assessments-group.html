@@ -1,0 +1,69 @@
+<ion-header>
+	<ion-navbar>
+		<ion-title>Assessment</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="save()" class="btn-save" [disabled]="!canUpdateInput">
+        Save
+      </button>
+    </ion-buttons>
+	</ion-navbar>
+</ion-header>
+
+<ion-content class="groups-question" padding>
+  <ion-list *ngIf="inProgress">
+    <ion-list-header>
+      In Progress
+    </ion-list-header>
+  </ion-list>
+
+  <ion-list text-wrap *ngIf="assessmentGroup" class="assessments-group-text">
+    <h6 class="strong center">{{assessmentGroup.name}}</h6>
+    <div [innerHTML]="assessmentGroup.description| keepHtml"></div>
+  </ion-list>
+
+  <div *ngFor="let question of questions; let i = index;"
+    class="assessments-group-text"
+    [ngSwitch]="question.type"
+    [ngClass]="{'hr': (i > 0 && i < questions.length)}">
+
+    <ion-list text-wrap>
+      <span class="strong">{{question.name}}</span>
+      <span *ngIf="question.required" class="red">*</span>
+    </ion-list>
+
+    <ion-item text-wrap *ngIf="question.description" class="description">
+      <p [innerHtml]="question.description"></p>
+    </ion-item>
+
+    <!-- type: oneOf -->
+    <oneof-question
+      [question]="question"
+      [form]="formGroup[question.question_id]"
+      [disabled]="!canUpdateInput"
+      *ngSwitchCase="'oneof'"></oneof-question>
+
+    <!-- type: oneOf -->
+    <multiple-question
+      [question]="question"
+      [form]="formGroup[question.question_id]"
+      [disabled]="!canUpdateInput"
+      *ngSwitchCase="'multiple'"></multiple-question>
+
+    <!-- type: file -->
+    <file-question
+      [question]="question"
+      [form]="formGroup[question.question_id]"
+      [disabled]="!canUpdateInput"
+      *ngSwitchCase="'file'"></file-question>
+
+    <!-- type: text -->
+    <text-question
+      [question]="question"
+      [form]="formGroup[question.question_id]"
+      [disabled]="!canUpdateInput"
+      *ngSwitchCase="'text'"></text-question>
+
+    <!-- Reviewer's answer and comment -->
+    <feedback [question]="question" *ngIf="question.review_answer" class="feedback"></feedback>
+  </div>
+</ion-content>

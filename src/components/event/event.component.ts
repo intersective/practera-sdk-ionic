@@ -13,12 +13,12 @@ export class EventComponent {
 
   // Check event has been booked
   isBookedEvent(event) {
-    return (event.isBooked === true && moment().isBefore(moment(event.end)));
+    return (event.isBooked === true && moment().isBefore(moment.utc(event.end).local()));
   }
 
   // Check event has been booked and attended
   isAttendedEvent(event) {
-    return (event.isBooked === true && moment().isAfter(moment(event.end)));
+    return (event.isBooked === true && moment().isAfter(moment.utc(event.end).local()));
   }
   constructor(
     public navCtrl: NavController,

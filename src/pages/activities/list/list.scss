@@ -1,3 +1,38 @@
 .close-btn {
   @include closeBtn;
 }
+.event-btn-icon { 
+  padding: 5px;
+  color: $teal;
+  font-size: 4rem;
+}
+@keyframes pulse_animation {
+  0% {
+    transform: scale(1);
+    -ms-transform: scale(1); /* IE 9 */
+    -webkit-transform: scale(1); /* Safari and Chrome */
+    -o-transform: scale(1); /* Opera */
+    -moz-transform: scale(1); /* Firefox */
+  }
+  50% {
+    transform: scale(1.1);
+    -ms-transform: scale(1.1); /* IE 9 */
+    -webkit-transform: scale(1.1); /* Safari and Chrome */
+    -o-transform: scale(1.1); /* Opera */
+    -moz-transform: scale(1.1); /* Firefox */
+  }
+  100% {
+    transform: scale(1);
+    -ms-transform: scale(1); /* IE 9 */
+    -webkit-transform: scale(1); /* Safari and Chrome */
+    -o-transform: scale(1); /* Opera */
+    -moz-transform: scale(1); /* Firefox */
+  }
+}
+.event-btn-pulse {
+  animation-name: pulse_animation;
+	animation-duration: 1s;
+	transform-origin: 100%;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}

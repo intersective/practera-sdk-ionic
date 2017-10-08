@@ -1,0 +1,34 @@
+// Font-awesome
+@import "font-awesome";
+// Default Theme: Practera Theme
+@import './theme/variables';
+
+// 1. General Variables
+@import 'core';
+
+// 2. General Login/Registration/ResetPassword/MagicLink Page Styling
+@import './auth/user';
+
+// 3. General Event Page Styling
+@import './pages/event';
+
+// 4. General Dashboard Page Styling
+@import './activity/all';
+
+// 5. Settings & Tutorial page stylings
+@import './pages/tutorial';
+
+// 6. Achievement page styling
+@import 'achievement';
+
+// 7. Assessments Page Styling
+@import './assessment/all';
+
+// 8. items popup general styling
+@import 'popup';
+
+// 9. Rankings Page Styling
+@import './pages/ranking';
+
+// 10. screen size and orientation modes
+@import 'media';

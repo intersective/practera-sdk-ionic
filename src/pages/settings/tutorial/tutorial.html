@@ -1,0 +1,44 @@
+<ion-header class="slides-button">
+  <button class="skip-button"
+    ion-button
+    (click)="goDashbaord()">
+    {{ 'GENERAL.SKIP' | translate }}
+  </button>
+</ion-header>
+<ion-content>
+  <ion-slides pager="true" class="tutorial-slides">
+    <ion-slide>
+      <img src="./assets/img/tutorial/tutorial_tour01.png" />
+      <h1>Welcome</h1>
+      <p>Great to see you. The Practera App will help you getting the most out of your learning experience! Let’s get started.</p>
+    </ion-slide>
+    <ion-slide>
+      <img src="./assets/img/tutorial/tutorial_tour02.png" />
+      <h1>Real Feedback</h1>
+      <p>The tasks you submit will be reviewed by real experts in their industry. This will help you to develop the right skills that you need to advance your career!</p>
+    </ion-slide>
+    <ion-slide>
+      <ion-row>
+        <ion-col>
+          <img src="./assets/img/tutorial/tutorial_tour03.png" />
+          <h1>Leaderboard</h1>
+          <p>By engaging and interacting with the app, you will earn points and badges, which will put you on top of the leaderboard and make you even more interesting for employers!</p>
+        </ion-col>
+      </ion-row>
+    </ion-slide>
+  </ion-slides>
+  <!-- This part need to be reused for display video tutorial (Please don't remove) -->
+  <!-- <ion-list class="tutorial-slides">
+    <div>
+      <h1>Welcome to Tutorial</h1>
+      <iframe width="100%" height="200px" [src]="videoUrl" frameborder="0" allowfullscreen></iframe>      
+    </div>
+  </ion-list> -->
+</ion-content>
+<ion-footer class="slides-button">
+  <ion-toolbar>
+    <button ion-button class="prev-button" (click)="goPrev()">{{ 'GENERAL.PREV' | translate }}</button>
+    <button *ngIf="hideNextButton == false" ion-button class="next-button" (click)="goNext()">{{ 'GENERAL.NEXT' | translate }}</button>
+    <button *ngIf="hideNextButton == true" ion-button class="next-button" (click)="goDashbaord()">{{ 'GENERAL.DONE' | translate }}</button>
+  </ion-toolbar>
+</ion-footer>

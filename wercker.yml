@@ -1,11 +1,11 @@
-box: devillex/docker-ionic
+box: node
 
 build:
     steps:
       - npm-install
       - script:
         name: run ionic build
-        code: ionic build
+        code: npm run ionic:build --prod --release
         
 deploy:
     steps:

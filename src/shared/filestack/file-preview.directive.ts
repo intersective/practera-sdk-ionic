@@ -7,8 +7,6 @@ import { WindowRef } from '../window';
 export class FilestackPreviewDirective implements OnChanges {
   @Input('filestack-preview') url: string;
 
-  /*<div type="filepicker-preview" data-fp-url="https://www.filestackapi.com/api/file/7cSeLSlZSmCk3k8CQtAv" style="width:75%; height:500px"> </div>*/
-
   constructor(
     private el: ElementRef,
     private renderer: Renderer,
@@ -23,6 +21,8 @@ export class FilestackPreviewDirective implements OnChanges {
     let url = this.url || el.getAttribute('filestack-preview');
 
     if (url && url.length > 0) {
+      // https://cdn.filestackcontent.com/api/preview/GehliGVTQYO1JEXNfAYk
+      url = url.replace('cdn.filestackcontent.com/', 'cdn.filestackcontent.com/api/preview/');
       url = url.replace('api/file/', 'api/preview/');
       let iframe = this.renderer.createElement(el, 'iframe');
 

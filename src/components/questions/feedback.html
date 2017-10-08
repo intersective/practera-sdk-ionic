@@ -1,0 +1,52 @@
+<div *ngIf="question.type === 'oneof'">
+  <ion-card *ngIf="question.review_answer.comment">
+    <ion-card-content>
+      <b>Comment: </b>
+      {{ question.review_answer.comment }}
+    </ion-card-content>
+  </ion-card>
+</div>
+
+<div *ngIf="question.review_answer.answer && question.review_answer.answer.constructor === Array">
+  <div *ngFor="let answer of question.review_answer.answer; let i = index">
+
+    <!-- Video -->
+    <ion-card *ngIf="answer.type.indexOf('video/') !== -1">
+      <video width="100%" height="200" controls>
+        <source src="{{answer.slug}}"
+          type="{{answer.type}}" />
+        <a href="{{answer.slug}}">click to download</a>
+      </video>
+      <ion-card-content>
+        <b>Comment: </b>
+        {{ question.review_answer.comment }}
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Image -->
+    <ion-card *ngIf="answer.type.indexOf('image/') !== -1">
+      <img src="{{answer.slug}}" />
+      <ion-card-content>
+        <b>Comment: </b>
+        {{ question.review_answer.comment }}
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</div>
+
+<div *ngIf="question.type === 'text'" class="feedback">
+  <ion-card *ngIf="question.review_answer.comment">
+    <ion-card-content>
+      <b>Reviewer Comment: </b>
+      {{ question.review_answer.comment }}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card *ngIf="question.review_answer.answer">
+    <ion-card-content>
+      <b>Reviewer Answer: </b>
+      {{ question.review_answer.answer }}
+    </ion-card-content>
+  </ion-card>
+</div>

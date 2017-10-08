@@ -1,11 +1,21 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController } from 'ionic-angular';
-
-import { ActivityService } from '../../../services/activity.service';
-import { EventService } from '../../../services/event.service';
-import { EventsViewPage } from '../view/events-view.page';
+import { NavController, LoadingController, FabContainer } from 'ionic-angular';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { loadingMessages, errMessages } from '../../../app/messages';
+// services
+import { ActivityService } from '../../../services/activity.service';
+import { EventService } from '../../../services/event.service';
+// pages
+import { EventsViewPage } from '../view/events-view.page';
+
+// APIkey
+import CONFIG from '../../../configs/config';
+
+const LOCATIONS = [
+  { code: 'SGS', name: 'Saigon' },
+  { code: 'HN', name: 'Hanoi' },
+];
 
 @Component({
   selector: 'events-list-page',
@@ -13,19 +23,52 @@ import * as _ from 'lodash';
 })
 export class EventsListPage {
 
+  // https://process.filestackapi.com/
+  imageAttrbutes: String = 'resize=width:400/output=f:png,q:70';
+  // imageAttrbutes: String = 'resize=width:400/blur=amount:1/quality=value:85';
+  bgImages: Array<String> = [
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/XOlUDhe6SxmVTdhSd1h2`, // ppl coffee notes tea
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/YjmteXrgSdz7QRG2P7Ng`, // hands ppl woman working
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/HPSLbqb3Qp6B8JV2So9Y`, // coffee desk notes workplace
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/UqH9EXiRtG7vLb48s7UN`, // ppl coffee tea meeting
+    `https://process.filestackapi.com/${CONFIG.filestack.apiKey}/${this.imageAttrbutes}/https://cdn.filestackcontent.com/LGRR8ub1SM2G6tDaEPTS`, // ppl woman coffee meeting
+  ];
+
+  // loading & error message variables
+  private emptyFilterErrMessage = errMessages.Events.filter.empty;
+  private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
+  // setup event tag based on conditions
+  private eventTag: string = null;
+  locations = LOCATIONS; // preset hardcoded locations from const above
+  fab: any = null;
+  activities = {};
+  events: Array<any> = []; // ordered events from filterEvents and to be access through template
+  noEvents = false;
+  filter = 'browses'; // currently support ['browses', 'attended', 'my-bookings']
+  filterLocation: string = null; // default value for location filtration
+  private loadedEvents = []; // Further processed events array, for private use
+
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
     public activityService: ActivityService,
-    public loadingCtrl: LoadingController,
-  ) {
+    public loadingCtrl: LoadingController
+  ) {}
+
+  ionViewWillLeave() {
+    if (this.fab) {
+      this.fab.close();
+    }
   }
 
-  loadedEvents = [];
-  events = [];
-  noEvents = false;
-  filter = 'browses';
-
+  /**
+   * counter ionic's absent of event handling for ion-fab
+   * without event handling, we can't know when the fab button is pressed with which value
+   */
+  setIonFab(e, fab: FabContainer) {
+    this.fab = fab;
+  }
 
   /**
    * @name filterEvents
@@ -38,29 +81,36 @@ export class EventsListPage {
     this.noEvents = false;
     switch(this.filter) {
       case 'attended':
+        this.eventTag = "Attended";
         // List all ended event in order of end time (desc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          return (event.isBooked === true && moment().isAfter(moment(event.end)));
+          return (event.isBooked === true && moment().isAfter(moment.utc(event.end).local())); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'desc');
         break;
       case 'my-bookings':
+        this.eventTag = "Booked";
         // List all booked event in order of start time (desc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          return (event.isBooked === true && moment().isBefore(moment(event.end)));
+          return (event.isBooked === true && moment().isBefore(moment.utc(event.end).local())); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'asc');
         break;
       case 'browses':
         // List all not booked and not ended event in order of start time (asc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
-          return (moment(event.end).isAfter() && event.isBooked === false);
+          return (moment.utc(event.end).local().isAfter() && event.isBooked === false); // moment.utc(event.end).local() to change UTC time in database to local time and then compare local times to see if events are in the future or the past
         }), 'start', 'asc');
         break;
     }
 
+    // filter locations (if this.filterLocation is valid)
+    if (this.filterLocation) {
+      this.events = _.filter(this.events, ['location', this.filterLocation]);
+    }
+
+    // toggle noEvents: boolean based on length of this.events
     if (this.events.length === 0) {
       this.noEvents = true;
     }
-
     return this.events;
   }
 
@@ -70,43 +120,66 @@ export class EventsListPage {
     this.events = this.filterEvents();
   }
 
+  /**
+   * filtration of location
+   * @param {string}       filter keywords (currently support: 'all', 'hanoi', 'saigon')
+   * @param {FabContainer} fab
+   */
+  selectedLocation(filter: string, fab? : FabContainer) {
+    this.filterLocation = filter;
+
+    if (filter) {
+      if (fab) {
+        fab.close();
+      }
+    }
+
+    if (fab) { // if filter is empty but fab is clicked
+      this.fab = fab;
+      if (fab._listsActive) {
+        fab.close();
+      }
+    }
+
+    this.filterEvents();
+  }
+
   // Check total of events, return "true" when 0 found
   showNoEventMessage() {
     return (this.noEvents);
   }
 
-
+  /**
+   * @name loadEvents
+   * @description retrieve events (from get_events) with a list of activity_id (from get_activity)
+   * @return {Promise<any>}
+   */
   loadEvents(): Promise<any> {
     return new Promise((resolve, reject) => {
-
       // Get activities IDs
-      this.activityService.getList()
-      .toPromise()
+      this.activityService.getList().toPromise()
       .then((activities) => {
+        this.activities = {};
         let activityIDs = [];
         _.forEach(activities, (act) => {
+          this.activities[act.Activity.id] = act;
           activityIDs.push(act.Activity.id);
         });
 
         // Get event by activityIDs
         this.eventService.getEvents({
           search: {
-            activity_id: '[' + _.toString(activityIDs) + ']'
+            activity_id: '[' + _.toString(activityIDs) + ']',
+            type: 'session'
           }
         })
         .then((events) => {
-          // After map event with activities,
-          // assign events to 'events' and 'loadedEvents'
-
-          // loadedEvents will never change,
-          // it use to filtering events.
-          this.loadedEvents = this._injectCover(
-            this._mapWithActivity(events, activities)
-          );
+          // loadedEvents will never change (private use),
+          // it will be used for filtering of events (prep for display/template variable).
+          this.loadedEvents = this._injectCover(this._mapWithActivity(events));
 
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
-
           this.filterEvents();
           return resolve();
         }, reject);
@@ -118,8 +191,7 @@ export class EventsListPage {
     let loader = this.loadingCtrl.create();
 
     loader.present().then(() => {
-      this.loadEvents()
-      .then(() => {
+      this.loadEvents().then(() => {
         loader.dismiss();
       })
       .catch((err) => {
@@ -130,8 +202,7 @@ export class EventsListPage {
   }
 
   doRefresh(e) {
-    this.loadEvents()
-    .then(() => {
+    this.loadEvents().then(() => {
       e.complete();
     })
     .catch((err) => {
@@ -139,7 +210,6 @@ export class EventsListPage {
       e.complete();
     });
   }
-
   /**
    * @TODO: remove this once we decided to remove hardcoded images, big size picture is ruining UX because it induces long download time
    *
@@ -151,25 +221,43 @@ export class EventsListPage {
     let counts = events.length;
 
     _.forEach(events, (value, key) => {
-      let idx = (key % 5) + 1;
-      events[key].coverUrl = '/assets/img/static/event-cover-' + idx + '.jpg';
+      let idx = (key % 5);
+      events[key].coverUrl = this.bgImages[idx];
     });
 
     return events;
   }
 
-  private _mapWithActivity(events, activities) {
+  /**
+   * @TODO: we need abbreviation "SGS" & "HN" (Saigon and Hanoi), DB doesn't has this data, so it's hardcoded for this stage
+   * @name _extractLocations
+   * @description Extract uniq location from events
+   * @param {array} events list of event object respond from get_events API
+   */
+  private _extractLocations(events) {
+    return _.map(_.uniqBy(events, 'location'), 'location');
+  }
+
+  /**
+   * @name _mapWithActivity
+   * @description
+   *     - attach "activity" object into each of single "event" object
+   *     - Extract and merge event-activity only
+   *     - skip non-event activities
+   * @param {array} events get_events response
+   */
+  private _mapWithActivity(events) {
     let result = [];
 
-    events.forEach((event, key) => {
-      let activity = _.find(activities, (actv) => {
-        return actv.Activity.id === event.activity_id
-      });
+    result = events.map(event => {
+      let thisActivity = this.activities[event.activity_id];
 
-      if (activity) {
-        events[key].activity = activity.Activity;
-      }
-      result.push(event);
+      // must use event's references (replace activity's References object with Events' one)
+      thisActivity.References = event.References;
+
+      return _.merge(event, {
+        activity: this.activityService.normaliseActivity(thisActivity)
+      });
     });
 
     return result;
@@ -177,17 +265,13 @@ export class EventsListPage {
 
   // Check event allow to check-in
   allowCheckIn(event) {
-    console.log('event', event);
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
   }
 
   view(event) {
-    /*if (this.allowCheckIn(event)) {
-      alert('Going to check-in page...');
-    } else {
-      alert('This event not allow to check-in...');
-    }*/
-    console.log(event);
-    this.navCtrl.push(EventsViewPage, {event: event});
+    this.navCtrl.push(EventsViewPage, {
+      event,
+      tag: this.eventTag
+    });
   }
 }

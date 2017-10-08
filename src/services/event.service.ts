@@ -30,6 +30,11 @@ export class EventService {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
       // We assume server datetime response is UTC...
       events[idx].startDisplay = moment.utc(event.start).local().format("dddd, MMM D [at] h:mm A");
+      events[idx].startDisplayDate = moment.utc(event.start).local().format("dddd, MMM D");
+      events[idx].startDisplayTime = moment.utc(event.start).local().format("h:mm A");
+      events[idx].endDisplay = moment.utc(event.end).local().format("dddd, MMM D [at] h:mm A");
+      events[idx].endDisplayDate = moment.utc(event.end).local().format("dddd, MMM D");
+      events[idx].endDisplayTime = moment.utc(event.end).local().format("h:mm A");
     });
 
     return events;
@@ -57,5 +62,9 @@ export class EventService {
   }
   public cancelEventBooking(eventId){
     return this.request.delete(this.bookEventUrl + '?event_id=' + eventId);
+  }
+  // get Events (Observable way for dashboard page forkjoin syntax only)
+  public getUserEvents(activityIDs){
+    return this.request.get(this.targetUrl+`?type=session&activity_id=[${activityIDs}]`);
   }
 }

@@ -1,0 +1,270 @@
+@import 'animation';
+
+.whats-this {
+  ion-list-header {
+    ion-label {
+      display: flex;
+      align-items: center;
+    }
+    p {
+      display: inline-block;
+    }
+  }
+  p {
+    padding: 0 10%;
+  }
+}
+.activities {
+  .scroll-content {
+    overflow: hidden;
+  }
+  .scroll-content,
+  .grid,
+  .col {
+    padding: 0px !important;
+    margin: 0px;
+  }
+  .grid {
+    height: 100%;
+    .row {
+      height: 50%;
+    }
+  }
+  ion-row.score-board.row {
+    display: flex;
+    align-items: center;
+  }
+  .score-board {
+    background-color: color($colors, dahsboard-bg, base) !important; // default-theme
+    background-size: cover;
+    text-align: center;
+    .score-board-inner {
+      height: 100%;
+    }
+    .tittle-logo {
+      color: #fff;
+      font-size: 50px;
+      font-weight: bolder;
+      text-align: left;
+      margin-left: 25%;
+      font-family: 'Museo-500';
+    }
+    ion-row:last-child {
+      background-color: color($colors, secondary);
+    }
+    ion-col {
+      .score-inner-box {
+        width: 40%;
+        height: 40%;
+        margin: 5% auto;
+        background-color: color($colors, secondary);
+        div {
+          height: 100%;
+          padding: 10% 0;
+          h4 {
+            font-size: 16pt;
+            font-weight: 400;
+            text-transform: uppercase;
+            margin: 0px;
+            height: 40%;
+          }
+          h1 {
+            margin: 0px;
+            height: 40%;
+            font-size: 28pt;
+            font-weight: bold;
+
+          }
+        }
+      }
+      .dashboard-logo {
+        max-width: 80%;
+      }
+      .dashboard-data {
+        max-width: 90%;
+        display: flex;
+        list-style: none;
+        color: color($colors, text, base);
+        margin: 0 auto;
+        padding: 0px;
+        .user-grade {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .best-grade-color {
+            background-color: color($colors, palette-one, contrast);
+            border-radius: 18pt;
+          }
+          .better-grade-color {
+            background-color: color($colors, primary-button, base);
+            border-radius: 18pt;
+          }
+          .worse-grade-color {
+            background-color: color($colors, badge-bg, base);
+            border-radius: 18pt;
+          }
+          ion-badge {
+            font-size: 14pt;
+            padding: 6px 12px;
+            border-radius: 30pt;
+          }
+          button {
+            font-size: 16pt;
+            padding: 3px 15px;
+            border-radius: 18px;
+            background-color: color($colors, secondary);
+            .fa-clock-o {
+              color: color($colors, background, contrast);
+            }
+          }
+        }
+        li {
+          background-color: color($colors, background, contrast);
+          border: 1px solid color($colors, border, base);
+          p {
+            margin: 0px;
+          }
+          p.title {
+            text-transform: uppercase;
+            color: color($colors, text, base);
+          }
+          p.number {
+            font-size: 22pt;
+            font-weight: 600;
+            padding: 5pt 0;
+            color: color($colors, palette-five, base);
+          }
+          p.link,
+          a.link {
+            color: color($colors, text, base);
+            text-decoration: none;
+          }
+        }
+        li:nth-child(1) {
+          border-top-left-radius: 5pt;
+          border-bottom-left-radius: 5pt;
+        }
+        li:nth-child(2) {
+          border-left: none;
+          border-right: none;
+        }
+        li:nth-child(3) {
+          border-top-right-radius: 5pt;
+          border-bottom-right-radius: 5pt;
+        }
+      }
+    }
+    ion-col:first-child {
+      div {
+        margin-bottom: 0pt;
+      }
+    }
+  }
+  .activity-list {
+    overflow-y: scroll !important;
+    .activity-title {
+      color: color($colors, primary);
+      font-family: 'Museo-500';
+    }
+    .assessment-score {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      button {
+        padding: 2px 9px;
+        border-radius: 20px;
+        width: 32px;
+        background-color: color($colors, secondary, base);
+        .fa-clock-o {
+          font-size: 12pt;
+          color: color($colors, background, contrast);
+        }
+      }
+      ion-badge {
+        width: 32px;
+      }
+      .best-grade-color {
+        background-color: color($colors, palette-one, contrast);
+        border-radius: 18pt;
+      }
+      .better-grade-color {
+        background-color: color($colors, primary-button, base);
+        border-radius: 18pt;
+      }
+      .worse-grade-color {
+        background-color: color($colors, badge-bg, base);
+        border-radius: 18pt;
+      }
+    }
+    .icon-color-default {
+      color: color($colors, dark, contrast);
+    }
+    .icon-color-0 {
+      color: color($colors, button, contrast) !important;
+    }
+    .icon-color-1 {
+      color: color($colors, palette-three, base) !important;
+    }
+    .icon-color-2 {
+      color: color($colors, palette-one, contrast) !important;
+    }
+    .icon-color-3 {
+      color: color($colors, palette-one, base) !important;
+    }
+    .icon-color-4 {
+      color: color($colors, palette-four, contrast) !important;
+    }
+    .icon-color-5 {
+      color: color($colors, palette-four, base) !important;
+    }
+    .icon-color-6 {
+      color: color($colors, palette-five, base) !important;
+    }
+    // just demo start
+    .first-checkbox-demo {
+      color: color($colors, button, contrast);
+    }
+    .line-break {
+      display: flex;
+      .ticks {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        i {
+          font-size: 12pt;
+        }
+      }
+    }
+    // demo code end
+    ion-col {
+      overflow: scroll;
+    }
+    .unlocked,
+    .locked {
+      border-bottom: 1px solid color($colors, border, contrast);
+      p {
+        padding: 12px 0px 12px 4px;
+        margin: 0px;
+        min-height: 40px;
+        line-height: 20px;
+        max-width: 320px;
+      }
+    }
+    .locked {
+      background-color: color($colors, border, base);
+      background-size: cover;
+      p {
+        opacity: 0.4;
+      }
+      .fa.fa-lock {
+        position: absolute;
+        right: 12px;
+        line-height: 44px;
+        font-size: 14pt;
+      }
+    }
+    .activity-error {
+      padding: 0 12pt;
+    }
+  }
+}

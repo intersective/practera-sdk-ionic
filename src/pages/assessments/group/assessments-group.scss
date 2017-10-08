@@ -1,0 +1,8 @@
+assessments-group-page {
+  .description > .item-inner {
+    border-bottom: none !important;
+  }
+  .btn-save[disabled] {
+    display: none;
+  }
+}

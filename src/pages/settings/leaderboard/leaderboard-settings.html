@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'SETTINGS.LEADERBOARD' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content class="leaderboard-settings">
+  <ion-list>
+    <ion-col>
+      <p col-12>Hi {{ username }} ({{ useremail }}), </p>
+    </ion-col>
+    <ion-col class="flex-display">
+      <p col-10 class="hide-settings">Hide name in leaderboard?</p>
+      <ion-toggle [(ngModel)]="isHide"></ion-toggle>
+    </ion-col>
+  </ion-list>
+</ion-content>

@@ -1,8 +1,3 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>Events</ion-title>
-  </ion-navbar>
-</ion-header>
 <ion-content class="events">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
@@ -10,36 +5,52 @@
       refreshingSpinner="circles">
     </ion-refresher-content>
 	</ion-refresher>
-  <div>&nbsp;</div>
+
   <ion-grid>
     <ion-row>
       <ion-col col-12>
-        <ion-segment [(ngModel)]="filter">
+        <ion-segment [(ngModel)]="filter" color="palette-five">
           <ion-segment-button value="browses" (ionSelect)="selected('browses')">
-            Browse
+            {{ 'EVENTS.BROWSE' | translate }}
           </ion-segment-button>
           <ion-segment-button value="my-bookings" (ionSelect)="selected('my-bookings')">
-            My Bookings
+            {{ 'EVENTS.MYBOOKINGS' | translate }}
           </ion-segment-button>
           <ion-segment-button value="attended" (ionSelect)="selected('attended')">
-            Attended
+            {{ 'EVENTS.ATTENDED' | translate }}
           </ion-segment-button>
         </ion-segment>
       </ion-col>
     </ion-row>
   </ion-grid>
+
   <ion-list>
     <ion-card *ngIf="showNoEventMessage()">
       <ion-card-content *ngIf="(filter === 'browses')">
-        There are no scheduled events available. Please check back later.
+        {{ emptyFilterErrMessage }}
       </ion-card-content>
       <ion-card-content *ngIf="(filter === 'my-bookings')">
-        You have no bookings. Tap on "Browse" and book an event now to enhance your skills.
+        {{ noBookingsFilterErrMessage }}
       </ion-card-content>
       <ion-card-content *ngIf="(filter === 'attended')">
-        You have not attended any events yet.
+        {{ noAttendedFilterErrMessage }}
       </ion-card-content>
     </ion-card>
     <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>
   </ion-list>
+
+  <ion-fab right bottom #fab>
+    <button ion-fab color="palette-five" (click)="setIonFab($event, fab)">
+      <p *ngIf="filterLocation">{{ filterLocation }}</p>
+      <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-fab *ngFor="let location of locations" (click)="selectedLocation(location.name, fab)">
+        <p>{{ location.code }}</p>
+      </button>
+      <button ion-fab (click)="selectedLocation(null, fab)">
+        <p>All</p>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
 </ion-content>

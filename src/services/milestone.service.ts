@@ -34,7 +34,6 @@ export class MilestoneService {
     headers.append('appkey', this.appkey);
     headers.append('apikey', this.cacheService.getLocalObject('apikey'));
     headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
-    console.log('TimelineID: '+ this.cacheService.getLocalObject('timelineID'));
     return this.http.get(this.prefixUrl+'api/milestones.json', { headers: headers })
                .map(res => res.json());
   }

@@ -6,7 +6,14 @@ questionGroup {
     border-radius: 10px;
     border-color: $border-primary;
   }
-
+  ion-card {
+    ion-label {
+      color: color($colors, palette-four, base);
+      text-transform: uppercase;
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
   .header {
     position: relative;
 
@@ -14,10 +21,32 @@ questionGroup {
       font-size: 1.3em;
     }
 
+    .description {
+      display: block;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-height: 3.6em;
+      line-height: 1.8em;
+      padding-left: 10px;
+    }
+
     button {
       position: absolute;
       top: -7px;
       right: 0px;
+    }
+
+    .status {
+      text-align: right;
+    }
+
+    .completed,
+    .incomplete,
+    .feedback-available {
+      color: color($colors, palette-three, contrast);
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 12px;
     }
   }
 

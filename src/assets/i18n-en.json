@@ -1,0 +1,87 @@
+{
+  "ACTIVITY": {
+    "PAGETITLE": "Dashboard",
+    "POINTS": "Points",
+    "PROGRESS": "Progress",
+    "SUBMISSION": "Submission",
+    "EVIDENCE": "Evidence"
+  },
+  "ASSESSMENT": {
+    "PAGETITLE": "Assessment"
+  },
+  "EVENTS": {
+    "ATTENDED": "Attended",
+    "BOOK": "Book",
+    "BROWSE": "Browse",
+    "CANCELBOOKING": "Cancel",
+    "CHECKIN": "Check-out",
+    "VIEWCHECKIN": "View Check-out",
+    "DOWNLOAD": "Download",
+    "MYBOOKINGS": "My Bookings",
+    "PAGETITLE": "Events",
+    "ALL": "All"
+  },
+  "FORGOTPASSWORD": {
+    "INPUTTITLE": "Please enter your email address to reset password",
+    "PAGETITLE": "Forgot Password",
+    "SENDBUTTON": "Send to Mailbox"
+  },
+  "GAME": {
+    "PAGETITLE": "Spinner Wheel"
+  },
+  "GENERAL": {
+    "DONE": "Done",
+    "DOWNLOAD": "Download",
+    "NEXT": "Next",
+    "PREV": "Prev",
+    "SKIP": "Skip",
+    "SUBMIT": "Submit"
+  },
+  "LOGIN": {
+    "HEADER": "Welcome to Practera",
+    "PAGETITLE": "Login",
+    "PASSWORDFORGOT": "Forget Your Password?"
+  },
+  "REGISTRATION": {
+    "HEADER": "Great - you are almost there! Just one more thing...",
+    "PAGETITLE": "Set Password"
+  },
+  "RANKING": {
+    "DETAIL": "Ranking Details",
+    "ME": "Me",
+    "MONTHLYPOINTS": "Points(Monthly)",
+    "PAGETITLE": "Leaderboard",
+    "MAINPAGETITLE": "Monthly Leaderboard",
+    "TOTALPOINTS": "Points(Total)"
+  },
+  "RESETPASSWORD": {
+    "PAGETITLE": "Reset Password"
+  },
+  "SETTINGS": {
+    "HELP": "Email Help",
+    "LEADERBOARD": "Settings",
+    "LOGOUT": "Logout",
+    "PAGETITLE": "Account",
+    "PROFILE": "My Profile ",
+    "SUPPORT": "Support",
+    "SWITCHER": "Program Switcher",
+    "TUTORIAL": "Tutorial",
+    "TERMS": "Terms of Use"
+  },
+  "SPINNER": {
+    "PAGETITLE": "Spin Wheel"
+  },
+  "TABS": {
+    "ACCOUNT": "Account",
+    "DASHBOARD": "Dashboard",
+    "EVENTS": "Events",
+    "RANKING": "Leaderboard",
+    "ACTIVITIES": "Activities",
+    "SPINNER": "Spinner"
+  },
+  "TERMCONDITIONS": {
+    "PAGETITLE": "Terms and Conditions",
+    "AGREE": "I agree",
+    "NEXT": "Next"
+  }
+}

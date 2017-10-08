@@ -28,4 +28,4 @@ www/
 Thumbs.db
 UserInterfaceState.xcuserstate
 
-/src/configs/config.ts
+src/configs/config.ts
