@@ -82,6 +82,9 @@ event, .events {
     ion-item {
       padding-left: 10px;
     }
+    ion-label {
+      white-space: pre-line !important;
+    }
   }
   .download {
     border-top: $events-download-btn;

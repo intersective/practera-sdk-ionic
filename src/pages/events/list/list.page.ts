@@ -39,7 +39,7 @@ export class EventsListPage {
   private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
   private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
   // setup event tag based on conditions
-  private eventTag: string = null;  
+  private eventTag: string = null;
   locations = LOCATIONS; // preset hardcoded locations from const above
   fab: any = null;
   activities = {};
@@ -77,7 +77,7 @@ export class EventsListPage {
    * my-bookings: active event & booked
    * browses: list of available events
    */
-  filterEvents() { 
+  filterEvents() {
     this.noEvents = false;
     switch(this.filter) {
       case 'attended':
@@ -223,8 +223,6 @@ export class EventsListPage {
     _.forEach(events, (value, key) => {
       let idx = (key % 5);
       events[key].coverUrl = this.bgImages[idx];
-      // let idx = (key % 5) + 1;
-      // events[key].coverUrl = '/assets/img/static/event-cover-' + idx + '.jpg';
     });
 
     return events;
@@ -253,7 +251,10 @@ export class EventsListPage {
 
     result = events.map(event => {
       let thisActivity = this.activities[event.activity_id];
-      thisActivity.References = event.References; // must use event's references
+
+      // must use event's references (replace activity's References object with Events' one)
+      thisActivity.References = event.References;
+
       return _.merge(event, {
         activity: this.activityService.normaliseActivity(thisActivity)
       });
@@ -261,6 +262,7 @@ export class EventsListPage {
 
     return result;
   }
+
   // Check event allow to check-in
   allowCheckIn(event) {
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
