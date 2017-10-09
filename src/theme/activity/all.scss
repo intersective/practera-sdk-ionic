@@ -73,15 +73,17 @@
           }
         }
       }
+
       .dashboard-logo {
         max-width: 80%;
+        margin: 2em 0px;
       }
       .dashboard-data {
+        margin: 2em auto;
         max-width: 90%;
         display: flex;
         list-style: none;
         color: color($colors, text, base);
-        margin: 0 auto;
         padding: 0px;
         .user-grade {
           display: flex;
@@ -243,9 +245,7 @@
     .unlocked, .locked {
       border-bottom: 1px solid color($colors, border, contrast);
       p {
-        padding: 12px 0px 12px 4px;
-        margin: 0px;
-        min-height: 40px;
+        margin: 10px 0px;
         line-height: 20px;
         max-width: 320px;
       }
