@@ -1,28 +1,18 @@
-<ion-navbar>
+<ion-header class="activities">
   <ion-grid>
-    <ion-row>
+    <ion-row *ngIf="anyNewItems == true">
       <ion-col col-12 class="flex-display">
-        <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
-        <button *ngIf="anyNewItems == 'true'"
-          (click)="closeItemsShwon()"
-          class="close"
-          menuClose="right">&times;</button>
+        <ion-title>New Items</ion-title>
+        <button (click)="closeItemsShwon()"
+          class="close" menuClose="right">&times;</button>
       </ion-col>
     </ion-row>
-  </ion-grid>
-</ion-navbar>
-<ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
-  <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown"
-      pullingText="Pull to refresh"
-      refreshingSpinner="circles">
-    </ion-refresher-content>
-  </ion-refresher>
-  <ion-grid>
+
     <ion-row class="score-board">
       <ion-col col-12>
         <img class="dashboard-logo" src="./assets/img/main/logo01.svg" (click)="refreshPage()" />
       </ion-col>
+
       <ion-col col-12>
         <ul class="dashboard-data">
           <li col-4>
@@ -68,85 +58,102 @@
         </ul>
       </ion-col>
     </ion-row>
-    <ion-row class="activity-list">
-      <ion-col>
-        <div class="activity-error" *ngIf="returnError == true">
-          <p>
-            {{ activitiesLoadingErr }}
-          </p>
-        </div>
-        <div *ngFor="let activity of activities; let i = index">
-          <div *ngIf="activity.Activity.is_locked == false" class="unlocked bg-color-{{i}}">
-            <div (click)="goToDetail(activity)" class="line-break">
-              <p col-7 class="activity-title">
-                {{ activity.Activity.name }}
-                <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
-              </p>
-              <p col-3 class="ticks">
-                <span *ngIf="i == 0">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-                <span *ngIf="i == 1">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-                <span *ngIf="i == 2">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-                <span *ngIf="i == 3">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-                <span *ngIf="i == 4">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-                <span *ngIf="i == 5">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-                <span *ngIf="i == 6">
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
-                  <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
-                </span>
-              </p>
-              <p col-2 class="assessment-score">
-                <button block *ngIf="!show_score_act[i]" >
-                  <i class="fa fa-clock-o" aria-hidden="true"></i>
-                </button>
-                <ion-badge *ngIf="show_score_act[i]" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
-                  {{ AverageScore[i] }}
-                </ion-badge>
-              </p>
-            </div>
-          </div>
-          <div *ngIf="activity.Activity.is_locked == true" class="locked">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-            <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
-              {{ activity.Activity.name }}
-            </p>
-          </div>
-        </div>
-      </ion-col>
-    </ion-row>
   </ion-grid>
+</ion-header>
+
+<ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
+  <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list class="activity-error" *ngIf="returnError == true">
+    {{ activitiesLoadingErr }}
+  </ion-list>
+
+  <ion-list class="activity-list" *ngFor="let activity of activities; let i = index">
+
+    <div *ngIf="activity.Activity.is_locked == false"
+      class="unlocked bg-color-{{i}} line-break"
+      (click)="goToDetail(activity)">
+      <p col-7 class="activity-title">
+        {{ activity.Activity.name }}
+        <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
+      </p>
+
+      <p col-3 class="ticks">
+        <span *ngIf="i == 0">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-6': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+
+        <span *ngIf="i == 1">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-4': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+
+        <span *ngIf="i == 2">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-1': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+
+        <span *ngIf="i == 3">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-2': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+
+        <span *ngIf="i == 4">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-0': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+
+        <span *ngIf="i == 5">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-3': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+
+        <span *ngIf="i == 6">
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][0], 'fa-circle-thin': !changeColor[i][0] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][1], 'fa-circle-thin': !changeColor[i][1] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][2], 'fa-circle-thin': !changeColor[i][2] }" aria-hidden="true"></i>
+          <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o icon-color-5': changeColor[i][3], 'fa-circle-thin': !changeColor[i][3] }" aria-hidden="true"></i>
+        </span>
+      </p>
+
+      <p col-2 class="assessment-score">
+        <button block *ngIf="!show_score_act[i]" >
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
+        </button>
+        <ion-badge *ngIf="show_score_act[i]" [ngClass]="{'best-grade-color': AverageScore[i] >= 3.5, 'better-grade-color': (AverageScore[i] < 3.5 && AverageScore[i] >= 2), 'worse-grade-color': AverageScore[i] < 2 }">
+          {{ AverageScore[i] }}
+        </ion-badge>
+      </p>
+    </div>
+
+    <div *ngIf="activity.Activity.is_locked == true" class="locked">
+      <i class="fa fa-lock" aria-hidden="true"></i>
+      <span (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
+        {{ activity.Activity.name }}
+      </span>
+    </div>
+
+  </ion-list>
 </ion-content>
+
 <ion-content *ngIf="anyNewItems == 'true'" id="itemsPopup" class="items-popup">
   <ion-list class="items-popup-data">
     <ion-grid>
