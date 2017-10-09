@@ -47,8 +47,6 @@
       background-color: color($colors, secondary);
     }
     ion-col {
-      padding: 0.75em 0;
-
       .score-inner-box {
         width: 40%;
         height: 40%;
@@ -69,17 +67,14 @@
             height: 40%;
             font-size: 28pt;
             font-weight: bold;
-
           }
         }
       }
 
       .dashboard-logo {
         max-width: 80%;
-        margin: 2em 0px;
       }
       .dashboard-data {
-        margin: 2em auto;
         max-width: 90%;
         display: flex;
         list-style: none;
@@ -266,6 +261,17 @@
     }
     .activity-error {
       padding: 0 12pt;
+    }
+  }
+}
+
+// score-board margin size when < 500
+@media screen and (max-width: 500px) {
+  .score-board {
+    ion-col {
+      .dashboard-logo, .dashboard-data {
+        margin: 0em auto;
+      }
     }
   }
 }

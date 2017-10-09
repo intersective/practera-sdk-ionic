@@ -58,8 +58,8 @@
   // general dashboard
   .score-board {
     display: inline-block;
-    .col {
-      .score-inner-box {
+    .score-inner-box {
+      .col {
         display: inline-block;
         height: 80% !important;
         padding: 0 !important;
@@ -68,6 +68,11 @@
           display: inline-block;
           padding: 0 !important;
         }
+      }
+    }
+    ion-col {
+      .dashboard-logo, .dashboard-data {
+        margin: 2em auto;
       }
     }
   }
