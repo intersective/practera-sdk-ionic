@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
-import { Platform, NavController, AlertController } from 'ionic-angular';
+import { Platform, NavController, AlertController, ToastController, Events } from 'ionic-angular';
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
@@ -53,8 +53,16 @@ export class MyApp implements OnInit {
     zone: NgZone,
     private platform: Platform,
     private cache: CacheService,
-    private alertCtrl: AlertController
+    private eventsListener: Events,
+    private alertCtrl: AlertController,
+    private toastCtrl: ToastController
   ) {
+    eventsListener.subscribe('toaster', data => {
+      let toast = toastCtrl.create({
+        message: data.msg,
+        duration: 3000
+      });
+    });
     /*if (!platform.is('ios')) {
       win.nativeWindow.onbeforeunload = (e) => {
         e.preventDefault();

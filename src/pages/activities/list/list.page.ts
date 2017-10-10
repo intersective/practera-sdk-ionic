@@ -8,7 +8,6 @@ import {
   PopoverController,
   Events
 } from 'ionic-angular';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -137,7 +136,6 @@ export class ActivitiesListPage implements OnInit {
   public checkUserPointer: boolean = false;
   constructor(
     public navCtrl: NavController,
-    public http: Http,
     public activityService: ActivityService,
     public assessmentService: AssessmentService,
     public achievementService: AchievementService,
