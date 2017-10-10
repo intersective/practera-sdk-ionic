@@ -150,7 +150,4 @@ export class MyApp implements OnInit {
       }
     }
   }
-  ionViewDidLoad(){
-
-  }
 }

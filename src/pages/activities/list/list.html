@@ -1,6 +1,6 @@
 <ion-header class="activities">
   <ion-grid>
-    <ion-row *ngIf="anyNewItems == true">
+    <ion-row *ngIf="anyNewItems == 'true'">
       <ion-col col-12 class="flex-display">
         <ion-title>New Items</ion-title>
         <button (click)="closeItemsShwon()"
@@ -61,7 +61,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
+<ion-content class="activities" *ngIf="anyNewItems == 'false'" no-bounce>
   <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
