@@ -12,8 +12,7 @@ const iconColors = {
 
 @Component({
   selector: 'rainbow-icons',
-  template: `
-    <p>
+  template: `<p>
       <span *ngIf="index == 0">
         <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o ${iconColors[0]}': colors[0], 'fa-circle-thin': !colors[0] }" aria-hidden="true"></i>
         <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o ${iconColors[0]}': colors[1], 'fa-circle-thin': !colors[1] }" aria-hidden="true"></i>
@@ -62,8 +61,7 @@ const iconColors = {
         <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o ${iconColors[6]}': colors[2], 'fa-circle-thin': !colors[2] }" aria-hidden="true"></i>
         <i class="fa icon-color-default" [ngClass]="{'fa-check-circle-o ${iconColors[6]}': colors[3], 'fa-circle-thin': !colors[3] }" aria-hidden="true"></i>
       </span>
-    </p>
-  `
+    </p>`
 })
 
 export class RainbowIconsComponent {
