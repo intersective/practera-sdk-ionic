@@ -17,24 +17,12 @@ import { WindowRef } from '../shared/window';
 
 @Component({
   templateUrl: 'app.html',
+  host: {
+    '(window:orientationchange)': 'onScreenResize($event.target)'
+  }
 })
 export class MyApp implements OnInit {
-  initialStatus() {
-    if (navigator.userAgent.includes("iPhone")) { // if on ios device
-      if (((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else { // other than ios devices
-      if (((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
-  public isMobile: boolean = this.initialStatus();
+  @ViewChild('appNav') nav: NavController;
   // rootPage: any = RegistrationPage;
   rootPage: any;
   urlParameters: Array<any> = [];
@@ -46,7 +34,17 @@ export class MyApp implements OnInit {
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage
   };
-  @ViewChild('appNav') nav: NavController;
+
+  // trace screen size (we serve only portrait size)
+  public isPortrait: boolean = this.initialStatus();
+  initialStatus() {
+    if (this.platform.isPortrait()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   constructor(
     authService: AuthService,
     win: WindowRef,
@@ -79,54 +77,38 @@ export class MyApp implements OnInit {
         });
       };
     }*/
+  }
 
-    /* Customized Flag Start */
-    // when screen size changed, disable mobile landscape mode
-    // keep desktop (including iPad) devices landscape mode
-    window.onresize = (e) => {
-      let popoverDOM: any = document.querySelector("ion-popover");
-      let modelDOM: any = document.querySelector("ion-modal");
-      if (navigator.userAgent.includes("iPhone")){
-        if (((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
-          this.isMobile = true;
-          if (popoverDOM){
-            popoverDOM.style.opacity = 1;
-          }
-          if (modelDOM){
-            modelDOM.style.opacity = 1;
-          }
-        } else {
-          this.isMobile = false;
-          if (popoverDOM){
-            popoverDOM.style.opacity = 0;
-          }
-          if (modelDOM){
-            modelDOM.style.opacity = 0;
-          }
-        }
-      } else {
-        if (((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
-          this.isMobile = true;
-          if (popoverDOM){
-            popoverDOM.style.opacity = 1;
-          }
-          if (modelDOM){
-            modelDOM.style.opacity = 1;
-          }
-        } else {
-          this.isMobile = false;
-          if (popoverDOM){
-            popoverDOM.style.opacity = 0;
-          }
-          if (modelDOM){
-            modelDOM.style.opacity = 0;
-          }
-        }
+  /* Customized Flag Start */
+  // when screen size changed, disable mobile landscape mode
+  // keep desktop (including iPad) devices landscape mode
+  test: any;
+  onScreenResize(e) {
+    let popoverDOM: any = document.querySelector("ion-popover");
+    let modelDOM: any = document.querySelector("ion-modal");
+
+    // if () {
+        // if () {
+
+    if ((e.screen.orientation && e.screen.orientation.angle < 45) ||
+      (this.platform.is('ios') && ((e.innerWidth < 512 && e.innerWidth < e.innerHeight) || e.innerWidth >= 768))) {
+      this.isPortrait = true;
+      if (popoverDOM){
+        popoverDOM.style.opacity = 1;
       }
-
-      console.log('isLandscape::', platform.isLandscape());
-      console.log('isPortrait::', platform.isPortrait());
-    };
+      if (modelDOM){
+        modelDOM.style.opacity = 1;
+      }
+    } else {
+      this.isPortrait = false;
+      if (popoverDOM){
+        popoverDOM.style.opacity = 0;
+      }
+      if (modelDOM){
+        modelDOM.style.opacity = 0;
+      }
+    }
+    console.log(e.screen.orientation);
   }
 
   ngOnInit() {
