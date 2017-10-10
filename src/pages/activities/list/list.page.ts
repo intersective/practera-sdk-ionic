@@ -202,12 +202,7 @@ export class ActivitiesListPage implements OnInit {
       }
     }
   }
-  // refresher activities
-  doRefresh(e) {
-    this.initilized_varible();
-    this.loadingDashboard();
-    e.complete();
-  }
+
   // display user achievemnt statistics score points
   loadingDashboard() {
     let loadingData = this.loadingCtrl.create({
