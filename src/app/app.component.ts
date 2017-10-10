@@ -19,17 +19,17 @@ import { WindowRef } from '../shared/window';
   templateUrl: 'app.html',
 })
 export class MyApp implements OnInit {
-  initialStatus(){
-    if(navigator.userAgent.includes("iPhone")){
-      if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+  initialStatus() {
+    if (navigator.userAgent.includes("iPhone")) { // if on ios device
+      if (((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
         return true;
-      }else {
+      } else {
         return false;
       }
-    }else {
-      if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
+    } else { // other than ios devices
+      if (((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
         return true;
-      }else {
+      } else {
         return false;
       }
     }
@@ -78,43 +78,46 @@ export class MyApp implements OnInit {
     window.onresize = (e) => {
       let popoverDOM: any = document.querySelector("ion-popover");
       let modelDOM: any = document.querySelector("ion-modal");
-      if(navigator.userAgent.includes("iPhone")){
-        if(((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
+      if (navigator.userAgent.includes("iPhone")){
+        if (((window.innerWidth < 512 && window.innerWidth < window.innerHeight) || window.innerWidth >= 768)) {
           this.isMobile = true;
-          if(popoverDOM){
+          if (popoverDOM){
             popoverDOM.style.opacity = 1;
           }
-          if(modelDOM){
+          if (modelDOM){
             modelDOM.style.opacity = 1;
           }
-        }else {
+        } else {
           this.isMobile = false;
-          if(popoverDOM){
+          if (popoverDOM){
             popoverDOM.style.opacity = 0;
           }
-          if(modelDOM){
+          if (modelDOM){
             modelDOM.style.opacity = 0;
           }
         }
-      }else {
-        if(((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
+      } else {
+        if (((screen.width < 512 && screen.width < screen.height) || screen.width >= 768)) {
           this.isMobile = true;
-          if(popoverDOM){
+          if (popoverDOM){
             popoverDOM.style.opacity = 1;
           }
-          if(modelDOM){
+          if (modelDOM){
             modelDOM.style.opacity = 1;
           }
-        }else {
+        } else {
           this.isMobile = false;
-          if(popoverDOM){
+          if (popoverDOM){
             popoverDOM.style.opacity = 0;
           }
-          if(modelDOM){
+          if (modelDOM){
             modelDOM.style.opacity = 0;
           }
         }
       }
+
+      console.log('isLandscape::', platform.isLandscape());
+      console.log('isPortrait::', platform.isPortrait());
     };
   }
 
