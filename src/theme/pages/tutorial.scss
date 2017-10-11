@@ -56,3 +56,13 @@ tutorial-page {
     box-shadow: none;
   }
 }
+.tutorial-video {
+  .scroll-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    h2 {
+      text-align: center;
+    }
+  }
+}
