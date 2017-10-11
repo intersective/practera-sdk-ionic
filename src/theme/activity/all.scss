@@ -15,25 +15,19 @@
   }
 }
 .activities {
-  .scroll-content {
-    overflow: hidden;
-  }
-  .scroll-content,
-  .grid,
-  .col {
-    padding: 0px !important;
-    margin: 0px;
-  }
   .grid {
+    padding: 0px !important;
     height: 100%;
     .row {
       height: 50%;
     }
   }
+
   ion-row.score-board.row {
     display: flex;
     align-items: center;
   }
+
   .score-board {
     background-color: color($colors, dahsboard-bg, base) !important; // default-theme
     background-size: cover;
@@ -73,10 +67,10 @@
             height: 40%;
             font-size: 28pt;
             font-weight: bold;
-
           }
         }
       }
+
       .dashboard-logo {
         max-width: 80%;
       }
@@ -85,7 +79,6 @@
         display: flex;
         list-style: none;
         color: color($colors, text, base);
-        margin: 0 auto;
         padding: 0px;
         .user-grade {
           display: flex;
@@ -134,12 +127,12 @@
             padding: 5pt 0;
             color: color($colors, palette-five, base);
           }
-          p.link,
-          a.link {
+          p.link, a.link {
             color: color($colors, text, base);
             text-decoration: none;
           }
         }
+
         li:nth-child(1) {
           border-top-left-radius: 5pt;
           border-bottom-left-radius: 5pt;
@@ -161,11 +154,13 @@
     }
   }
   .activity-list {
-    overflow-y: scroll !important;
+    margin-bottom: 0px;
+
     .activity-title {
       color: color($colors, primary);
       font-family: 'Museo-500';
     }
+
     .assessment-score {
       display: flex;
       justify-content: center;
@@ -196,6 +191,7 @@
         border-radius: 18pt;
       }
     }
+
     .icon-color-default {
       color: color($colors, dark, contrast);
     }
@@ -220,6 +216,7 @@
     .icon-color-6 {
       color: color($colors, palette-five, base) !important;
     }
+
     // just demo start
     .first-checkbox-demo {
       color: color($colors, button, contrast);
@@ -235,21 +232,22 @@
         }
       }
     }
+
     // demo code end
-    ion-col {
-      overflow: scroll;
+    .scroll-content {
+      overflow-y: scroll;
+      overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
     }
-    .unlocked,
-    .locked {
+    .unlocked, .locked {
       border-bottom: 1px solid color($colors, border, contrast);
       p {
-        padding: 12px 0px 12px 4px;
-        margin: 0px;
-        min-height: 40px;
+        margin: 10px 0px;
         line-height: 20px;
         max-width: 320px;
       }
     }
+
     .locked {
       background-color: color($colors, border, base);
       background-size: cover;
@@ -265,6 +263,17 @@
     }
     .activity-error {
       padding: 0 12pt;
+    }
+  }
+}
+
+// score-board margin size when < 500
+@media screen and (max-width: 500px) {
+  .score-board {
+    ion-col {
+      .dashboard-logo, .dashboard-data {
+        margin: 0em auto;
+      }
     }
   }
 }
