@@ -8,7 +8,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-row class="score-board">
+    <ion-row class="score-board" *ngIf="anyNewItems == 'false'">
       <ion-col col-12>
         <img class="dashboard-logo" src="./assets/img/main/logo01.svg" (click)="refreshPage()" />
       </ion-col>
