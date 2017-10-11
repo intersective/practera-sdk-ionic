@@ -1,11 +1,12 @@
-<ion-header class="slides-button">
+<!--In case of changing back -->
+<!-- <ion-header class="slides-button">
   <button class="skip-button"
     ion-button
     (click)="goDashbaord()">
     {{ 'GENERAL.SKIP' | translate }}
   </button>
-</ion-header>
-<ion-content class="tutorial-video">
+</ion-header> -->
+<ion-content class="tutorial-video" padding>
   <!--In case of changing back -->
   <!-- <ion-slides pager="true" class="tutorial-slides">
     <ion-slide>
@@ -28,11 +29,24 @@
       </ion-row>
     </ion-slide>
   </ion-slides> -->
-  <ion-list>
-    <h2>Welcome to Personal Edge</h2>
-    <video controls width="100%" height="auto">
-      <source src='https://player.vimeo.com/external/237666876.sd.mp4?s=18ab86bd2bce8ad3385f2cca6c66bfccfd955539&profile_id=164' autostart="false">
-    </video>
+  <ion-list class="video-tutorial">
+    <img src="./assets/img/badges/badge7.svg" alt="PE Logo"/>
+    <h2>Welcome !</h2>
+    <ion-card>
+      <ion-card-content> 
+        <video controls width="100%" height="100%">
+          <source src='https://player.vimeo.com/external/237666876.sd.mp4?s=18ab86bd2bce8ad3385f2cca6c66bfccfd955539&profile_id=164' autostart="false">
+        </video>
+      </ion-card-content>
+    </ion-card>
+    <button
+      ion-button
+      round
+      block
+      class="primary-button"
+      (click)="goDashbaord()">
+      {{ 'GENERAL.DONE' | translate }}
+    </button>
   </ion-list>
 </ion-content>
 <!--In case of changing back -->
