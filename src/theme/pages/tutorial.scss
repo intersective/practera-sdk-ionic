@@ -61,8 +61,16 @@ tutorial-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    h2 {
+    .video-tutorial {
       text-align: center;
+      ion-card {
+        margin: 12px 0;
+        margin-bottom: 40pt;
+        width: 100%;
+      }
+      button {
+        width: 100%;
+      }
     }
   }
 }

@@ -15,11 +15,12 @@ export class TutorialPage {
   public hideNextButton: boolean = false;
   constructor(public navCtrl: NavController,
               public domSanitizer: DomSanitizer){
-                this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl("https://www.youtube.com/embed/-Lvnl3_2s9s?rel=0");
+                this.videoUrl = this.domSanitizer.bypassSecurityTrustResourceUrl("https://player.vimeo.com/external/237666876.sd.mp4?s=18ab86bd2bce8ad3385f2cca6c66bfccfd955539&profile_id=164");
               }
   goDashbaord() {
     // Back to settings
-    this.navCtrl.setRoot(SettingsPage);
+    // this.navCtrl.setRoot(SettingsPage);
+    this.navCtrl.pop();
   }
   goPrev() {
     this.slides.slidePrev();
