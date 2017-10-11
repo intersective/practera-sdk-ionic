@@ -1,5 +1,5 @@
-# Practera SDK - Ionic 2/Angular 2 (soon 4)
-
+# RMIT Personal Edge App
+based on Practera SDK
 Overview
 
 Docs

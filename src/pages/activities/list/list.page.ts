@@ -202,12 +202,7 @@ export class ActivitiesListPage implements OnInit {
       }
     }
   }
-  // refresher activities
-  doRefresh(e) {
-    this.initilized_varible();
-    this.loadingDashboard();
-    e.complete();
-  }
+
   // display user achievemnt statistics score points
   loadingDashboard() {
     let loadingData = this.loadingCtrl.create({
@@ -230,6 +225,27 @@ export class ActivitiesListPage implements OnInit {
             if(this.activities.length == 1 && document.cookie == ""){
               document.cookie = "visitStatus=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
               this.navCtrl.push(InstructionPage);
+            }
+            if(this.activities.length == 1){
+              this.achievementListIDs = [
+                [341, 341, 341, 341],
+                [355, 402, 353, 354],
+                [351, 404, 349, 350],
+                [370, 407, 368, 369],
+                [344, 403, 342, 343],
+                [361, 405, 359, 360],
+                [365, 406, 363, 364]
+              ];
+            }else {
+              this.achievementListIDs = [
+                [355, 402, 353, 354],
+                [351, 404, 349, 350],
+                [370, 407, 368, 369],
+                [344, 403, 342, 343],
+                [361, 405, 359, 360],
+                [365, 406, 363, 364],
+                [341, 341, 341, 341]
+              ];
             }
             _.forEach(this.activities, ((element,index) => {
               this.activityIndex = index + 1;

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { App, NavController, MenuController, LoadingController, AlertController } from 'ionic-angular';
+import { App, NavController, MenuController, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
 // services
@@ -23,6 +23,7 @@ export class SettingsPage {
     private navCtrl: NavController,
     private menuCtrl: MenuController,
     private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController,
     public alertCtrl: AlertController,
     public translationService: TranslationService,
     private appCtrl: App,
@@ -98,7 +99,9 @@ export class SettingsPage {
     this.navCtrl.push(LeaderboardSettingsPage);
   }
   public goToTutorial() {
-    this.navCtrl.push(TutorialPage);
+    // this.navCtrl.push(TutorialPage);
+    let tutorialModal = this.modalCtrl.create(TutorialPage);
+    tutorialModal.present();
   }
   public goToTermConditions() {
     this.navCtrl.push(TermConditionPage);
