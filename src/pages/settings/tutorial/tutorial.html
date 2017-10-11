@@ -5,8 +5,8 @@
     {{ 'GENERAL.SKIP' | translate }}
   </button>
 </ion-header>
-<ion-content>
-  <ion-slides pager="true" class="tutorial-slides">
+<ion-content class="tutorial-video">
+  <!-- <ion-slides pager="true" class="tutorial-slides">
     <ion-slide>
       <img src="./assets/img/tutorial/tutorial_tour01.png" />
       <h1>Welcome</h1>
@@ -26,19 +26,19 @@
         </ion-col>
       </ion-row>
     </ion-slide>
-  </ion-slides>
+  </ion-slides> -->
   <!-- This part need to be reused for display video tutorial (Please don't remove) -->
-  <!-- <ion-list class="tutorial-slides">
-    <div>
-      <h1>Welcome to Tutorial</h1>
-      <iframe width="100%" height="200px" [src]="videoUrl" frameborder="0" allowfullscreen></iframe>      
-    </div>
-  </ion-list> -->
+  <ion-list>
+    <h2>Welcome to Personal Edge</h2>
+    <video controls width="100%" height="auto">
+      <source src='https://player.vimeo.com/external/237666876.sd.mp4?s=18ab86bd2bce8ad3385f2cca6c66bfccfd955539&profile_id=164' autostart="false">
+    </video>
+  </ion-list>
 </ion-content>
-<ion-footer class="slides-button">
+<!-- <ion-footer class="slides-button">
   <ion-toolbar>
     <button ion-button class="prev-button" (click)="goPrev()">{{ 'GENERAL.PREV' | translate }}</button>
     <button *ngIf="hideNextButton == false" ion-button class="next-button" (click)="goNext()">{{ 'GENERAL.NEXT' | translate }}</button>
     <button *ngIf="hideNextButton == true" ion-button class="next-button" (click)="goDashbaord()">{{ 'GENERAL.DONE' | translate }}</button>
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->
