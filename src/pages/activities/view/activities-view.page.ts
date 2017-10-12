@@ -96,10 +96,9 @@ export class ActivitiesViewPage {
     this.eachScore = this.eachFinalScore[this.activityIndex-1];
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
     this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
-    // This is a hardcode (temporary solution).
-    // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
+    // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
     if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
-      this.logo_act1 = "./assets/img/badges/badge1.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
+      this.logo_act1 = "./assets/img/badges/badge1.svg"; // if <Activity ID> exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data
     this.achievementService.getAll()
