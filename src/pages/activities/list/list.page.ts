@@ -13,6 +13,7 @@ import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../../app/messages';
+import { default as Configure } from '../../../configs/config';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AssessmentService } from '../../../services/assessment.service';
@@ -62,8 +63,8 @@ export class ActivitiesListPage implements OnInit {
     this.totalAverageScore = 0;
     this.findDataStatus = [];
   }
-  public hardcode_assessment_id: any = 2134;
-  public hardcode_context_id: any = 2532;
+  public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
+  public hardcode_context_id: any = Configure.hardcode_context_id;
   public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
   public newItemsData: any = [];
   public activityIndex: any = 0;
@@ -110,15 +111,7 @@ export class ActivitiesListPage implements OnInit {
     obtained: {},
     available: []
   };
-  public achievementListIDs: any = [
-    [355, 402, 353, 354],
-    [351, 404, 349, 350],
-    [370, 407, 368, 369],
-    [344, 403, 342, 343],
-    [361, 405, 359, 360],
-    [365, 406, 363, 364],
-    [341, 341, 341, 341]
-  ];
+  public achievementListIDs: any = Configure.achievementListIDs;
   public show_score_act: any = [
     false,false,false,false,false,false,false
   ];
@@ -227,25 +220,9 @@ export class ActivitiesListPage implements OnInit {
               this.navCtrl.push(InstructionPage);
             }
             if(this.activities.length == 1){
-              this.achievementListIDs = [
-                [341, 341, 341, 341],
-                [355, 402, 353, 354],
-                [351, 404, 349, 350],
-                [370, 407, 368, 369],
-                [344, 403, 342, 343],
-                [361, 405, 359, 360],
-                [365, 406, 363, 364]
-              ];
+              this.achievementListIDs = Configure.newbieOrderedIDs
             }else {
-              this.achievementListIDs = [
-                [355, 402, 353, 354],
-                [351, 404, 349, 350],
-                [370, 407, 368, 369],
-                [344, 403, 342, 343],
-                [361, 405, 359, 360],
-                [365, 406, 363, 364],
-                [341, 341, 341, 341]
-              ];
+              this.achievementListIDs = Configure.achievementListIDs;
             }
             _.forEach(this.activities, ((element,index) => {
               this.activityIndex = index + 1;
