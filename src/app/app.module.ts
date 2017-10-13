@@ -73,6 +73,7 @@ import { EventsDownloadPage } from '../pages/events/download/events-download.pag
 import { EventsBookingPage } from '../pages/events/booking/booking.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
+import { EventTitlePopoverPage } from '../pages/events/view/event-title-popover.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { InstructionPage } from '../pages/activities/list/instruction/instruction.page';
@@ -101,6 +102,7 @@ import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
+import { CutWithoutDotPipe } from '../pipes/cut-without-dot.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // unused but needed for build
@@ -123,12 +125,14 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    CutWithoutDotPipe,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
+    EventTitlePopoverPage,
     EventsViewPage,
     EventsBookingPage,
     FeedbackComponent,
@@ -260,6 +264,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
+    EventTitlePopoverPage,
     EventsViewPage,
     ForgetPasswordPage,
     InstructionPage,
