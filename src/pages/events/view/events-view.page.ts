@@ -1,5 +1,12 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Tabs, NavParams, NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
+import { Tabs, 
+  NavParams, 
+  NavController, 
+  AlertController, 
+  LoadingController, 
+  ActionSheetController, 
+  ToastController, 
+  PopoverController } from 'ionic-angular';
 import { loadingMessages, errMessages } from '../../../app/messages';
 import { TranslationService } from '../../../shared/translation/translation.service';
 // services
@@ -7,14 +14,15 @@ import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
 import { AssessmentService } from '../../../services/assessment.service';
 import { SubmissionService } from '../../../services/submission.service';
-
+// pipes
+import { CutWithoutDotPipe } from '../../../pipes/cut-without-dot.pipe';
 // pages
 import { EventsListPage } from '../list/list.page';
 import { EventsDownloadPage } from '../download/events-download.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { AssessmentsGroupPage } from '../../assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../checkin/event-checkin.page';
-
+import { EventTitlePopoverPage } from './event-title-popover.page';
 // We no need custom page for checkin anymore
 // import { EventCheckinPage } from '../checkin/event-checkin.page';
 
@@ -49,6 +57,7 @@ export class EventsViewPage {
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
     private actionSheetCtrl: ActionSheetController,
+    private popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     private assessmentService: AssessmentService,
     private submissionService: SubmissionService
@@ -121,6 +130,17 @@ export class EventsViewPage {
       assessment: ref.Assessment,
       context_id: ref.context_id
     };
+  }
+
+  /**
+   * Event title popover display function
+   * @param {object}
+   */
+  titlePopover(ev) {
+    let popover = this.popoverCtrl.create(EventTitlePopoverPage, {eventTitle: this.event.title});
+    popover.present({
+      ev
+    });
   }
 
   /**
