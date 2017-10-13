@@ -73,6 +73,7 @@ import { EventsDownloadPage } from '../pages/events/download/events-download.pag
 import { EventsBookingPage } from '../pages/events/booking/booking.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
+import { EventTitlePopoverPage } from '../pages/events/view/event-title-popover.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
 import { InstructionPage } from '../pages/activities/list/instruction/instruction.page';
@@ -81,6 +82,7 @@ import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboa
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
+import { NewItemsPage } from '../pages/activities/list/new-items/new-items.page';
 import { PopoverTextPage } from '../pages/activities/list/popover-text';
 import { RainbowIconsComponent } from '../pages/activities/list/rainbow-icons.component';
 import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
@@ -101,6 +103,7 @@ import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
 import { TimeAgoPipe } from '../pipes/timeago';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
+import { CutWithoutDotPipe } from '../pipes/cut-without-dot.pipe';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // unused but needed for build
@@ -123,12 +126,14 @@ export function HttpLoaderFactory(http: Http) {
     ActivityListPopupPage,
     AssessmentsGroupPage,
     AssessmentsPage,
+    CutWithoutDotPipe,
     EventCheckinPage,
     EventComponent,
     EventsComponent,
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
+    EventTitlePopoverPage,
     EventsViewPage,
     EventsBookingPage,
     FeedbackComponent,
@@ -149,6 +154,7 @@ export function HttpLoaderFactory(http: Http) {
     ModalComponent,
     MultipleQuestionComponent,
     MyApp,
+    NewItemsPage,
     OrderByPipe,
     OneofQuestionComponent,
     PhotoComponent,
@@ -260,6 +266,7 @@ export function HttpLoaderFactory(http: Http) {
     EventsDownloadPage,
     EventsListPage,
     EventsPreviewPage,
+    EventTitlePopoverPage,
     EventsViewPage,
     ForgetPasswordPage,
     InstructionPage,
@@ -273,6 +280,7 @@ export function HttpLoaderFactory(http: Http) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
+    NewItemsPage,
     PopoverTextPage,
     PreviewComponent,
     RankingBadgesPage,

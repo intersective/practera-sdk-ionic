@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import { default as Configure } from '../../../configs/config';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 // pages
@@ -16,7 +17,7 @@ import { SubmissionService } from '../../../services/submission.service';
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  public hardcode_activity_id: any = 7850;
+  public hardcode_activity_id: any = Configure.hardcode_activity_id;
   public logo_act1 = "./assets/img/badges/badge7.svg";
   public activityIDsArrary: any = [];
   public submissionTitles: any = [];
@@ -95,10 +96,9 @@ export class ActivitiesViewPage {
     this.eachScore = this.eachFinalScore[this.activityIndex-1];
     this.newTickIDsArray = this.navParams.get('newTickIDsArray');
     this.newTickIDsData = this.newTickIDsArray[this.activityIndex-1];
-    // This is a hardcode (temporary solution).
-    // <7632> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
+    // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
     if (this.activityIDsArrary.includes(this.hardcode_activity_id)){
-      this.logo_act1 = "./assets/img/badges/badge1.svg"; // if 7632 exist, show career logo for the first activity, otherwise, show product logo for the first activity.
+      this.logo_act1 = "./assets/img/badges/badge1.svg"; // if <Activity ID> exist, show career logo for the first activity, otherwise, show product logo for the first activity.
     }
     // all achievements data
     this.achievementService.getAll()
@@ -299,21 +299,13 @@ export class ActivitiesViewPage {
   }
   getSubmissionTitle(Submissions){ // get user named assessment submission title
     let assessment_question_id: any = 0;
+    let hardcodeAssessmentIds = Configure.hardcodeAssessmentIds;
+    let hardcodeQuestionIDs = Configure.hardcodeQuestionIDs;
     if(Submissions[0]){
-      if(Submissions[0].assessment_id == 2124){
-        assessment_question_id = 21316;
-      }else if(Submissions[0].assessment_id == 2125){
-        assessment_question_id = 21327;
-      }else if(Submissions[0].assessment_id == 2126){
-        assessment_question_id = 21338;
-      }else if(Submissions[0].assessment_id == 2127){
-        assessment_question_id = 21349;
-      }else if(Submissions[0].assessment_id == 2128){
-        assessment_question_id = 21360;
-      }else if(Submissions[0].assessment_id == 2129){
-        assessment_question_id = 21371;
-      }else if(Submissions[0].assessment_id == 2050){
-        assessment_question_id = 20661;
+      for(let i = 0; i < hardcodeAssessmentIds.length; i++){
+        if(Submissions[0].assessment_id === hardcodeAssessmentIds[i]){
+          assessment_question_id = hardcodeQuestionIDs[i];
+        }
       }
       _.forEach(Submissions, (element, index) => {
         _.forEach(element.answer, (ele, index) => {
