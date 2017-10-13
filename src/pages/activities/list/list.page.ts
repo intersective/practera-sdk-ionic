@@ -34,6 +34,7 @@ import { TabsPage } from '../../../pages/tabs/tabs.page';
 import { EventsListPage } from '../../events/list/list.page';
 import { RankingsPage } from '../../rankings/list/rankings.page';
 import { InstructionPage } from './instruction/instruction.page';
+import { NewItemsPage } from './new-items/new-items.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { WindowRef } from '../../../shared/window';
@@ -65,8 +66,6 @@ export class ActivitiesListPage implements OnInit {
   }
   public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
   public hardcode_context_id: any = Configure.hardcode_context_id;
-  public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
-  public newItemsData: any = [];
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
@@ -147,8 +146,6 @@ export class ActivitiesListPage implements OnInit {
     public translationService: TranslationService,
     public win: WindowRef
   ) {
-    this.anyNewItems = this.cacheService.getLocal('gotNewItems');
-    this.newItemsData = this.cacheService.getLocalObject('allNewItems');
     if(this.email && this.program_id){
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = JSON.parse(this.cacheService.getLocal('email'));
@@ -159,14 +156,18 @@ export class ActivitiesListPage implements OnInit {
   }
   ngOnInit() {}
   ionViewWillEnter(){
-    if(this.anyNewItems == 'true') {
-      for(let i = 0; i < 5; i++){
-        document.querySelector('a.tab-button').className = "hide-tabbar";
-      }
-    }
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
+  }
+  ionViewDidEnter() {
+    // Open new items modal when submitted no-need-review answer.
+    // @NOTE getLocal() return boolean data as string
+    if (this.cacheService.getLocal('gotNewItems') === 'true') {
+      this.openNewItemsModal({
+        newItemsData: this.cacheService.getLocalObject('allNewItems')
+      });
+    }
   }
   refreshPage() {
     this.initilized_varible();
@@ -195,7 +196,10 @@ export class ActivitiesListPage implements OnInit {
       }
     }
   }
-
+  openNewItemsModal(params: any = {}) {
+    let modal = this.modalCtrl.create(NewItemsPage, params);
+    modal.present();
+  }
   // display user achievemnt statistics score points
   loadingDashboard() {
     let loadingData = this.loadingCtrl.create({
@@ -340,13 +344,6 @@ export class ActivitiesListPage implements OnInit {
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
     disabledActivityPopup.present();
-  }
-  // close modal and display as main page
-  closeItemsShwon(){
-    this.anyNewItems = !this.cacheService.getLocal('gotNewItems');
-    this.cacheService.setLocalObject('allNewItems', []);
-    this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
-    this.navCtrl.setRoot(TabsPage);
   }
   // link to certain pages
   whatsThis() {

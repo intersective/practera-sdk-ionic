@@ -15,8 +15,8 @@
       <ion-row>
         <ion-col>
           <div class="tutorial-slides">
-            <img *ngIf="newItemsData[0].meta !== null" class="item-popup-img" src="{{ newItemsData[0].meta.img }}" alt="item"/>
-            <img *ngIf="newItemsData[0].meta === null || newItemsData[0].meta.img === null"
+            <img *ngIf="newItemsData[0] && newItemsData[0].meta !== null" class="item-popup-img" src="{{ newItemsData[0].meta.img }}" alt="item"/>
+            <img *ngIf="newItemsData[0] && (newItemsData[0].meta === null || newItemsData[0].meta.img === null)"
               class="item-popup-img"
               src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
             <p class="item-popup-text">
