@@ -1,14 +1,6 @@
 <ion-header class="activities">
   <ion-grid>
-    <ion-row *ngIf="anyNewItems == 'true'">
-      <ion-col col-12 class="flex-display">
-        <ion-title>New Items</ion-title>
-        <button (click)="closeItemsShwon()"
-          class="close" menuClose="right">&times;</button>
-      </ion-col>
-    </ion-row>
-
-    <ion-row class="score-board" *ngIf="anyNewItems == 'false'">
+    <ion-row class="score-board">
       <ion-col col-12>
         <img class="dashboard-logo" src="./assets/img/main/logo01.svg" (click)="refreshPage()" />
       </ion-col>
@@ -61,7 +53,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content class="activities" *ngIf="anyNewItems == 'false'" no-bounce>
+<ion-content class="activities" no-bounce>
   <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
@@ -102,29 +94,5 @@
       </span>
     </div>
 
-  </ion-list>
-</ion-content>
-
-<ion-content *ngIf="anyNewItems == 'true'" id="itemsPopup" class="items-popup">
-  <ion-list class="items-popup-data">
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <div class="tutorial-slides">
-            <img *ngIf="newItemsData[0].meta !== null" class="item-popup-img" src="{{ newItemsData[0].meta.img }}" alt="item"/>
-            <img *ngIf="newItemsData[0].meta === null || newItemsData[0].meta.img === null"
-              class="item-popup-img"
-              src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
-            <p class="item-popup-text">
-              <span *ngIf="newItemsData.length <= 1">Congratulations. You have won {{ newItemsData.length }} Spin.</span>
-              <span *ngIf="newItemsData.length > 1">Congratulations. You have won {{ newItemsData.length }} Spins.</span>
-              <br/><br/>
-              Please proceed to the Spinner page to use your spins to earn points.
-            </p>
-          </div>
-          <button col-12 class="general-circle-btn" (click)="closeItemsShwon()">OK</button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
   </ion-list>
 </ion-content>
