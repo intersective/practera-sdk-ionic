@@ -19,7 +19,7 @@ export class LevelsListPage {
       platform.ready().then(() => {});
   }
 
-  private _mock = [
+  public _mock = [
     {
       id: 1,
       name: 'Rookie'
@@ -33,7 +33,7 @@ export class LevelsListPage {
   public levels = [];
 
   // @TODO: Move to shared function later...
-  private _error(err) {
+  public _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,
@@ -48,7 +48,7 @@ export class LevelsListPage {
     toast.present();
   }
 
-  private _pullData(refresher = null) {
+  public _pullData(refresher = null) {
     return this.levelService.getLevels()
       .then((levels: any) => {
         this.levels = levels;

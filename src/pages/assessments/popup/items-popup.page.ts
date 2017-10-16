@@ -20,10 +20,10 @@ export class ItemsPopupPage {
   // public noData: boolean = null;
   public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
   constructor(
-    private viewCtrl: ViewController,
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private loadingCtrl: LoadingController,
+    public viewCtrl: ViewController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController,
     public cacheService: CacheService,
     public translationService: TranslateService
   ) {}

@@ -9,7 +9,7 @@ export class LeaderboardSettingsPage {
   public username: string = this.cacheService.getLocalObject('name') || '';
   public useremail: string = this.cacheService.getLocalObject('email') || '';
   public isHide: boolean = false;
-  constructor(private cacheService: CacheService){
+  constructor(public cacheService: CacheService){
 
   }
 }

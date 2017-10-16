@@ -16,16 +16,16 @@ export class EventCheckinPage {
   public submissions: any;
   public assessment;
   public assessmentGroup;
-  private user: any = {};
+  public user: any = {};
   public checkin: any = {};
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private cache: CacheService,
-    private eventService: EventService,
-    private assessmentService: AssessmentService,
-    private loadingCtrl: LoadingController
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public cache: CacheService,
+    public eventService: EventService,
+    public assessmentService: AssessmentService,
+    public loadingCtrl: LoadingController
   ) {
     this.event = navParams.get('event');
     this.submissions = navParams.get('submissions');
@@ -40,7 +40,7 @@ export class EventCheckinPage {
   }
 
   // Only checkin/file upload answer is displayed in check-in view
-  private getCheckinAnswer(submission) {
+  public getCheckinAnswer(submission) {
     let result = {};
     submission.answer.forEach(ans => {
       if (typeof ans.answer === 'object') {

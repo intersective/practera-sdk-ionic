@@ -39,19 +39,19 @@ export class LoginPage {
   public loginLoadingMessages: any = loadingMessages.Login.login;
   public invalidLoginMessage: any = errMessages.Login.login;
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
-    private modalCtrl: ModalController,
-    private viewCtrl: ViewController,
-    private authService: AuthService,
-    private gameService: GameService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public modalCtrl: ModalController,
+    public viewCtrl: ViewController,
+    public authService: AuthService,
+    public gameService: GameService,
     public translationService: TranslationService,
-    private config: RequestServiceConfig,
-    private formBuilder: FormBuilder,
-    private milestoneService: MilestoneService,
-    private cacheService: CacheService
+    public config: RequestServiceConfig,
+    public formBuilder: FormBuilder,
+    public milestoneService: MilestoneService,
+    public cacheService: CacheService
   ) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({

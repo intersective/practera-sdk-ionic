@@ -54,21 +54,21 @@ export class AssessmentsPage {
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   submissionUpdated: boolean = false; // event listener flag
   // confirm message variables
-  private discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
-  private submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
+  public discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  public submitConfirmMessage = confirmMessages.Assessments.SubmitConfirmation.confirm;
 
   constructor(
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
-    private assessmentService: AssessmentService,
-    private characterService: CharacterService,
-    private cacheService: CacheService,
-    private gameService: GameService,
-    private submissionService: SubmissionService,
-    private translationService: TranslationService,
+    public assessmentService: AssessmentService,
+    public characterService: CharacterService,
+    public cacheService: CacheService,
+    public gameService: GameService,
+    public submissionService: SubmissionService,
+    public translationService: TranslationService,
     public events: Events
   ) {
     this.activity = this.navParams.get('activity');
@@ -250,7 +250,7 @@ export class AssessmentsPage {
    *
    * @return {Promise<any>}
    */
-  private pullSubmissions(): Promise<any> {
+  public pullSubmissions(): Promise<any> {
     return new Promise((resolve, reject) => {
       // 2nd batch API requests (get_submissions)
       Observable.forkJoin(

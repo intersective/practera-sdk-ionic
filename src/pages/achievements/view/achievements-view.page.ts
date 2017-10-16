@@ -23,7 +23,7 @@ export class AchievementsViewPage {
   public achievement: any;
 
   constructor(
-    private params: NavParams,
+    public params: NavParams,
     public translationService: TranslationService
   ) {
     this.achievement = {};

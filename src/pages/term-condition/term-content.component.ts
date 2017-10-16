@@ -98,7 +98,7 @@ Our site has links to other websites not owned or controlled by us. We are not r
 })
 export class TermContentComponent {
   content: string;
-  constructor(private sanitizer: DomSanitizer, private authService: AuthService) {
+  constructor(public sanitizer: DomSanitizer, public authService: AuthService) {
     this.content = TermContent;
   }
 }

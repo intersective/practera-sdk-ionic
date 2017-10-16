@@ -37,25 +37,25 @@ export class EventsViewPage {
   public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
   public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
   public completedSubmissions: boolean = false;
-  private submissions: Array<any> = [];
+  public submissions: Array<any> = [];
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private cache: CacheService,
-    private eventService: EventService,
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public cache: CacheService,
+    public eventService: EventService,
     public translationService: TranslationService,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private actionSheetCtrl: ActionSheetController,
-    private toastCtrl: ToastController,
-    private assessmentService: AssessmentService,
-    private submissionService: SubmissionService
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController,
+    public assessmentService: AssessmentService,
+    public submissionService: SubmissionService
   ) {
     this.event = navParams.get('event');
   }
 
-  private availability(event): string {
+  public availability(event): string {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
   }
 
@@ -99,7 +99,7 @@ export class EventsViewPage {
    * @description each event has only one assessment
    * @param {Array} references References array response from get_activity API
    */
-  private extractAssessment(references: Array<any>) {
+  public extractAssessment(references: Array<any>) {
     let ref = references[0];
     ref.Assessment.context_id = ref.context_id;
 

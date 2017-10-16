@@ -30,13 +30,13 @@ export class AssessmentsGroupPage {
   inProgress: boolean | any;
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private fb: FormBuilder,
-    private cache: CacheService,
-    private assessmentService: AssessmentService,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public fb: FormBuilder,
+    public cache: CacheService,
+    public assessmentService: AssessmentService,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
     public events: Events
   ) {}
 
@@ -81,7 +81,7 @@ export class AssessmentsGroupPage {
    * @type {boolen}
    */
    // @TODO modify needed
-   private isInputEditable = (submission):boolean => {
+   public isInputEditable = (submission):boolean => {
      if (_.isEmpty(submission) || submission.status === 'in progress') {
        return true;
      }
@@ -110,7 +110,7 @@ export class AssessmentsGroupPage {
    * @type {array}
    */
    // @TODO modify
-  private mapQuestionsFeedback = (questions, submission):any => {
+  public mapQuestionsFeedback = (questions, submission):any => {
     if (_.isEmpty(submission) || _.isEmpty(submission.review) || submission.status !== 'published') {
       return questions;
     }
@@ -185,7 +185,7 @@ export class AssessmentsGroupPage {
    *
    * @type {number}
    */
-  private getSubmissionContext = ():number => {
+  public getSubmissionContext = ():number => {
     // if event object is available
     if (this.event) {
       return this.event.context_id;
@@ -247,7 +247,7 @@ export class AssessmentsGroupPage {
    * @param {object} submission single submission object retrieve from previous page/view
    * @return {object} formatted submission answer
    */
-  private formInProgressAnswer(submission): boolean | Submission {
+  public formInProgressAnswer(submission): boolean | Submission {
     if (_.isEmpty(submission)) {
       return false;
     }
@@ -333,7 +333,7 @@ export class AssessmentsGroupPage {
    * @param {FormGroup} question FormGroup for a question
    * @param {Object} answers answer [choices object || string answer]
    */
-  private setValueWith(question, answers) {
+  public setValueWith(question, answers) {
     if (!_.isEmpty(answers.choices)) {
       question.controls.choices.setValue(answers.choices);
     } else {

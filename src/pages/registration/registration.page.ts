@@ -21,19 +21,19 @@ export class RegistrationPage implements OnInit {
   };
   term: String;
   content: SafeResourceUrl;
-  private prefixUrl: any = this.request.getPrefixUrl();
+  public prefixUrl: any = this.request.getPrefixUrl();
   // loadinbg & error message variables
-  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+  public verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     public nav: NavController,
-    private params: NavParams,
-    private authService: AuthService,
-    private sanitizer: DomSanitizer,
-    private notification: NotificationService,
+    public params: NavParams,
+    public authService: AuthService,
+    public sanitizer: DomSanitizer,
+    public notification: NotificationService,
     public translationService: TranslationService,
-    private alertCtrl: AlertController,
-    private cache: CacheService,
-    private request: RequestService) {}
+    public alertCtrl: AlertController,
+    public cache: CacheService,
+    public request: RequestService) {}
   displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',

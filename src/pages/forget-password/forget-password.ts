@@ -21,18 +21,18 @@ export class ForgetPasswordPage {
   email: string;
   forgotPwdFormGroup: any;
   // loading & error message variables
-  private sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
-  private sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
-  private sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
+  public sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
+  public sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
+  public sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
     public translationService: TranslationService,
-    private authService: AuthService,
-    private toastCtrl: ToastController,
-    private formBuilder: FormBuilder) {
+    public authService: AuthService,
+    public toastCtrl: ToastController,
+    public formBuilder: FormBuilder) {
       this.forgotPwdFormGroup = formBuilder.group({
         email: ['', [FormValidator.isValidEmail,
                     Validators.required]],

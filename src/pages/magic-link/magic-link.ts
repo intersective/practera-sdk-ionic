@@ -19,21 +19,21 @@ import { LoginPage } from '../login/login';
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  private verifySuccess = null;
-  private auth_token: string;
+  public verifySuccess = null;
+  public auth_token: string;
   public milestone_id: string;
   // loading & error messages variables
-  private loginLoadingMessage: any = loadingMessages.Login.login;
-  private misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  public loginLoadingMessage: any = loadingMessages.Login.login;
+  public misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private authService: AuthService,
-    private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
-    private milestoneService: MilestoneService,
-    private cacheService: CacheService,
-    private gameService: GameService
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public authService: AuthService,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public milestoneService: MilestoneService,
+    public cacheService: CacheService,
+    public gameService: GameService
   ) {}
 
   ionViewDidLoad() {

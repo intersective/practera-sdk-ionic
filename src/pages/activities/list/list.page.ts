@@ -54,7 +54,7 @@ export class ActivitiesListPage implements OnInit {
   public activitiesLoadingErr: any = errMessages.General.loading.load;
   public activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
   // Achievements
-  private achievements = {
+  public achievements = {
     maxPoint: {},
     obtained: {},
     available: []

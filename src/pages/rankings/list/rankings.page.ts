@@ -19,11 +19,11 @@ export class RankingsPage {
   public listRankingData: any = [];
   public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   public emptyErrorMessage: any = errMessages.General.loading.load;
-  constructor(private navCtrl: NavController,
-              private loadingCtrl: LoadingController,
-              private alertCtrl: AlertController,
-              private gameService: GameService,
-              private cacheService: CacheService){}
+  constructor(public navCtrl: NavController,
+              public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController,
+              public gameService: GameService,
+              public cacheService: CacheService){}
   ionViewWillEnter(){
     this.RankingData();
   }

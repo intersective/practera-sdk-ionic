@@ -23,11 +23,11 @@ export class ActivityListPopupPage {
   public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
 
   constructor(
-    private viewCtrl: ViewController,
-    private navParams: NavParams,
-    private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController,
-    private achievementService: AchievementService,
+    public viewCtrl: ViewController,
+    public navParams: NavParams,
+    public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController,
+    public achievementService: AchievementService,
     public translationService: TranslateService
   ) {
     this.unlock_id = this.navParams.get('unlock_id');

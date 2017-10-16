@@ -17,22 +17,22 @@ export class TermConditionPage {
   @Input('content') content?: SafeResourceUrl;
   @Input('user') user: any;
   agreed:boolean = false;
-  private checkAccessMethod: boolean = false;
+  public checkAccessMethod: boolean = false;
   // loading & error message variables
-  private helpEmailMessage = generalVariableMessages.helpMail.email;
-  private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
-  private verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
+  public helpEmailMessage = generalVariableMessages.helpMail.email;
+  public disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
+  public verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
   constructor(
     public nav: NavController,
-    private alertCtrl: AlertController,
-    private authService: AuthService,
-    private notificationService: NotificationService,
+    public alertCtrl: AlertController,
+    public authService: AuthService,
+    public notificationService: NotificationService,
     public translationService: TranslationService,
   ) {}
-  private accessMethod(){
+  public accessMethod(){
     return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
   }
-  private displayError(errorMessage?: any): void {
+  public displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
       subTitle: errorMessage,
@@ -42,7 +42,7 @@ export class TermConditionPage {
     });
     alert.present();
   }
-  private backToSAccountPage() {
+  public backToSAccountPage() {
     this.nav.popToRoot();
   }
   ionViewDidEnter() {

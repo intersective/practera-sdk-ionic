@@ -26,12 +26,12 @@ export class ActivitiesViewPage {
   };
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private modalCtrl: ModalController,
-    private activityService: ActivityService,
-    private submissionService: SubmissionService,
-    private alertCtrl: AlertController
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public modalCtrl: ModalController,
+    public activityService: ActivityService,
+    public submissionService: SubmissionService,
+    public alertCtrl: AlertController
   ) {
   }
 
@@ -92,7 +92,7 @@ export class ActivitiesViewPage {
     return result;
   }
 
-  private extractBadges(): Array<any> {
+  public extractBadges(): Array<any> {
     let result = [];
     if (this.achievements.available && this.achievements.available.length > 0) {
       this.achievements.available.forEach(achievement => {

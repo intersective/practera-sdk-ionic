@@ -14,9 +14,9 @@ import { EventsViewPage } from '../view/events-view.page';
 })
 export class EventsListPage {
   // loading & error message variables
-  private emptyFilterErrMessage = errMessages.Events.filter.empty;
-  private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
-  private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
+  public emptyFilterErrMessage = errMessages.Events.filter.empty;
+  public noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  public noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
@@ -25,7 +25,7 @@ export class EventsListPage {
   ) {}
 
   activities = {};
-  private loadedEvents = []; // Further processed events array, for private use
+  public loadedEvents = []; // Further processed events array, for public use
   events = []; // ordered events array in filterEvents and to be access through template
   noEvents = false;
   filter = 'browses';
@@ -104,7 +104,7 @@ export class EventsListPage {
         })
         .then((events) => {
           console.log('events', events);
-          // loadedEvents will never change (private use),
+          // loadedEvents will never change (public use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
 
@@ -147,7 +147,7 @@ export class EventsListPage {
    * @description inject hardcoded images by array index number
    * @param {array} events list of event object respond from get_events API
    */
-  private _injectCover(events) {
+  public _injectCover(events) {
     let counts = events.length;
 
     _.forEach(events, (value, key) => {
@@ -166,7 +166,7 @@ export class EventsListPage {
    *     - skip non-event activities
    * @param {array} events get_events response
    */
-  private _mapWithActivity(events) {
+  public _mapWithActivity(events) {
     let result = [];
 
     events.forEach(event => {

@@ -17,12 +17,12 @@ export class SettingsPage {
   public helpline = "help@practera.com";
   public logoutMessage: any = loadingMessages.Logout.logout;
   constructor(
-    private cache: CacheService,
-    private navCtrl: NavController,
-    private menuCtrl: MenuController,
-    private loadingCtrl: LoadingController,
+    public cache: CacheService,
+    public navCtrl: NavController,
+    public menuCtrl: MenuController,
+    public loadingCtrl: LoadingController,
     public translationService: TranslationService,
-    private appCtrl: App
+    public appCtrl: App
   ) {}
   public settings = [];
   public getUserEmail() {

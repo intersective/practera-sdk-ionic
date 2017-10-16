@@ -33,40 +33,40 @@ export class RegisterPage implements OnInit {
     verify_password: ''
   };
   submitted: boolean = false;
-  private regForm: any;
-  private pwdMacthBool: boolean = false;
-  private verifyPwd: boolean = false;
-  private verifySuccess: boolean = null;
-  private isPwdMatch: boolean = false;
-  private changeContent: boolean = false;
-  private minLengthCheck: boolean = true;
-  private clickSuspended: boolean = false;
-  private milestone_id: string;
-  private password: string;
-  private verify_password: string;
+  public regForm: any;
+  public pwdMacthBool: boolean = false;
+  public verifyPwd: boolean = false;
+  public verifySuccess: boolean = null;
+  public isPwdMatch: boolean = false;
+  public changeContent: boolean = false;
+  public minLengthCheck: boolean = true;
+  public clickSuspended: boolean = false;
+  public milestone_id: string;
+  public password: string;
+  public verify_password: string;
   // loading & error messages variables
-  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
-  private successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  private passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
-  private registrationErrMessage: any = errMessages.Registration.error.error;
-  private invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
-  private noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
-  private registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
-  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+  public successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
+  public passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  public registrationErrMessage: any = errMessages.Registration.error.error;
+  public invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  public noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  public registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
     public navCtrl: NavController,
     public alertCtrl: AlertController,
-    private viewCtrl: ViewController,
-    private notificationService: NotificationService,
-    private navParams: NavParams,
-    private loading: LoadingController,
-    private authService: AuthService,
-    private cache: CacheService,
-    private gameService: GameService,
+    public viewCtrl: ViewController,
+    public notificationService: NotificationService,
+    public navParams: NavParams,
+    public loading: LoadingController,
+    public authService: AuthService,
+    public cache: CacheService,
+    public gameService: GameService,
     public translationService: TranslationService,
-    private milestone: MilestoneService,
+    public milestone: MilestoneService,
   ) {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({

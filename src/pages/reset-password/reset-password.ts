@@ -28,33 +28,33 @@ import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpas
 export class ResetPasswordPage implements OnInit {
   public keyVal: string;
   public emailVal: string;
-  private windowHeight: number = window.innerHeight / 3;
-  private isLandscaped: boolean = false;
+  public windowHeight: number = window.innerHeight / 3;
+  public isLandscaped: boolean = false;
   public password: string;
   public verify_password: string;
-  private verifySuccess: boolean = null;
-  private resetPwdFormGroup: any;
-  private verifyPwd: boolean = false;
-  private minLengthCheck: boolean = true;
+  public verifySuccess: boolean = null;
+  public resetPwdFormGroup: any;
+  public verifyPwd: boolean = false;
+  public minLengthCheck: boolean = true;
   public milestone_id: string;
-  private isPwdMatch: boolean = false;
+  public isPwdMatch: boolean = false;
   // loading & error message variables
-  private invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
-  private verifyUserMessage = loadingMessages.VerifyUser.verify;
-  private successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
-  private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
-  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
-  constructor(private navCtrl: NavController,
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private authService: AuthService,
-    private viewCtrl: ViewController,
-    private loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder,
-    private milestoneService: MilestoneService,
-    private cacheService: CacheService,
-    private gameService: GameService,
+  public invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+  public verifyUserMessage = loadingMessages.VerifyUser.verify;
+  public successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  public resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  constructor(public navCtrl: NavController,
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    public authService: AuthService,
+    public viewCtrl: ViewController,
+    public loadingCtrl: LoadingController,
+    public formBuilder: FormBuilder,
+    public milestoneService: MilestoneService,
+    public cacheService: CacheService,
+    public gameService: GameService,
     public translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
