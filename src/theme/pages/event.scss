@@ -64,8 +64,8 @@ event, .events {
     height: 10em;
     .title {
       @extend .event-title;
-      line-height: 1.3em;
-      font-size: 3.5rem;
+      line-height: 1.5em;
+      font-size: 3rem;
       padding: 0 2.5%;
     }
   }
