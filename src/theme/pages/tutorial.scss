@@ -2,6 +2,9 @@
   .list-header-md {
     border: none;
   }
+  .handbook-download {
+    text-decoration: none;
+  }
 }
 
 tutorial-page {
@@ -54,5 +57,23 @@ tutorial-page {
     background-color: color($colors, secondary, base) !important;
     color: color($colors, primary, base);
     box-shadow: none;
+  }
+}
+.tutorial-video {
+  .scroll-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .video-tutorial {
+      text-align: center;
+      ion-card {
+        margin: 12px 0;
+        margin-bottom: 40pt;
+        width: 100%;
+      }
+      button {
+        width: 100%;
+      }
+    }
   }
 }

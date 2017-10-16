@@ -17,10 +17,6 @@
 .activities {
   .grid {
     padding: 0px !important;
-    height: 100%;
-    .row {
-      height: 50%;
-    }
   }
 
   ion-row.score-board.row {
@@ -73,6 +69,7 @@
 
       .dashboard-logo {
         max-width: 80%;
+        height: 86px;
       }
       .dashboard-data {
         max-width: 90%;
