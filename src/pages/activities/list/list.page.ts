@@ -51,17 +51,17 @@ export class ActivitiesListPage implements OnInit {
   totalAchievements: any = [];
 
   constructor(
-    public navCtrl: NavController,
-    public http: Http,
-    public activityService: ActivityService,
     public achievementService: AchievementService,
+    public activityService: ActivityService,
     public cacheService: CacheService,
     public characterService: CharacterService,
     public gameService: GameService,
-    public submissionService: SubmissionService,
-    public toastCtrl: ToastController,
+    public http: Http,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
+    public navCtrl: NavController,
+    public submissionService: SubmissionService,
+    public toastCtrl: ToastController,
     public translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');

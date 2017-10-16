@@ -26,12 +26,12 @@ export class ActivityListPopupPage {
   unlock_id: any;
 
   constructor(
-    public viewCtrl: ViewController,
+    public achievementService: AchievementService,
+    public loadingCtrl: LoadingController,
     public navParams: NavParams,
     public toastCtrl: ToastController,
-    public loadingCtrl: LoadingController,
-    public achievementService: AchievementService,
-    public translationService: TranslateService
+    public translationService: TranslateService,
+    public viewCtrl: ViewController
   ) {
     this.unlock_id = this.navParams.get('unlock_id');
     // console.log('Unlock id value: ', this.unlock_id);
