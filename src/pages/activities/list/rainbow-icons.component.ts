@@ -66,6 +66,6 @@ const iconColors = [
 
 export class RainbowIconsComponent {
   @Input('styling') index: number;
-  @Input('colorings') colors: Array<any>;
+  @Input('colorings') colors: Array<boolean> = [false, false, false, false];
 
 }

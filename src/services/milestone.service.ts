@@ -22,13 +22,13 @@ export class MilestoneService {
         params.set(key, value);
       });
     }
-    let timelineId = this.cacheService.getLocal('timeline_id');
+    let timelineId = this.cacheService.getLocalObject('timelineID');
     if (timelineId) {
       params.set('timelineId', timelineId);
     }
-
     return this.request.get('api/milestones.json', {search: params});
   }
+
   getMilestones(){
     let headers = new Headers();
     headers.append('appkey', this.appkey);
