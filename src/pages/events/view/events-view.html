@@ -7,9 +7,7 @@
 <ion-content class="events">
   <ion-list class="title-background"
     [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
-    <div class="title" (click)="titlePopover($event)">
-      {{ event.title }}
-    </div>
+    <div class="title">{{ event.title }}</div>
   </ion-list>
   <div *ngIf="event.isBooked" class="status">
     <div *ngIf="eventTag" class="tag event-view-tag" color="palette-five">{{ eventTag }}</div>
