@@ -86,11 +86,14 @@ export class LoginPage {
               data = data.data;
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
-              // saved for 3 types of timeline id in order for later use
-              self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
-              self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
+
+              // saved timeline id for later
+              if (data.Timelines.length > 0) {
+                self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
+              }
               self.cacheService.setLocalObject('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
+
               // get game_id data after login
               this.gameService.getGames()
                   .subscribe(

@@ -422,11 +422,6 @@ export class AssessmentService {
    * @param {[type]} assessment_id [description]
    */
   public getPostProgramAssessment(assessment_id) {
-    // let url = `${this.prefixUrl}api/assessments.json?assessment_id=${assessment_id}&structured=true`;
-    // let headers = new Headers();
-    // headers.append('appkey', this.appkey);
-    // headers.append('apikey', this.cacheService.getLocalObject('apikey'));
-    // headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
     return this.request.get(`api/assessments.json?assessment_id=${assessment_id}&structured=true`);
   }
 
@@ -466,7 +461,7 @@ export class AssessmentService {
         questionsStatus.push('reviewed');
       }
     });
-    
+
     // get final status by checking all questions' statuses
     let status = 'incomplete';
     if (_.every(questionsStatus, (v) => {

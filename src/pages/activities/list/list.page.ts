@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ActionSheetController,
   NavController,
@@ -8,7 +8,6 @@ import {
   PopoverController,
   Events
 } from 'ionic-angular';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -48,7 +47,7 @@ import { WindowRef } from '../../../shared/window';
   selector: 'activities-list-page',
   templateUrl: 'list.html'
 })
-export class ActivitiesListPage implements OnInit {
+export class ActivitiesListPage {
   public initilized_varible(){
     this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
@@ -115,7 +114,7 @@ export class ActivitiesListPage implements OnInit {
     false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
-  public changeColor: any = [
+  public changeColor: Array<Array<Boolean>> = [
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
@@ -129,7 +128,6 @@ export class ActivitiesListPage implements OnInit {
   public checkUserPointer: boolean = false;
   constructor(
     public navCtrl: NavController,
-    public http: Http,
     public activityService: ActivityService,
     public assessmentService: AssessmentService,
     public achievementService: AchievementService,
@@ -154,7 +152,6 @@ export class ActivitiesListPage implements OnInit {
       this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/1/test@test.com`;
     }
   }
-  ngOnInit() {}
   ionViewWillEnter(){
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
@@ -254,8 +251,11 @@ export class ActivitiesListPage implements OnInit {
                   _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
                     this.userAchievementsIDs[index] = ele.id;
                   });
-                  // find ahievement ID whether inside achievemnt list or not
-                  this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+
+                  if (this.userAchievementsIDs && this.achievementListIDs) {
+                    // find ahievement ID whether inside achievemnt list or not
+                    this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+                  }
                   // find all 4 boxes are ticked index value inside changeColor array
                   _.forEach(this.changeColor, (ele, index) => {
                     let findTrueIndex: any = _.uniq(ele, 'true');
