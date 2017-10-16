@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
+
+// Others
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
-
 import * as _ from 'lodash';
 
 @Component({
@@ -11,33 +12,28 @@ import * as _ from 'lodash';
   templateUrl: './assessments-group.html',
 })
 export class AssessmentsGroupPage {
-  questions = [];
-  formGroup;
-
-  // used when navigate from event view page
-  event: any;
-
-  //@TODO: decide which one to use
   activity: any;
-  submission: Submission;
+  answers: any; // to render & display submitted answers
   assessment: any;
   assessmentGroup: any;
   cacheKey: any; // to render & display stored
-
   canUpdateInput: boolean = false;
+  event: any;
+  formGroup: any;
+  inProgress: any;
   published: boolean = false;
-  answers: any; // to render & display submitted answers
-  inProgress: boolean | any;
+  questions: any = [];
+  submission: Submission;
 
   constructor(
-    public navParams: NavParams,
-    public navCtrl: NavController,
-    public fb: FormBuilder,
-    public cache: CacheService,
-    public assessmentService: AssessmentService,
     public alertCtrl: AlertController,
+    public assessmentService: AssessmentService,
+    public cache: CacheService,
+    public events: Events,
+    public fb: FormBuilder,
     public loadingCtrl: LoadingController,
-    public events: Events
+    public navCtrl: NavController,
+    public navParams: NavParams
   ) {}
 
   ionViewDidEnter() {
@@ -55,8 +51,6 @@ export class AssessmentsGroupPage {
 
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submission = this.navParams.get('submission') || {};
-
-    console.log('this.assessmentGroup', this.assessmentGroup);
 
     // preset key used for caching later (locally and remote data)
     this.canUpdateInput = this.isInputEditable(this.submission);
@@ -80,28 +74,11 @@ export class AssessmentsGroupPage {
    *    Must define submissions first
    * @type {boolen}
    */
-   // @TODO modify needed
    public isInputEditable = (submission):boolean => {
      if (_.isEmpty(submission) || submission.status === 'in progress') {
        return true;
      }
      return false;
-    //  let editable = false;
-    //  _.forEach(this.submissions, (submission) => {
-    //    if (_.isEmpty(submission)) {
-    //      editable = true;
-    //    } else {
-    //      _.forEach(submission, (subm) => {
-    //        if (
-    //          subm.AssessmentSubmission &&
-    //          subm.AssessmentSubmission.status === 'in progress'
-    //        ) {
-    //          editable = true;
-    //        }
-    //      });
-    //    }
-    //  });
-    //  return editable;
    }
 
   /**
@@ -109,7 +86,6 @@ export class AssessmentsGroupPage {
    *
    * @type {array}
    */
-   // @TODO modify
   public mapQuestionsFeedback = (questions, submission):any => {
     if (_.isEmpty(submission) || _.isEmpty(submission.review) || submission.status !== 'published') {
       return questions;
@@ -141,40 +117,6 @@ export class AssessmentsGroupPage {
         }
       });
     });
-
-    // _.forEach(submissions, (submission) => {
-    //   _.forEach(submission, (subm) => {
-    //
-    //     _.forEach(subm.AssessmentReviewAnswer, (reviewAnswer) => {
-    //       _.forEach(questions, (question, idx) => {
-    //
-    //         if (reviewAnswer.assessment_question_id === question.id) {
-    //           // text type
-    //           if (question.type === 'text') {
-    //             questions[idx].review_answer = reviewAnswer;
-    //           }
-    //
-    //           // oneof type
-    //           if (question.type === 'oneof') {
-    //             questions[idx].review_answer = reviewAnswer;
-    //             _.forEach(question.choices, (choice, key) => {
-    //               if (choice.id == reviewAnswer.answer && choice.id == question.answer.answer) {
-    //                 questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
-    //               }
-    //               if (choice.id != reviewAnswer.answer && choice.id == question.answer.answer) {
-    //                 questions[idx].choices[key].name = choice.name + ' (you)';
-    //               }
-    //               if (choice.id == reviewAnswer.answer && choice.id != question.answer.answer) {
-    //                 questions[idx].choices[key].name = choice.name + ' (reviewer)';
-    //               }
-    //             });
-    //           }
-    //         }
-    //
-    //       });
-    //     });
-    //   });
-    // });
     return questions;
   }
 
