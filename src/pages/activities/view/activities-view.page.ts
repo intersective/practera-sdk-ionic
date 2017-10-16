@@ -1,39 +1,40 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, NavController, AlertController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+
 // pages
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
-
+// Others
 import * as _ from 'lodash';
+
 @Component({
   templateUrl: './view.html'
 })
 export class ActivitiesViewPage {
-  activity: any = {};
-  assessment: any = {};
-  assessments: any = {};
-  submissions: Array<any> = [];
   achievements: any = {
     available: [],
     obtained: {},
     maxPoints: {}
   };
+  activity: any = {};
+  assessment: any = {};
+  assessments: any = {};
   loadings = {
     submissions: false
   };
+  submissions: Array<any> = [];
 
   constructor(
+    public activityService: ActivityService,
+    public alertCtrl: AlertController,
     public navParams: NavParams,
     public navCtrl: NavController,
     public modalCtrl: ModalController,
-    public activityService: ActivityService,
-    public submissionService: SubmissionService,
-    public alertCtrl: AlertController
-  ) {
-  }
+    public submissionService: SubmissionService
+  ) {}
 
   ionViewWillEnter(): void {
     this.loadings.submissions = true;
