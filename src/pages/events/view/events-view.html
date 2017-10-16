@@ -7,7 +7,8 @@
 <ion-content class="events">
   <ion-list class="title-background"
     [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
-    <div class="title" (click)="titlePopover($event)">
+    <div class="title" (click)="titlePopover($event)"
+      [ngClass]="{'title': event.title.length <= 50, 'smaller-title': event.title.length > 50 }">
       {{ event.title | cutText : 50 : ' ' }}
     </div>
   </ion-list>
