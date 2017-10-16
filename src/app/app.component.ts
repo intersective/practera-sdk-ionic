@@ -38,7 +38,7 @@ export class MyApp implements OnInit {
   // trace screen size (we serve only portrait size)
   public isPortrait: boolean = this.initialStatus();
   initialStatus() {
-    if (this.platform.isPortrait()) {
+    if (this.platform.isPortrait() || this.platform.is('core')) {
       return true;
     } else {
       return false;
@@ -87,11 +87,11 @@ export class MyApp implements OnInit {
     let popoverDOM: any = document.querySelector("ion-popover");
     let modelDOM: any = document.querySelector("ion-modal");
 
-    // if () {
-        // if () {
 
     if ((e.screen.orientation && e.screen.orientation.angle < 45) ||
-      (this.platform.is('ios') && ((e.innerWidth < 512 && e.innerWidth < e.innerHeight) || e.innerWidth >= 768))) {
+      (this.platform.is('ios') && ((e.innerWidth < 512 && e.innerWidth < e.innerHeight) || e.innerWidth >= 768)) ||
+      this.platform.is('core')
+    ) {
       this.isPortrait = true;
       if (popoverDOM){
         popoverDOM.style.opacity = 1;
