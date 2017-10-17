@@ -1,10 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, MenuController } from 'ionic-angular';
+
 // pages
 import { LoginPage } from '../login/login';
 import { TabsPage } from '../tabs/tabs.page';
 import { ActivitiesListPage } from '../activities/list/list.page';
 import { LevelsListPage } from '../levels/list/list';
+
 /* This is side navigation bar which shows after user logged in to the app */
 @Component({
   selector: 'page-sidenav',
@@ -12,13 +14,16 @@ import { LevelsListPage } from '../levels/list/list';
 })
 export class SidenavPage {
   @ViewChild('sideNav') sideNav: NavController;
-  loginPage = LoginPage;
-  tabsPage = TabsPage;
+
   activitiesListPage = ActivitiesListPage;
   levelsListPage = LevelsListPage;
+  loginPage = LoginPage;
   rootPage = null;
+  tabsPage = TabsPage;
 
-  constructor(public menuCtrl: MenuController) {
+  constructor(
+    public menuCtrl: MenuController
+  ) {
     this.rootPage = LoginPage;
   }
 
