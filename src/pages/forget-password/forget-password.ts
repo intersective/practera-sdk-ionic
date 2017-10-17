@@ -1,18 +1,17 @@
 import { Component } from '@angular/core';
-import { NavController,
-         NavParams,
-         LoadingController,
-         AlertController,
-         ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
+import { NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import { FormValidator } from '../../validators/formValidator';
+// Others
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages';
+
 @Component({
   selector: 'page-forget-password',
   templateUrl: 'forget-password.html'
@@ -21,9 +20,10 @@ export class ForgetPasswordPage {
   email: string;
   forgotPwdFormGroup: any;
   // loading & error message variables
-  public sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
-  public sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
-  public sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
+  sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
+  sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
+  sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,15 +32,18 @@ export class ForgetPasswordPage {
     public translationService: TranslationService,
     public authService: AuthService,
     public toastCtrl: ToastController,
-    public formBuilder: FormBuilder) {
-      this.forgotPwdFormGroup = formBuilder.group({
-        email: ['', [FormValidator.isValidEmail,
-                    Validators.required]],
-      });
-    }
+    public formBuilder: FormBuilder
+  ) {
+    this.forgotPwdFormGroup = formBuilder.group({
+      email: ['', [FormValidator.isValidEmail,
+                  Validators.required]],
+    });
+  }
+
   ionViewDidLoad() {
     console.log('ionViewDidLoad ForgetPasswordPage');
   }
+
   userForgotPassword(){
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
@@ -73,13 +76,4 @@ export class ForgetPasswordPage {
         }
      );
   }
-  // logError(error) {
-  //   const alert = this.alertCtrl.create({
-  //     title: 'Email sent failed ..',
-  //     message: error,
-  //     buttons: ['Close']
-  //   });
-  //   alert.present();
-  //   // handle API calling errors display with alert controller
-  // }
 }
