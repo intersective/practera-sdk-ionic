@@ -1,5 +1,7 @@
 import { Component, Input, OnInit, NgZone } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+
+// Others
 import { FilepickerService, FilepickerUpload } from '../../shared/filepicker/filepicker.service';
 import { UtilsService } from '../../shared/utils/utils.service';
 import * as _ from 'lodash';
@@ -61,7 +63,7 @@ export class FileQuestionComponent implements OnInit {
     });
   }
 
-  public injectIcon = (files: any[]) => {
+  injectIcon = (files: any[]) => {
     let result = [];
     files.forEach((file, index) => {
       file.icon = this.util.getIcon(file.mimetype);

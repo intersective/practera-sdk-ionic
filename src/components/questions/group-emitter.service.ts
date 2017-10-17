@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable()
 export class GroupEmitterService {
-  public static _emitter: { [ID: string]: EventEmitter<any> };
+  static _emitter: { [ID: string]: EventEmitter<any> };
 
   static get(ID: string): EventEmitter<any> {
     if (!this._emitter[ID]) {
@@ -11,4 +11,3 @@ export class GroupEmitterService {
     return this._emitter[ID];
   }
 }
-
