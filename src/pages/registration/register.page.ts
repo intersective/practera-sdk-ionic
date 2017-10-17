@@ -1,8 +1,9 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core'; 
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import 'rxjs/add/operator/map';
+
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -13,11 +14,12 @@ import { TranslationService } from '../../shared/translation/translation.service
 // directives
 import { FormValidator } from '../../validators/formValidator';
 // pages
+import { LoginPage } from '../login/login';
 import { RegistrationModalPage } from './modal';
 import { TabsPage } from '../tabs/tabs.page';
-import { LoginPage } from '../login/login';
+// Others
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/map';
 
 const supportEmail = generalVariableMessages.helpMail.email;
 
@@ -25,48 +27,49 @@ const supportEmail = generalVariableMessages.helpMail.email;
   selector: 'register',
   templateUrl: 'register.html',
 })
-
 export class RegisterPage implements OnInit {
   @ViewChild('registrationForm') registrationForm: NgForm;
+
+
+  changeContent: boolean = false;
+  clickSuspended: boolean = false;
+  invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  isPwdMatch: boolean = false;
+  milestone_id: string;
+  minLengthCheck: boolean = true;
+  noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  password: string;
+  passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  pwdMacthBool: boolean = false;
+  regForm: any;
+  registrationErrMessage: any = errMessages.Registration.error.error;
+  registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  submitted: boolean = false;
+  successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
   user: any = {
     password: '',
     verify_password: ''
   };
-  submitted: boolean = false;
-  public regForm: any;
-  public pwdMacthBool: boolean = false;
-  public verifyPwd: boolean = false;
-  public verifySuccess: boolean = null;
-  public isPwdMatch: boolean = false;
-  public changeContent: boolean = false;
-  public minLengthCheck: boolean = true;
-  public clickSuspended: boolean = false;
-  public milestone_id: string;
-  public password: string;
-  public verify_password: string;
-  // loading & error messages variables
-  public verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
-  public successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  public passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
-  public registrationErrMessage: any = errMessages.Registration.error.error;
-  public invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
-  public noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
-  public registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
-  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  verify_password: string;
+  verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+  verifyPwd: boolean = false;
+  verifySuccess: boolean = null;
+
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
-    public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public viewCtrl: ViewController,
-    public notificationService: NotificationService,
-    public navParams: NavParams,
-    public loading: LoadingController,
     public authService: AuthService,
     public cache: CacheService,
     public gameService: GameService,
-    public translationService: TranslationService,
+    public loading: LoadingController,
     public milestone: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public notificationService: NotificationService,
+    public viewCtrl: ViewController,
+    public translationService: TranslationService,
   ) {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
@@ -141,7 +144,7 @@ export class RegisterPage implements OnInit {
           this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
               .subscribe(
                 data => {
-                  // get game_id data after login 
+                  // get game_id data after login
                   this.gameService.getGames()
                       .subscribe(
                         data => {
