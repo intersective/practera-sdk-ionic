@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ActionSheetController,
   NavController,
@@ -8,11 +8,11 @@ import {
   PopoverController,
   Events
 } from 'ionic-angular';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import * as moment from 'moment';
 import * as _ from 'lodash';
 import { loadingMessages, errMessages } from '../../../app/messages';
+import { default as Configure } from '../../../configs/config';
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AssessmentService } from '../../../services/assessment.service';
@@ -33,6 +33,7 @@ import { TabsPage } from '../../../pages/tabs/tabs.page';
 import { EventsListPage } from '../../events/list/list.page';
 import { RankingsPage } from '../../rankings/list/rankings.page';
 import { InstructionPage } from './instruction/instruction.page';
+import { NewItemsPage } from './new-items/new-items.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
 import { WindowRef } from '../../../shared/window';
@@ -46,7 +47,7 @@ import { WindowRef } from '../../../shared/window';
   selector: 'activities-list-page',
   templateUrl: 'list.html'
 })
-export class ActivitiesListPage implements OnInit {
+export class ActivitiesListPage {
   public initilized_varible(){
     this.bookedEventsCount = 0;
     this.characterCurrentExperience = 0;
@@ -62,10 +63,8 @@ export class ActivitiesListPage implements OnInit {
     this.totalAverageScore = 0;
     this.findDataStatus = [];
   }
-  public hardcode_assessment_id: any = 2134;
-  public hardcode_context_id: any = 2532;
-  public anyNewItems: any = this.cacheService.getLocal('gotNewItems');
-  public newItemsData: any = [];
+  public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
+  public hardcode_context_id: any = Configure.hardcode_context_id;
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
@@ -110,20 +109,12 @@ export class ActivitiesListPage implements OnInit {
     obtained: {},
     available: []
   };
-  public achievementListIDs: any = [
-    [355, 402, 353, 354],
-    [351, 404, 349, 350],
-    [370, 407, 368, 369],
-    [344, 403, 342, 343],
-    [361, 405, 359, 360],
-    [365, 406, 363, 364],
-    [341, 341, 341, 341]
-  ];
+  public achievementListIDs: any = Configure.achievementListIDs;
   public show_score_act: any = [
     false,false,false,false,false,false,false
   ];
   public getUserAchievementData: any = [];
-  public changeColor: any = [
+  public changeColor: Array<Array<Boolean>> = [
     [false,false,false,false],
     [false,false,false,false],
     [false,false,false,false],
@@ -137,7 +128,6 @@ export class ActivitiesListPage implements OnInit {
   public checkUserPointer: boolean = false;
   constructor(
     public navCtrl: NavController,
-    public http: Http,
     public activityService: ActivityService,
     public assessmentService: AssessmentService,
     public achievementService: AchievementService,
@@ -154,8 +144,6 @@ export class ActivitiesListPage implements OnInit {
     public translationService: TranslationService,
     public win: WindowRef
   ) {
-    this.anyNewItems = this.cacheService.getLocal('gotNewItems');
-    this.newItemsData = this.cacheService.getLocalObject('allNewItems');
     if(this.email && this.program_id){
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = JSON.parse(this.cacheService.getLocal('email'));
@@ -164,16 +152,19 @@ export class ActivitiesListPage implements OnInit {
       this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/1/test@test.com`;
     }
   }
-  ngOnInit() {}
   ionViewWillEnter(){
-    if(this.anyNewItems == 'true') {
-      for(let i = 0; i < 5; i++){
-        document.querySelector('a.tab-button').className = "hide-tabbar";
-      }
-    }
     // reset data to 0 when page reloaded before got new data
     this.initilized_varible();
     this.loadingDashboard();
+  }
+  ionViewDidEnter() {
+    // Open new items modal when submitted no-need-review answer.
+    // @NOTE getLocal() return boolean data as string
+    if (this.cacheService.getLocal('gotNewItems') === 'true') {
+      this.openNewItemsModal({
+        newItemsData: this.cacheService.getLocalObject('allNewItems')
+      });
+    }
   }
   refreshPage() {
     this.initilized_varible();
@@ -202,7 +193,10 @@ export class ActivitiesListPage implements OnInit {
       }
     }
   }
-
+  openNewItemsModal(params: any = {}) {
+    let modal = this.modalCtrl.create(NewItemsPage, params);
+    modal.present();
+  }
   // display user achievemnt statistics score points
   loadingDashboard() {
     let loadingData = this.loadingCtrl.create({
@@ -227,25 +221,9 @@ export class ActivitiesListPage implements OnInit {
               this.navCtrl.push(InstructionPage);
             }
             if(this.activities.length == 1){
-              this.achievementListIDs = [
-                [341, 341, 341, 341],
-                [355, 402, 353, 354],
-                [351, 404, 349, 350],
-                [370, 407, 368, 369],
-                [344, 403, 342, 343],
-                [361, 405, 359, 360],
-                [365, 406, 363, 364]
-              ];
+              this.achievementListIDs = Configure.newbieOrderedIDs
             }else {
-              this.achievementListIDs = [
-                [355, 402, 353, 354],
-                [351, 404, 349, 350],
-                [370, 407, 368, 369],
-                [344, 403, 342, 343],
-                [361, 405, 359, 360],
-                [365, 406, 363, 364],
-                [341, 341, 341, 341]
-              ];
+              this.achievementListIDs = Configure.achievementListIDs;
             }
             _.forEach(this.activities, ((element,index) => {
               this.activityIndex = index + 1;
@@ -273,8 +251,11 @@ export class ActivitiesListPage implements OnInit {
                   _.forEach(this.getUserAchievementData.Achievement, (ele, index) => {
                     this.userAchievementsIDs[index] = ele.id;
                   });
-                  // find ahievement ID whether inside achievemnt list or not
-                  this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+
+                  if (this.userAchievementsIDs && this.achievementListIDs) {
+                    // find ahievement ID whether inside achievemnt list or not
+                    this.changeColor = this.isTicked(this.userAchievementsIDs, this.achievementListIDs);
+                  }
                   // find all 4 boxes are ticked index value inside changeColor array
                   _.forEach(this.changeColor, (ele, index) => {
                     let findTrueIndex: any = _.uniq(ele, 'true');
@@ -363,13 +344,6 @@ export class ActivitiesListPage implements OnInit {
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
     disabledActivityPopup.present();
-  }
-  // close modal and display as main page
-  closeItemsShwon(){
-    this.anyNewItems = !this.cacheService.getLocal('gotNewItems');
-    this.cacheService.setLocalObject('allNewItems', []);
-    this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
-    this.navCtrl.setRoot(TabsPage);
   }
   // link to certain pages
   whatsThis() {

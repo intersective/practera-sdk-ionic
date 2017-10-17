@@ -62,11 +62,11 @@ event, .events {
   .title-background {
     @extend ion-card-content.with-cover;
     height: 10em;
-
     .title {
       @extend .event-title;
-      line-height: 4em;
-      font-size: 3.5rem;
+      line-height: 1.5em;
+      font-size: 3rem;
+      padding: 0 2.5%;
     }
   }
   .details {
@@ -118,8 +118,5 @@ event, .events {
   }
   .lighter {
     opacity: 0.7;
-  }
-  #location-button {
-    margin-bottom: 60px;
   }
 }

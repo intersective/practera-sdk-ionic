@@ -100,7 +100,7 @@ export class RequestService {
   // Set API request options
   setOptions(options) {
     let result = new RequestOptions({ headers: this.appendHeader() });
-    let timelineId = this.cacheService.getLocal('timelineID');
+    let timelineId = this.cacheService.getLocalObject('timelineID');
 
     let params = new URLSearchParams();
     if (timelineId) {
