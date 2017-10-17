@@ -40,17 +40,17 @@ export class EventsViewPage {
   submissions: Array<any> = [];
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private cache: CacheService,
-    private eventService: EventService,
-    private translationService: TranslationService,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private actionSheetCtrl: ActionSheetController,
-    private toastCtrl: ToastController,
-    private assessmentService: AssessmentService,
-    private submissionService: SubmissionService
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public cache: CacheService,
+    public eventService: EventService,
+    public translationService: TranslationService,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public actionSheetCtrl: ActionSheetController,
+    public toastCtrl: ToastController,
+    public assessmentService: AssessmentService,
+    public submissionService: SubmissionService
   ) {
     this.event = navParams.get('event');
   }

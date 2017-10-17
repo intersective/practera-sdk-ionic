@@ -57,17 +57,17 @@ export class RegisterPage implements OnInit {
 
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
-    private navCtrl: NavController,
-    private alertCtrl: AlertController,
-    private viewCtrl: ViewController,
-    private notificationService: NotificationService,
-    private navParams: NavParams,
-    private loading: LoadingController,
-    private authService: AuthService,
-    private cache: CacheService,
-    private gameService: GameService,
-    private translationService: TranslationService,
-    private milestone: MilestoneService,
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
+    public viewCtrl: ViewController,
+    public notificationService: NotificationService,
+    public navParams: NavParams,
+    public loading: LoadingController,
+    public authService: AuthService,
+    public cache: CacheService,
+    public gameService: GameService,
+    public translationService: TranslationService,
+    public milestone: MilestoneService,
   ) {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({

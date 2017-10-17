@@ -10,5 +10,5 @@ export class LeaderboardSettingsPage {
   useremail: string = this.cacheService.getLocalObject('email') || '';
   isHide: boolean = false;
 
-  constructor(private cacheService: CacheService){}
+  constructor(public cacheService: CacheService){}
 }

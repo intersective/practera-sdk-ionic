@@ -1,16 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  NavParams,
-  NavController,
-  Navbar,
-  LoadingController,
-  ModalController,
-  AlertController,
-  Events
-} from 'ionic-angular';
-import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
-import * as _ from 'lodash';
+import { NavParams, NavController, Navbar, LoadingController, ModalController, AlertController, Events } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
+
 //services
 import { AssessmentService } from '../../services/assessment.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -20,8 +11,10 @@ import { TranslationService } from '../../shared/translation/translation.service
 // pages
 import { AssessmentsGroupPage } from './group/assessments-group.page'
 import { ItemsPopupPage } from './popup/items-popup.page';
-// import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ActivitiesListPage } from '../activities/list/list.page';
+// Others
+import { confirmMessages, errMessages, loadingMessages } from '../../app/messages';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'assessments-page',
@@ -39,8 +32,8 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   combinedItems: any = [];
   discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
-  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
   getCharacterID: any = this.cacheService.getLocal('character_id');
+  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
   gotNewItems: boolean = false;
   isEventSubmission: boolean = false;
   initialItemsCount: any = {};
@@ -55,21 +48,21 @@ export class AssessmentsPage {
   totalItems: any = [];
 
   constructor(
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
-    private modalCtrl: ModalController,
-    private assessmentService: AssessmentService,
-    private cacheService: CacheService,
-    private gameService: GameService,
-    private submissionService: SubmissionService,
-    private translationService: TranslationService,
-    private events: Events
+    public alertCtrl: AlertController,
+    public assessmentService: AssessmentService,
+    public cacheService: CacheService,
+    public events: Events,
+    public gameService: GameService,
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public submissionService: SubmissionService,
+    public translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
     if (!this.activity) {
-      throw "Fatal Error: Activity not available";
+      throw 'Fatal Error: Activity not available';
     }
   }
 
@@ -236,7 +229,7 @@ export class AssessmentsPage {
 
           this.submissions = this.filterSubmissions(submissions);
           resolve(submissions);
-        }, err => {
+        }, (err) => {
           console.log('err', err);
           reject(err);
         });
@@ -438,7 +431,6 @@ export class AssessmentsPage {
         .subscribe(
           (assessments: any) => {
             loading.dismiss().then(_ => {
-              console.log('assessments', assessments);
               this.allowSubmit = false;
               this.popupAfterSubmit();
             });

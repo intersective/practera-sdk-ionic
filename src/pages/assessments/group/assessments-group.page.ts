@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 
+// Others
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
-
 import * as _ from 'lodash';
 @Component({
   selector: 'assessments-group-page',
@@ -20,20 +20,20 @@ export class AssessmentsGroupPage implements OnInit {
   canUpdateInput: boolean = false;
   event: any;
   formGroup: any;
-  inProgress: boolean | any;
+  inProgress: any;
   published: boolean = false;
-  questions = [];
+  questions: any = [];
   submission: Submission;
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private fb: FormBuilder,
-    private cache: CacheService,
-    private assessmentService: AssessmentService,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private events: Events
+    public alertCtrl: AlertController,
+    public assessmentService: AssessmentService,
+    public cache: CacheService,
+    public events: Events,
+    public fb: FormBuilder,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public navParams: NavParams
   ) {}
 
   ngOnInit() {
@@ -54,6 +54,7 @@ export class AssessmentsGroupPage implements OnInit {
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submission = this.navParams.get('submission') || {};
+
     // preset key used for caching later (locally and remote data)
     this.canUpdateInput = this.isInputEditable(this.submission);
     // this.published = this.assessmentService.isPublished(this.submissions);
@@ -80,8 +81,7 @@ export class AssessmentsGroupPage implements OnInit {
    *    Must define submissions first
    * @type {boolen}
    */
-   // @TODO modify needed
-   private isInputEditable = (submission):boolean => {
+   public isInputEditable = (submission):boolean => {
      if (_.isEmpty(submission) || submission.status === 'in progress') {
        return true;
      }
@@ -93,8 +93,7 @@ export class AssessmentsGroupPage implements OnInit {
    *
    * @type {array}
    */
-   // @TODO modify
-  private mapQuestionsFeedback = (questions, submission):any => {
+  public mapQuestionsFeedback = (questions, submission):any => {
     if (_.isEmpty(submission) || _.isEmpty(submission.review) || submission.status !== 'published') {
       return questions;
     }
@@ -133,7 +132,6 @@ export class AssessmentsGroupPage implements OnInit {
         }
       });
     });
-
     return questions;
   }
 
@@ -144,7 +142,7 @@ export class AssessmentsGroupPage implements OnInit {
    *
    * @type {number}
    */
-  private getSubmissionContext = ():number => {
+  public getSubmissionContext = ():number => {
     // if event object is available
     if (this.event) {
       return this.event.context_id;
@@ -213,7 +211,7 @@ export class AssessmentsGroupPage implements OnInit {
    * @param {object} submission single submission object retrieve from previous page/view
    * @return {object} formatted submission answer
    */
-  private formInProgressAnswer(submission): boolean | Submission {
+  public formInProgressAnswer(submission): boolean | Submission {
     if (_.isEmpty(submission)) {
       return false;
     }
@@ -309,7 +307,7 @@ export class AssessmentsGroupPage implements OnInit {
    * @param {FormGroup} question FormGroup for a question
    * @param {Object} answers answer [choices object || string answer]
    */
-  private setValueWith(question, answers) {
+  public setValueWith(question, answers) {
     if (!_.isEmpty(answers.choices)) {
       question.controls.choices.setValue(answers.choices);
     } else {

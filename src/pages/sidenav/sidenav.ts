@@ -18,7 +18,7 @@ export class SidenavPage {
   levelsListPage = LevelsListPage;
   rootPage = null;
 
-  constructor(private menuCtrl: MenuController) {
+  constructor(public menuCtrl: MenuController) {
     this.rootPage = LoginPage;
   }
 

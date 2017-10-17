@@ -13,11 +13,11 @@ export class EventsDownloadPage {
   files: any = [];
 
   constructor(
-    private navCtrl: NavController,
-    private params: NavParams,
-    private fs: FilepickerService,
-    private win: WindowRef,
-    private utils: UtilsService
+    public navCtrl: NavController,
+    public params: NavParams,
+    public fs: FilepickerService,
+    public win: WindowRef,
+    public utils: UtilsService
   ) {
   }
 

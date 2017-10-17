@@ -21,12 +21,12 @@ export class EventCheckinPage {
   checkin: any = {};
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private cache: CacheService,
-    private eventService: EventService,
-    private assessmentService: AssessmentService,
-    private loadingCtrl: LoadingController
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public cache: CacheService,
+    public eventService: EventService,
+    public assessmentService: AssessmentService,
+    public loadingCtrl: LoadingController
   ) {
     this.event = navParams.get('event');
     this.submissions = navParams.get('submissions');

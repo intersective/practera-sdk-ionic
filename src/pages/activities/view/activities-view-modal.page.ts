@@ -33,9 +33,10 @@ import { ViewController, NavParams } from 'ionic-angular';
 export class ActivitiesViewModalPage {
   activity: any = {};
   activityData: Object = {};
+
   constructor(
-    private navParams: NavParams,
-    private viewCtrl: ViewController
+    public navParams: NavParams,
+    public viewCtrl: ViewController
   ) {
   }
 

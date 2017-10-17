@@ -1,15 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import {
-  NavController,
-  ToastController,
-  LoadingController,
-  ModalController
-} from 'ionic-angular';
 import { Http } from '@angular/http';
+import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages';
-import * as _ from 'lodash';
+
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
@@ -24,58 +17,55 @@ import { ItemsPopupPage } from '../../assessments/popup/items-popup.page';
 import { TabsPage } from '../../../pages/tabs/tabs.page';
 // pipes
 import { TruncatePipe } from '../../../pipes/truncate.pipe';
-/**
- * @TODO: remove after development is complete
- * flag to tell whether should UI popup toast error message at the bottom
- * @type {Boolean}
- */
+// Others
+import { loadingMessages, errMessages } from '../../../app/messages';
+import { TranslationService } from '../../../shared/translation/translation.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'activities-list-page',
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage implements OnInit {
-  private anyNewItems: any = this.cacheService.getLocal('gotNewItems');
-  private newItemsData: any = [];
-  private activities: any = [];
-  private initialItems: any = [];
-  private totalAchievements: any = [];
-  private currentPoints: number = 0;
-  private maxPoints: number = 0;
-  private currentPercentage: any = '0';
-  private filteredSubmissions: any = [];
-  private characterData: any = [];
-  private submissionData: any = [];
-  private characterCurrentExperience: number = 0;
-  private percentageValue: number = 0;
-  private submissionPoints: number = 0;
-  private returnError: boolean = false;
-  // loading & err message variables
-  private activitiesLoadingErr: any = errMessages.General.loading.load;
-  private activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
-  // Achievements
-  private achievements = {
+  achievements: any = {
     maxPoint: {},
     obtained: {},
     available: []
   };
+  activities: any = [];
+  activitiesEmptyDataErr: any = errMessages.Activities.activities.empty;
+  activitiesLoadingErr: any = errMessages.General.loading.load;
+  anyNewItems: any = this.cacheService.getLocal('gotNewItems');
+  characterCurrentExperience: number = 0;
+  characterData: any = [];
+  currentPercentage: any = '0';
+  currentPoints: number = 0;
+  filteredSubmissions: any = [];
+  initialItems: any = [];
+  maxPoints: number = 0;
+  newItemsData: any = [];
+  returnError: boolean = false;
+  percentageValue: number = 0;
+  submissionData: any = [];
+  submissionPoints: number = 0;
+  totalAchievements: any = [];
+
   constructor(
-    private navCtrl: NavController,
-    private http: Http,
-    private activityService: ActivityService,
-    private achievementService: AchievementService,
-    private cacheService: CacheService,
-    private characterService: CharacterService,
-    private gameService: GameService,
-    private submissionService: SubmissionService,
-    private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController,
-    private modalCtrl: ModalController,
-    private translationService: TranslationService
+    public achievementService: AchievementService,
+    public activityService: ActivityService,
+    public cacheService: CacheService,
+    public characterService: CharacterService,
+    public gameService: GameService,
+    public http: Http,
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
+    public navCtrl: NavController,
+    public submissionService: SubmissionService,
+    public toastCtrl: ToastController,
+    public translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
     this.newItemsData = this.cacheService.getLocalObject('allNewItems');
-    console.log("item data: ", this.newItemsData);
   }
   ngOnInit() {
     this.loadingDashboard();
@@ -120,12 +110,12 @@ export class ActivitiesListPage implements OnInit {
                   let average_score = (this.submissionPoints/this.filteredSubmissions.length)*100;
                   (average_score > 0) ? this.percentageValue = average_score : this.percentageValue = 0;
                   this.currentPercentage = this.percentageValue.toFixed(2);
-                  // console.log("Percent: ", this.currentPercentage); // display as string format
+                  // console.log('Percent: ', this.currentPercentage); // display as string format
                   this.characterData = results[1].Characters[0];
                   this.cacheService.setLocal('character_id', this.characterData.id);
-                  console.log("character id: ", this.characterData.id);
+                  console.log('character id: ', this.characterData.id);
                   this.characterCurrentExperience = this.characterData.experience_points;
-                  // console.log("Experience: ", this.characterCurrentExperience);
+                  // console.log('Experience: ', this.characterCurrentExperience);
                   this.gameService.getItems({
                     character_id: this.characterData.id
                   })
@@ -133,10 +123,10 @@ export class ActivitiesListPage implements OnInit {
                     data => {
                       this.initialItems = data.Items;
                       this.cacheService.setLocalObject('initialItems', this.initialItems);
-                      console.log("Items Data: ", this.initialItems);
+                      console.log('Items Data: ', this.initialItems);
                     },
                     err => {
-                      console.log("Items Data error: ", err);
+                      console.log('Items Data error: ', err);
                     }
                   );
                 });
@@ -166,7 +156,7 @@ export class ActivitiesListPage implements OnInit {
   // view the disabled activity popup
   goToPopup(unlock_id: any){
     let disabledActivityPopup = this.modalCtrl.create(ActivityListPopupPage, {unlock_id: unlock_id});
-    console.log("Achievement ID: ", unlock_id);
+    console.log('Achievement ID: ', unlock_id);
     disabledActivityPopup.present();
   }
   // close modal and display as main page

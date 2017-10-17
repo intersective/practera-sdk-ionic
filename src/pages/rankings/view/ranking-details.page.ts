@@ -23,12 +23,12 @@ export class RankingDetailsPage {
   loadingMessages: any = loadingMessages.LoadingSpinner.loading;
   emptyErrorMessage: any = errMessages.General.loading.load;
 
-  constructor(private navCtrl: NavController,
-              private loadingCtrl: LoadingController,
-              private alertCtrl: AlertController,
-              private modalCtrl: ModalController,
-              private params: NavParams,
-              private achievementService: AchievementService){}
+  constructor(public navCtrl: NavController,
+              public loadingCtrl: LoadingController,
+              public alertCtrl: AlertController,
+              public modalCtrl: ModalController,
+              public params: NavParams,
+              public achievementService: AchievementService){}
 
   ionViewWillEnter() {
     this.myRank = this.params.get('myRanking');

@@ -18,12 +18,12 @@ export class SettingsPage {
   logoutMessage: any = loadingMessages.Logout.logout;
   settings = [];
   constructor(
-    private cache: CacheService,
-    private navCtrl: NavController,
-    private menuCtrl: MenuController,
-    private loadingCtrl: LoadingController,
-    private translationService: TranslationService,
-    private appCtrl: App
+    public cache: CacheService,
+    public navCtrl: NavController,
+    public menuCtrl: MenuController,
+    public loadingCtrl: LoadingController,
+    public translationService: TranslationService,
+    public appCtrl: App
   ) {}
 
   getUserEmail() {

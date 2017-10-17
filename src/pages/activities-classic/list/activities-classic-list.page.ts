@@ -13,18 +13,17 @@ declare var _: any;
   templateUrl: './list.html'
 })
 export class ActivitiesClassicListPage {
-
   activities: Array<any> = [];
 
   constructor(
-    private navCtrl: NavController,
-    private activityService: ActivityService,
-    private toastCtrl: ToastController,
-    private loader: LoadingController
+    public navCtrl: NavController,
+    public activityService: ActivityService,
+    public toastCtrl: ToastController,
+    public loader: LoadingController
   ) {}
 
   // @TODO: Move to shared function later...
-  private _error(err) {
+  public _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,

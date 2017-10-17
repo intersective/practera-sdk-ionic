@@ -28,14 +28,14 @@ export class MagicLinkPage {
   misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
 
   constructor(
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private authService: AuthService,
-    private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
-    private milestoneService: MilestoneService,
-    private cacheService: CacheService,
-    private gameService: GameService
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public authService: AuthService,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public milestoneService: MilestoneService,
+    public cacheService: CacheService,
+    public gameService: GameService
   ) {}
 
   ionViewDidLoad() {

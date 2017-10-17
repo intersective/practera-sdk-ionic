@@ -27,15 +27,15 @@ export class RegistrationPage implements OnInit {
   verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
 
   constructor(
-    private nav: NavController,
-    private params: NavParams,
-    private authService: AuthService,
-    private sanitizer: DomSanitizer,
-    private notification: NotificationService,
-    private translationService: TranslationService,
-    private alertCtrl: AlertController,
-    private cache: CacheService,
-    private request: RequestService) {}
+    public nav: NavController,
+    public params: NavParams,
+    public authService: AuthService,
+    public sanitizer: DomSanitizer,
+    public notification: NotificationService,
+    public translationService: TranslationService,
+    public alertCtrl: AlertController,
+    public cache: CacheService,
+    public request: RequestService) {}
 
   displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({

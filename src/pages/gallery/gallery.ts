@@ -53,7 +53,7 @@ export class GalleryPage {
   ) {}
 
   // @TODO: Move to shared function later...
-  private _error(err) {
+  public _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,

@@ -25,11 +25,11 @@ export class TermConditionPage {
   verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
 
   constructor(
-    private nav: NavController,
-    private alertCtrl: AlertController,
-    private authService: AuthService,
-    private notificationService: NotificationService,
-    private translationService: TranslationService,
+    public nav: NavController,
+    public alertCtrl: AlertController,
+    public authService: AuthService,
+    public notificationService: NotificationService,
+    public translationService: TranslationService,
   ) {}
 
   accessMethod(){

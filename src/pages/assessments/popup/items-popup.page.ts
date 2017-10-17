@@ -1,34 +1,35 @@
 import { Component, Injectable } from '@angular/core';
 import { ViewController, LoadingController, NavParams, NavController } from 'ionic-angular';
 
-import { i18nData } from '../../../app/i18n-en';
-import { loadingMessages, errMessages } from '../../../app/messages';
-import * as _ from 'lodash';
 // services
 import { CacheService } from '../../../shared/cache/cache.service';
 import { TranslateService } from '@ngx-translate/core';
 // pages
 import { TabsPage } from '../../../pages/tabs/tabs.page';
+// Others
+import { i18nData } from '../../../app/i18n-en';
+import { loadingMessages, errMessages } from '../../../app/messages';
+import * as _ from 'lodash';
+
 @Injectable()
 @Component({
   selector: 'items-popup',
   templateUrl: 'items-popup.html'
 })
 export class ItemsPopupPage {
-
-  combinedData: any = [];
-  loadingMessage: any = loadingMessages.LoadingSpinner.loading;
+  public combinedData: any = [];
+  public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
 
   constructor(
-    private viewCtrl: ViewController,
-    private navCtrl: NavController,
-    private navParams: NavParams,
-    private loadingCtrl: LoadingController,
-    private cacheService: CacheService,
-    private translationService: TranslateService
+    public cacheService: CacheService,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public translationService: TranslateService,
+    public viewCtrl: ViewController
   ) {}
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.combinedData = this.cacheService.getLocalObject('allNewItems');
   }
 

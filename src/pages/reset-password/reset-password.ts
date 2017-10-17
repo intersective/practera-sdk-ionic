@@ -48,16 +48,16 @@ export class ResetPasswordPage implements OnInit {
   passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
 
   constructor(private navCtrl: NavController,
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private authService: AuthService,
-    private viewCtrl: ViewController,
-    private loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder,
-    private milestoneService: MilestoneService,
-    private cacheService: CacheService,
-    private gameService: GameService,
-    private translationService: TranslationService) {
+    public navParams: NavParams,
+    public alertCtrl: AlertController,
+    public authService: AuthService,
+    public viewCtrl: ViewController,
+    public loadingCtrl: LoadingController,
+    public formBuilder: FormBuilder,
+    public milestoneService: MilestoneService,
+    public cacheService: CacheService,
+    public gameService: GameService,
+    public translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
           password: ['', [Validators.minLength(8), Validators.required]],
