@@ -27,22 +27,33 @@
       {{ event.description || 'No description available.' }}
     </ion-item>
   </ion-list>
-  <ion-list inset class="download">
-    <button ion-item (click)="gotoDownload(event)" detail-push>Download</button>
+  <ion-list inset class="download" *ngIf="event.files && event.files.length > 0">
+    <button ion-item (click)="gotoDownload(event)" detail-push>{{ 'GENERAL.DOWNLOAD' | translate }}</button>
   </ion-list>
 </ion-content>
 <ion-footer class="events">
   <ion-toolbar>
     <p class="lighter spacer-left">{{ bookingStatus }}</p>
-    <ion-buttons end>
+    <ion-buttons end *ngIf="loadings.checkin">
+      <ion-spinner></ion-spinner>
+    </ion-buttons>
+
+    <ion-buttons end *ngIf="!loadings.checkin">
       <button ion-button *ngIf="!event.isBooked" class="book-btn" (click)="book(event)">
-        Book
+        {{ 'EVENTS.BOOK' | translate }}
       </button>
-      <button ion-button *ngIf="event.isBooked" class="checkin-btn" (click)="checkin(event)">
-        Check-in
+
+      <button ion-button *ngIf="event.isBooked && allowCheckIn(event)" class="checkin-btn" (click)="checkin(event)">
+        <span *ngIf="completedSubmissions">
+          {{ 'EVENTS.VIEWCHECKIN' | translate }}
+        </span>
+        <span *ngIf="!completedSubmissions">
+          {{ 'EVENTS.CHECKIN' | translate }}
+        </span>
       </button>
-      <button ion-button *ngIf="event.isBooked" class="cancel-btn" outline (click)="cancelBooking(event)">
-        Cancel Booking
+
+      <button ion-button *ngIf="!completedSubmissions && !event.isAttended && event.isBooked && allowCheckIn(event)" class="cancel-btn" outline (click)="cancelBooking(event)">
+          {{ 'EVENTS.CANCELBOOKING' | translate }}
       </button>
     </ion-buttons>
   </ion-toolbar>

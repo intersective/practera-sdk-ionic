@@ -8,10 +8,28 @@
 }
 
 /* Utilities */
+// colours
+.red { color: red; }
+.strong { font-weight: bolder; }
+.muted {
+  opacity: 0.5;
+}
+
+.hr {
+  padding-top: 16px;
+  margin-bottom: 13px;
+  min-height: 4.5rem;
+  border-top: 1px solid #dedede;
+}
+
 .title-wrap {
   overflow: inherit;
   text-overflow: none;
   white-space: pre-wrap;
+}
+
+.uppercase {
+  text-transform: uppercase;
 }
 
 .inset {

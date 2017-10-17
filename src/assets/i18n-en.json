@@ -1,0 +1,76 @@
+{
+  "ACTIVITY": {
+    "PAGETITLE": "Dashboard",
+    "POINTS": "Points",
+    "PROGRESS": "Progress",
+    "SUBMISSION": "Submission"
+  },
+  "ASSESSMENT": {
+    "PAGETITLE": "Assessment"
+  },
+  "EVENTS": {
+    "ATTENDED": "Attended",
+    "BOOK": "Book",
+    "BROWSE": "Browse",
+    "CANCELBOOKING": "Cancel Booking",
+    "CHECKIN": "Check-in",
+    "VIEWCHECKIN": "View Check-in",
+    "DOWNLOAD": "Download",
+    "MYBOOKINGS": "My Bookings",
+    "PAGETITLE": "Events"
+  },
+  "FORGOTPASSWORD": {
+    "INPUTTITLE": "Please enter your email address to reset password",
+    "PAGETITLE": "Forgot Password",
+    "SENDBUTTON": "Send to Mailbox"
+  },
+  "GENERAL": {
+    "DONE": "Done",
+    "DOWNLOAD": "Download",
+    "NEXT": "Next",
+    "PREV": "Prev",
+    "SKIP": "Skip",
+    "SUBMIT": "Submit"
+  },
+  "LOGIN": {
+    "HEADER": "Welcome to Practera",
+    "PAGETITLE": "Login",
+    "PASSWORDFORGOT": "Forget Your Password?"
+  },
+  "REGISTRATION": {
+    "HEADER": "Great - you are almost there! Just one more thing...",
+    "PAGETITLE": "Set Password"
+  },
+  "RANKING": {
+    "DETAIL": "Ranking Details",
+    "ME": "Me",
+    "MONTHLYPOINTS": "Points(Monthly)",
+    "PAGETITLE": "Leaderboard",
+    "TOTALPOINTS": "Points(Total)"
+  },
+  "RESETPASSWORD": {
+    "PAGETITLE": "Reset Password"
+  },
+  "SETTINGS": {
+    "HELP": "Email Help",
+    "LEADERBOARD": "Settings",
+    "LOGOUT": "Logout",
+    "PAGETITLE": "Account",
+    "PROFILE": "My Profile ",
+    "SUPPORT": "Support",
+    "SWITCHER": "Program Switcher",
+    "TUTORIAL": "Tutorial",
+    "TERMS": "Terms of Use"
+  },
+  "TABS": {
+    "ACCOUNT": "Account",
+    "DASHBOARD": "Dashboard",
+    "EVENTS": "Events",
+    "RANKING": "Ranking"
+  },
+  "TERMCONDITIONS": {
+    "PAGETITLE": "Terms and Conditions",
+    "AGREE": "I agree",
+    "NEXT": "Next"
+  }
+}

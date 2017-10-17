@@ -16,15 +16,17 @@ $item-wp-detail-push-show: true;
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 // General Colors (Shared File)
-$primary: #22c7fa;
+// main colors
+$primary: #29B4D0; // practera theme color
 $secondary: #ffffff;
 $danger: #f53d3d;
-$light: #f4f4f4;
-$primary-dark: #000000;
+$dark: #000000;
+$grey: grey;
+$primary-dark: $dark;
 $secondary-dark: #222222;
 $border-primary: #dddddd;
 $border-secondary: #cccccc;
-$button: #4470a5;
+$practera-blue: #4470a5;
 $soft-green: #49BA81;
 
 
@@ -39,14 +41,12 @@ $soft-green: #49BA81;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
+// @NOTE: A base's contrast colour is a colour that highlight its base colour. So making contrast and base colour at nearly the same colour tone can cause the design look faded.
+
 $colors: (
   primary: (
      base: $primary,
-     contrast: $light
-  ),
-  primary-light: (
-     base: lighten($primary, 10%),   // make 10% lighter than primary
-     contrast: darken($secondary, 10%) // darken for contrast?
+     contrast: darken($primary, 90%)
   ),
   primary-dark:  (
      base: darken($primary, 10%), // make 10% darker than primary
@@ -54,34 +54,42 @@ $colors: (
   ),
   secondary: (
      base: $secondary,
-     contrast: $light
+     contrast: $dark
   ),
   danger: (
      base: $danger,
      contrast: $secondary
   ),
   light: (
-     base: $light,
-     contrast: $secondary
+     base: $secondary,
+     contrast: darken($secondary, 90%)
   ),
   dark: (
      base: $primary-dark,
      contrast: $secondary
   ),
-  button: (
-    base: $button,
+  practera-thick: (
+    base: $practera-blue,
     contrast: $secondary
   ),
   border: (
-    base: $border-primary,
-    contrast: $border-secondary
+    base: $grey,
+    contrast:  darken($grey, 90%)
   ),
   soft-green: (
      base: $soft-green,
      contrast: darken($soft-green, 10%) // darken for contrast?
   ),
+  purple: (
+    base: #a94aa9,
+    contrast: $secondary
+  )
 );
 
+// Small arrow color for list
+// $item-md-detail-push-color: color($colors, primary-dark);
+// $item-wp-detail-push-color: color($colors, primary-dark);
+// $item-ios-detail-push-color: color($colors, primary-dark);
 
 // App iOS Variables
 // --------------------------------------------------
@@ -127,4 +135,3 @@ $colors: (
 
 // @import "roboto";
 // @import "noto-sans";
-

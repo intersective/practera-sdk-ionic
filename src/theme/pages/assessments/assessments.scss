@@ -1,0 +1,15 @@
+/**
+ * @description
+ *  - assessments list style
+ * @page
+ *  - pages/assessments/assessments.html
+ */
+.assessments-list {
+  ion-card.no-box-shadow {
+    box-shadow: none;
+  }
+
+  .btn-submit[disabled] {
+    display: none;
+  }
+}

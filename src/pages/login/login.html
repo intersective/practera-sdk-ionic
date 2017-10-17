@@ -4,22 +4,48 @@
       <ion-col>
         <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
         <h3>
-          Welcome to Practera
+          {{ 'LOGIN.HEADER' | translate }}
         </h3>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col width-10></ion-col>
-      <ion-col width-80>
-        <button class="general-circle-btn"
-                ion-button
-                block
-                color="button"
-                (click)="popLoginModal()">
-          LOGIN
-        </button>
+      <ion-col col-10 offset-1>
+          <form #loginForm="ngForm"
+          [formGroup]="loginFormGroup"
+          class="general-form">
+          <ion-list>
+            <ion-item no-lines>
+              <ion-input type="text"
+                [(ngModel)]="email"
+                name="email"
+                placeholder="Email"
+                formControlName="email"
+                #emailFocus></ion-input>
+            </ion-item>
+            <ion-item no-lines>
+              <ion-input type="password"
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Password"
+                formControlName="password"></ion-input>
+            </ion-item>
+          </ion-list>
+          <button ion-button
+            type="submit"
+            block
+            color="practera-thick"
+            (click)="userLogin()"
+            [disabled]="loginForm.invalid">
+            {{ 'LOGIN.PAGETITLE' | translate }}
+          </button>
+          <div class="forget-password-container">
+            <button class="general-circle-btn"
+              (click)="linkToForgetPassword()">
+              {{ 'LOGIN.PASSWORDFORGOT' | translate }}
+            </button>
+          </div>
+        </form>
       </ion-col>
-      <ion-col width-10></ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>

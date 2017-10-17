@@ -1,0 +1,25 @@
+/**
+ * @page pages/login/login.html
+ * @page pages/registration/register.html
+ * @page pages/reset-password/reset-password.html
+ */
+.default-center-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ion-row {
+    width: 100%;
+    text-align: center;
+    .default-logo {
+      width: 128pt;
+      height: 128pt;
+    }
+    h3 {
+      color: color($colors, practera-thick);
+      z-index: 3;
+      font-size: 22pt;
+      padding-bottom: 12pt;
+    }
+  }
+}

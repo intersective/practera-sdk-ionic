@@ -1,0 +1,60 @@
+/**
+ * @page pages/forget-password/forget-password.html
+ */
+
+.login-container {
+  @include placeholderColor;
+  background-color: color($colors, secondary, base);
+  height: 100%;
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  height: 100%;
+  .login-form {
+    margin: 0 15pt;
+    @include placeholderColor;
+    button,
+    .general-circle-btn {
+      @include circle-btn;
+    }
+    .error-hint {
+      text-align: center;
+      padding-top: 5pt;
+    }
+  }
+  .forget-password-container {
+    text-align: center;
+    border: none;
+    button {
+      color: color($colors, practera-thick); // default-theme
+      margin-top: 24pt;
+      font-size: 11pt;
+      background-color: transparent;
+    }
+  }
+  ion-item {
+    border-bottom: 1px solid $border-primary !important;
+    color: color($colors, dark, base);
+  }
+  .item-md,
+  .item-ios {
+    padding: 0px;
+    background-color: transparent;
+  }
+  .list-ios > .item-block:first-child {
+    border-top: none;
+  }
+  ion-label[fixed] {
+    -webkit-flex: 0 0 80px;
+    -ms-flex: 0 0 80px;
+    flex: 0 0 80px;
+    width: 80px;
+    min-width: 80px;
+  }
+  // text input without outline
+  .text-input-ios,
+  .text-input-md,
+  .focus-outline:focus {
+    outline: none !important;
+  }
+}

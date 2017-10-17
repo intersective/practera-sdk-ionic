@@ -1,0 +1,47 @@
+/**
+ * @page pages/forget-password/forget-password.html
+ * @page pages/login/login.html
+ * @page pages/register/register.html
+ * @page pages/reset-password/reset-password.html
+ */
+
+.login-module {
+  font-family: $font-secondary;
+  background-color: color($colors, secondary, base);
+  background-repeat: no-repeat;
+  .scroll-content {
+    overflow-y: hidden;
+  }
+  ion-grid {
+    .login-btn {
+      width: 100%;
+      ion-icon {
+        padding-left: 5pt;
+      }
+    }
+  }
+  .general-circle-btn {
+    @include circle-btn;
+  }
+  .close-btn {
+    @include closeBtn;
+  }
+  // general logo
+  .general-logo {
+    max-width: 80%;
+  }
+  // general form
+  .general-form {
+    width: 100%;
+    ion-item {
+      padding: 0px;
+      .item-inner {
+        border-bottom: 1px solid color($colors, border, base) !important;
+      }
+    }
+    .general-circle-btn {
+      background: none;
+      padding-top: 20pt;
+    }
+  }
+}

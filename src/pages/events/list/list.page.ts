@@ -1,31 +1,34 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
-
-import { ActivityService } from '../../../services/activity.service';
-import { EventService } from '../../../services/event.service';
-import { EventsViewPage } from '../view/events-view.page';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-
+import { loadingMessages, errMessages } from '../../../app/messages';
+// services
+import { ActivityService } from '../../../services/activity.service';
+import { EventService } from '../../../services/event.service';
+// pages
+import { EventsViewPage } from '../view/events-view.page';
 @Component({
   selector: 'events-list-page',
   templateUrl: 'list.html'
 })
 export class EventsListPage {
-
+  // loading & error message variables
+  private emptyFilterErrMessage = errMessages.Events.filter.empty;
+  private noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  private noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
   constructor(
     public navCtrl: NavController,
     public eventService: EventService,
     public activityService: ActivityService,
     public loadingCtrl: LoadingController,
-  ) {
-  }
+  ) {}
 
-  loadedEvents = [];
-  events = [];
+  activities = {};
+  private loadedEvents = []; // Further processed events array, for private use
+  events = []; // ordered events array in filterEvents and to be access through template
   noEvents = false;
   filter = 'browses';
-
 
   /**
    * @name filterEvents
@@ -52,15 +55,15 @@ export class EventsListPage {
       case 'browses':
         // List all not booked and not ended event in order of start time (asc)
         this.events = _.orderBy(_.filter(this.loadedEvents, (event) => {
+          // return (moment(event.end).isAfter() && event.isBooked === false);
+          // return (moment().isBefore(moment(event.end)) && event.isBooked === false);
           return (moment(event.end).isAfter() && event.isBooked === false);
         }), 'start', 'asc');
         break;
     }
-
     if (this.events.length === 0) {
       this.noEvents = true;
     }
-
     return this.events;
   }
 
@@ -75,38 +78,38 @@ export class EventsListPage {
     return (this.noEvents);
   }
 
-
+  /**
+   * @name loadEvents
+   * @description retrieve events (from get_events) with a list of activity_id (from get_activity)
+   * @return {Promise<any>}
+   */
   loadEvents(): Promise<any> {
     return new Promise((resolve, reject) => {
-
       // Get activities IDs
-      this.activityService.getList()
-      .toPromise()
+      this.activityService.getList().toPromise()
       .then((activities) => {
+        this.activities = {};
         let activityIDs = [];
         _.forEach(activities, (act) => {
+          this.activities[act.Activity.id] = act;
           activityIDs.push(act.Activity.id);
         });
 
         // Get event by activityIDs
         this.eventService.getEvents({
           search: {
-            activity_id: '[' + _.toString(activityIDs) + ']'
+            activity_id: '[' + _.toString(activityIDs) + ']',
+            type: 'session'
           }
         })
         .then((events) => {
-          // After map event with activities,
-          // assign events to 'events' and 'loadedEvents'
-
-          // loadedEvents will never change,
-          // it use to filtering events.
-          this.loadedEvents = this._injectCover(
-            this._mapWithActivity(events, activities)
-          );
+          console.log('events', events);
+          // loadedEvents will never change (private use),
+          // it will be used for filtering of events (prep for display/template variable).
+          this.loadedEvents = this._injectCover(this._mapWithActivity(events));
 
           // events use to rendering on page
           this.events = _.clone(this.loadedEvents);
-
           this.filterEvents();
           return resolve();
         }, reject);
@@ -118,8 +121,7 @@ export class EventsListPage {
     let loader = this.loadingCtrl.create();
 
     loader.present().then(() => {
-      this.loadEvents()
-      .then(() => {
+      this.loadEvents().then(() => {
         loader.dismiss();
       })
       .catch((err) => {
@@ -130,8 +132,7 @@ export class EventsListPage {
   }
 
   doRefresh(e) {
-    this.loadEvents()
-    .then(() => {
+    this.loadEvents().then(() => {
       e.complete();
     })
     .catch((err) => {
@@ -139,7 +140,6 @@ export class EventsListPage {
       e.complete();
     });
   }
-
   /**
    * @TODO: remove this once we decided to remove hardcoded images, big size picture is ruining UX because it induces long download time
    *
@@ -158,23 +158,26 @@ export class EventsListPage {
     return events;
   }
 
-  private _mapWithActivity(events, activities) {
+  /**
+   * @name _mapWithActivity
+   * @description
+   *     - attach "activity" object into each of single "event" object
+   *     - Extract and merge event-activity only
+   *     - skip non-event activities
+   * @param {array} events get_events response
+   */
+  private _mapWithActivity(events) {
     let result = [];
 
-    events.forEach((event, key) => {
-      let activity = _.find(activities, (actv) => {
-        return actv.Activity.id === event.activity_id
-      });
-
-      if (activity) {
-        events[key].activity = activity.Activity;
-      }
+    events.forEach(event => {
+      let thisActivity = this.activities[event.activity_id];
+      thisActivity.References = event.References; // must use event's references
+      event.activity = this.activityService.normaliseActivity(thisActivity);
       result.push(event);
     });
 
     return result;
   }
-
   // Check event allow to check-in
   allowCheckIn(event) {
     console.log('event', event);
@@ -182,12 +185,9 @@ export class EventsListPage {
   }
 
   view(event) {
-    /*if (this.allowCheckIn(event)) {
-      alert('Going to check-in page...');
-    } else {
-      alert('This event not allow to check-in...');
-    }*/
     console.log(event);
-    this.navCtrl.push(EventsViewPage, {event: event});
+    this.navCtrl.push(EventsViewPage, {
+      event
+    });
   }
 }

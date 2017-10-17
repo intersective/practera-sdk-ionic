@@ -1,0 +1,18 @@
+/**
+ * @description
+ *  - assessment item pop-up style
+ * @page
+ *  - pages/assessments/popup/items-popup.html
+ */
+.assessments-items-popup {
+  display: flex;
+  align-items: center;
+  padding-left: 12pt;
+  .item-popup-img {
+    width: 20pt;
+    height: 20pt;
+  }
+  .item-popup-text {
+    padding-left: 4pt;
+  }
+}

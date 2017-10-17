@@ -1,0 +1,83 @@
+/**
+ * @description
+ *  - Ranking list style
+ * @page
+ *  - pages/rankings/list/rankings.html
+ */
+.rankings {
+  ion-footer {
+    position: fixed;
+    bottom: 50px;
+    ion-toolbar {
+      padding: 0px;
+    }
+  }
+  ion-list {
+    margin: 0px;
+  }
+  ion-col {
+    padding: 0px;
+  }
+  .ranking-list {
+    .user-score {
+      text-align: right;
+      b {
+        font-weight: normal;
+        width: 100%;
+        text-align: right;
+      }
+    }
+  }
+  .my-ranking {
+    width: 100%;
+    .ranking-item {
+      p {
+        border: none;
+        b {
+          font-weight: normal;
+          width: 100%;
+          text-align: right;
+        }
+      }
+    }
+  }
+  ion-list ion-label {
+    margin: 0px;
+  }
+  .ranking-item {
+    width: 100%;
+    display: flex;
+    .blur-hidden-text {
+      color: transparent;
+      text-shadow: rgba(0, 0, 0, 0.5) 0px 0px 6px;
+    }
+    ion-icon {
+      font-size: 10pt;
+      font-weight: 900;
+    }
+    ion-icon[name=arrow-forward] {
+      font-weight: normal;
+      font-size: 18pt;
+      padding-left: 8pt;
+      color: #bbb;
+    }
+    .badge-image {
+      width: 60px;
+      height: 60px;
+    }
+    p {
+      display: flex;
+      align-items: center;
+      word-break: break-all;
+      margin: 0px;
+      padding: 15px 0pt;
+      border-bottom: 1px solid color($colors, border, base);
+    }
+    p:first-child {
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

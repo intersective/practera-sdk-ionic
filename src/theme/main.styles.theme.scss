@@ -1,0 +1,41 @@
+// Generals
+@import "./general";
+
+// Achievements
+@import "./pages/achievements/view";
+
+// Activities
+@import "./pages/activities/list";
+@import "./pages/activities/popup";
+
+// Assessments
+@import "./pages/assessments/group";
+@import "./pages/assessments/popup";
+@import "./pages/assessments/assessments";
+
+// Authenticate
+// Involved login, forget-password, and registration pages
+@import "./pages/authenticate/default-center-container";
+@import "./pages/authenticate/login-container";
+@import "./pages/authenticate/login-module";
+@import "./pages/authenticate/mode-warn";
+
+// Events
+@import "./pages/events/list";
+@import "./pages/events/view";
+
+// Rankings
+@import './pages/rankings/list';
+@import "./pages/rankings/view-ranking-badges";
+@import "./pages/rankings/view-ranking-details";
+
+// Settings
+@import "./pages/settings/leaderboard";
+@import "./pages/settings/tutorial";
+@import "./pages/settings/settings";
+
+// landscape activity list view
+@import "./screen";
+
+// Utils
+@import "./utils";
