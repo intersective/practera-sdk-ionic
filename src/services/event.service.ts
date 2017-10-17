@@ -8,10 +8,10 @@ import * as moment from 'moment';
 
 @Injectable()
 export class EventService {
-  private targetUrl = 'api/events.json';
-  private bookEventUrl = 'api/book_events.json';
-  constructor(private request: RequestService,
-              private cache: CacheService) {}
+  public targetUrl = 'api/events.json';
+  public bookEventUrl = 'api/book_events.json';
+  constructor(public request: RequestService,
+              public cache: CacheService) {}
 
   public getEvents(options: Object = {}) {
     options = _.merge({
@@ -25,7 +25,7 @@ export class EventService {
     .toPromise();
   }
 
-  private _normalise(events) {
+  public _normalise(events) {
     _.forEach(events, (event, idx) => {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
       // We assume server datetime response is UTC...

@@ -6,12 +6,12 @@ import { CacheService } from '../shared/cache/cache.service';
 @Injectable()
 export class MilestoneService {
   milestones: any = {};
-  private appkey = this.request.getAppkey();
-  private prefixUrl: any = this.request.getPrefixUrl();
+  public appkey = this.request.getAppkey();
+  public prefixUrl: any = this.request.getPrefixUrl();
   constructor(
-    private cacheService: CacheService,
-    private request: RequestService,
-    private http: Http
+    public cacheService: CacheService,
+    public request: RequestService,
+    public http: Http
   ) {}
   getList(options?) {
     let params: URLSearchParams = new URLSearchParams();

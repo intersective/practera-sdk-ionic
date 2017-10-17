@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 @Injectable()
 export class GameService {
   constructor(
-    private request: RequestService
+    public request: RequestService
   ) {}
 
   /**

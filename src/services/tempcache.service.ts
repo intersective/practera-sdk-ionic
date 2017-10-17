@@ -22,8 +22,8 @@ export class CacheObject {
 
 @Injectable()
 export class TempCacheService {
-  private cache: Object;
-  // private storage: Object;
+  public cache: Object;
+  // public storage: Object;
 
   constructor() {
     this.cache = CacheObject;

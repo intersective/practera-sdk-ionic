@@ -6,9 +6,9 @@ import * as moment from 'moment';
 
 @Injectable()
 export class SessionService {
-  private targetUrl = 'api/sessions.json';
+  public targetUrl = 'api/sessions.json';
 
-  constructor(private request: RequestService) {}
+  constructor(public request: RequestService) {}
 
   public getSessions() {
 
@@ -21,7 +21,7 @@ export class SessionService {
       .toPromise();
   }
 
-  private _normalise(session) {
+  public _normalise(session) {
     session.start = moment.utc(session.start);
     session.end = moment.utc(session.end);
     session.isExpired = moment().isAfter(session.end);

@@ -24,12 +24,12 @@ class ReferenceBase {
 
 @Injectable()
 export class ActivityService {
-  private cachedActivites = {};
+  public cachedActivites = {};
 
   public milestoneID = this.cacheService.getLocalObject('milestone_id');
   constructor(
-    private request: RequestService,
-    private cacheService: CacheService,
+    public request: RequestService,
+    public cacheService: CacheService,
   ) {}
 
   public getList(options?) {
@@ -280,7 +280,7 @@ export class ActivityService {
       }
     }
    */
-  private mergeReferenceToSequence(activity) {
+  public mergeReferenceToSequence(activity) {
     let refs = this.rebuildReferences(activity.References);
 
     // @NOTE: first "[0]" sequence is the assessment of an activity
@@ -366,7 +366,7 @@ export class ActivityService {
       "auto_publish_reviews": false
     }
    */
-  private extractAssessment(sequence) {
+  public extractAssessment(sequence) {
     let assessment: any = {};
     if (sequence['Assess.Assessment']) {
       assessment = sequence['Assess.Assessment'];

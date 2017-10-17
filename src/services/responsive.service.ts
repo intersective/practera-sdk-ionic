@@ -1,9 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
 @Injectable()
 export class ResponsiveService {
-  private windowHeight: number = window.innerHeight / 3;
-  private isLandscaped: boolean = false;
-  constructor(private ngZone: NgZone){}
+  public windowHeight: number = window.innerHeight / 3;
+  public isLandscaped: boolean = false;
+  constructor(public ngZone: NgZone){}
   public gcd (v1, v2) {
     return (v2 == 0) ? v1 : this.gcd(v2, v1%v2);
   }

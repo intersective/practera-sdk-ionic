@@ -5,8 +5,8 @@ import { RequestService } from '../shared/request/request.service';
 @Injectable()
 export class TeamService {
   constructor(
-    private request: RequestService,
-    private cacheService: CacheService
+    public request: RequestService,
+    public cacheService: CacheService
   ) {}
 
   public getTeam(options? : any) {

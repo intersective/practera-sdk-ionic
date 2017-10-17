@@ -3,17 +3,17 @@ import { RequestService } from '../shared/request/request.service';
 import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 @Injectable()
 export class AuthService {
-  private appkey: any = this.request.getAppkey();
-  private prefixUrl: any = this.request.getPrefixUrl();
-  private AUTH_ENDPOINT: any = this.prefixUrl + 'api/auths.json?action=';
+  public appkey: any = this.request.getAppkey();
+  public prefixUrl: any = this.request.getPrefixUrl();
+  public AUTH_ENDPOINT: any = this.prefixUrl + 'api/auths.json?action=';
   public headerData() {
     let headers = new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     headers.append('appkey', this.appkey);
     return headers;
   }
-  constructor(private request: RequestService,
-              private http: Http) {}
+  constructor(public request: RequestService,
+              public http: Http) {}
   getTerms() {
     let options = new RequestOptions({headers: this.headerData()});
     return this.http.get(this.prefixUrl+'api/registration_details.json', options)

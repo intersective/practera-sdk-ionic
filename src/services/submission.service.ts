@@ -6,9 +6,9 @@ import * as moment from 'moment';
 
 @Injectable()
 export class SubmissionService {
-  private targetUrl = 'api/submissions.json';
+  public targetUrl = 'api/submissions.json';
 
-  constructor(private request: RequestService) {}
+  constructor(public request: RequestService) {}
 
   // list()
   public getSubmissions(options?: any) {

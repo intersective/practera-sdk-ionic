@@ -55,7 +55,7 @@ export class Submission {
 
 @Injectable()
 export class AssessmentService {
-  constructor(private request: RequestService) {}
+  constructor(public request: RequestService) {}
 
   /**
    * @description check feedback can show
