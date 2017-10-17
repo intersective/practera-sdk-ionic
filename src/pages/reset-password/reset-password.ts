@@ -55,8 +55,8 @@ export class ResetPasswordPage implements OnInit {
     public milestoneService: MilestoneService,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public translationService: TranslationService
-    public viewCtrl: ViewController,
+    public translationService: TranslationService,
+    public viewCtrl: ViewController
   ) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({

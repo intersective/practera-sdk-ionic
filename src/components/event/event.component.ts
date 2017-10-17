@@ -22,7 +22,7 @@ export class EventComponent {
   }
   constructor(
     public navCtrl: NavController,
-    private eventService: EventService
+    public eventService: EventService
   ) {}
 
   download() {
