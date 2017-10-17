@@ -28,7 +28,7 @@ const hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050]; // for
 const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; // for handling submitted assessments title display
 // function of hardcode list data
 const HardcodeDataList = () => {
-  if(!(window.location.href.indexOf('api.practera.com') > -1)){ // if not live server, then, go to sandbox hardcode list and pre-config data
+  if(!(window.location.href.indexOf('pe.practera.com') > -1)){ // if not live server, then, go to sandbox hardcode list and pre-config data
     this.prefixUrl = 'https://sandbox.practera.com/';
     this.appKey = '69ad1e66dc';
     this.achievementListIDs = [
@@ -51,7 +51,7 @@ const HardcodeDataList = () => {
     ];
     this.hardcode_assessment_id = 2064;
     this.hardcode_context_id = 2487;
-    this.hardcode_activity_id = 7850;
+    this.hardcode_activity_id = 7655;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
   }else {
