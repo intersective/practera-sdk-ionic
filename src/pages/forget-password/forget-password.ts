@@ -7,7 +7,7 @@ import 'rxjs/Rx';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // Others
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';

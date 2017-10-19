@@ -12,7 +12,7 @@ import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { TranslationService } from '../../shared/translation/translation.service';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
 import { LoginPage } from '../login/login';
 import { RegistrationModalPage } from './modal';

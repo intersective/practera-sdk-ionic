@@ -9,7 +9,7 @@ import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { ResponsiveService } from '../../services/responsive.service';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
 import { LoginPage } from '../login/login';
 import { TabsPage } from '../tabs/tabs.page';
