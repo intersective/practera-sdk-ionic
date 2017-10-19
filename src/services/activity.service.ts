@@ -1,10 +1,12 @@
 import { Injectable }    from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import * as moment from 'moment';
-import * as _ from 'lodash';
+
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
+// Others
+import * as moment from 'moment';
+import * as _ from 'lodash';
 
 class ActivityBase {
   id: number;
@@ -24,15 +26,15 @@ class ReferenceBase {
 
 @Injectable()
 export class ActivityService {
-  public cachedActivites = {};
+  cachedActivites = {};
+  milestoneID = this.cacheService.getLocalObject('milestone_id');
 
-  public milestoneID = this.cacheService.getLocalObject('milestone_id');
   constructor(
-    public request: RequestService,
     public cacheService: CacheService,
+    public request: RequestService,
   ) {}
 
-  public getList(options?) {
+  getList(options?) {
     let mid = this.cacheService.getLocal('milestone_id');
 
     options = options || {
@@ -49,7 +51,7 @@ export class ActivityService {
     return this.cachedActivites[mid];
   }
 
-  public getLevels = (options?: any) => {
+  getLevels(options?: any) {
     let params: URLSearchParams = new URLSearchParams();
     if (options.search) {
       _.forEach(options.search, (value, key) => {
@@ -113,7 +115,7 @@ export class ActivityService {
   /**
    * normalise single activity object
    */
-  public normaliseActivity(activity) {
+   normaliseActivity(activity) {
     let thisActivity = activity.Activity,
         normalisedActivity: ActivityBase,
         sequence = this.mergeReferenceToSequence(activity);
@@ -188,7 +190,7 @@ export class ActivityService {
       20: 26
     }
    */
-  public rebuildReferences(references) {
+  rebuildReferences(references) {
     let result = {};
     (references || []).forEach(ref => {
       result[ref.Assessment.id] = ref.context_id;
@@ -280,7 +282,7 @@ export class ActivityService {
       }
     }
    */
-  public mergeReferenceToSequence(activity) {
+   mergeReferenceToSequence(activity) {
     let refs = this.rebuildReferences(activity.References);
 
     // @NOTE: first "[0]" sequence is the assessment of an activity
@@ -366,7 +368,7 @@ export class ActivityService {
       "auto_publish_reviews": false
     }
    */
-  public extractAssessment(sequence) {
+   extractAssessment(sequence) {
     let assessment: any = {};
     if (sequence['Assess.Assessment']) {
       assessment = sequence['Assess.Assessment'];

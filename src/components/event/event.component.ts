@@ -15,7 +15,7 @@ export class EventComponent {
 
   constructor(
     public eventService: EventService,
-      public navCtrl: NavController
+    public navCtrl: NavController
   ) {}
 
   // Check event has been booked

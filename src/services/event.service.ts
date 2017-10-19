@@ -1,6 +1,7 @@
 import { Injectable }    from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-// services
+
+// others
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
@@ -8,12 +9,15 @@ import * as moment from 'moment';
 
 @Injectable()
 export class EventService {
-  public targetUrl = 'api/events.json';
-  public bookEventUrl = 'api/book_events.json';
-  constructor(public request: RequestService,
-              public cache: CacheService) {}
+  bookEventUrl = 'api/book_events.json';
+  targetUrl = 'api/events.json';
 
-  public getEvents(options: Object = {}) {
+  constructor(
+    public cache: CacheService,
+    public request: RequestService
+  ) {}
+
+  getEvents(options: Object = {}) {
     options = _.merge({
       search: {
         type: 'session'
@@ -25,7 +29,7 @@ export class EventService {
     .toPromise();
   }
 
-  public _normalise(events) {
+  _normalise(events) {
     _.forEach(events, (event, idx) => {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
       // We assume server datetime response is UTC...
@@ -39,7 +43,8 @@ export class EventService {
    * download attachment by single event object
    * @param {[type]} event [description]
    */
-  public downloadAttachment(event) {
+
+  downloadAttachment(event) {
     let url = event.fileUrl;
     // var blob = new Blob([data], { type: 'text/csv' });
     // var url= window.URL.createObjectURL(blob);
@@ -50,12 +55,13 @@ export class EventService {
    * get event using observable
    * @param {integer} eventId single event id
    */
-  public bookEvent(eventId) {
+  bookEvent(eventId) {
     let urlSearchParams = new URLSearchParams();
     urlSearchParams.append('event_id', eventId);
     return this.request.post(this.bookEventUrl, urlSearchParams);
   }
-  public cancelEventBooking(eventId){
+
+  cancelEventBooking(eventId){
     return this.request.delete(this.bookEventUrl + '?event_id=' + eventId);
   }
 }

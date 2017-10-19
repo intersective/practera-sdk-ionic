@@ -3,9 +3,10 @@ import { Injectable }    from '@angular/core';
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
+
 @Injectable()
 export class CharacterService {
-  public charactersAPIEndpoint: any = 'api/characters.json';
+  charactersAPIEndpoint: any = 'api/characters.json';
 
   constructor(
     public cache: CacheService,

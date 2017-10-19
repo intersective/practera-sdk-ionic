@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
 import { URLSearchParams } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
+// Others
+import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
 
 @Injectable()
@@ -15,7 +16,7 @@ export class GameService {
    * Get games
    * @param {object} options
    */
-  public getGames(options = {}) {
+  getGames(options = {}) {
     return this.request.get('api/games', options);
   }
 
@@ -24,7 +25,7 @@ export class GameService {
    * @param {string} gameId
    * @param {object} options
    */
-  public getCharacters(gameId, options = {}) {
+  getCharacters(gameId, options = {}) {
     options = _.merge({
       search: {
         game_id: gameId
@@ -37,7 +38,7 @@ export class GameService {
    * Post character
    * @param {object} data
    */
-  public postCharacter(data) {
+  postCharacter(data) {
     return this.request.post('api/characters', data, {
       'Content-Type': 'application/json'
     });
@@ -48,7 +49,7 @@ export class GameService {
    * @param {string} gameId
    * @param {string} characterId
    */
-  public getRanking(gameId, characterId) {
+   getRanking(gameId, characterId) {
     return Observable.forkJoin([
       this.getCharacters(gameId, {
         search: {
@@ -76,7 +77,7 @@ export class GameService {
    * Get items
    * @param {object} options
    */
-  public getItems(options?) {
+  getItems(options?) {
     options = _.merge({
       character_id: null,
       filter: 'all'
@@ -88,7 +89,7 @@ export class GameService {
    * Update items
    * @param {object} options
    */
-  public postItems(options: any = {
+  postItems(options: any = {
     "Character": {
       "id": null
     },
