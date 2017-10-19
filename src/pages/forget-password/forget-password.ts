@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/Rx';
 
 // services
 import { AuthService } from '../../services/auth.service';

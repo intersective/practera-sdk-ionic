@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-import 'rxjs/Rx';
 
 // services
 import { AuthService } from '../../services/auth.service';

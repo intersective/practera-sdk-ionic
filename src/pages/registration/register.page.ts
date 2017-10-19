@@ -2,7 +2,6 @@ import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
 
 // services
 import { AuthService } from '../../services/auth.service';
@@ -29,7 +28,6 @@ const supportEmail = generalVariableMessages.helpMail.email;
 })
 export class RegisterPage implements OnInit {
   @ViewChild('registrationForm') registrationForm: NgForm;
-
 
   changeContent: boolean = false;
   clickSuspended: boolean = false;
@@ -77,9 +75,10 @@ export class RegisterPage implements OnInit {
       verify_password: ['', [Validators.minLength(8), Validators.required]],
     });
   }
-  ngOnInit() {
-  }
-  public displayAlert(message) {
+
+  ngOnInit() {}
+
+  displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Test',
       message: message,
@@ -110,6 +109,7 @@ export class RegisterPage implements OnInit {
       self.displayAlert(message).present();
       self.submitted = false;
     }
+
     function onFinally() {
       //@TODO: log something maybe
       // self.navCtrl.push(TabsPage);
