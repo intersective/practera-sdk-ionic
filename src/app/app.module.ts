@@ -38,7 +38,7 @@ import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
-import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
+import { QuestionGroupComponent } from '../components/question-group/question-group.component';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
