@@ -7,7 +7,6 @@ import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
-import { ResponsiveService } from '../../services/responsive.service';
 // directives
 import { FormValidator } from '../../shared/validators/formValidator';
 // pages
