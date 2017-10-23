@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 
 // Pages
 import { EventsListPage } from '../../pages/events/list/list.page';
+import { GalleryPage } from '../../pages/gallery/gallery.page';
+import { LevelsPage } from '../../pages/levels/list/list.page';
 import { RankingsPage } from '../../pages/rankings/list/rankings.page';
 import { SettingsPage } from '../../pages/settings/settings.page';
+import { TeamPage } from '../../pages/team/team.page';
 
 // Others
 import * as _ from 'lodash';
@@ -13,9 +16,12 @@ export class AppConfigService {
   pagesMap: any = {
     events: EventsListPage,
     rankings: RankingsPage,
-    settings: SettingsPage
+    settings: SettingsPage,
+    gallery: GalleryPage,
+    team: TeamPage
   }
 
+  // JSON format sent back from server
   appConfigContent: any = {
     app: {
       name: 'ISDK'
