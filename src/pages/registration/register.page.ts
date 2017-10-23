@@ -1,8 +1,16 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core'; 
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
-import { Observable } from 'rxjs/Observable';
+import { AlertController, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
+import 'rxjs/add/operator/map';
+// directives
+import { FormValidator } from '../../validators/formValidator';
+// pages
+import { RegistrationModalPage } from './modal';
+import { TabsPage } from '../tabs/tabs.page';
+import { LoginPage } from '../login/login';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -10,79 +18,69 @@ import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { TranslationService } from '../../shared/translation/translation.service';
-// directives
-import { FormValidator } from '../../validators/formValidator';
-// pages
-import { RegistrationModalPage } from './modal';
-import { TabsPage } from '../tabs/tabs.page';
-import { LoginPage } from '../login/login';
-import * as _ from 'lodash';
-import 'rxjs/add/operator/map';
-
 const supportEmail = generalVariableMessages.helpMail.email;
-
 @Component({
   selector: 'register',
-  templateUrl: 'register.html',
+  templateUrl: 'register.html'
 })
-
-export class RegisterPage implements OnInit {
+export class RegisterPage implements OnInit { // this part of registration is for setting password before login
   @ViewChild('registrationForm') registrationForm: NgForm;
   user: any = {
     password: '',
     verify_password: ''
   };
-  submitted: boolean = false;
-  private regForm: any;
-  private pwdMacthBool: boolean = false;
-  private verifyPwd: boolean = false;
-  private verifySuccess: boolean = null;
-  private isPwdMatch: boolean = false;
-  private changeContent: boolean = false;
-  private minLengthCheck: boolean = true;
-  private clickSuspended: boolean = false;
-  private milestone_id: string;
-  private password: string;
-  private verify_password: string;
+  public changeContent: boolean = false;
+  public clickSuspended: boolean = false;
+  public gameID: string = null;
+  public isPwdMatch: boolean = false;
+  public milestone_id: string = null;
+  public minLengthCheck: boolean = true;
+  public password: string = null;
+  public regForm: any;
+  public submitted: boolean = false;
+  public pwdMacthBool: boolean = false;
+  public userData: any = [];
+  public verify_password: string;
+  public verifyPwd: boolean = false;
+  public verifySuccess: boolean = null;
   // loading & error messages variables
-  private verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
-  private successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  private passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
-  private registrationErrMessage: any = errMessages.Registration.error.error;
-  private invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
-  private noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
-  private registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
-  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  public noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  public registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  public registrationErrMessage: any = errMessages.Registration.error.error;
+  public successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
+  public verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
-    public navCtrl: NavController,
     public alertCtrl: AlertController,
-    private viewCtrl: ViewController,
-    private notificationService: NotificationService,
-    private navParams: NavParams,
-    private loading: LoadingController,
-    private authService: AuthService,
-    private cache: CacheService,
-    private gameService: GameService,
+    public authService: AuthService,
+    public cacheService: CacheService,
+    public gameService: GameService,
+    public loading: LoadingController,
+    public milestoneService: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public notificationService: NotificationService,
     public translationService: TranslationService,
-    private milestone: MilestoneService,
-  ) {
+    public viewCtrl: ViewController) {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
       password: ['', [Validators.minLength(8), Validators.required]],
       verify_password: ['', [Validators.minLength(8), Validators.required]],
     });
   }
-  ngOnInit() {
-  }
+  ngOnInit() {}
   public displayAlert(message) {
     return this.alertCtrl.create({
-      title: 'Test',
+      title: 'Error',
       message: message,
-      buttons: ['OK']
+      buttons: ['Close']
     });
   }
+  // submit registration form and display error message when error occurs
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
@@ -126,66 +124,98 @@ export class RegisterPage implements OnInit {
       // registration api call: to let user set password and complete registration process
       loading.present().then(() => {
         this.authService.register({
-          email: this.cache.getLocal('user.email'),
-          key: this.cache.getLocal('user.registration_key'),
-          user_id: this.cache.getLocal('user.id'),
+          email: this.cacheService.getLocal('user.email'),
+          key: this.cacheService.getLocal('user.registration_key'),
+          user_id: this.cacheService.getLocal('user.id'),
           password: this.regForm.get('password').value
         }).subscribe(regRespond => {
           //@TODO: set user data
           regRespond = regRespond.data;
-          console.log(regRespond);
-          this.cache.setLocalObject('apikey', regRespond.apikey);
-          this.cache.setLocalObject('timelineID', regRespond.Timeline.id);
-          this.cache.setLocal('gotNewItems', false);
+          this.cacheService.setLocalObject('apikey', regRespond.apikey);
+          this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
+          this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
-          this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
+          this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
               .subscribe(
                 data => {
-                  // get game_id data after login 
-                  this.gameService.getGames()
-                      .subscribe(
-                        data => {
-                          console.log("game data: ", data);
-                          _.map(data, (element) => {
-                            console.log("game id: ", element[0].id);
-                            this.cache.setLocal('game_id', element[0].id);
-                          });
-                        },
-                        err => {
-                          console.log("game err: ", err);
-                        }
-                      );
-                  // get user data after registration and login
-                  self.authService.getUser()
-                      .subscribe(
-                        data => {
-                          console.log(data);
-                        },
-                        err => {
-                          console.log(err);
-                        }
-                      );
-                  // get milestone data after registration and login
-                  self.milestone.getMilestones()
-                      .subscribe( data => {
+                  // // get game API data after registration and login
+                  // this.gameService.getGames()
+                  //     .subscribe(
+                  //       data => {
+                  //         _.map(data, (element) => {
+                  //           this.cacheService.setLocal('game_id', element[0].id); // get game_id data after login
+                  //         });
+                  //       },
+                  //       err => {
+                  //         this.logError(err);
+                  //       }
+                  //     );
+                  // // get user API data after registration and login
+                  // self.authService.getUser()
+                  //     .subscribe(
+                  //       data => {
+                  //         console.log(data);
+                  //       },
+                  //       err => {
+                  //         this.logError(err);
+                  //       }
+                  //     );
+                  // // get milestone API data after registration and login
+                  // self.milestone.getMilestones()
+                  //     .subscribe( data => {
+                  //       loading.dismiss().then(() => {
+                  //         this.milestone_id = data.data[0].id;
+                  //         self.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                  //         self.navCtrl.push(TabsPage).then(() => {
+                  //           window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                  //         });
+                  //       });
+                  //     },
+                  //     err => {
+                  //       loading.dismiss().then(() => {
+                  //         this.logError(err);
+                  //       });
+                  //     });
+                  let getGame = this.gameService.getGames();
+                  let getUser = this.authService.getUser();
+                  let getMilestone = this.milestoneService.getMilestones();
+                  Observable.forkJoin([getGame, getUser, getMilestone])
+                    .subscribe(
+                      results => {
                         loading.dismiss().then(() => {
-                          // console.log(data.data[0].id);
-                          this.milestone_id = data.data[0].id;
-                          self.cache.setLocalObject('milestone_id', data.data[0].id);
-                          self.navCtrl.push(TabsPage).then(() => {
-                            window.history.replaceState({}, '', window.location.origin);
+                          // results[0] game API data
+                          this.gameID = results[0].Games[0].id;
+                          if(this.gameID){
+                            this.cacheService.setLocalObject('game_id', this.gameID);
+                          }
+                          // results[1] user API data
+                          this.userData = results[1];
+                          if(this.userData){
+                            this.cacheService.setLocalObject('name', results[1].User.name);
+                            this.cacheService.setLocalObject('email', results[1].User.email);
+                            this.cacheService.setLocalObject('program_id', results[1].User.program_id);
+                            this.cacheService.setLocalObject('project_id', results[1].User.project_id);
+                            this.cacheService.setLocalObject('user', results[1].User);
+                          }
+                          // results[2] milestone API data
+                          this.milestone_id = results[2].data[0].id;
+                          if(this.milestone_id){
+                            this.cacheService.setLocalObject('milestone_id', this.milestone_id);
+                          }
+                          this.navCtrl.setRoot(TabsPage).then(() => {
+                            this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                            window.history.replaceState({}, '', window.location.origin); // reformat current url 
                           });
                         });
                       },
                       err => {
-                        loading.dismiss().then(() => {
-                          console.log(err);
-                        });
-                      });
+                        this.logError(err);
+                      }
+                    )
                 },
                 err => {
                   loading.dismiss().then(() => {
-                    console.log(err);
+                    this.logError(err);
                   });
                 }
               );
@@ -193,28 +223,37 @@ export class RegisterPage implements OnInit {
       });
     }
   }
+  logError(error){
+    const alert = this.alertCtrl.create({
+      title: 'Error Message',
+      message: 'Oops, loading failed, please try it again later.', 
+      buttons: ['Close']
+    });
+    alert.present();
+  }
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
-      cacheProcesses.push(this.cache.set(key, datum));
+      cacheProcesses.push(this.cacheService.set(key, datum));
     });
-    cacheProcesses.push(this.cache.set('timelineID', data.Timeline.id));
-    this.cache.setLocal('timelineID', data.Timeline.id);
+    cacheProcesses.push(this.cacheService.set('timelineID', data.Timeline.id));
+    this.cacheService.setLocal('timelineID', data.Timeline.id);
     return Observable.from(cacheProcesses);
   }
   goToLogin() {
-    this.cache.clear().then(() => {
-      this.navCtrl.push(LoginPage);
+    this.cacheService.clear().then(() => {
+      this.navCtrl.setRoot(LoginPage);
     });
   }
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
-  // check password mismacth issue
+  // set verify password value to true
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+  // check password mismacth
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
   }

@@ -4,7 +4,6 @@
  * @page pages/register/register.html
  * @page pages/reset-password/reset-password.html
  */
-
 .login-module {
   font-family: $font-secondary;
   background-color: color($colors, secondary, base);
@@ -39,9 +38,14 @@
         border-bottom: 1px solid color($colors, border, base) !important;
       }
     }
-    .general-circle-btn {
+  }
+  .forgot-password-container {
+    text-align: center;
+    border: none;
+    padding-top: 20pt;
+    .forgot-password-link {
       background: none;
-      padding-top: 20pt;
+      font-size: 10pt;
     }
   }
 }

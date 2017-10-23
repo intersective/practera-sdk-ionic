@@ -35,10 +35,10 @@
   "LOGIN": {
     "HEADER": "Welcome to Practera",
     "PAGETITLE": "Login",
-    "PASSWORDFORGOT": "Forget Your Password?"
+    "PASSWORDFORGOT": "Forgot Your Password?"
   },
   "REGISTRATION": {
-    "HEADER": "Great - you are almost there! Just one more thing...",
+    "HEADER": "Great - you are almost there! Just one more step...",
     "PAGETITLE": "Set Password"
   },
   "RANKING": {

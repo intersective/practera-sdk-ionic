@@ -14,7 +14,7 @@ import { LoginPage } from '../../pages/login/login';
 @Component({
   template: `<term-condition [user]='user'></term-condition>`,
 })
-export class RegistrationPage implements OnInit {
+export class RegistrationPage implements OnInit { // this part of registration is for terms and conditions
   user: Object = {
     email: null,
     key: null

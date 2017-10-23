@@ -1,60 +1,62 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { NavController,
-         ViewController,
-         NavParams,
+import { AlertController,
          LoadingController,
-         AlertController,
-         ModalController } from 'ionic-angular';
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+         ModalController,
+         NavController,
+         NavParams,
+         ViewController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
+import { loadingMessages, errMessages } from '../../app/messages'; 
+import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+// directives
+import { FormValidator } from '../../validators/formValidator';
+// pages
+import { TabsPage } from '../tabs/tabs.page';
+import { LoginPage } from '../login/login';
+import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { ResponsiveService } from '../../services/responsive.service';
-// directives
-import {FormValidator} from '../../validators/formValidator';
-// pages
-import { TabsPage } from '../tabs/tabs.page';
-import { LoginPage } from '../login/login';
-import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
+import { TranslationService } from '../../shared/translation/translation.service';
 @Component({
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
 })
 export class ResetPasswordPage implements OnInit {
-  public keyVal: string;
   public emailVal: string;
-  private windowHeight: number = window.innerHeight / 3;
-  private isLandscaped: boolean = false;
-  public password: string;
-  public verify_password: string;
-  private verifySuccess: boolean = null;
-  private resetPwdFormGroup: any;
-  private verifyPwd: boolean = false;
-  private minLengthCheck: boolean = true;
+  public gameID: string = null;
+  public isLandscaped: boolean = false;
+  public isPwdMatch: boolean = false;
+  public keyVal: string;
+  public minLengthCheck: boolean = true;
   public milestone_id: string;
-  private isPwdMatch: boolean = false;
+  public password: string;
+  public resetPwdFormGroup: any;
+  public userData: any = [];
+  public verify_password: string;
+  public verifyPwd: boolean = false;
+  public verifySuccess: boolean = null;
   // loading & error message variables
-  private invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
-  private verifyUserMessage = loadingMessages.VerifyUser.verify;
-  private successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
-  private resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
-  private passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  private passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
-  constructor(private navCtrl: NavController,
-    private navParams: NavParams,
-    private alertCtrl: AlertController,
-    private authService: AuthService,
-    private viewCtrl: ViewController,
-    private loadingCtrl: LoadingController,
-    private formBuilder: FormBuilder,
-    private milestoneService: MilestoneService,
-    private cacheService: CacheService,
-    private gameService: GameService,
+  public invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  public successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  public verifyUserMessage = loadingMessages.VerifyUser.verify;
+  constructor(public formBuilder: FormBuilder,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public milestoneService: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public authService: AuthService,
+    public cacheService: CacheService,
+    public gameService: GameService,
     public translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
@@ -71,11 +73,7 @@ export class ResetPasswordPage implements OnInit {
              user screen is mobile device or desktop device. If device is mobile
              device, ngOnInit() will disable landscape mode for mobile device
   */
-  ngOnInit() {
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ResetpasswordPage');
-  }
+  ngOnInit() {}
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
@@ -102,12 +100,10 @@ export class ResetPasswordPage implements OnInit {
       .subscribe(data => {
         loading.dismiss();
         this.verifySuccess = true;
-        console.log("valueTrue: " + this.verifySuccess);
       },
       err => {
         loading.dismiss();
         this.verifySuccess = false;
-        console.log("valueFalse: " + this.verifySuccess);
         setTimeout(() => {
           this.navCtrl.push(LoginPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
@@ -131,8 +127,6 @@ export class ResetPasswordPage implements OnInit {
     });
     loading.present().then(() => {
       this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
-        // loading.dismiss();
-        // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
               data = data.data;
@@ -140,61 +134,93 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
-              this.gameService.getGames()
-                  .subscribe(
-                    data => {
-                      console.log("game data: ", data);
-                      _.map(data, (element) => {
-                        console.log("game id: ", element[0].id);
-                        this.cacheService.setLocal('game_id', element[0].id);
+              // // get game API data after login 
+              // this.gameService.getGames()
+              //     .subscribe(
+              //       data => {
+              //         _.map(data, (element) => {
+              //           this.cacheService.setLocal('game_id', element[0].id); // get game_id data after login 
+              //         });
+              //       },
+              //       err => {
+              //         this.logError(err);
+              //       }
+              //     );
+              // // get user API data after login
+              // this.authService.getUser()
+              //     .subscribe(
+              //       data => {
+              //         this.cacheService.setLocalObject('name', data.User.name);
+              //         this.cacheService.setLocalObject('email', data.User.email);
+              //         this.cacheService.setLocalObject('program_id', data.User.program_id);
+              //         this.cacheService.setLocalObject('project_id', data.User.project_id);
+              //       },
+              //       err => {
+              //         this.logError(err);
+              //       }
+              //     );
+              // // get milestone API data after login
+              // this.milestoneService.getMilestones()
+              //     .subscribe(
+              //       data => {
+              //         loading.dismiss().then(() => {
+              //           this.milestone_id = data.data[0].id;
+              //           this.cacheService.setLocalObject('milestone_id', data.data[0].id);
+              //           loading.dismiss();
+              //           this.navCtrl.setRoot(TabsPage).then(() => {
+              //             this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+              //             window.history.replaceState({}, '', window.location.origin); // reformat current url 
+              //           });
+              //         });
+              //       },
+              //       err => {
+              //         loading.dismiss().then(() => {
+              //           this.logError(err);
+              //         });
+              //       }
+              //     )
+              let getGame = this.gameService.getGames();
+              let getUser = this.authService.getUser();
+              let getMilestone = this.milestoneService.getMilestones();
+              Observable.forkJoin([getGame, getUser, getMilestone])
+                .subscribe(
+                  results => {
+                    loading.dismiss().then(() => {
+                      // results[0] game API data
+                      this.gameID = results[0].Games[0].id;
+                      if(this.gameID){
+                        this.cacheService.setLocalObject('game_id', this.gameID);
+                      }
+                      // results[1] user API data
+                      this.userData = results[1];
+                      if(this.userData){
+                        this.cacheService.setLocalObject('name', results[1].User.name);
+                        this.cacheService.setLocalObject('email', results[1].User.email);
+                        this.cacheService.setLocalObject('program_id', results[1].User.program_id);
+                        this.cacheService.setLocalObject('project_id', results[1].User.project_id);
+                        this.cacheService.setLocalObject('user', results[1].User);
+                      }
+                      // results[2] milestone API data
+                      this.milestone_id = results[2].data[0].id;
+                      if(this.milestone_id){
+                        this.cacheService.setLocalObject('milestone_id', this.milestone_id);
+                      }
+                      this.navCtrl.setRoot(TabsPage).then(() => {
+                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
                       });
-                    },
-                    err => {
-                      console.log("game err: ", err);
-                    }
-                  );
-              // get milestone data after login
-              this.authService.getUser()
-                  .subscribe(
-                    data => {
-                      this.cacheService.setLocalObject('name', data.User.name);
-                      this.cacheService.setLocalObject('email', data.User.email);
-                      this.cacheService.setLocalObject('program_id', data.User.program_id);
-                      this.cacheService.setLocalObject('project_id', data.User.project_id);
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  );
-              // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        console.log(data.data[0].id);
-                        this.milestone_id = data.data[0].id;
-                        this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        console.log("milestone id: " + data.data[0].id);
-                        loading.dismiss();
-                        this.navCtrl.push(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      loading.dismiss().then(() => {
-                        console.log(err);
-                      });
-                    }
-                  )
+                    });
+                  },
+                  err => {
+                    this.logError(err);
+                  }
+                )
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             },
             err => {
               loading.dismiss().then(() => {
-                this.loginError(err);
+                this.logError(err);
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
@@ -202,16 +228,16 @@ export class ResetPasswordPage implements OnInit {
       },
       err => {
         loading.dismiss().then(() => {
-          console.log(err);
+          this.logError(err);
         });
       });
     });
   }
   // after password set, auto login error alertbox
-  loginError(error) {
+  logError(error) {
     const alertLogin = this.alertCtrl.create({
-      title: 'Login Failed ..',
-      message: this.resetPasswordLoginFailedMessage,
+      title: 'Error Message',
+      message: 'Oops, loading failed, please try it again later.', 
       buttons: ['Close']
     });
     alertLogin.present();
