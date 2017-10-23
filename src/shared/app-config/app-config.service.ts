@@ -1,34 +1,42 @@
 import { Injectable } from '@angular/core';
 
+// Pages
+import { EventsListPage } from '../../pages/events/list/list.page';
+import { RankingsPage } from '../../pages/rankings/list/rankings.page';
+import { SettingsPage } from '../../pages/settings/settings.page';
+
 // Others
 import * as _ from 'lodash';
 
 @Injectable()
 export class AppConfigService {
+  pagesMap: any = {
+    events: EventsListPage,
+    rankings: RankingsPage,
+    settings: SettingsPage
+  }
 
   appConfigContent: any = {
     app: {
       name: 'ISDK'
     },
     modules: {
-      activities: {
-        title: 'Dashboard',
-        visible: true,
-        order: 0
-      },
       events: {
+        name: 'events',
         title: 'Events',
-        visible: true,
+        icon: 'md-calendar',
         order: 1
       },
       rankings: {
+        name: 'rankings',
         title: 'Rankings',
-        visible: true,
+        icon: 'md-medal',
         order: 2
       },
       settings: {
+        name: 'settings',
         title: 'Settings',
-        visible: true,
+        icon: 'md-person',
         order: 3
       }
     }
@@ -43,6 +51,11 @@ export class AppConfigService {
   getModule(): Promise<any> {
     return this.get().then((data: any) => {
       return _.sortBy(data.modules, [(o) => o.order]);
+    }).then((data: any) => {
+      return _.map(data, (o) => {
+        o.root = this.pagesMap[o.name];
+        return o;
+      });
     });
   }
 }
