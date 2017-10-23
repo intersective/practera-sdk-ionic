@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+// Pipes
 import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 @Component({

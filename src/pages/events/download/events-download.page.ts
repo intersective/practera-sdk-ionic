@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { FilepickerService } from '../../../shared/filepicker/filepicker.service';
+
+// Pages
 import { EventsPreviewPage } from './events-preview.page';
+// Others
+import { FilepickerService } from '../../../shared/filepicker/filepicker.service';
 import { UtilsService } from '../../../shared/utils/utils.service';
 import { WindowRef } from '../../../shared/window';
 
@@ -13,19 +16,15 @@ export class EventsDownloadPage {
   files: any = [];
 
   constructor(
+    public fs: FilepickerService,
     public navCtrl: NavController,
     public params: NavParams,
-    public fs: FilepickerService,
     public win: WindowRef,
     public utils: UtilsService
-  ) {
-  }
+  ) {}
 
   ionViewDidEnter() {
     this.event = this.params.get('event');
-    console.log(this.event);
-    console.log(this.fs.version);
-
     this.files = [];
 
     if (this.event && this.event.files) {

@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController,
-         NavParams,
-         LoadingController,
-         AlertController } from 'ionic-angular';
-import 'rxjs/Rx';
-import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -14,30 +9,33 @@ import { MilestoneService } from '../../services/milestone.service';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+// Others
+import { loadingMessages, errMessages } from '../../app/messages';
+import * as _ from 'lodash';
+
 @Component({
   selector: 'page-magic-link',
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  public verifySuccess = null;
-  public auth_token: string;
-  public milestone_id: string;
-  // loading & error messages variables
-  public loginLoadingMessage: any = loadingMessages.Login.login;
-  public misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  auth_token: string;
+  loginLoadingMessage: any = loadingMessages.Login.login;
+  milestone_id: string;
+  misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  verifySuccess = null;
+
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public authService: AuthService,
-    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
-    public milestoneService: MilestoneService,
+    public authService: AuthService,
     public cacheService: CacheService,
-    public gameService: GameService
+    public gameService: GameService,
+    public loadingCtrl: LoadingController,
+    public milestoneService: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams
   ) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MagiclinkPage');
     this.auth_token = this.navParams.get('auth_token');
   }
   ionViewWillEnter(){
@@ -58,7 +56,7 @@ export class MagicLinkPage {
       this.cacheService.setLocalObject('apikey', data.apikey);
       this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
       this.cacheService.setLocalObject('teams', data.Teams);
-      // get game_id data after login 
+      // get game_id data after login
       this.gameService.getGames()
           .subscribe(
             data => {

@@ -18,7 +18,7 @@ import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import {FormValidator} from '../../shared/validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
@@ -93,7 +93,7 @@ export class LoginPage {
               self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocalObject('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login 
+              // get game_id data after login
               this.gameService.getGames()
                   .subscribe(
                     data => {

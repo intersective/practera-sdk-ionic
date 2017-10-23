@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 
-import * as _ from 'lodash';
-
+// Services
 import { MilestoneService } from './milestone.service';
 import { ActivityService } from './activity.service';
+// Others
+import * as _ from 'lodash';
 
 @Injectable()
 export class LevelService {
 
   constructor(
-    public milestoneService: MilestoneService,
     public activityService: ActivityService,
+    public milestoneService: MilestoneService
   ) {}
 
-  public getLevels() {
+  getLevels() {
     let milestones = [];
     let milestoneIds = [];
 

@@ -5,7 +5,7 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 @Component({
   selector: 'questionGroup',
-  templateUrl: 'questionGroup.html',
+  templateUrl: 'question-group.html',
 })
 export class QuestionGroupComponent {
   @Input() group: any = {};
