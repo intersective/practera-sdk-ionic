@@ -14,6 +14,7 @@ import { HttpModule, Http } from '@angular/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
+import { AppConfigModule } from '../shared/app-config/app-config.module';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
 
@@ -156,6 +157,7 @@ export function HttpLoaderFactory(http: Http) {
     EscapeHtmlPipe,
   ],
   imports: [
+    AppConfigModule,
     BrowserModule,
     CacheModule,
     FormsModule,
