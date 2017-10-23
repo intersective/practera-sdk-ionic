@@ -12,6 +12,14 @@ class ActivityBase {
   id: number;
   name: string;
   description: string;
+  milestone_id?: number;
+  deadline?: string;
+  end?: string;
+  lead_image?: string;
+  is_locked?: boolean;
+  order?: number;
+  instructions?: string;
+  video_url?: string;
 }
 
 class ReferenceAssessmentBase {
@@ -103,7 +111,7 @@ export class ActivityService {
   /**
    * normalise activities
    */
-  public normaliseActivities(activities): Array<any> {
+  normaliseActivities(activities): Array<any> {
     let result = [];
 
     activities.forEach((act, index) => {
@@ -115,55 +123,65 @@ export class ActivityService {
   /**
    * normalise single activity object
    */
-   normaliseActivity(activity) {
+  normaliseActivity(activity) {
     let thisActivity = activity.Activity,
         normalisedActivity: ActivityBase,
         sequence = this.mergeReferenceToSequence(activity);
 
+    if (!activity.Activity) {
+      throw "Incorrect activity API responce (missing Activity object)";
+    }
+
+    normalisedActivity = {
+      id: activity.Activity.id,
+      name: activity.Activity.name,
+      description: activity.Activity.description,
+      milestone_id: activity.Activity.milestone_id,
+      deadline: activity.Activity.deadline,
+      end: activity.Activity.end,
+      lead_image: activity.Activity.lead_image,
+      is_locked: activity.Activity.is_locked,
+      order: activity.Activity.order,
+      instructions: activity.Activity.instructions,
+      video_url: activity.Activity.video_url
+    };
+
     activity =  _.merge(thisActivity, {
-      activity: activity.Activity,
+      // front end should use the one with smallcase instead
+      activity: normalisedActivity,
       sequence: sequence,
       assessment: this.extractAssessment(sequence),
+
+      // raw data (don't touch/edit)
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
       References: activity.References
     });
 
-    if (activity.Activity) {
-      normalisedActivity = {
-        id: activity.Activity.id,
-        name: activity.Activity.name,
-        description: activity.Activity.description
-      }
+    // Normalise activity reference (References object is optional, updated on 6 October 2017)
+    if (activity.References) {
+      activity.References.forEach((reference, idx) => {
+        let referenceAssessment: ReferenceAssessmentBase = {
+          id: reference.Assessment.id,
+          name: reference.Assessment.name,
+        }
+        let normalisedReference: ReferenceBase = {
+          context_id: reference.context_id,
+          Assessment: referenceAssessment
+        };
+        activity.References[idx] = normalisedReference;
+      });
     }
-
-    // Not all the API return activity data in capital-case
-    if (activity.activity) {
-      normalisedActivity = {
-        id: activity.activity.id,
-        name: activity.activity.name,
-        description: activity.activity.description
-      }
-    }
-
-    activity.Activity = normalisedActivity;
-
-    // Normalise activity reference
-    activity.References.forEach((reference, idx) => {
-      let referenceAssessment: ReferenceAssessmentBase = {
-        id: reference.Assessment.id,
-        name: reference.Assessment.name,
-      }
-      let normalisedReference: ReferenceBase = {
-        context_id: reference.context_id,
-        Assessment: referenceAssessment
-      };
-      activity.References[idx] = normalisedReference;
-    });
 
     return activity;
   }
 
+  /**
+   * Turn references array objects to an easier accessible object
+   * @param {Array} references array of reference
+   * @returns normalised references object
+   * @example
+   */
   /*
     turns:
     [
@@ -198,9 +216,13 @@ export class ActivityService {
     return result;
   }
 
+  /**
+   * @name mergeReferenceToSequence
+   * @description extract and attach related context_id into assessments
+   * @type {Object} activity single activity object
+   * @example conversion formats below
+   */
   /*
-    @name mergeReferenceToSequence
-
     turns:
     [
       {
@@ -282,17 +304,20 @@ export class ActivityService {
       }
     }
    */
-   mergeReferenceToSequence(activity) {
-    let refs = this.rebuildReferences(activity.References);
-
+   mergeReferenceToSequence(activity): Object {
     // @NOTE: first "[0]" sequence is the assessment of an activity
     let sequence = (activity.ActivitySequence) ? activity.ActivitySequence[0] : {};
 
-    if (!_.isEmpty(sequence)) {
-      // activity.ActivitySequence.forEach(seq => {
-        let modelId = sequence.model_id;
-        sequence.context_id = refs[modelId];
-      // });
+    // `References` object is optional (modified on 6 October 2017)
+    if (activity.References) {
+      let refs = this.rebuildReferences(activity.References);
+      if (!_.isEmpty(sequence)) {
+        // @NOTE: API only support first ActivitySequence atm
+        // activity.ActivitySequence.forEach(seq => {
+          let modelId = sequence.model_id;
+          sequence.context_id = refs[modelId];
+        // });
+      }
     }
     return sequence;
   }
