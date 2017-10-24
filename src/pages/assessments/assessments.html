@@ -11,10 +11,10 @@
 </ion-header>
 <ion-content class="assessments-list">
 
-  <div *ngFor="let assessmentGroup of assessmentGroups; let i = index">
-    <div *ngFor="let assessment of assessmentGroup; let j = index">
+  <div *ngFor="let assessmentGroup of assessmentGroups">
+    <div *ngFor="let assessment of assessmentGroup">
 
-      <ion-card *ngIf="assessment.description" class="no-box-shadow">
+      <ion-card *ngIf="assessment.description || assessment.name" class="no-box-shadow">
         <ion-card-content>
           <h2 class="text-center">{{ assessment.name }}</h2>
           <div [innerHTML]="assessment.description"></div>
@@ -22,10 +22,9 @@
       </ion-card>
 
       <questionGroup
-        *ngFor="let group of assessment.AssessmentGroup; let q = index"
+        *ngFor="let group of assessment.AssessmentGroup"
         [group]="group"
-        (click)="gotoAssessment(group, activity)"
-      >
+        (click)="gotoAssessment(group, activity)">
       </questionGroup>
     </div>
   </div>

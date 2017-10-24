@@ -46,7 +46,9 @@
     </ion-list-header>
 
     <ion-item *ngIf="loadings.submissions" class="center">
-      <loading-marker [loading]="loadings.submissions"></loading-marker>
+      <loading-marker [loading]="loadings.submissions">
+        <p>Loading submissions...</p>
+      </loading-marker>
     </ion-item>
 
     <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})">
@@ -57,13 +59,8 @@
           <h2 *ngIf='submission.statusTitle.inprogress'>In Progress</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-item>
-        <ion-item class="note" col-2>
-          <button block class="pendingbutton" *ngIf="submission.status !== 'done'">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-          </button>
-          <ion-badge *ngIf="submission.status === 'done'" [ngClass]="{'best-grade-color': eachScore >= 3.5, 'better-grade-color': (eachScore < 3.5 && eachScore >= 2), 'worse-grade-color': eachScore < 2 }">
-            4
-          </ion-badge>
+        <ion-item class="note" col-2 *ngIf="submission.status !== 'done'">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
         </ion-item>
       </ion-row>
 
