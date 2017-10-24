@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
@@ -56,7 +55,6 @@ export class ActivitiesListPage implements OnInit {
     public cacheService: CacheService,
     public characterService: CharacterService,
     public gameService: GameService,
-    public http: Http,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public navCtrl: NavController,

@@ -4,13 +4,13 @@ import {
   SkipSelf,
   Optional
 } from '@angular/core';
-import { HttpModule } from '@angular/http';
-import { CommonModule} from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import '../rxjs-operators';
 import { RequestServiceConfig, RequestService } from './request.service';
 
 @NgModule({
-  imports: [HttpModule, CommonModule, /* spare a space for appcache module*/],
+  imports: [HttpClientModule, CommonModule, /* spare a space for appcache module*/],
   providers: [
     RequestService,
     // { provide: RequestOptions, useClass: CustomRequestOption }

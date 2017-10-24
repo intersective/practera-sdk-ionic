@@ -11,6 +11,8 @@ import { FilepickerModule } from '../shared/filepicker/filepicker.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
 import { HttpModule, Http } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
@@ -95,7 +97,7 @@ import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: Http) {
+export function createTranslateLoader(http: Http) {
   return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
@@ -161,6 +163,8 @@ export function HttpLoaderFactory(http: Http) {
     FormsModule,
     MomentModule,
     NotificationModule,
+    HttpClientModule,
+    HttpModule,
     UtilsModule,
     TestModule,
     RequestModule.forRoot({
@@ -173,8 +177,8 @@ export function HttpLoaderFactory(http: Http) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [Http]
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
       }
     }),
     TranslationModule,

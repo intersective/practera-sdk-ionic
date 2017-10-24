@@ -1,5 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { HttpResponse, HttpHeaders, HttpRequest, HttpParams, HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -22,7 +22,7 @@ export class RequestService {
 
   constructor (
     @Optional() config: RequestServiceConfig,
-    private http: Http,
+    private http: HttpClient,
     private cacheService: CacheService
   ) {
     // Inject appKey and prefixUrl when RequestServiceConfig loaded
@@ -70,11 +70,12 @@ export class RequestService {
   }
 
   // Inject required fields to header of API request
-  appendHeader(customHeader: Object = {
-    'Content-Type': 'application/json',
+  appendHeader(customHeader: any = {
+    'contentType': 'application/json',
     'apikey': null
-  }) {
-    let headers = new Headers(customHeader);
+  }): HttpHeaders {
+    let headers = new HttpHeaders();
+    headers.set('Content-Type', customHeader.contentType);
 
     // Inject apiKey from cached
     let apiKey = this.cacheService.getCached('apikey') ||
@@ -98,11 +99,21 @@ export class RequestService {
   }
 
   // Set API request options
-  setOptions(options) {
-    let result = new RequestOptions({ headers: this.appendHeader() });
+  setOptions(options?: {
+    headers?: HttpHeaders;
+    observe?: "body";
+    params?: HttpParams;
+    reportProgress?: boolean;
+    responseType: "arraybuffer";
+    withCredentials?: boolean;
+  }):{
+    headers: HttpHeaders;
+    params?: HttpParams;
+  } {
+    let headers = this.appendHeader();
     let timelineId = this.cacheService.getLocal('timelineID');
 
-    let params = new URLSearchParams();
+    let params = new HttpParams();
     if (timelineId) {
       params.set('timelineID', timelineId);
     }
@@ -112,9 +123,11 @@ export class RequestService {
         params.set(key, value);
       });
     }
-    result.search = params;
 
-    return result;
+    return {
+      headers,
+      params
+    };
   }
 
   /**
@@ -123,10 +136,7 @@ export class RequestService {
    * @param {Object} options
    */
   get(endPoint: string = '', options?: any) {
-    let opt = this.setOptions(options);
-
-    return this.http.get(this.prefixUrl + endPoint, opt)
-      .map(this.extractData)
+    return this.http.get(this.prefixUrl + endPoint, this.setOptions(options))
       .catch(this.handleError);
   }
 
@@ -141,7 +151,6 @@ export class RequestService {
   }) {
     let options = new RequestOptions({ headers: this.appendHeader(header) });
     return this.http.post(this.prefixUrl + endPoint, data, options)
-      .map(this.extractData)
       .catch(this.handleError);
   }
 
@@ -153,13 +162,7 @@ export class RequestService {
   delete(endPoint: string, header?:Object) {
     let options = new RequestOptions({ headers: this.appendHeader(header) });
     return this.http.delete(this.prefixUrl + endPoint, options)
-      .map(this.extractData)
       .catch(this.handleError);
   }
 
-  // Extract response data and convert it to JSON
-  extractData(res: Response) {
-    let body = res.json();
-    return body.data || {};
-  }
 }
