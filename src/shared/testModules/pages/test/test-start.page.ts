@@ -7,20 +7,15 @@ import { AssessmentsGroupPage } from '../../../../pages/assessments/group/assess
 import { ActivitiesClassicListPage } from '../../../../pages/activities-classic/list/activities-classic-list.page';
 import { EventsListPage } from '../../../../pages/events/list/list.page';
 import { EventsDownloadPage } from '../../../../pages/events/download/events-download.page';
-import { GalleryPage } from '../../../../pages/gallery/gallery';
+import { GalleryPage } from '../../../../pages/gallery/gallery.page';
 import { LevelsListPage } from '../../../../pages/levels/list/list';
 import { LoginPage } from '../../../../pages/login/login';
 import { RegistrationPage } from '../../../../pages/registration/registration.page';
 import { SettingsPage } from '../../../../pages/settings/settings.page';
 import { EventCheckinPage } from '../../../../pages/events/checkin/event-checkin.page';
-import { TeamPage } from '../../../../pages/team/team';
-import { CelebrationPage } from '../../../../pages/spinwheel/celebration.page';
+import { TeamPage } from '../../../../pages/team/team.page';
 
 const PAGES = [
-  {
-    name: 'celebration',
-    page: CelebrationPage
-  },
   {
     name: 'Check-in',
     page: EventCheckinPage,

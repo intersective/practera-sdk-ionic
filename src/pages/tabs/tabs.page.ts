@@ -23,7 +23,7 @@ export class TabsPage {
   ) {}
 
   ionViewWillEnter() {
-    this.appConfig.getModule().then(modules => {
+    this.appConfig.getTabs().then(modules => {
       this.tabs = modules;
     });
   }

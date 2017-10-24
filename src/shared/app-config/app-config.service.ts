@@ -26,7 +26,7 @@ export class AppConfigService {
     app: {
       name: 'ISDK'
     },
-    modules: {
+    tabs: {
       events: {
         name: 'events',
         title: 'Events',
@@ -54,9 +54,9 @@ export class AppConfigService {
     });
   }
 
-  getModule(): Promise<any> {
+  getTabs(): Promise<any> {
     return this.get().then((data: any) => {
-      return _.sortBy(data.modules, [(o) => o.order]);
+      return _.sortBy(data.tabs, [(o) => o.order]);
     }).then((data: any) => {
       return _.map(data, (o) => {
         o.root = this.pagesMap[o.name];
