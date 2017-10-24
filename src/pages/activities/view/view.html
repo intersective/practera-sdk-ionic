@@ -51,30 +51,30 @@
       </loading-marker>
     </ion-item>
 
-    <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})">
+    <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})" no-lines>
       <ion-row *ngIf='!submission.statusTitle.published'>
-        <ion-item class="submission-title" col-10>
+        <ion-col class="submission-title" col-10>
           <h2 *ngIf='!submission.statusTitle.inprogress && submission.statusTitle.moderated_assessment'>Waiting for Review</h2>
           <h2 *ngIf='!submission.statusTitle.inprogress && !submission.statusTitle.moderated_assessment'>Done</h2>
           <h2 *ngIf='submission.statusTitle.inprogress'>In Progress</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
-        </ion-item>
-        <ion-item class="note" col-2 *ngIf="submission.status !== 'done'">
+        </ion-col>
+        <ion-col class="note" col-2 *ngIf="submission.status !== 'done'">
           <i class="fa fa-clock-o" aria-hidden="true"></i>
-        </ion-item>
+        </ion-col>
       </ion-row>
 
       <ion-row *ngIf='submission.statusTitle.published'>
-        <ion-item class="submission-title" col-10>
+        <ion-col class="submission-title" col-10>
           <h2 *ngIf="submission.statusTitle">{{ submission.statusTitle | truncate: 50 }}</h2>
           <h2 *ngIf="!submission.statusTitle">{{ submission.statusTitle.name }}</h2>
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
-        </ion-item>
-        <ion-item class="note" col-2>
+        </ion-col>
+        <ion-col class="note" col-2>
           <ion-badge [ngClass]="{'best-grade-color': submission.statusTitle.score >= 3.5, 'better-grade-color': (submission.statusTitle.score < 3.5 && submission.statusTitle.score >= 2), 'worse-grade-color': submission.statusTitle.score < 2 }">
             {{ submission.statusTitle.score }}
           </ion-badge>
-        </ion-item>
+        </ion-col>
       </ion-row>
     </ion-item>
   </ion-list>
