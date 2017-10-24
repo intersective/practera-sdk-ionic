@@ -13,8 +13,10 @@ import { TranslationService } from '../../shared/translation/translation.service
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  dashboard: any = ActivitiesListPage;
 
+  // We need hardcode at least one tab menu,
+  // otherwise any misconfigure will break
+  dashboard: any = ActivitiesListPage;
   tabs: any = [];
 
   constructor(
