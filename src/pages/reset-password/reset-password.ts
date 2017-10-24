@@ -10,7 +10,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
@@ -134,51 +134,6 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              // // get game API data after login 
-              // this.gameService.getGames()
-              //     .subscribe(
-              //       data => {
-              //         _.map(data, (element) => {
-              //           this.cacheService.setLocal('game_id', element[0].id); // get game_id data after login 
-              //         });
-              //       },
-              //       err => {
-              //         this.logError(err);
-              //       }
-              //     );
-              // // get user API data after login
-              // this.authService.getUser()
-              //     .subscribe(
-              //       data => {
-              //         this.cacheService.setLocalObject('name', data.User.name);
-              //         this.cacheService.setLocalObject('email', data.User.email);
-              //         this.cacheService.setLocalObject('program_id', data.User.program_id);
-              //         this.cacheService.setLocalObject('project_id', data.User.project_id);
-              //       },
-              //       err => {
-              //         this.logError(err);
-              //       }
-              //     );
-              // // get milestone API data after login
-              // this.milestoneService.getMilestones()
-              //     .subscribe(
-              //       data => {
-              //         loading.dismiss().then(() => {
-              //           this.milestone_id = data.data[0].id;
-              //           this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-              //           loading.dismiss();
-              //           this.navCtrl.setRoot(TabsPage).then(() => {
-              //             this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-              //             window.history.replaceState({}, '', window.location.origin); // reformat current url 
-              //           });
-              //         });
-              //       },
-              //       err => {
-              //         loading.dismiss().then(() => {
-              //           this.logError(err);
-              //         });
-              //       }
-              //     )
               let getGame = this.gameService.getGames();
               let getUser = this.authService.getUser();
               let getMilestone = this.milestoneService.getMilestones();

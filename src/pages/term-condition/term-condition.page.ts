@@ -1,14 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+
 // services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 // pages
 import { RegisterPage } from '../registration/register.page';
 import { TabsPage } from '../tabs/tabs.page';
+// Others
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
+
 @Component({
   selector: 'term-condition',
   templateUrl: 'term-condition.html'
@@ -16,23 +19,25 @@ import { TabsPage } from '../tabs/tabs.page';
 export class TermConditionPage {
   @Input('content') content?: SafeResourceUrl;
   @Input('user') user: any;
+
   agreed:boolean = false;
-  private checkAccessMethod: boolean = false;
-  // loading & error message variables
-  private helpEmailMessage = generalVariableMessages.helpMail.email;
-  private disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
-  private verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
+  checkAccessMethod: boolean = false;
+  disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
+  helpEmailMessage = generalVariableMessages.helpMail.email;
+  verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
+
   constructor(
+    public alertCtrl: AlertController,
+    public authService: AuthService,
     public nav: NavController,
-    private alertCtrl: AlertController,
-    private authService: AuthService,
-    private notificationService: NotificationService,
+    public notificationService: NotificationService,
     public translationService: TranslationService,
   ) {}
-  private accessMethod(){
+
+  accessMethod(){
     return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
   }
-  private displayError(errorMessage?: any): void {
+  displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
       subTitle: errorMessage,
@@ -42,7 +47,7 @@ export class TermConditionPage {
     });
     alert.present();
   }
-  private backToSAccountPage() {
+  backToSAccountPage() {
     this.nav.popToRoot();
   }
   ionViewDidEnter() {

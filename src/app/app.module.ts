@@ -31,7 +31,6 @@ import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
 import { RequestModule } from '../shared/request/request.module';
-import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
 
@@ -39,7 +38,7 @@ import { TeamService } from '../services/team.service';
 import { WindowRef } from '../shared/window';
 // components
 import { ModalComponent } from '../shared/notification/modal.component';
-import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
+import { QuestionGroupComponent } from '../components/question-group/question-group.component';
 import { EventComponent } from '../components/event/event.component';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
@@ -272,7 +271,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
     { provide: NotificationService, useClass: NotificationService },
-    { provide: ResponsiveService, useClass: ResponsiveService },
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },

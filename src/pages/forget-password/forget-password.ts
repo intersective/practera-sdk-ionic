@@ -12,7 +12,7 @@ import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 @Component({
   selector: 'page-forget-password',
   templateUrl: 'forget-password.html'

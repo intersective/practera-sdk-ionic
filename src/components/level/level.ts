@@ -13,7 +13,6 @@ export class LevelComponent {
   ) {}
 
   public gotoLevel(levelId) {
-    alert('AAAAA');
     // this.navCtrl.push(levelDetail);
   }
 }

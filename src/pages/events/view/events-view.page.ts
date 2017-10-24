@@ -1,23 +1,20 @@
 import { Component, Output, EventEmitter } from '@angular/core';
 import { Tabs, NavParams, NavController, AlertController, LoadingController, ActionSheetController, ToastController } from 'ionic-angular';
+
+// services
+import { AssessmentService } from '../../../services/assessment.service';
+import { EventService } from '../../../services/event.service';
+import { SubmissionService } from '../../../services/submission.service';
+// pages
+import { AssessmentsGroupPage } from '../../assessments/group/assessments-group.page';
+import { AssessmentsPage } from '../../assessments/assessments.page';
+import { EventCheckinPage } from '../checkin/event-checkin.page';
+import { EventsDownloadPage } from '../download/events-download.page';
+import { EventsListPage } from '../list/list.page';
+// Others
+import { CacheService } from '../../../shared/cache/cache.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
 import { TranslationService } from '../../../shared/translation/translation.service';
-// services
-import { CacheService } from '../../../shared/cache/cache.service';
-import { EventService } from '../../../services/event.service';
-import { AssessmentService } from '../../../services/assessment.service';
-import { SubmissionService } from '../../../services/submission.service';
-
-// pages
-import { EventsListPage } from '../list/list.page';
-import { EventsDownloadPage } from '../download/events-download.page';
-import { AssessmentsPage } from '../../assessments/assessments.page';
-import { AssessmentsGroupPage } from '../../assessments/group/assessments-group.page';
-import { EventCheckinPage } from '../checkin/event-checkin.page';
-
-// We no need custom page for checkin anymore
-// import { EventCheckinPage } from '../checkin/event-checkin.page';
-
 import * as moment from 'moment';
 
 const terms = {
@@ -27,35 +24,33 @@ const terms = {
   templateUrl: './events-view.html'
 })
 export class EventsViewPage {
-  public loadings = {
-    checkin: true
-  };
-  public event: any = {};
-  public bookingStatus: string = '';
-  public justBooked: boolean = false;
-  public booked_text: string = 'Booked';
-  public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
-  public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
-  public completedSubmissions: boolean = false;
-  private submissions: Array<any> = [];
+  booked_text: string = 'Booked';
+  bookEventErrMessage: any = errMessages.Events.bookEvents.book;
+  bookingStatus: string = '';
+  cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
+  completedSubmissions: boolean = false;
+  event: any = {};
+  justBooked: boolean = false;
+  loadings: any = { checkin: true };
+  submissions: Array<any> = [];
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private cache: CacheService,
-    private eventService: EventService,
-    public translationService: TranslationService,
-    private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController,
-    private actionSheetCtrl: ActionSheetController,
-    private toastCtrl: ToastController,
-    private assessmentService: AssessmentService,
-    private submissionService: SubmissionService
+    public actionSheetCtrl: ActionSheetController,
+    public alertCtrl: AlertController,
+    public assessmentService: AssessmentService,
+    public cache: CacheService,
+    public eventService: EventService,
+    public loadingCtrl: LoadingController,
+    public navParams: NavParams,
+    public navCtrl: NavController,
+    public submissionService: SubmissionService,
+    public toastCtrl: ToastController,
+    public translationService: TranslationService
   ) {
     this.event = navParams.get('event');
   }
 
-  private availability(event): string {
+  public availability(event): string {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
   }
 
@@ -82,13 +77,12 @@ export class EventsViewPage {
       this.loadings.checkin = false;
       res.forEach(submission => {
         submission = this.submissionService.normalise(submission);
-        console.log(submission);
         this.submissions.push(submission);
         if (submission.status === 'done') {
           this.completedSubmissions = true;
         }
       });
-    }, err => {
+    }, (err) => {
       this.loadings.checkin = false;
       console.log(err);
     });
@@ -99,7 +93,7 @@ export class EventsViewPage {
    * @description each event has only one assessment
    * @param {Array} references References array response from get_activity API
    */
-  private extractAssessment(references: Array<any>) {
+   extractAssessment(references: Array<any>) {
     let ref = references[0];
     ref.Assessment.context_id = ref.context_id;
 
@@ -208,7 +202,6 @@ export class EventsViewPage {
     });
     loading.present().then(() => {
       // if submission exist
-      console.log(this.submissions);
       loading.dismiss().then(() => {
         // this.navCtrl.push(AssessmentsGroupPage, {
         this.navCtrl.push(AssessmentsPage, {

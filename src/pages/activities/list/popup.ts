@@ -1,34 +1,37 @@
 import { Component } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
-import { i18nData } from '../../../app/i18n-en';
-import { loadingMessages, errMessages } from '../../../app/messages';
+
 // services
 import { AchievementService } from '../../../services/achievement.service';
+//Others
+import { i18nData } from '../../../app/i18n-en';
+import { loadingMessages, errMessages } from '../../../app/messages';
 
 @Component({
   selector: 'activity-list-popup',
   templateUrl: 'popup.html'
 })
 export class ActivityListPopupPage {
-  public unlock_id: any;
-  public achievementData: any = null;
-  public badgeUrl: string;
-  public description: string;
-  public points: string;
-  public achievementName: string;
-  public enableData: boolean = null;
-  public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
-  public achievementsLoadingErr: any = errMessages.General.loading.load;
-  public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
+
+  achievementData: any = null;
+  achievementName: string;
+  achievementsLoadingErr: any = errMessages.General.loading.load;
+  achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
+  badgeUrl: string;
+  description: string;
+  enableData: boolean = null;
+  loadingMessage: any = loadingMessages.LoadingSpinner.loading;
+  points: string;
+  unlock_id: any;
 
   constructor(
-    private viewCtrl: ViewController,
-    private navParams: NavParams,
-    private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController,
-    private achievementService: AchievementService,
-    public translationService: TranslateService
+    public achievementService: AchievementService,
+    public loadingCtrl: LoadingController,
+    public navParams: NavParams,
+    public toastCtrl: ToastController,
+    public translationService: TranslateService,
+    public viewCtrl: ViewController
   ) {
     this.unlock_id = this.navParams.get('unlock_id');
     // console.log('Unlock id value: ', this.unlock_id);
@@ -51,8 +54,8 @@ export class ActivityListPopupPage {
     loader.present().then(() => {
       this.achievementService.getAll()
         .subscribe(
-          data => {
-            if(data.length > 0){
+          (data) => {
+            if (data.length > 0) {
               this.enableData = true;
               this.achievementData = data.find(res => res.Achievement.id === this.unlock_id).Achievement;
               this.achievementName = this.achievementData.name;
@@ -62,14 +65,14 @@ export class ActivityListPopupPage {
               loader.dismiss().then(() => {
                 console.log(this.achievementData);
               });
-            }else {
+            } else {
               this.enableData = false;
               loader.dismiss().then(() => {
                 nothingLoaded.present();
               });
             }
           },
-          err => {
+          (err) => {
             this.enableData = false;
             loader.dismiss().then(() => {
               loadingFailed.present();

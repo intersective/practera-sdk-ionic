@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, Inject } from '@angular/core'; 
+import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
 import { RegistrationModalPage } from './modal';
 import { TabsPage } from '../tabs/tabs.page';
@@ -25,10 +25,6 @@ const supportEmail = generalVariableMessages.helpMail.email;
 })
 export class RegisterPage implements OnInit { // this part of registration is for setting password before login
   @ViewChild('registrationForm') registrationForm: NgForm;
-  user: any = {
-    password: '',
-    verify_password: ''
-  };
   public changeContent: boolean = false;
   public clickSuspended: boolean = false;
   public gameID: string = null;
@@ -38,6 +34,10 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   public password: string = null;
   public regForm: any;
   public submitted: boolean = false;
+  public user: any = {
+    password: '',
+    verify_password: ''
+  };
   public pwdMacthBool: boolean = false;
   public userData: any = [];
   public verify_password: string;
@@ -105,6 +105,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
       self.displayAlert(message).present();
       self.submitted = false;
     }
+
     function onFinally() {
       //@TODO: log something maybe
       // self.navCtrl.push(TabsPage);
@@ -138,44 +139,6 @@ export class RegisterPage implements OnInit { // this part of registration is fo
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
               .subscribe(
                 data => {
-                  // // get game API data after registration and login
-                  // this.gameService.getGames()
-                  //     .subscribe(
-                  //       data => {
-                  //         _.map(data, (element) => {
-                  //           this.cacheService.setLocal('game_id', element[0].id); // get game_id data after login
-                  //         });
-                  //       },
-                  //       err => {
-                  //         this.logError(err);
-                  //       }
-                  //     );
-                  // // get user API data after registration and login
-                  // self.authService.getUser()
-                  //     .subscribe(
-                  //       data => {
-                  //         console.log(data);
-                  //       },
-                  //       err => {
-                  //         this.logError(err);
-                  //       }
-                  //     );
-                  // // get milestone API data after registration and login
-                  // self.milestone.getMilestones()
-                  //     .subscribe( data => {
-                  //       loading.dismiss().then(() => {
-                  //         this.milestone_id = data.data[0].id;
-                  //         self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                  //         self.navCtrl.push(TabsPage).then(() => {
-                  //           window.history.replaceState({}, '', window.location.origin); // reformat current url 
-                  //         });
-                  //       });
-                  //     },
-                  //     err => {
-                  //       loading.dismiss().then(() => {
-                  //         this.logError(err);
-                  //       });
-                  //     });
                   let getGame = this.gameService.getGames();
                   let getUser = this.authService.getUser();
                   let getMilestone = this.milestoneService.getMilestones();

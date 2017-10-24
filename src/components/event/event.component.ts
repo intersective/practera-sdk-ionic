@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { EventService } from '../../services/event.service';
 
+// Services
+import { EventService } from '../../services/event.service';
+// Others
 import * as moment from 'moment';
 
 @Component({
@@ -10,6 +12,11 @@ import * as moment from 'moment';
 })
 export class EventComponent {
   @Input() event: any;
+
+  constructor(
+    public eventService: EventService,
+    public navCtrl: NavController
+  ) {}
 
   // Check event has been booked
   isBookedEvent(event) {
@@ -20,10 +27,6 @@ export class EventComponent {
   isAttendedEvent(event) {
     return (event.isBooked === true && moment().isAfter(moment(event.end)));
   }
-  constructor(
-    public navCtrl: NavController,
-    private eventService: EventService
-  ) {}
 
   download() {
     this.eventService.downloadAttachment(this.event);

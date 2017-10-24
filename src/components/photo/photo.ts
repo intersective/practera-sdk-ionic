@@ -13,7 +13,6 @@ export class PhotoComponent {
   ) {}
 
   public gotoPhoto(photoId) {
-    alert('AAAAA');
     // this.navCtrl.push();
   }
 }

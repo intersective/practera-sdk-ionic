@@ -10,17 +10,17 @@ declare var _: any;
   templateUrl: './list.html'
 })
 export class ActivitiesClassicListPage {
-  private activities: Array<any> = [];
+  public activities: Array<any> = [];
 
   constructor(
-    private navCtrl: NavController,
-    private activityService: ActivityService,
-    private toastCtrl: ToastController,
-    private loader: LoadingController
+    public navCtrl: NavController,
+    public activityService: ActivityService,
+    public toastCtrl: ToastController,
+    public loader: LoadingController
   ) {}
 
   // @TODO: Move to shared function later...
-  private _error(err) {
+  public _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,
@@ -38,7 +38,7 @@ export class ActivitiesClassicListPage {
   /**
    * normalise activities
    */
-  private normaliseActivities(activities): Array<any> {
+  public normaliseActivities(activities): Array<any> {
     let result = [];
 
     activities.forEach((act, index) => {

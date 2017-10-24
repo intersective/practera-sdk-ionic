@@ -12,7 +12,7 @@ import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../shared/translation/translation.service';
 import * as _ from 'lodash';
 // directives
-import { FormValidator } from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';

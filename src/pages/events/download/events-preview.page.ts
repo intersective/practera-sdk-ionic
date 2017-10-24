@@ -8,11 +8,10 @@ export class EventsPreviewPage implements OnInit {
   file: any = {};
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private viewCtrl: ViewController
-  ) {
-  }
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController
+  ) {}
 
   ngOnInit() {
     this.viewCtrl.setBackButtonText('Done');
