@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { Http, Headers, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 // Others
 import { RequestService } from '../shared/request/request.service';
@@ -14,12 +14,11 @@ export class MilestoneService {
 
   constructor(
     public cacheService: CacheService,
-    public http: Http,
     public request: RequestService
   ) {}
 
   getList(options?) {
-    let params: URLSearchParams = new URLSearchParams();
+    let params = new HttpParams();
 
     if (options && options.search) {
       // @TODO: Move to helper function
@@ -32,16 +31,15 @@ export class MilestoneService {
       params.set('timelineId', timelineId);
     }
 
-    return this.request.get('api/milestones.json', {search: params});
+    return this.request.get('api/milestones.json', {params});
   }
 
   getMilestones(){
-    let headers = new Headers();
+    let headers = new HttpHeaders();
     headers.append('appkey', this.appkey);
     headers.append('apikey', this.cacheService.getLocalObject('apikey'));
     headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
-    console.log('TimelineID: '+ this.cacheService.getLocalObject('timelineID'));
-    return this.http.get(this.prefixUrl+'api/milestones.json', { headers: headers })
-               .map(res => res.json());
+
+    return this.request.get(this.prefixUrl+'api/milestones.json', { headers });
   }
 }

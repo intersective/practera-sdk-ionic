@@ -1,5 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { HttpResponse, HttpHeaders, HttpRequest, HttpParams, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -56,7 +56,8 @@ export class RequestService {
     let errorFrom = {
         api: 'SERVER_ERROR',
       },
-      currentError: any = error.json();
+      currentError: any = error;
+    console.log(currentError);
     if (typeof error !== 'object') {
       throw 'Unable to process API respond!';
     }
@@ -106,6 +107,7 @@ export class RequestService {
     reportProgress?: boolean;
     responseType: "arraybuffer";
     withCredentials?: boolean;
+    search?: string;
   }):{
     headers: HttpHeaders;
     params?: HttpParams;
@@ -146,12 +148,17 @@ export class RequestService {
    * @param {Object} data
    * @param {Object} header
    */
-  post(endPoint: string, data: any, header = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }) {
-    let options = new RequestOptions({ headers: this.appendHeader(header) });
-    return this.http.post(this.prefixUrl + endPoint, data, options)
-      .catch(this.handleError);
+  post(endPoint: string, data: any, header?: any) {
+    let headers = this.appendHeader();
+
+    // @TODO: make sure if Content-Type is optional
+    // if (!headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/x-www-form-urlencoded')
+    // }
+
+    return this.http.post(this.prefixUrl + endPoint, data, {
+      headers: headers
+    }).catch(this.handleError);
   }
 
   /**
@@ -160,8 +167,9 @@ export class RequestService {
    * @param {Object} header
    */
   delete(endPoint: string, header?:Object) {
-    let options = new RequestOptions({ headers: this.appendHeader(header) });
-    return this.http.delete(this.prefixUrl + endPoint, options)
+    return this.http.delete(this.prefixUrl + endPoint, {
+      headers: this.appendHeader(header)
+    })
       .catch(this.handleError);
   }
 

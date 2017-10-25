@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 // services
 import { CacheService } from '../shared/cache/cache.service';
@@ -52,22 +52,23 @@ export class ActivityService {
   }
 
   getLevels(options?: any) {
-    let params: URLSearchParams = new URLSearchParams();
-    if (options.search) {
-      _.forEach(options.search, (value, key) => {
-        params.set(key, value);
-      });
-      options.search = params;
-    }
     return this.cacheService.read()
       .then((data: any) => {
-        if (!options.search.timeline_id && data.user.timeline_id) {
-          params.set('timeline_id', data.user.timeline_id);
+        let params = new HttpParams();
+        if (options) {
+          _.forEach(options, (value, key) => {
+            params.set(key, value);
+          });
           options.search = params;
         }
-        if (!options.search.project_id && data.user.project_id) {
+
+        if (!options.timeline_id && data.user.timeline_id) {
+          params.set('timeline_id', data.user.timeline_id);
+          options = params;
+        }
+        if (!options.project_id && data.user.project_id) {
           params.set('project_id', data.user.project_id);
-          options.search = params;
+          options = params;
         }
         return this.getList(options).toPromise();
       });

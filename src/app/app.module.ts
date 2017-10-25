@@ -10,7 +10,6 @@ import { MyApp } from './app.component';
 import { FilepickerModule } from '../shared/filepicker/filepicker.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
-import { HttpModule, Http } from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -97,7 +96,7 @@ import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
-export function createTranslateLoader(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
@@ -164,7 +163,6 @@ export function createTranslateLoader(http: Http) {
     MomentModule,
     NotificationModule,
     HttpClientModule,
-    HttpModule,
     UtilsModule,
     TestModule,
     RequestModule.forRoot({
@@ -177,7 +175,7 @@ export function createTranslateLoader(http: Http) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
+        useFactory: createTranslateLoader,
         deps: [HttpClient]
       }
     }),
