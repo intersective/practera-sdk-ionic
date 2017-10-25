@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages';
+
 // services
 import { CacheService } from '../../shared/cache/cache.service';
 // pages
@@ -9,18 +8,23 @@ import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-set
 import { LoginPage } from '../../pages/login/login';
 import { TutorialPage } from '../settings/tutorial/tutorial.page';
 import { TermConditionPage } from '../term-condition/term-condition.page';
+// Others
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages';
+
 @Component({
   selector: 'settings-page',
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
-  helpline = "help@practera.com";
+  helpline: string = "help@practera.com";
   logoutMessage: any = loadingMessages.Logout.logout;
-  settings = [];
+  settings: any = [];
+
   constructor(
     public cache: CacheService,
-    public navCtrl: NavController,
     public menuCtrl: MenuController,
+    public navCtrl: NavController,
     public loadingCtrl: LoadingController,
     public translationService: TranslationService,
     public appCtrl: App

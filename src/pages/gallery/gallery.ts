@@ -1,23 +1,18 @@
 import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 
-import * as _ from 'lodash';
-import * as moment from 'moment';
+// Services
 import { AssessmentService } from '../../services/assessment.service';
 import { SubmissionService } from '../../services/submission.service';
+// Others
+import * as _ from 'lodash';
+import * as moment from 'moment';
 
 @Component({
   selector: 'gallery-page',
   templateUrl: 'gallery.html'
 })
 export class GalleryPage {
-  avatarName: any;
-  avatarPhoto: any;
-
-  photos: any[];
-  assessments: any;
-  name: string;
-
   _mock = {
     avatar: {
       name: 'Jose',
@@ -41,8 +36,12 @@ export class GalleryPage {
         photo: 'https://unsplash.it/50/50'
       }
     ]
-  }
-
+  };
+  assessments: any;
+  avatarName: any;
+  avatarPhoto: any;
+  name: string;
+  photos: any[];
   refresher = null;
 
   constructor(
@@ -53,7 +52,7 @@ export class GalleryPage {
   ) {}
 
   // @TODO: Move to shared function later...
-  public _error(err) {
+  _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,
@@ -146,6 +145,5 @@ export class GalleryPage {
     ];
     console.log('this.photos', this.photos)
   }
-
 
 }

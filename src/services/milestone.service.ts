@@ -1,18 +1,23 @@
 import { Injectable }    from '@angular/core';
 import { Http, Headers, URLSearchParams } from '@angular/http';
+
+// Others
 import { RequestService } from '../shared/request/request.service';
-import * as _ from 'lodash';
 import { CacheService } from '../shared/cache/cache.service';
+import * as _ from 'lodash';
+
 @Injectable()
 export class MilestoneService {
+  appkey = this.request.getAppkey();
   milestones: any = {};
-  private appkey = this.request.getAppkey();
-  private prefixUrl: any = this.request.getPrefixUrl();
+  prefixUrl: any = this.request.getPrefixUrl();
+
   constructor(
-    private cacheService: CacheService,
-    private request: RequestService,
-    private http: Http
+    public cacheService: CacheService,
+    public http: Http,
+    public request: RequestService
   ) {}
+
   getList(options?) {
     let params: URLSearchParams = new URLSearchParams();
 
@@ -29,6 +34,7 @@ export class MilestoneService {
 
     return this.request.get('api/milestones.json', {search: params});
   }
+
   getMilestones(){
     let headers = new Headers();
     headers.append('appkey', this.appkey);

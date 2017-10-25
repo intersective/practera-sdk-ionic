@@ -1,63 +1,62 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { NavController,
-         ViewController,
-         NavParams,
-         LoadingController,
-         AlertController,
-         ModalController } from 'ionic-angular';
+import { NavController, ViewController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages';
-import * as _ from 'lodash';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
-import { ResponsiveService } from '../../services/responsive.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
-import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+import { TabsPage } from '../tabs/tabs.page';
 import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
+// Others
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages';
+import * as _ from 'lodash';
+
 @Component({
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
 })
 export class ResetPasswordPage implements OnInit {
-  keyVal: string;
+
   emailVal: string;
-  windowHeight: number = window.innerHeight / 3;
+  keyVal: string;
+
+  invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
   isLandscaped: boolean = false;
-  password: string;
-  verify_password: string;
-  verifySuccess: boolean = null;
-  resetPwdFormGroup: any;
-  verifyPwd: boolean = false;
+  isPwdMatch: boolean = false;
   minLengthCheck: boolean = true;
   milestone_id: string;
-  isPwdMatch: boolean = false;
-  // loading & error message variables
-  invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
-  verifyUserMessage = loadingMessages.VerifyUser.verify;
-  successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
-  resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  password: string;
   passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
   passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  resetPwdFormGroup: any;
+  successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  verify_password: string;
+  verifyPwd: boolean = false;
+  verifySuccess: boolean = null;
+  verifyUserMessage = loadingMessages.VerifyUser.verify;
+  windowHeight: number = window.innerHeight / 3;
 
-  constructor(private navCtrl: NavController,
-    public navParams: NavParams,
+  constructor(
     public alertCtrl: AlertController,
     public authService: AuthService,
-    public viewCtrl: ViewController,
-    public loadingCtrl: LoadingController,
-    public formBuilder: FormBuilder,
-    public milestoneService: MilestoneService,
     public cacheService: CacheService,
+    public formBuilder: FormBuilder,
     public gameService: GameService,
-    public translationService: TranslationService) {
+    public loadingCtrl: LoadingController,
+    public milestoneService: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public translationService: TranslationService,
+    public viewCtrl: ViewController
+  ) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
           password: ['', [Validators.minLength(8), Validators.required]],

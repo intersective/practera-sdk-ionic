@@ -1,34 +1,35 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController } from 'ionic-angular';
-import * as moment from 'moment';
-import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../../app/messages';
+
 // services
 import { ActivityService } from '../../../services/activity.service';
 import { EventService } from '../../../services/event.service';
 // pages
 import { EventsViewPage } from '../view/events-view.page';
+// Others
+import { loadingMessages, errMessages } from '../../../app/messages';
+import * as moment from 'moment';
+import * as _ from 'lodash';
+
 @Component({
   selector: 'events-list-page',
   templateUrl: 'list.html'
 })
 export class EventsListPage {
-  activities: any = {};
-  loadedEvents: any = []; // Further processed events array, for private use
-  events: any = []; // ordered events array in filterEvents and to be access through template
-  noEvents: boolean = false;
+  activities = {};
+  emptyFilterErrMessage = errMessages.Events.filter.empty; // loading & error message variables
+  events = []; // ordered events array in filterEvents and to be access through template
   filter = 'browses';
-
-  // loading & error message variables
-  emptyFilterErrMessage = errMessages.Events.filter.empty;
-  noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  loadedEvents = []; // Further processed events array, for public use
   noAttendedFilterErrMessage = errMessages.Events.filter.noAttended;
+  noBookingsFilterErrMessage = errMessages.Events.filter.noBookings;
+  noEvents = false;
 
   constructor(
-    private navCtrl: NavController,
-    private eventService: EventService,
-    private activityService: ActivityService,
-    private loadingCtrl: LoadingController,
+    public activityService: ActivityService,
+    public eventService: EventService,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController
   ) {}
 
   /**
@@ -104,7 +105,6 @@ export class EventsListPage {
           }
         })
         .then((events) => {
-          console.log('events', events);
           // loadedEvents will never change (public use),
           // it will be used for filtering of events (prep for display/template variable).
           this.loadedEvents = this._injectCover(this._mapWithActivity(events));
@@ -148,7 +148,7 @@ export class EventsListPage {
    * @description inject hardcoded images by array index number
    * @param {array} events list of event object respond from get_events API
    */
-  public _injectCover(events) {
+   _injectCover(events) {
     let counts = events.length;
 
     _.forEach(events, (value, key) => {
@@ -167,7 +167,7 @@ export class EventsListPage {
    *     - skip non-event activities
    * @param {array} events get_events response
    */
-  public _mapWithActivity(events) {
+   _mapWithActivity(events) {
     let result = [];
 
     events.forEach(event => {
@@ -181,12 +181,10 @@ export class EventsListPage {
   }
   // Check event allow to check-in
   allowCheckIn(event) {
-    console.log('event', event);
     return (moment(event.start).isAfter() && moment(event.end).isBefore());
   }
 
   view(event) {
-    console.log(event);
     this.navCtrl.push(EventsViewPage, {
       event
     });

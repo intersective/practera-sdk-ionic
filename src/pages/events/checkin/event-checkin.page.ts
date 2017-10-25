@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { NavParams, NavController, LoadingController } from 'ionic-angular';
 
 // services
-import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
 import { AssessmentService } from '../../../services/assessment.service';
-
+// Others
+import { CacheService } from '../../../shared/cache/cache.service';
 import * as moment from 'moment';
 
 @Component({
@@ -13,20 +13,20 @@ import * as moment from 'moment';
   templateUrl: './event-checkin.html',
 })
 export class EventCheckinPage {
-  event: any;
-  submissions: any;
   assessment: any;
   assessmentGroup: any;
-  user: any = {};
   checkin: any = {};
+  event: any;
+  submissions: any;
+  user: any = {};
 
   constructor(
-    public navParams: NavParams,
-    public navCtrl: NavController,
+    public assessmentService: AssessmentService,
     public cache: CacheService,
     public eventService: EventService,
-    public assessmentService: AssessmentService,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
   ) {
     this.event = navParams.get('event');
     this.submissions = navParams.get('submissions');

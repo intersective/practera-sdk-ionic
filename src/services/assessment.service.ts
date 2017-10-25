@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
-import { Http, Headers } from '@angular/http';
+
+// Others
 import * as _ from 'lodash';
-// services
-import { CacheService } from '../shared/cache/cache.service';
+
 class Assessment {
   id: number;
   context_id: number;
@@ -66,17 +66,15 @@ export class Submission {
 
 @Injectable()
 export class AssessmentService {
-  constructor(private cacheService: CacheService,
-              private request: RequestService,
-              private http: Http) {}
-  private prefixUrl: any = this.request.getPrefixUrl();
-  private appkey = this.request.getAppkey();
-  private assessment_url = 'api/assessments.json';
+  constructor(
+    public request: RequestService
+  ) {}
+
   /**
    * @description check feedback can show
    * @type {boolen}
    */
-   public isPublished(submissions: any):boolean {
+   isPublished(submissions: any):boolean {
      let published = false;
      _.forEach(submissions, (submission) => {
        _.forEach(submission, (subm) => {
@@ -92,7 +90,7 @@ export class AssessmentService {
    }
 
   // listAll()
-  public getAll(options?: any) {
+  getAll(options?: any) {
     return this.request.get('api/assessments.json', options);
   }
 
@@ -106,11 +104,11 @@ export class AssessmentService {
    *
    * @param {any} options [description]
    */
-  public getQuestion(options?: any) {
+  getQuestion(options?: any) {
     return this.request.get('api/export_assessments.json', options);
   }
 
-  public post(assessmentAnswer: Submission) {
+  post(assessmentAnswer: Submission) {
     return this.request.post('api/assessment_submissions.json', assessmentAnswer, {
       'Content-Type': 'application/json'
     });
@@ -120,7 +118,7 @@ export class AssessmentService {
    * save progress using "post" function AssessmentService.post()
    * @param {Object} assessmentAnswer
    */
-  public save(assessmentAnswer) {
+  save(assessmentAnswer) {
     assessmentAnswer.Assessment.in_progress = true; // force in_progress
 
     return this.post(assessmentAnswer);
@@ -130,7 +128,7 @@ export class AssessmentService {
    * submit using "post" function AssessmentService.post()
    * @param {Object} assessmentAnswer
    */
-  public submit(assessmentAnswer) {
+  submit(assessmentAnswer) {
     return this.post(assessmentAnswer);
   }
 
@@ -208,7 +206,7 @@ export class AssessmentService {
       }
     }
    */
-  public normalise(assessment) {
+  normalise(assessment) {
     let result = assessment.Assessment;
     let thisGroups = assessment.AssessmentGroup;
 
@@ -281,7 +279,7 @@ export class AssessmentService {
       ],
     }
    */
-  public normaliseGroup(group) {
+  normaliseGroup(group) {
     // let result = group;
     let questions = group.AssessmentGroupQuestion;
     let thisQuestions = [];
@@ -354,7 +352,7 @@ export class AssessmentService {
       "order": null,
     }
    */
-  public normaliseQuestion(question): QuestionBase<any> {
+  normaliseQuestion(question): QuestionBase<any> {
     let thisQuestion = question.AssessmentQuestion;
     let choices = thisQuestion.AssessmentQuestionChoice;
 
@@ -406,7 +404,7 @@ export class AssessmentService {
       "weight": "1",
     }
    */
-  public normaliseChoice(choice): ChoiceBase<any> {
+  normaliseChoice(choice): ChoiceBase<any> {
     return {
       id: choice.id, // same as assessment_choice_id & AssessmentChoice.id & id
       value: choice.assessment_choice_id, // or choice.id (similar id used as "assessment_choice_id")

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
 
+// Services
 import { LevelService } from '../../../services/level.service';
 
 @Component({
@@ -9,16 +10,6 @@ import { LevelService } from '../../../services/level.service';
   templateUrl: 'list.html'
 })
 export class LevelsListPage {
-
-  constructor(
-    private navCtrl: NavController,
-    private platform: Platform,
-    private toastCtrl: ToastController,
-    private levelService: LevelService,
-  ) {
-      platform.ready().then(() => {});
-  }
-
   _mock = [
     {
       id: 1,
@@ -29,8 +20,16 @@ export class LevelsListPage {
       name: 'Cookie'
     }
   ];
-
   levels = [];
+
+  constructor(
+    public navCtrl: NavController,
+    public levelService: LevelService,
+    public platform: Platform,
+    public toastCtrl: ToastController
+  ) {
+      platform.ready().then(() => {});
+  }
 
   // @TODO: Move to shared function later...
   _error(err) {

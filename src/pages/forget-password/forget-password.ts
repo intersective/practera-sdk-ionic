@@ -1,20 +1,16 @@
 import { Component } from '@angular/core';
-import { NavController,
-         NavParams,
-         LoadingController,
-         AlertController,
-         ToastController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
-
-import 'rxjs/Rx';
+import { NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
-import {FormValidator} from '../../validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
+// Others
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages } from '../../app/messages';
+
 @Component({
   selector: 'page-forget-password',
   templateUrl: 'forget-password.html'
@@ -26,6 +22,7 @@ export class ForgetPasswordPage {
   sendingEmailLoadingMessage = loadingMessages.SendingEmail.send;
   sentEmailMessagePartOne = loadingMessages.SentMessage.partOne;
   sentEmailMessagePartTwo = loadingMessages.SentMessage.partTwo;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -36,10 +33,10 @@ export class ForgetPasswordPage {
     public toastCtrl: ToastController,
     public formBuilder: FormBuilder
   ) {
-      this.forgotPwdFormGroup = formBuilder.group({
-        email: ['', [FormValidator.isValidEmail,
-                    Validators.required]],
-      });
+    this.forgotPwdFormGroup = formBuilder.group({
+      email: ['', [FormValidator.isValidEmail,
+                  Validators.required]],
+    });
   }
 
   ionViewDidLoad() {

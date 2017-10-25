@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController,
-         NavParams,
-         LoadingController,
-         AlertController } from 'ionic-angular';
-import 'rxjs/Rx';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
-import * as _ from 'lodash';
-import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -15,31 +9,33 @@ import { MilestoneService } from '../../services/milestone.service';
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+// Others
+import { loadingMessages, errMessages } from '../../app/messages';
+import * as _ from 'lodash';
+
 @Component({
   selector: 'page-magic-link',
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  verifySuccess = null;
   auth_token: string;
-  milestone_id: string;
-  // loading & error messages variables
   loginLoadingMessage: any = loadingMessages.Login.login;
+  milestone_id: string;
   misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  verifySuccess = null;
 
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public authService: AuthService,
-    public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
-    public milestoneService: MilestoneService,
+    public authService: AuthService,
     public cacheService: CacheService,
-    public gameService: GameService
+    public gameService: GameService,
+    public loadingCtrl: LoadingController,
+    public milestoneService: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams
   ) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MagiclinkPage');
     this.auth_token = this.navParams.get('auth_token');
   }
 

@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
 import { Observable } from 'rxjs/Observable';
 
+// Others
+import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
 @Injectable()
 export class SubmissionService {
-  private targetUrl = 'api/submissions.json';
+  targetUrl = 'api/submissions.json';
 
-  constructor(private request: RequestService) {}
+  constructor(
+    public request: RequestService
+  ) {}
 
   // list()
-  public getSubmissions(options?: any) {
+  getSubmissions(options?: any) {
     return this.request.get(this.targetUrl, options);
   }
 
-  public extractPhotos(data) {
+  extractPhotos(data) {
     let photos = [];
 
     _.forEach(data, function(val, key) {
@@ -170,7 +173,7 @@ export class SubmissionService {
 
   }
  */
-  public normalise(respond) {
+ normalise(respond) {
     let submission = respond['AssessmentSubmission'];
     let assessment = respond['Assessment'];
     let answer = respond['AssessmentSubmissionAnswer'];
@@ -196,7 +199,7 @@ export class SubmissionService {
    * get assessment answer (submission)
    * @param {array} respond API respond from get_submissions
    */
-  public getAnswer(respond, activityId?: number) {
+  getAnswer(respond, activityId?: number) {
     let answer = this.normalise(respond).answer;
     return answer;
   }
@@ -204,7 +207,7 @@ export class SubmissionService {
   /**
    * get review (feedback from moderator)
    */
-  public getReview(review) {
+  getReview(review) {
     return review;
   }
 
@@ -212,7 +215,7 @@ export class SubmissionService {
    * extract reference IDs and prepare Observables to retrieve submissions
    * @param {array} references References array responded with get_activities() api
    */
-  public getSubmissionsByReferences(references: Array<{context_id : Number}>): Array<Observable<any>> {
+  getSubmissionsByReferences(references: Array<{context_id : Number}>): Array<Observable<any>> {
     let tasks = []; // multiple API requests
 
     // get_submissions API to retrieve submitted answer
@@ -234,7 +237,7 @@ export class SubmissionService {
   }
   // get user submissions data
   // @TODO Remove it later
-  public getSubmissionsData() {
+  getSubmissionsData() {
     return this.getSubmissions();
   }
 }

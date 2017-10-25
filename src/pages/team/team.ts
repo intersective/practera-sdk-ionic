@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController } from 'ionic-angular';
 
 import { TeamService } from '../../services/team.service';
-
+// Others
 import * as _ from 'lodash';
 
 @Component({
@@ -10,13 +10,13 @@ import * as _ from 'lodash';
   templateUrl: 'team.html'
 })
 export class TeamPage {
-  team = {};
   members = [];
+  team = {};
 
   constructor(
-    private navCtrl: NavController,
-    private toastCtrl: ToastController,
-    private teamService: TeamService
+    public navCtrl: NavController,
+    public teamService: TeamService,
+    public toastCtrl: ToastController
   ) {}
 
   // @TODO: Move to shared function later...

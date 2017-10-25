@@ -2,7 +2,7 @@ import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, ViewController, AlertController, LoadingController, NavParams } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
+
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -10,14 +10,12 @@ import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { TranslationService } from '../../shared/translation/translation.service';
-// directives
-import { FormValidator } from '../../validators/formValidator';
 // pages
-import { RegistrationModalPage } from './modal';
-import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+import { TabsPage } from '../tabs/tabs.page';
+// Others
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 import * as _ from 'lodash';
-import 'rxjs/add/operator/map';
 
 const supportEmail = generalVariableMessages.helpMail.email;
 
@@ -25,49 +23,50 @@ const supportEmail = generalVariableMessages.helpMail.email;
   selector: 'register',
   templateUrl: 'register.html',
 })
-
 export class RegisterPage implements OnInit {
   @ViewChild('registrationForm') registrationForm: NgForm;
+
+  changeContent: boolean = false;
+  clickSuspended: boolean = false;
+  invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  isPwdMatch: boolean = false;
+  milestone_id: string;
+  minLengthCheck: boolean = true;
+  noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  password: string;
+  passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  pwdMacthBool: boolean = false;
+  regForm: any;
+  registrationErrMessage: any = errMessages.Registration.error.error;
+  registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  submitted: boolean = false;
+  successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
   user: any = {
     password: '',
     verify_password: ''
   };
-  submitted: boolean = false;
-  regForm: any;
-  pwdMacthBool: boolean = false;
+  verify_password: string;
+  verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   verifyPwd: boolean = false;
   verifySuccess: boolean = null;
-  isPwdMatch: boolean = false;
-  changeContent: boolean = false;
-  minLengthCheck: boolean = true;
-  clickSuspended: boolean = false;
-  milestone_id: string;
-  password: string;
-  verify_password: string;
-  // loading & error messages variables
-  verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
-  successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
-  registrationErrMessage: any = errMessages.Registration.error.error;
-  invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
-  noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
-  registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
-  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+
+  ngOnInit() {}
 
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
-    public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public viewCtrl: ViewController,
-    public notificationService: NotificationService,
-    public navParams: NavParams,
-    public loading: LoadingController,
     public authService: AuthService,
     public cache: CacheService,
     public gameService: GameService,
-    public translationService: TranslationService,
+    public loading: LoadingController,
     public milestone: MilestoneService,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public notificationService: NotificationService,
+    public viewCtrl: ViewController,
+    public translationService: TranslationService,
   ) {
     // validation for both password values: required & minlength is 8
     this.regForm = fb.group({
@@ -76,8 +75,7 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
+
 
   displayAlert(message) {
     return this.alertCtrl.create({
@@ -111,6 +109,7 @@ export class RegisterPage implements OnInit {
       self.displayAlert(message).present();
       self.submitted = false;
     }
+
     function onFinally() {
       //@TODO: log something maybe
       // self.navCtrl.push(TabsPage);

@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
+
+// Others
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
 
 @Injectable()
 export class TeamService {
   constructor(
-    private request: RequestService,
-    private cacheService: CacheService
+    public cacheService: CacheService,
+    public request: RequestService
   ) {}
 
-  public getTeam(options? : any) {
+  getTeam(options? : any) {
     return this.request.get('api/teams.json', options).toPromise();
   }
 }

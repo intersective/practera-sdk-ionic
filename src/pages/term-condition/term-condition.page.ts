@@ -1,14 +1,17 @@
 import { Component, Input } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { NavController, AlertController } from 'ionic-angular';
-import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
+
 // services
 import { AuthService } from '../../services/auth.service';
 import { NotificationService } from '../../shared/notification/notification.service';
 // pages
 import { RegisterPage } from '../registration/register.page';
 import { TabsPage } from '../tabs/tabs.page';
+// Others
+import { TranslationService } from '../../shared/translation/translation.service';
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
+
 @Component({
   selector: 'term-condition',
   templateUrl: 'term-condition.html'
@@ -19,15 +22,14 @@ export class TermConditionPage {
 
   agreed:boolean = false;
   checkAccessMethod: boolean = false;
-  // loading & error message variables
-  helpEmailMessage = generalVariableMessages.helpMail.email;
   disagreeErrMessage = errMessages.TermConditions.disagreement.noAccepted;
+  helpEmailMessage = generalVariableMessages.helpMail.email;
   verifyFailedErrMessage = errMessages.TermConditions.verifyFailed.verifyfailed;
 
   constructor(
-    public nav: NavController,
     public alertCtrl: AlertController,
     public authService: AuthService,
+    public nav: NavController,
     public notificationService: NotificationService,
     public translationService: TranslationService,
   ) {}
@@ -46,7 +48,6 @@ export class TermConditionPage {
     });
     alert.present();
   }
-
   backToSAccountPage() {
     this.nav.popToRoot();
   }
