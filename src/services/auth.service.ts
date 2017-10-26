@@ -14,10 +14,10 @@ export class AuthService {
   ) {}
 
   getTerms() {
-    return this.request.get(this.prefixUrl + 'api/registration_details.json');
+    return this.request.get('api/registration_details.json');
   }
-  private postRequest(type, params) {
-    return this.request.post(AUTH_ENDPOINT + type, {params});
+  private postRequest(type, body) {
+    return this.request.post(AUTH_ENDPOINT + type, body);
   }
 
   verifyRegistration(data) {
@@ -29,51 +29,34 @@ export class AuthService {
   }
 
   register(data) {
-    let params = new HttpParams();
-    params.set('password', data.password);
-    params.set('user_id', data.user_id);
-    params.set('key', data.key);
-
-    return this.postRequest('registration', params);
+    return this.postRequest('registration', {
+      password: data.password,
+      user_id: data.user_id,
+      key: data.key,
+    });
   }
 
   loginAuth(email, password) {
-    let params = new HttpParams();
-    params.set('data[User][email]', email);
-    params.set('data[User][password]', password);
-
-    return this.postRequest('authentication', params);
+    return this.postRequest('authentication', `data[User][email]=${email}&data[User][password]=${password}`);
   }
 
   forgotPassword(email) {
-    let params = new HttpParams();
-    params.set('email', email);
-
-    return this.postRequest('forgot_password', params);
+    return this.postRequest('forgot_password', { email });
   }
 
   verifyUserKeyEmail(key, email) {
-    let params = new HttpParams();
-    params.set('key', key);
-    params.set('email', email);
-
-    return this.postRequest('verify_reset_password', params);
+    return this.postRequest('verify_reset_password', {
+      key: key,
+      email: email,
+    });
   }
 
   resetUserPassword(key, email, password, verify_password) {
-    let params = new HttpParams();
-    params.set('key', key);
-    params.set('email', email);
-    params.set('password', password);
-    params.set('verify_password', verify_password);
-
-    return this.postRequest('reset_password', params);
+    return this.postRequest('reset_password', { key, email, password, verify_password });
   }
 
   magicLinkLogin(auth_token) {
-    let params = new HttpParams();
-    params.set('auth_token', auth_token);
-    return this.request.post(this.prefixUrl+'api/auths.json?', {params});
+    return this.request.post('api/auths.json', { auth_token });
   }
 
   getUser() {

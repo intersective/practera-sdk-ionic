@@ -52,7 +52,7 @@ export class RequestService {
    * Error handle for API response
    * @param {Error} error
    */
-  private handleError (error) {
+  private handleError(error) {
     let errorFrom = {
         api: 'SERVER_ERROR',
       },
@@ -64,7 +64,7 @@ export class RequestService {
     if (error.status === 0) { // client unrecoverable error encountered
       currentError.frontendCode = errorFrom.api;
     } else {
-      let errorBody = error.json();
+      let errorBody = error.body;
       currentError.frontendCode = errorBody.data || errorBody.error;
     }
     return Observable.throw(currentError);
@@ -75,28 +75,31 @@ export class RequestService {
     'contentType': 'application/json',
     'apikey': null
   }): HttpHeaders {
+    let result:any;
     let headers = new HttpHeaders();
-    headers.set('Content-Type', customHeader.contentType);
+
+    result = headers.set('Content-Type', customHeader.contentType);
 
     // Inject apiKey from cached
     let apiKey = this.cacheService.getCached('apikey') ||
       this.cacheService.getLocalObject('apikey');
     if (!_.isEmpty(apiKey)) {
-      headers.set('apikey', apiKey);
+      result = result.set('apikey', apiKey.toString());
     }
 
     // Inject timelineID from cached
     let timelineId = this.cacheService.getCached('timelineID') ||
       this.cacheService.getLocalObject('timelineID');
     if (timelineId) {
-      headers.set('timelineID', timelineId);
+      result = result.set('timelineID', timelineId.toString());
     }
 
     // Inject appKey from config
     if (!_.isUndefined(this.appkey)) {
-      headers.set('appkey', this.appkey);
+      result = result.set('appkey', this.appkey.toString());
     }
-    return headers;
+
+    return result;
   }
 
   // Set API request options
@@ -152,13 +155,9 @@ export class RequestService {
     let headers = this.appendHeader();
 
     // @TODO: make sure if Content-Type is optional
-    // if (!headers.has('Content-Type')) {
-      headers.set('Content-Type', 'application/x-www-form-urlencoded')
-    // }
-
-    return this.http.post(this.prefixUrl + endPoint, data, {
-      headers: headers
-    }).catch(this.handleError);
+    headers = headers.delete('Content-Type');
+    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    return this.http.post(this.prefixUrl + endPoint, data, { headers }).catch(this.handleError);
   }
 
   /**

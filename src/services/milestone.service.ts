@@ -10,7 +10,6 @@ import * as _ from 'lodash';
 export class MilestoneService {
   appkey = this.request.getAppkey();
   milestones: any = {};
-  prefixUrl: any = this.request.getPrefixUrl();
 
   constructor(
     public cacheService: CacheService,
@@ -31,15 +30,10 @@ export class MilestoneService {
       params.set('timelineId', timelineId);
     }
 
-    return this.request.get('api/milestones.json', {params});
+    return this.request.get('api/milestones.json', { params });
   }
 
   getMilestones(){
-    let headers = new HttpHeaders();
-    headers.append('appkey', this.appkey);
-    headers.append('apikey', this.cacheService.getLocalObject('apikey'));
-    headers.append('timelineID', this.cacheService.getLocalObject('timelineID'));
-
-    return this.request.get(this.prefixUrl+'api/milestones.json', { headers });
+    return this.request.get('api/milestones.json');
   }
 }
