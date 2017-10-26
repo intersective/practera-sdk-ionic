@@ -76,6 +76,9 @@ export const errMessages = {
     },
     verifyFailed: {
       "verifyfailed": "Sorry, verification failed, please resend your email and password."
+    },
+    acceptTermsConditions: {
+      "accepted": "You need to agree to the Terms & Conditions before completing registration."
     }
   },
   ResetPassword: {
@@ -88,7 +91,7 @@ export const errMessages = {
   },
   TermConditions: {
     disagreement: {
-      "noAccepted": "You must agree to the Terms and Conditions."
+      "noAccepted": "You need to agree to the Terms & Conditions."
     },
     verifyFailed: {
       "verifyfailed": "Oops... Registration verification has failed. Please try again later."

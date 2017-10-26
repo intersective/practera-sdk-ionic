@@ -84,6 +84,7 @@ import { SidenavPage } from '../pages/sidenav/sidenav';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
 import { TermConditionPage } from '../pages/term-condition/term-condition.page';
+import { TermsConditionsPage } from '../pages/registration/terms-conditions/terms-conditions.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
@@ -148,6 +149,7 @@ export function HttpLoaderFactory(http: Http) {
     TestPage,
     TutorialPage,
     TermConditionPage,
+    TermsConditionsPage,
     TermContentComponent,
     TextQuestionComponent,
     TimeAgoPipe,
@@ -255,6 +257,7 @@ export function HttpLoaderFactory(http: Http) {
     TabsPage,
     TestPage,
     TermConditionPage,
+    TermsConditionsPage,
     TutorialPage,
     TermContentComponent,
   ],

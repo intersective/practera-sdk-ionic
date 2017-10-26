@@ -3,7 +3,6 @@
     <ion-row>
       <ion-col col-12>
         <img class="default-logo" src="./assets/img/default/practera.png" alt="Logo"/>
-        <p>{{ 'REGISTRATION.HEADER' | translate }}</p>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -27,22 +26,26 @@
                 </ion-input>
               </ion-item>
             </ion-list>
+            <div class="term-condition-link">
+              <ion-checkbox class="agree-tick" [(ngModel)]="agreed" (change)="toggleAgree()" formControlName="agreed"></ion-checkbox>
+              <span class="agree-text">I accept the </span> <u (click)="openTermsCondition()">terms & conditions</u>
+            </div>
             <button type="submit"
               ion-button
               block
               class="general-circle-btn"
               color="practera-thick"
-              [disabled]="password!=verify_password || regForm.invalid">
+              [disabled]="password!=verify_password || regForm.invalid || agreed === false">
               {{ 'GENERAL.DONE' | translate }}
             </button>
             <div *ngIf="verifyPwd == true">
               <div *ngIf="pwdMatchCheck()" class="error-hint">
-                <small class="text-danger">
+                <small>
                   {{ passwordMismatchMessage }}
                 </small>
               </div>
               <div *ngIf="checkMinLength() == true" class="error-hint">
-                <small class="text-danger">
+                <small>
                   {{ passwordMinlengthMessage }}
                 </small>
               </div>

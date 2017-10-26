@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, LoadingController, NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController, LoadingController, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
 import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
@@ -8,9 +8,9 @@ import 'rxjs/add/operator/map';
 // directives
 import { FormValidator } from '../../shared/validators/formValidator';
 // pages
-import { RegistrationModalPage } from './modal';
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+import { TermsConditionsPage } from './terms-conditions/terms-conditions.page';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -25,6 +25,7 @@ const supportEmail = generalVariableMessages.helpMail.email;
 })
 export class RegisterPage implements OnInit { // this part of registration is for setting password before login
   @ViewChild('registrationForm') registrationForm: NgForm;
+  public agreed: boolean = false;
   public changeContent: boolean = false;
   public clickSuspended: boolean = false;
   public gameID: string = null;
@@ -34,9 +35,13 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   public password: string = null;
   public regForm: any;
   public submitted: boolean = false;
-  public user: any = {
+  public userInput: any = {
     password: '',
     verify_password: ''
+  };
+  user: any = {
+    email: null,
+    key: null
   };
   public pwdMacthBool: boolean = false;
   public userData: any = [];
@@ -46,12 +51,14 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   // loading & error messages variables
   public invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
   public noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  public termConditionsErrMessage: any = errMessages.Registration.acceptTermsConditions.accepted;
   public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
   public passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
   public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
   public registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
   public registrationErrMessage: any = errMessages.Registration.error.error;
   public successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
+  public termConditionsVerifyFailedErr = errMessages.TermConditions.verifyFailed.verifyfailed;
   public verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
@@ -63,16 +70,70 @@ export class RegisterPage implements OnInit { // this part of registration is fo
     public milestoneService: MilestoneService,
     public navCtrl: NavController,
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     public notificationService: NotificationService,
     public translationService: TranslationService,
     public viewCtrl: ViewController) {
-    // validation for both password values: required & minlength is 8
+    // validation for both password values: required & minlength is 8 and accept for terms and conditions
     this.regForm = fb.group({
       password: ['', [Validators.minLength(8), Validators.required]],
       verify_password: ['', [Validators.minLength(8), Validators.required]],
+      agreed: [this.agreed, Validators.required]
     });
   }
-  ngOnInit() {}
+  displayError(errorMessage?: any): void {
+    let alert = this.alertCtrl.create({
+      title: 'Invalid registration code',
+      subTitle: errorMessage || 'Registration Code is invalid, please contact our tech support for assistance.',
+      buttons: [{
+        text: 'OK',
+        handler: () => {
+          alert.dismiss().then(() => {
+            this.navCtrl.setRoot(LoginPage).then(() => {
+              window.history.replaceState({}, '', window.location.origin);
+            });
+          })
+          return false;
+        }
+      }]
+    });
+    alert.present();
+  }
+  ngOnInit() {
+    const loading = this.loading.create({
+      content: 'Verifying user identity..'
+    });
+    if (!decodeURIComponent(this.navParams.get('email')) || !this.navParams.get('key')) {
+      this.displayError();
+    } 
+    else {
+      loading.present().then(() => {
+        let email = decodeURIComponent(this.navParams.get('email')),
+            key = this.navParams.get('key');
+        this.authService.verifyRegistration({
+          email: email,
+          key: key
+        }).subscribe(
+          res => {
+            loading.dismiss().then(() => {
+              this.cacheService.setLocal('user.email', email);
+              this.cacheService.setLocal('user.registration_key', key);
+              this.cacheService.setLocal('user.id', res.data.User.id);
+              this.user = {
+                email: email,
+                key: key
+              };
+            });
+          }, 
+          err => {
+            loading.dismiss().then(() => {
+              this.displayError(err.msg);
+            });
+          }
+        );
+      });
+    }
+  }
   public displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Error',
@@ -105,13 +166,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
       self.displayAlert(message).present();
       self.submitted = false;
     }
-
-    function onFinally() {
-      //@TODO: log something maybe
-      // self.navCtrl.push(TabsPage);
-      console.log('Final step - log something here');
-    }
-    if (this.user.password !== this.user.verify_password) {
+    if (this.userInput.password !== this.userInput.verify_password) {
       this.notificationService.alert({
         title: 'Incorrect Password',
         subTitle: this.passwordMismatchErrMessage,
@@ -182,7 +237,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                   });
                 }
               );
-        }, onRegError, onFinally);
+        }, onRegError);
       });
     }
   }
@@ -219,5 +274,13 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   // check password mismacth
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+  }
+  // toggleAgree()
+  toggleAgree(): void {
+    this.agreed = !this.agreed;
+  }
+  // openTermsCondition()
+  openTermsCondition() {
+    this.modalCtrl.create(TermsConditionsPage).present();
   }
 }
