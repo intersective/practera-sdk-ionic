@@ -33,15 +33,19 @@ export class SettingsPage {
   getUserEmail() {
     return this.cache.getLocalObject('email') || '';
   }
+
   goLeaderBoardSettings(){
     this.navCtrl.push(LeaderboardSettingsPage);
   }
+
   goToTutorial() {
     this.navCtrl.push(TutorialPage);
   }
+
   goToTermConditions() {
     this.navCtrl.push(TermConditionPage);
   }
+
   logout() {
     let loader = this.loadingCtrl.create({
       spinner: 'hide',

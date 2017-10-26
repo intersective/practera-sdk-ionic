@@ -52,6 +52,8 @@ export class RegisterPage implements OnInit {
   verifyPwd: boolean = false;
   verifySuccess: boolean = null;
 
+  ngOnInit() {}
+
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
     public alertCtrl: AlertController,
@@ -73,7 +75,7 @@ export class RegisterPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+
 
   displayAlert(message) {
     return this.alertCtrl.create({
@@ -82,6 +84,7 @@ export class RegisterPage implements OnInit {
       buttons: ['OK']
     });
   }
+
   onSubmit(form: NgForm):void {
     let self = this;
     self.submitted = true;
@@ -193,6 +196,7 @@ export class RegisterPage implements OnInit {
       });
     }
   }
+
   setRegistrationData(data) {
     let cacheProcesses = [];
     _.forEach(data, (datum, key) => {
@@ -202,19 +206,23 @@ export class RegisterPage implements OnInit {
     this.cache.setLocal('timelineID', data.Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   goToLogin() {
     this.cache.clear().then(() => {
       this.navCtrl.push(LoginPage);
     });
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
   }

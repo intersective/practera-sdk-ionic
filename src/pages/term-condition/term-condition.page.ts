@@ -37,6 +37,7 @@ export class TermConditionPage {
   accessMethod(){
     return (window.location.href.indexOf('?do=') > -1) ? this.checkAccessMethod = true : this.checkAccessMethod = false
   }
+
   displayError(errorMessage?: any): void {
     let alert = this.alertCtrl.create({
       title: 'Invalid registration code',
@@ -50,9 +51,11 @@ export class TermConditionPage {
   backToSAccountPage() {
     this.nav.popToRoot();
   }
+
   ionViewDidEnter() {
     console.log(this.user);
   }
+
   agree(user): void {
     if (this.agreed === true) {
       this.nav.push(RegisterPage, user);
@@ -85,11 +88,13 @@ export class TermConditionPage {
   toggleAgree(): void {
     this.agreed = !this.agreed;
   }
+
   navToRegister(): void {
     if (this.agreed === true) {
       console.log(this.nav.getViews());
     }
   }
+
   onTermError(err): void {
     const supportEmail = this.helpEmailMessage;
     if ((err.data || {}).msg) {
@@ -107,6 +112,7 @@ export class TermConditionPage {
       });
     }
   }
+
   // temporary fix for direct signin
   signIn(): void {
     this.nav.push(TabsPage);

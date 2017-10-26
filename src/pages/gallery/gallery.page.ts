@@ -45,10 +45,10 @@ export class GalleryPage {
   refresher = null;
 
   constructor(
-    public navCtrl: NavController,
-    public toastCtrl: ToastController,
-    public assessmentService: AssessmentService,
-    public submissionService: SubmissionService
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private assessmentService: AssessmentService,
+    private submissionService: SubmissionService
   ) {}
 
   // @TODO: Move to shared function later...

@@ -38,9 +38,11 @@ export class MagicLinkPage {
   ionViewDidLoad() {
     this.auth_token = this.navParams.get('auth_token');
   }
+
   ionViewWillEnter(){
     this.magicLinkAccess();
   }
+
   magicLinkAccess(){
     let observable = this.authService.magicLinkLogin(this.auth_token);
     const loading = this.loadingCtrl.create({

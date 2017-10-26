@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavParams, NavController, AlertController, LoadingController, Events } from 'ionic-angular';
 import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@angular/forms';
 
@@ -6,12 +6,12 @@ import { FormBuilder, Validators, FormGroup, FormControl, FormArray } from '@ang
 import { CacheService } from '../../../shared/cache/cache.service';
 import { ChoiceBase, QuestionBase, Submission, AssessmentService } from '../../../services/assessment.service';
 import * as _ from 'lodash';
-
 @Component({
   selector: 'assessments-group-page',
   templateUrl: './assessments-group.html',
 })
-export class AssessmentsGroupPage {
+export class AssessmentsGroupPage implements OnInit {
+
   activity: any;
   answers: any; // to render & display submitted answers
   assessment: any;
@@ -36,7 +36,7 @@ export class AssessmentsGroupPage {
     public navParams: NavParams
   ) {}
 
-  ionViewDidEnter() {
+  ngOnInit() {
     // navigate from activity page
     this.activity = this.navParams.get('activity') || {};
 
@@ -45,10 +45,13 @@ export class AssessmentsGroupPage {
     if (!_.isEmpty(this.event)) {
       this.activity = this.event;
     }
+  }
 
-    this.assessment = this.activity.assessment; // required for context_id
+  ionViewDidEnter() {
+    // use assessment object from activity (required for extracting context_id)
+    this.assessment = this.activity.assessment;
+
     this.cacheKey = `assessment.group.${this.assessment.context_id}`;
-
     this.assessmentGroup = this.navParams.get('assessmentGroup') || {};
     this.submission = this.navParams.get('submission') || {};
 
@@ -63,6 +66,10 @@ export class AssessmentsGroupPage {
     );
   }
 
+  /**
+   * @name updateSubmission
+   * @description trace changes of input for assessment (to avoid extra checking logics)
+   */
   updateSubmission() {
     this.events.publish('assessment:changes', {
       changed: true
@@ -92,24 +99,32 @@ export class AssessmentsGroupPage {
     }
 
     _.forEach(submission.review, (review) => {
+
       _.forEach(questions, (question, idx) => {
-        if (review.assessment_question_id === question.id) {
-          // text type
+        if (review.assessment_question_id === question.question_id) {
+          // text type (no merging, text question displayed in plain text)
           if (question.type === 'text') {
             questions[idx].review_answer = review;
           }
 
           // oneof type
+          // combine question, when answered by both reviewer and submitter
           if (question.type === 'oneof') {
             questions[idx].review_answer = review;
+            let submitterAnswer = question.answer;
+
             _.forEach(question.choices, (choice, key) => {
-              if (choice.id == review.answer && choice.id == question.answer.answer) {
-                questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
-              }
-              if (choice.id != review.answer && choice.id == question.answer.answer) {
-                questions[idx].choices[key].name = choice.name + ' (you)';
-              }
-              if (choice.id == review.answer && choice.id != question.answer.answer) {
+              if (!_.isEmpty(submitterAnswer)) {
+                if (choice.id == review.answer && choice.id == submitterAnswer.answer) {
+                  questions[idx].choices[key].name = choice.name + ' (you and reviewer)';
+                }
+                else if (choice.id != review.answer && choice.id == submitterAnswer.answer) {
+                  questions[idx].choices[key].name = choice.name + ' (you)';
+                }
+                else if (choice.id == review.answer && choice.id != submitterAnswer.answer) {
+                  questions[idx].choices[key].name = choice.name + ' (reviewer)';
+                }
+              } else if (choice.id == review.answer) { // display reviewer answer
                 questions[idx].choices[key].name = choice.name + ' (reviewer)';
               }
             });
@@ -178,7 +193,14 @@ export class AssessmentsGroupPage {
         group['choices'] = new FormGroup(choices);
       }
 
-      result[question.id] = new FormGroup(group);
+      /**
+       * id and question_id are different id
+       * - id =  has no obvious purpose
+       * - question_id must be used as id for submission
+       *
+       * but for case like this just for index id
+       */
+      result[question.question_id] = new FormGroup(group);
     });
 
     return result;
@@ -204,22 +226,31 @@ export class AssessmentsGroupPage {
 
     return {
       Assessment: {
-          id: submission.assessment_id,
-          context_id: this.getSubmissionContext()
+        id: submission.assessment_id,
+        context_id: this.getSubmissionContext()
       },
       AssessmentSubmissionAnswer: answers
     };
   }
 
   /**
-   * @description store assessment answer/progress locally
+   * @name storeProgress
+   * @description store assessment answer/progress locally (offline)
+   * @example format for cached submission
+   *          {
+   *            Assessment: {
+   *                id: 1,
+   *                context_id: 2
+   *            },
+   *            AssessmentSubmissionAnswer: Array<Submission>
+   *          }
    */
   storeProgress = () => {
     let answers = {};
-    _.forEach(this.formGroup, (question, id) => {
+    _.forEach(this.formGroup, (question, question_id) => {
       let values = question.getRawValue(),
           answer = {
-            assessment_question_id: id,
+            assessment_question_id: question_id,
             answer: values.answer || values.comment,
 
             // store it if choice answer is available or skip
@@ -228,7 +259,7 @@ export class AssessmentsGroupPage {
 
       // set empty string to remove answer
       answer.answer = (answer.answer) ? answer.answer : '';
-      answers[id] = answer;
+      answers[question_id] = answer;
     });
 
     // final step - store submission locally
@@ -248,20 +279,21 @@ export class AssessmentsGroupPage {
 
   /**
    * @description retrieve saved progress from localStorage
+   * @param {Array} questions
+   * @param {Object} answers
    */
   retrieveProgress = (questions: Array<any>, answers?) => {
-    let cachedProgress = answers || {}; //this.cache.getLocalObject(this.cacheKey);
-
-    let newQuestions = questions;
-    let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
+    let cachedProgress = answers || {},
+        newQuestions = questions,
+        savedProgress = cachedProgress.AssessmentSubmissionAnswer;
 
     if (!_.isEmpty(savedProgress)) {
 
-      // index "id" is set as question.id in @Function buildFormGroup above
-      _.forEach(newQuestions, (question, id) => {
+      // index "id" is set as question.question_id in @Function buildFormGroup above
+      _.forEach(newQuestions, (question, question_id) => {
         // check integrity of saved answer (question might get updated)
-        if (savedProgress[id] && savedProgress[id].assessment_question_id == id) {
-          newQuestions[id] = this.setValueWith(question, savedProgress[id]);
+        if (savedProgress[question_id] && savedProgress[question_id].assessment_question_id == question_id) {
+          newQuestions[question_id] = this.setValueWith(question, savedProgress[question_id]);
         }
       });
     }
@@ -289,58 +321,52 @@ export class AssessmentsGroupPage {
   }
 
   /**
-   * @description initiate save progress and return to previous page/navigation stack
+   * @name save
+   * @description save input (partially post submission) and
+   *              return to previous navigation stack
    */
   save() {
     let self = this,
-    loading = this.loadingCtrl.create({
-      content: 'Loading...'
-    }),
-    // to provide a more descriptive error message (if available)
-    failAlert = this.alertCtrl.create({
-      title: 'Fail to submit.'
-    });
+      loading = this.loadingCtrl.create({
+        content: 'Loading...'
+      }),
+      // to provide a more descriptive error message (if available)
+      failAlert = this.alertCtrl.create({
+        title: 'Fail to submit.'
+      }),
+      saveProgress = () => {
+        this.updateSubmission();
 
-    let saveProgress = () => {
-      this.updateSubmission();
-
-      loading.present().then(() => {
-        self.assessmentService.save(self.storeProgress()).subscribe(
-          response => {
-            loading.dismiss().then(() => {
-              self.navCtrl.pop();
-            });
-          },
-          reject => {
-            loading.dismiss().then(() => {
-              failAlert.data.title = reject.msg || failAlert.data.title;
-              failAlert.present().then(() => {
-                console.log('Unable to save', reject);
+        loading.present().then(() => {
+          self.assessmentService.save(self.storeProgress()).subscribe(
+            response => {
+              loading.dismiss().then(() => {
+                self.navCtrl.pop();
               });
-            });
-          }
-        );
+            },
+            reject => {
+              loading.dismiss().then(() => {
+                failAlert.data.title = reject.msg || failAlert.data.title;
+                failAlert.present().then(() => {
+                  console.log('Unable to save', reject);
+                });
+              });
+            }
+          );
+        });
+      },
+      confirmBox = this.alertCtrl.create({
+        message: 'You have not completed all required questions. Do you still wish to Save?',
+        buttons: [
+          {
+            text: 'Yes',
+            handler: saveProgress
+          },
+          'No'
+        ]
       });
-    };
 
-    let confirmBox = this.alertCtrl.create({
-      message: 'You have not completed all required questions. Do you still wish to Save?',
-      buttons: [
-        {
-          text: 'Yes',
-          handler: () => {
-            saveProgress();
-          }
-        },
-        {
-          text: 'No',
-          handler: () => {
-            //return false;
-          }
-        }
-      ]
-    });
-
+    // has all compulsory questions answered?
     if (!this.isAllQuestionsAnswered()) {
       confirmBox.present();
     } else {

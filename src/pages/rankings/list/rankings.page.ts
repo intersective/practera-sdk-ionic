@@ -34,6 +34,7 @@ export class RankingsPage {
   ionViewWillEnter(){
     this.RankingData();
   }
+
   RankingData(){
     const loading = this.loadingCtrl.create({
       content: this.loadingMessages
@@ -80,6 +81,7 @@ export class RankingsPage {
         });
       });
   }
+
   goRankingDetail(myRanking){
     this.navCtrl.push(RankingDetailsPage, {
       myRanking: myRanking

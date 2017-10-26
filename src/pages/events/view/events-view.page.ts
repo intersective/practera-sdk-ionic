@@ -50,7 +50,7 @@ export class EventsViewPage {
     this.event = navParams.get('event');
   }
 
-  public availability(event): string {
+  availability(event): string {
     return (event.isBooked)? terms.booked : event.remaining_capacity + ' of ' + event.capacity + ' seats available';
   }
 
@@ -93,7 +93,8 @@ export class EventsViewPage {
    * @description each event has only one assessment
    * @param {Array} references References array response from get_activity API
    */
-   extractAssessment(references: Array<any>) {
+
+  extractAssessment(references: Array<any>) {
     let ref = references[0];
     ref.Assessment.context_id = ref.context_id;
 

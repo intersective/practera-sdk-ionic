@@ -35,13 +35,14 @@ export class EventCheckinPage {
   }
 
   ionViewDidEnter() {
-    this.checkin = this.getCheckinAnswer(this.submissions[0]); // event checkin has just single submission
+    // We assume event checkin has just single submission
+    this.checkin = this.getCheckinAnswer(this.submissions[0]);
     this.assessment = this.assessmentService.normaliseGroup(this.assessmentGroup);
     this.user = this.cache.getLocalObject('user');
   }
 
   // Only checkin/file upload answer is displayed in check-in view
-  public getCheckinAnswer(submission) {
+  getCheckinAnswer(submission) {
     let result = {};
     submission.answer.forEach(ans => {
       if (typeof ans.answer === 'object') {

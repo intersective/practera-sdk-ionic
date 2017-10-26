@@ -40,10 +40,9 @@ export class ForgetPasswordPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ForgetPasswordPage');
   }
 
-  userForgotPassword(){
+  userForgotPassword() {
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: this.sendingEmailLoadingMessage
