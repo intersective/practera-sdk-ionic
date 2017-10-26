@@ -34,15 +34,13 @@ export class ActivityService {
     public request: RequestService,
   ) {}
 
-  getList(httpParams?: HttpParams) {
+  getList(options: any = {}) {
     let milestone_id = JSON.stringify(this.cacheService.getLocal('milestone_id'));
-    let params = httpParams || new HttpParams();
-    params = params.set('milestone_id',  milestone_id);
 
     // use cached activity query if available
     if (!this.cachedActivites[milestone_id]) {
       let requestQuery = this.request.get('api/activities.json', {
-        params
+        search: _.merge({ milestone_id }, options)
       });
       this.cachedActivites[milestone_id] = requestQuery;
       return requestQuery;
@@ -54,20 +52,20 @@ export class ActivityService {
   getLevels(options?: any) {
     return this.cacheService.read()
       .then((data: any) => {
-        let httpParams = new HttpParams();
+        let query:any = {};
         if (options) {
           _.forEach(options, (value, key) => {
-            httpParams = httpParams.set(key, value);
+            query[key] = value;
           });
         }
 
         if (!options.timeline_id && data.user.timeline_id) {
-          httpParams = httpParams.set('timeline_id', data.user.timeline_id);
+          query['timeline_id'] = data.user.timeline_id;
         }
         if (!options.project_id && data.user.project_id) {
-          httpParams = httpParams.set('project_id', data.user.project_id);
+          query['project_id'] = data.user.project_id;
         }
-        return this.getList(httpParams).toPromise();
+        return this.getList(query).toPromise();
       });
   }
 

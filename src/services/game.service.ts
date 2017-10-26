@@ -24,9 +24,10 @@ export class GameService {
    * @param {string} gameId
    * @param {object} options
    */
-  getCharacters(gameId, params?: HttpParams) {
-    params = params.set('game_id', gameId.toString())
-    return this.request.get('api/characters', { params });
+  getCharacters(game_id, params = {}) {
+    return this.request.get('api/characters', {
+      search: Object.assign(params, { game_id })
+    });
   }
 
   /**
@@ -44,13 +45,15 @@ export class GameService {
    * @param {string} gameId
    * @param {string} characterId
    */
-  getRanking(gameId, characterId) {
-    let params = new HttpParams();
-    params = params.set('action', 'ranking').set('period', 'monthly');
+  getRanking(gameId, character_id) {
+    let params:any = {
+      'action': 'ranking',
+      'period': 'monthly'
+    };
 
     return Observable.forkJoin([
       this.getCharacters(gameId, params),
-      this.getCharacters(gameId, params.set('character_id', characterId.toString()))
+      this.getCharacters(gameId, Object.assign(params, { character_id }))
     ])
     .map((data: any[]) => {
       let characters = data[0] || [];
@@ -62,14 +65,14 @@ export class GameService {
 
   /**
    * Get items
-   * @param {object} options
+   * @param {object} options optional search query got GET request
    */
-  getItems(options?) {
+  getItems(options = {}) {
     options = _.merge({
       character_id: null,
       filter: 'all'
     }, options);
-    return this.request.get('api/items.json', {search: options});
+    return this.request.get('api/items.json', { search: options });
   }
 
   /**

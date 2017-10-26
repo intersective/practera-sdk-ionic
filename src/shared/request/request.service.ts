@@ -130,9 +130,11 @@ export class RequestService {
    * @param {Object} options
    */
   get(endPoint: string = '', options?: any) {
+    let searchQuery = (options && options.search) ? options.search : null;
     options = this.setOptions(options);
     options.observe = 'body';
     options.responseType = 'json';
+    options.search = searchQuery;
 
     return this.http.get(this.prefixUrl + endPoint, options)
       .map(this.extractData)
@@ -165,11 +167,11 @@ export class RequestService {
     return this.http.delete(this.prefixUrl + endPoint, {
         headers: this.appendHeader(header)
       })
+      .map(this.extractData)
       .catch(this.handleError);
   }
 
   extractData(res) {
-    console.log('everyCall::', res);
     return res.data || {};
   }
 }

@@ -22,7 +22,6 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'activities-list-page',
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage implements OnInit {

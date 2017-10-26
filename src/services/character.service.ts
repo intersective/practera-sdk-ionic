@@ -18,14 +18,14 @@ export class CharacterService {
    * Get character
    */
   getCharacter() {
-    let params = new HttpParams();
+    let options:any = {};
     let game_id = this.cache.getLocal('game_id');
 
     if (game_id) {
-      params = params.set('game_id', game_id.toString());
+      options['game_id'] = game_id;
     }
 
-    return this.request.get(this.charactersAPIEndpoint, { params });
+    return this.request.get(this.charactersAPIEndpoint, { search: options });
   }
 
   /**

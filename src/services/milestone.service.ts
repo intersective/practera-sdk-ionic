@@ -15,21 +15,12 @@ export class MilestoneService {
     public request: RequestService
   ) {}
 
-  getList(options?) {
-    let params = new HttpParams();
+  getList() {
+    let timeline_id = this.cacheService.getLocal('timeline_id');
 
-    if (options && options.search) {
-      // @TODO: Move to helper function
-      _.forEach(options.search, (value, key) => {
-        params.set(key, value);
-      });
-    }
-    let timelineId = this.cacheService.getLocal('timeline_id');
-    if (timelineId) {
-      params = params.set('timelineId', JSON.stringify(timelineId));
-    }
-
-    return this.request.get('api/milestones.json', { params });
+    return this.request.get('api/milestones.json', {
+      search: { timeline_id }
+    });
   }
 
   getMilestones(){
