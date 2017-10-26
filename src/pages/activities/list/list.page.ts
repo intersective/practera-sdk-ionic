@@ -63,7 +63,7 @@ export class ActivitiesListPage implements OnInit {
     public translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
-    this.newItemsData = this.cacheService.getLocalObject('allNewItems');
+    this.newItemsData = this.cacheService.getLocal('allNewItems');
   }
   ngOnInit() {
     this.loadingDashboard();
@@ -120,7 +120,7 @@ export class ActivitiesListPage implements OnInit {
                   .subscribe(
                     data => {
                       this.initialItems = data.Items;
-                      this.cacheService.setLocalObject('initialItems', this.initialItems);
+                      this.cacheService.setLocal('initialItems', this.initialItems);
                       console.log('Items Data: ', this.initialItems);
                     },
                     err => {
@@ -160,7 +160,7 @@ export class ActivitiesListPage implements OnInit {
   // close modal and display as main page
   closeItemsShwon(){
     this.anyNewItems = !this.cacheService.getLocal('gotNewItems');
-    this.cacheService.setLocalObject('allNewItems', []);
+    this.cacheService.setLocal('allNewItems', []);
     this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
     this.navCtrl.setRoot(TabsPage);
   }

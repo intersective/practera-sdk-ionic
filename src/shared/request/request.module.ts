@@ -4,15 +4,21 @@ import {
   SkipSelf,
   Optional
 } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import '../rxjs-operators';
 import { RequestServiceConfig, RequestService } from './request.service';
+import { AppInterceptor } from './app.interceptor';
 
 @NgModule({
   imports: [HttpClientModule, CommonModule, /* spare a space for appcache module*/],
   providers: [
     RequestService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AppInterceptor,
+      multi: true
+    }
     // { provide: RequestOptions, useClass: CustomRequestOption }
   ]
 })

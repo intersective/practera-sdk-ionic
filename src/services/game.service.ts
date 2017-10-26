@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 // Others
@@ -14,10 +14,9 @@ export class GameService {
 
   /**
    * Get games
-   * @param {object} options
    */
-  getGames(options = {}) {
-    return this.request.get('api/games', options);
+  getGames() {
+    return this.request.get('api/games');
   }
 
   /**
@@ -25,13 +24,9 @@ export class GameService {
    * @param {string} gameId
    * @param {object} options
    */
-  getCharacters(gameId, options = {}) {
-    options = _.merge({
-      search: {
-        game_id: gameId
-      }
-    }, options);
-    return this.request.get('api/characters', options);
+  getCharacters(gameId, params?: HttpParams) {
+    params = params.set('game_id', gameId.toString())
+    return this.request.get('api/characters', { params });
   }
 
   /**
@@ -40,7 +35,7 @@ export class GameService {
    */
   postCharacter(data) {
     return this.request.post('api/characters', data, {
-      'Content-Type': 'application/json'
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
 
@@ -49,21 +44,13 @@ export class GameService {
    * @param {string} gameId
    * @param {string} characterId
    */
-   getRanking(gameId, characterId) {
+  getRanking(gameId, characterId) {
+    let params = new HttpParams();
+    params = params.set('action', 'ranking').set('period', 'monthly');
+
     return Observable.forkJoin([
-      this.getCharacters(gameId, {
-        search: {
-          action: 'ranking',
-          period: 'monthly'
-        }
-      }),
-      this.getCharacters(gameId, {
-        search: {
-          action: 'ranking',
-          period: 'monthly',
-          character_id: characterId
-        }
-      })
+      this.getCharacters(gameId, params),
+      this.getCharacters(gameId, params.set('character_id', characterId.toString()))
     ])
     .map((data: any[]) => {
       let characters = data[0] || [];
@@ -97,6 +84,8 @@ export class GameService {
       "id": null
     }
   }) {
-    return this.request.post('api/items.json', options, {'Content-Type': 'application/json'});
+    return this.request.post('api/items.json', options, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }

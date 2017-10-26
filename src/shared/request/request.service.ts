@@ -1,5 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -82,57 +82,46 @@ export class RequestService {
 
     // Inject apiKey from cached
     let apiKey = this.cacheService.getCached('apikey') ||
-      this.cacheService.getLocalObject('apikey');
+      this.cacheService.getLocal('apikey');
     if (!_.isEmpty(apiKey)) {
       result = result.set('apikey', apiKey.toString());
     }
 
     // Inject timelineID from cached
     let timelineId = this.cacheService.getCached('timelineID') ||
-      this.cacheService.getLocalObject('timelineID');
+      this.cacheService.getLocal('timelineID');
     if (timelineId) {
       result = result.set('timelineID', timelineId.toString());
-    }
-
-    // Inject appKey from config
-    if (!_.isUndefined(this.appkey)) {
-      result = result.set('appkey', this.appkey.toString());
     }
 
     return result;
   }
 
   // Set API request options
-  setOptions(options?: {
+  setOptions(options?): {
     headers?: HttpHeaders;
     observe?: "body";
     params?: HttpParams;
     reportProgress?: boolean;
-    responseType: "arraybuffer";
     withCredentials?: boolean;
     search?: string;
-  }):{
-    headers: HttpHeaders;
-    params?: HttpParams;
   } {
     let headers = this.appendHeader();
-    let timelineId = this.cacheService.getLocal('timelineID');
 
-    let params = new HttpParams();
-    if (timelineId) {
-      params.set('timelineID', timelineId);
-    }
-
+    // setup http params
+    let params = (options && options.params) ? options.params : new HttpParams();
     if (options && options.search) {
       _.each(options.search, (value, key) => {
-        params.set(key, value);
+        params = params.set(key, value.toString());
       });
     }
 
-    return {
-      headers,
-      params
-    };
+    let timelineId = this.cacheService.getLocal('timelineID');
+    if (timelineId) {
+      params = params.set('timelineID', timelineId);
+    }
+
+    return { headers, params };
   }
 
   /**
@@ -141,7 +130,12 @@ export class RequestService {
    * @param {Object} options
    */
   get(endPoint: string = '', options?: any) {
-    return this.http.get(this.prefixUrl + endPoint, this.setOptions(options))
+    options = this.setOptions(options);
+    options.observe = 'body';
+    options.responseType = 'json';
+
+    return this.http.get(this.prefixUrl + endPoint, options)
+      .map(this.extractData)
       .catch(this.handleError);
   }
 
@@ -157,7 +151,9 @@ export class RequestService {
     // @TODO: make sure if Content-Type is optional
     headers = headers.delete('Content-Type');
     headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
-    return this.http.post(this.prefixUrl + endPoint, data, { headers }).catch(this.handleError);
+    return this.http.post(this.prefixUrl + endPoint, data, { headers })
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   /**
@@ -167,9 +163,13 @@ export class RequestService {
    */
   delete(endPoint: string, header?:Object) {
     return this.http.delete(this.prefixUrl + endPoint, {
-      headers: this.appendHeader(header)
-    })
+        headers: this.appendHeader(header)
+      })
       .catch(this.handleError);
   }
 
+  extractData(res) {
+    console.log('everyCall::', res);
+    return res.data || {};
+  }
 }

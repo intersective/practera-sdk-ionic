@@ -85,60 +85,58 @@ export class LoginPage {
         // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
-              data = data.data;
-              // this.getLogInData(data);
-              self.cacheService.setLocalObject('apikey', data.apikey);
+              self.cacheService.setLocal('apikey', data.apikey);
               // saved for 3 types of timeline id in order for later use
-              self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
-              self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-              self.cacheService.setLocalObject('teams', data.Teams);
+              self.cacheService.setLocal('timelineId', data.Timelines[0].Timeline.id);
+              self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
+              self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
               // get game_id data after login
               this.gameService.getGames()
-                  .subscribe(
-                    data => {
-                      console.log("game data: ", data);
-                      _.map(data, (element) => {
-                        console.log("game id: ", element[0].id);
-                        this.cacheService.setLocal('game_id', element[0].id);
+                  .subscribe(data => {
+                    console.log("game data: ", data);
+                    if (data && data.Games) {
+                      data.Games.map(game => {
+                        console.log("game id: ", game.id);
+                        if (game && game.id) { // avoid storing empty game id
+                          this.cacheService.setLocal('game_id', game.id);
+                        }
                       });
-                    },
-                    err => {
-                      console.log("game err: ", err);
                     }
-                  );
+
+                    if (!this.cacheService.getLocal('game_id') && data.Games) {
+                      // For now only have one game per project
+                      self.cacheService.setLocal('game_id', data.Games[0].id);
+                    }
+                  }, err => {
+                    console.log("game err: ", err);
+                  });
+
               // get milestone data after login
               this.authService.getUser()
                   .subscribe(
                     data => {
-                      self.cacheService.setLocalObject('name', data.User.name);
-                      self.cacheService.setLocalObject('email', data.User.email);
-                      self.cacheService.setLocalObject('program_id', data.User.program_id);
-                      self.cacheService.setLocalObject('project_id', data.User.project_id);
-                      self.cacheService.setLocalObject('user', data.User);
+                      self.cacheService.setLocal('name', data.User.name);
+                      self.cacheService.setLocal('email', data.User.email);
+                      self.cacheService.setLocal('program_id', data.User.program_id);
+                      self.cacheService.setLocal('project_id', data.User.project_id);
+                      self.cacheService.setLocal('user', data.User);
                     },
                     err => {
                       console.log(err);
+                      throw 'Fatal: Unable to retrieve user data.';
                     }
                   );
-
-              this.gameService.getGames()
-                .subscribe((data) => {
-                  if (data.Games) {
-                    // For now only have one game per project
-                    self.cacheService.setLocalObject('game_id', data.Games[0].id);
-                  }
-                });
 
               // get milestone data after login
               this.milestoneService.getMilestones()
                   .subscribe(
                     data => {
                       loading.dismiss().then(() => {
-                        console.log(data.data[0].id);
-                        this.milestone_id = data.data[0].id;
-                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        console.log("milestone id: " + data.data[0].id);
+                        console.log(data[0].id);
+                        this.milestone_id = data[0].id;
+                        self.cacheService.setLocal('milestone_id', data[0].id);
+                        console.log("milestone id: " + data[0].id);
                         this.navCtrl.push(TabsPage).then(() => {
                           this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                           window.history.replaceState({}, '', window.location.origin);
@@ -190,7 +188,7 @@ export class LoginPage {
       'timelines': user.data.Timelines
     }
     this.cacheService.write('userData', userData);
-    this.cacheService.setLocalObject('userData', userData);
+    this.cacheService.setLocal('userData', userData);
     this.API_KEY = user.data.apikey;
     // console.log("Timeline ID: " + user.data.Timelines[0].Timeline.id);
     // to get API KEY and timeline_id and stored in localStorage

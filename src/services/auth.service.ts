@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 
 const AUTH_ENDPOINT = 'api/auths.json?action=';
 

@@ -103,20 +103,15 @@ export class CacheService {
   // public forEach(cb): any;
 
   // pure localStorage implementation
-  public setLocal(key: string, value: string | Boolean): void {
-    this.localStorage[key] = value;
-  }
-
-  public getLocal(key: string): string {
-    return this.localStorage[key] || false;
-  }
-
-  public setLocalObject(key: string, value: any): void {
+  public setLocal(key: string, value: string | boolean | number | object): void {
     this.localStorage[key] = JSON.stringify(value);
   }
 
-  public getLocalObject(key: string): any {
-    return JSON.parse(this.localStorage[key] || '{}');
+  public getLocal(key: string): object {
+    if (!this.localStorage[key]) {
+      return null;
+    }
+    return JSON.parse(this.localStorage[key]);
   }
 
   public removeLocal(key: string): any {

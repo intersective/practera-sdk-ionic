@@ -27,50 +27,47 @@ class ReferenceBase {
 @Injectable()
 export class ActivityService {
   cachedActivites = {};
-  milestoneID = this.cacheService.getLocalObject('milestone_id');
+  milestoneID = this.cacheService.getLocal('milestone_id');
 
   constructor(
     public cacheService: CacheService,
     public request: RequestService,
   ) {}
 
-  getList(options?) {
-    let mid = this.cacheService.getLocal('milestone_id');
+  getList(httpParams?: HttpParams) {
+    let milestone_id = JSON.stringify(this.cacheService.getLocal('milestone_id'));
+    let params = httpParams || new HttpParams();
+    params = params.set('milestone_id',  milestone_id);
 
-    options = options || {
-      search: {
-        milestone_id: this.cacheService.getLocal('milestone_id')
-      }
-    };
-
-    if (!this.cachedActivites[mid]) {
-      this.cachedActivites[mid] = this.request.get('api/activities.json', options);
-      return this.request.get('api/activities.json', options);
+    // use cached activity query if available
+    if (!this.cachedActivites[milestone_id]) {
+      let requestQuery = this.request.get('api/activities.json', {
+        params
+      });
+      this.cachedActivites[milestone_id] = requestQuery;
+      return requestQuery;
     }
 
-    return this.cachedActivites[mid];
+    return this.cachedActivites[milestone_id];
   }
 
   getLevels(options?: any) {
     return this.cacheService.read()
       .then((data: any) => {
-        let params = new HttpParams();
+        let httpParams = new HttpParams();
         if (options) {
           _.forEach(options, (value, key) => {
-            params.set(key, value);
+            httpParams = httpParams.set(key, value);
           });
-          options.search = params;
         }
 
         if (!options.timeline_id && data.user.timeline_id) {
-          params.set('timeline_id', data.user.timeline_id);
-          options = params;
+          httpParams = httpParams.set('timeline_id', data.user.timeline_id);
         }
         if (!options.project_id && data.user.project_id) {
-          params.set('project_id', data.user.project_id);
-          options = params;
+          httpParams = httpParams.set('project_id', data.user.project_id);
         }
-        return this.getList(options).toPromise();
+        return this.getList(httpParams).toPromise();
       });
   }
 

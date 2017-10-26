@@ -8,7 +8,6 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class MilestoneService {
-  appkey = this.request.getAppkey();
   milestones: any = {};
 
   constructor(
@@ -27,7 +26,7 @@ export class MilestoneService {
     }
     let timelineId = this.cacheService.getLocal('timeline_id');
     if (timelineId) {
-      params.set('timelineId', timelineId);
+      params = params.set('timelineId', JSON.stringify(timelineId));
     }
 
     return this.request.get('api/milestones.json', { params });
