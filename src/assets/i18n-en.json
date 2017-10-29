@@ -30,7 +30,8 @@
     "NEXT": "Next",
     "PREV": "Prev",
     "SKIP": "Skip",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Submit",
+    "BACKTO": "Back to Login"
   },
   "LOGIN": {
     "HEADER": "Welcome to Practera",

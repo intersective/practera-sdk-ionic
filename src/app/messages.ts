@@ -52,10 +52,10 @@ export const errMessages = {
   },
   PasswordValidation: {
     mismatch: {
-      "mismatch": "You must enter matching passwords. Please Try again."
+      "mismatch": "Passwords don’t match"
     },
     minlength: {
-      "minlength": "The minimum length allowed for a password is 8 characters."
+      "minlength": "At least 8 characters required"
     }
   },
   Registration: {
@@ -86,7 +86,7 @@ export const errMessages = {
       "failed": "Whoops, we were unable to reset your password. Please try again."
     },
     invalidLink: {
-      "invalid": "Oops... The log in link is broken. You will be redirected to the login page. Try again with your username and password."
+      "invalid": "Oops... The reset password link is expired, please contact your program coordinator."
     }
   },
   TermConditions: {

@@ -105,10 +105,10 @@ export class ResetPasswordPage implements OnInit {
         loading.dismiss();
         this.verifySuccess = false;
         setTimeout(() => {
-          this.navCtrl.push(LoginPage).then(() => {
+          this.navCtrl.setRoot(LoginPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
             });
-        }, 5000);
+        }, 20000);
       });
   }
   /**
@@ -207,5 +207,11 @@ export class ResetPasswordPage implements OnInit {
   }
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+  }
+  // go to login page when verification is failed
+  goToLogin() {
+    this.navCtrl.setRoot(LoginPage).then(() => {
+      window.history.replaceState({}, '', window.location.origin);
+    });
   }
 }

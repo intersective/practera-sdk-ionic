@@ -38,16 +38,18 @@
               [disabled]="password!=verify_password || regForm.invalid || agreed === false">
               {{ 'GENERAL.DONE' | translate }}
             </button>
-            <div *ngIf="verifyPwd == true">
-              <div *ngIf="pwdMatchCheck()" class="error-hint">
-                <small>
-                  {{ passwordMismatchMessage }}
-                </small>
-              </div>
-              <div *ngIf="checkMinLength() == true" class="error-hint">
-                <small>
-                  {{ passwordMinlengthMessage }}
-                </small>
+            <div class="errors">
+              <div *ngIf="verifyPwd == true">
+                <div *ngIf="pwdMatchCheck()" class="error-hint">
+                  <small>
+                    {{ passwordMismatchMessage }}
+                  </small>
+                </div>
+                <div *ngIf="checkMinLength() == true" class="error-hint">
+                  <small>
+                    {{ passwordMinlengthMessage }}
+                  </small>
+                </div>
               </div>
             </div>
           </form>
