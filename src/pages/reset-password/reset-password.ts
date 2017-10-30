@@ -108,7 +108,7 @@ export class ResetPasswordPage implements OnInit {
           this.navCtrl.setRoot(LoginPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
             });
-        }, 20000);
+        }, 30000);
       });
   }
   /**

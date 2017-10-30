@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
-
 // services
 import { CacheService } from '../../shared/cache/cache.service';
 // pages
@@ -20,16 +19,13 @@ export class SettingsPage {
   helpline: string = "help@practera.com";
   logoutMessage: any = loadingMessages.Logout.logout;
   settings: any = [];
-
   constructor(
-    public cache: CacheService,
+    public appCtrl: App,
+    public loadingCtrl: LoadingController,
     public menuCtrl: MenuController,
     public navCtrl: NavController,
-    public loadingCtrl: LoadingController,
-    public translationService: TranslationService,
-    public appCtrl: App
-  ) {}
-
+    public cache: CacheService,
+    public translationService: TranslationService) {}
   getUserEmail() {
     return this.cache.getLocalObject('email') || '';
   }
