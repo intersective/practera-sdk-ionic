@@ -5,7 +5,6 @@ import { App, NavController, MenuController, LoadingController, AlertController 
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 // pages
-import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-settings.page';
 import { LoginPage } from '../../pages/login/login';
 import { TutorialPage } from '../settings/tutorial/tutorial.page';
 import { TermConditionPage } from '../term-condition/term-condition.page';
