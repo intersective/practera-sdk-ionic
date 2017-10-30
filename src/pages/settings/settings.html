@@ -8,12 +8,13 @@
     <ion-list-header>
       {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
     </ion-list-header>
-    <button ion-item (click)="goToTutorial()">
-      <ion-icon name="medkit" item-left></ion-icon> {{ 'SETTINGS.TUTORIAL' | translate }}
-    </button>
-    <button ion-item (click)="goToTermConditions()">
-      <ion-icon name="clipboard" item-left></ion-icon> {{ 'SETTINGS.TERMS' | translate }}
-    </button>
+
+    <ion-item>
+      <ion-toggle checked="false"></ion-toggle>
+      <ion-label>
+        Hide name in rankings
+      </ion-label>
+    </ion-item>
     <!-- <button ion-item (click)="goLeaderBoardSettings()">
       <ion-icon name="swap" item-left></ion-icon> {{ 'SETTINGS.LEADERBOARD' | translate }}
     </button> -->
@@ -22,9 +23,17 @@
     <ion-list-header>
       {{ 'SETTINGS.SUPPORT' | translate }}
     </ion-list-header>
+    <button ion-item (click)="goToTutorial()">
+      <ion-icon name="medkit" item-left></ion-icon> {{ 'SETTINGS.TUTORIAL' | translate }}
+    </button>
+    <button ion-item (click)="goToTermConditions()">
+      <ion-icon name="clipboard" item-left></ion-icon> {{ 'SETTINGS.TERMS' | translate }}
+    </button>
     <a ion-item href="mailto:{{helpline}}?Subject=Tech%20Support%20Request" target="_blank">
       <ion-icon name="mail" item-left></ion-icon> {{ 'SETTINGS.HELP' | translate }}
     </a>
+  </ion-list>
+  <ion-list no-lines>
     <button ion-item (click)="logout()">
       <ion-icon name="exit" item-left></ion-icon> {{ 'SETTINGS.LOGOUT' | translate }}
     </button>
