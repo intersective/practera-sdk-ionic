@@ -5,11 +5,12 @@ import { Http } from '@angular/http';
 
 import {} from 'jasmine';
 
-import { MyApp } from '../app/app.component';
-// import { CacheService } from '../shared/cache/cache.service';
-// import { RequestService } from '../shared/request/request.service';
+// import { MyApp } from '../app/app.component';
+import { CacheService } from '../shared/cache/cache.service';
+import { RequestService } from '../shared/request/request.service';
 import { MilestoneService } from './milestone.service';
-import { MilestoneServiceMock } from './milestone.service.mock';
+import { Storage } from '@ionic/storage';
+// import { MilestoneServiceMock } from './milestone.service.mock';
 
 // let milestone: MilestoneService = null;
 
@@ -17,21 +18,20 @@ describe('MilestoneService', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        MyApp
-      ],
+      declarations: [],
 
       providers: [
           // {
           //     provide: MilestoneService,
           //     useClass: MilestoneServiceMock
           // }
-          MilestoneService
+          CacheService,
+          RequestService,
+          MilestoneService,
+          Storage
       ],
 
-      imports: [
-          IonicModule.forRoot(MyApp)
-      ]
+      imports: []
 
     }).compileComponents();
   }));
