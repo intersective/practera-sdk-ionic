@@ -22,7 +22,6 @@ import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilepickerService } from '../shared/filepicker/filepicker.service';
 import { GameService } from '../services/game.service';
@@ -254,7 +253,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: ActivityService, useClass: ActivityService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
-    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
     { provide: FilepickerService, useClass: FilepickerService },

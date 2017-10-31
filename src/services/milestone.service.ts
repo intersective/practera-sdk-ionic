@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 
 @Injectable()
 export class MilestoneService {
-  appkey = this.request.getAppkey();
+  appkey: any = this.request.getAppkey();
   milestones: any = {};
   prefixUrl: any = this.request.getPrefixUrl();
 

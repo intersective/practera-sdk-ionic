@@ -1,12 +1,15 @@
-import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
 import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
+// Others
+import { RequestService } from '../shared/request/request.service';
+import * as _ from 'lodash';
+
 @Injectable()
 export class AuthService {
-  appkey: any = this.request.getAppkey();
-  prefixUrl: any = this.request.getPrefixUrl();
-  AUTH_ENDPOINT: any = this.prefixUrl + 'api/auths.json?action=';
-
+  public appkey: any = this.request.getAppkey();
+  public prefixUrl: any = this.request.getPrefixUrl();
+  // public AUTH_ENDPOINT: any = this.prefixUrl + 'api/auths.json?action=';
+  public AUTH_ENDPOINT: any = 'api/auths.json?action=';
   constructor(
     public request: RequestService,
     public http: Http
@@ -45,15 +48,12 @@ export class AuthService {
     return this.http.post(this.AUTH_ENDPOINT+'registration', urlSearchParams.toString(), options)
     .map(res => res.json());
   }
-
   loginAuth(email, password) {
-    let options = new RequestOptions({headers: this.headerData()});
     let urlSearchParams = new URLSearchParams([
       `data[User][email]=${email}`,
       `data[User][password]=${password}`
     ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'authentication', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.request.post(this.AUTH_ENDPOINT+'authentication', urlSearchParams);
   }
 
   forgotPassword(email){
