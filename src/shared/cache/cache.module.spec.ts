@@ -1,4 +1,4 @@
-import { CacheComponent } from './cache.component';
+import { CacheModule } from './cache.module';
 import { CacheService } from './cache.service';
 import { IonicStorageModule } from '@ionic/storage';
 
@@ -11,7 +11,7 @@ describe('Cache read/write test', () => {
   beforeAll(() => {
     TestBed.configureTestingModule({
       declarations: [
-        CacheComponent
+        CacheModule
       ],
       providers: [
         { provide: CacheService, useClass: CacheService }
@@ -23,7 +23,7 @@ describe('Cache read/write test', () => {
         }),
       ]
     });
-    fixture = TestBed.createComponent(CacheComponent);
+    fixture = TestBed.createComponent(CacheModule);
     fixture.detectChanges();
   });
 

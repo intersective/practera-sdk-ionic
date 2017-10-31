@@ -1,50 +1,57 @@
-import {} from 'jasmine';
-
-import { TestBed, ComponentFixture, async, inject } from '@angular/core/testing';
-import { IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
-// import { HomePage } from '../pages/home/home';
+
+import { TestBed, ComponentFixture, async } from '@angular/core/testing';
+import { IonicModule } from 'ionic-angular';
+import { By }           from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 let comp: MyApp;
 let fixture: ComponentFixture<MyApp>;
 
-describe('Component: Root Component', () => {
+describe('Component: Root Component (MyApp)', () => {
+  let component: MyApp;
+  let fixture: ComponentFixture<MyApp>;
 
-    beforeEach(async(() => {
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ MyApp ],
+      /*providers: [
 
-        TestBed.configureTestingModule({
+      ],
+      imports: [
+          IonicModule.forRoot(MyApp)
+      ]*/
+    }).compileComponents();
+  }));
 
-            declarations: [MyApp],
+  beforeEach(() => {
+    fixture = TestBed.createComponent(MyApp);
+    component = fixture.componentInstance;
+  });
 
-            providers: [
+  /*afterEach(() => {
+    fixture.destroy();
+    component = null;
+  });*/
 
-            ],
+  it('should create component', () => expect(component).toBeDefined());
 
-            imports: [
-                IonicModule.forRoot(MyApp)
-            ]
+  it('should be a component', () => {
+    expect(component instanceof MyApp).toBe(true);
+  });
 
-        }).compileComponents();
+  it('should has local variables', () => {
+    expect(component.rootPage).toBeDefined();
+    expect(component.urlParameters).toBeDefined();
+  });
 
-    }));
+  it('is created', () => {
+    expect(fixture).toBeTruthy();
+    expect(component).toBeTruthy();
+  });
 
-    beforeEach(() => {
-      fixture = TestBed.createComponent(MyApp);
-      comp = fixture.componentInstance;
-    });
 
-    afterEach(() => {
-      fixture.destroy();
-      comp = null;
-    });
-
-    it('is created', () => {
-      expect(fixture).toBeTruthy();
-      expect(comp).toBeTruthy();
-
-    });
-
-    // it('initialises with a root page of HomePage', () => {
-    //     expect(comp['rootPage']).toBe(HomePage);
-    // });
+  // it('initialises with a root page of HomePage', () => {
+  //     expect(comp['rootPage']).toBe(HomePage);
+  // });
 });
