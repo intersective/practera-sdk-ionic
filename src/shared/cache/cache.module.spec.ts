@@ -4,7 +4,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { async, TestBed } from '@angular/core/testing';
 
-('Cache read/write test', () => {
+describe('Cache read/write test', () => {
 
   let fixture;
 
