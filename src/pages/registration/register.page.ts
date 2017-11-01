@@ -110,27 +110,25 @@ export class RegisterPage implements OnInit { // this part of registration is fo
       loading.present().then(() => {
         let email = decodeURIComponent(this.navParams.get('email')),
             key = this.navParams.get('key');
-        this.authService.verifyRegistration({
+        this.user = {
           email: email,
           key: key
-        }).subscribe(
-          res => {
-            loading.dismiss().then(() => {
-              this.cacheService.setLocal('user.email', email);
-              this.cacheService.setLocal('user.registration_key', key);
-              this.cacheService.setLocal('user.id', res.data.User.id);
-              this.user = {
-                email: email,
-                key: key
-              };
-            });
-          }, 
-          err => {
-            loading.dismiss().then(() => {
-              this.displayError(err.msg);
-            });
-          }
-        );
+        }
+        this.authService.verifyRegistration(this.user)
+          .subscribe(
+            res => {
+              loading.dismiss().then(() => {
+                this.cacheService.setLocal('user.email', email);
+                this.cacheService.setLocal('user.registration_key', key);
+                this.cacheService.setLocal('user.id', res.User.id);
+              });
+            }, 
+            err => {
+              loading.dismiss().then(() => {
+                this.displayError(err.msg);
+              });
+            }
+          );
       });
     }
   }
@@ -186,9 +184,8 @@ export class RegisterPage implements OnInit { // this part of registration is fo
           password: this.regForm.get('password').value
         }).subscribe(regRespond => {
           //@TODO: set user data
-          regRespond = regRespond.data;
-          this.cacheService.setLocalObject('apikey', regRespond.apikey);
-          this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
+          this.cacheService.setLocal('apikey', regRespond.apikey);
+          this.cacheService.setLocal('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
@@ -204,21 +201,21 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                           // results[0] game API data
                           this.gameID = results[0].Games[0].id;
                           if(this.gameID){
-                            this.cacheService.setLocalObject('game_id', this.gameID);
+                            this.cacheService.setLocal('game_id', this.gameID);
                           }
                           // results[1] user API data
                           this.userData = results[1];
                           if(this.userData){
-                            this.cacheService.setLocalObject('name', results[1].User.name);
-                            this.cacheService.setLocalObject('email', results[1].User.email);
-                            this.cacheService.setLocalObject('program_id', results[1].User.program_id);
-                            this.cacheService.setLocalObject('project_id', results[1].User.project_id);
-                            this.cacheService.setLocalObject('user', results[1].User);
+                            this.cacheService.setLocal('name', results[1].User.name);
+                            this.cacheService.setLocal('email', results[1].User.email);
+                            this.cacheService.setLocal('program_id', results[1].User.program_id);
+                            this.cacheService.setLocal('project_id', results[1].User.project_id);
+                            this.cacheService.setLocal('user', results[1].User);
                           }
                           // results[2] milestone API data
-                          this.milestone_id = results[2].data[0].id;
+                          this.milestone_id = results[2][0].id;
                           if(this.milestone_id){
-                            this.cacheService.setLocalObject('milestone_id', this.milestone_id);
+                            this.cacheService.setLocal('milestone_id', this.milestone_id);
                           }
                           this.navCtrl.setRoot(TabsPage).then(() => {
                             this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page

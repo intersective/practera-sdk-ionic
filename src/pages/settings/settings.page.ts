@@ -27,7 +27,7 @@ export class SettingsPage {
     public cache: CacheService,
     public translationService: TranslationService) {}
   getUserEmail() {
-    return this.cache.getLocalObject('email') || '';
+    return this.cache.getLocal('email') || '';
   }
   goLeaderBoardSettings(){
     this.navCtrl.push(LeaderboardSettingsPage);

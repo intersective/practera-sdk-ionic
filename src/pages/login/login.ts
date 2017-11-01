@@ -81,13 +81,10 @@ export class LoginPage {
         // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
-              data = data.data;
-              // this.getLogInData(data);
-              self.cacheService.setLocalObject('apikey', data.apikey);
+              self.cacheService.setLocal('apikey', data.apikey);
               // saved for 3 types of timeline id in order for later use
-              self.cacheService.setLocalObject('timelineId', data.Timelines[0].Timeline.id);
-              self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-              self.cacheService.setLocalObject('teams', data.Teams);
+              self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
+              self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
               let getGame = this.gameService.getGames();
               let getUser = this.authService.getUser();
@@ -99,21 +96,21 @@ export class LoginPage {
                       // results[0] game API data
                       this.gameID = results[0].Games[0].id;
                       if(this.gameID){
-                        this.cacheService.setLocalObject('game_id', this.gameID);
+                        this.cacheService.setLocal('game_id', this.gameID);
                       }
                       // results[1] user API data
                       this.userData = results[1];
                       if(this.userData){
-                        this.cacheService.setLocalObject('name', results[1].User.name);
-                        this.cacheService.setLocalObject('email', results[1].User.email);
-                        this.cacheService.setLocalObject('program_id', results[1].User.program_id);
-                        this.cacheService.setLocalObject('project_id', results[1].User.project_id);
-                        this.cacheService.setLocalObject('user', results[1].User);
+                        this.cacheService.setLocal('name', results[1].User.name);
+                        this.cacheService.setLocal('email', results[1].User.email);
+                        this.cacheService.setLocal('program_id', results[1].User.program_id);
+                        this.cacheService.setLocal('project_id', results[1].User.project_id);
+                        this.cacheService.setLocal('user', results[1].User);
                       }
                       // results[2] milestone API data
-                      this.milestone_id = results[2].data[0].id;
+                      this.milestone_id = results[2][0].id;
                       if(this.milestone_id){
-                        this.cacheService.setLocalObject('milestone_id', this.milestone_id);
+                        this.cacheService.setLocal('milestone_id', this.milestone_id);
                       }
                       this.navCtrl.setRoot(TabsPage).then(() => {
                         this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
@@ -165,7 +162,7 @@ export class LoginPage {
       'timelines': user.data.Timelines
     }
     this.cacheService.write('userData', userData);
-    this.cacheService.setLocalObject('userData', userData);
+    this.cacheService.setLocal('userData', userData);
     this.API_KEY = user.data.apikey;
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
