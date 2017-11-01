@@ -136,10 +136,9 @@ export class ResetPasswordPage implements OnInit {
         // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
-              data = data.data;
-              this.cacheService.setLocalObject('apikey', data.apikey);
-              this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-              this.cacheService.setLocalObject('teams', data.Teams);
+              this.cacheService.setLocal('apikey', data.apikey);
+              this.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
+              this.cacheService.setLocal('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
               // get game_id data after login
               this.gameService.getGames()
@@ -159,10 +158,10 @@ export class ResetPasswordPage implements OnInit {
               this.authService.getUser()
                   .subscribe(
                     data => {
-                      this.cacheService.setLocalObject('name', data.User.name);
-                      this.cacheService.setLocalObject('email', data.User.email);
-                      this.cacheService.setLocalObject('program_id', data.User.program_id);
-                      this.cacheService.setLocalObject('project_id', data.User.project_id);
+                      this.cacheService.setLocal('name', data.User.name);
+                      this.cacheService.setLocal('email', data.User.email);
+                      this.cacheService.setLocal('program_id', data.User.program_id);
+                      this.cacheService.setLocal('project_id', data.User.project_id);
                     },
                     err => {
                       console.log(err);
@@ -173,10 +172,10 @@ export class ResetPasswordPage implements OnInit {
                   .subscribe(
                     data => {
                       loading.dismiss().then(() => {
-                        console.log(data.data[0].id);
-                        this.milestone_id = data.data[0].id;
-                        this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        console.log("milestone id: " + data.data[0].id);
+                        console.log(data[0].id);
+                        this.milestone_id = data[0].id;
+                        this.cacheService.setLocal('milestone_id', data[0].id);
+                        console.log("milestone id: " + data[0].id);
                         loading.dismiss();
                         this.navCtrl.push(TabsPage).then(() => {
                           this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page

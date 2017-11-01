@@ -80,7 +80,7 @@ export class AssessmentService {
 
   // listAll()
   getAll(options?: any) {
-    return this.request.get('api/assessments.json', options);
+    return this.request.get('api/assessments.json', { search: options });
   }
 
   /**
@@ -94,7 +94,7 @@ export class AssessmentService {
    * @param {any} options [description]
    */
   getQuestion(options?: any) {
-    return this.request.get('api/export_assessments.json', options);
+    return this.request.get('api/export_assessments.json', { search: options });
   }
 
   post(assessmentAnswer: Submission) {

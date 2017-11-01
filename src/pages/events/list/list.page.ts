@@ -99,10 +99,8 @@ export class EventsListPage {
 
         // Get event by activityIDs
         this.eventService.getEvents({
-          search: {
-            activity_id: '[' + _.toString(activityIDs) + ']',
-            type: 'session'
-          }
+          activity_id: '[' + _.toString(activityIDs) + ']',
+          type: 'session'
         })
         .then((events) => {
           // loadedEvents will never change (public use),
