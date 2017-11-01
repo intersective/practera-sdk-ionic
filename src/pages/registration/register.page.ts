@@ -118,7 +118,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
             loading.dismiss().then(() => {
               this.cacheService.setLocal('user.email', email);
               this.cacheService.setLocal('user.registration_key', key);
-              this.cacheService.setLocal('user.id', res.data.User.id);
+              this.cacheService.setLocal('user.id', res.User.id);
               this.user = {
                 email: email,
                 key: key
@@ -186,7 +186,6 @@ export class RegisterPage implements OnInit { // this part of registration is fo
           password: this.regForm.get('password').value
         }).subscribe(regRespond => {
           //@TODO: set user data
-          regRespond = regRespond.data;
           this.cacheService.setLocalObject('apikey', regRespond.apikey);
           this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
@@ -216,7 +215,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                             this.cacheService.setLocalObject('user', results[1].User);
                           }
                           // results[2] milestone API data
-                          this.milestone_id = results[2].data[0].id;
+                          this.milestone_id = results[2][0].id;
                           if(this.milestone_id){
                             this.cacheService.setLocalObject('milestone_id', this.milestone_id);
                           }

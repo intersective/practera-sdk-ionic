@@ -109,7 +109,7 @@ export class LoginPage {
                         this.cacheService.setLocalObject('user', results[1].User);
                       }
                       // results[2] milestone API data
-                      this.milestone_id = results[2].data[0].id;
+                      this.milestone_id = results[2][0].id;
                       if(this.milestone_id){
                         this.cacheService.setLocalObject('milestone_id', this.milestone_id);
                       }

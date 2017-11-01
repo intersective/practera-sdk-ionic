@@ -129,7 +129,6 @@ export class ResetPasswordPage implements OnInit {
       this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
-              data = data.data;
               this.cacheService.setLocalObject('apikey', data.apikey);
               this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocalObject('teams', data.Teams);
@@ -156,7 +155,7 @@ export class ResetPasswordPage implements OnInit {
                         this.cacheService.setLocalObject('user', results[1].User);
                       }
                       // results[2] milestone API data
-                      this.milestone_id = results[2].data[0].id;
+                      this.milestone_id = results[2][0].id;
                       if(this.milestone_id){
                         this.cacheService.setLocalObject('milestone_id', this.milestone_id);
                       }

@@ -51,7 +51,6 @@ export class MagicLinkPage {
     loading.present().then(() => {
       observable.subscribe(
         data => {
-          data = data.data; // data is read as json format 
           this.cacheService.setLocalObject('apikey', data.apikey);
           this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
           this.cacheService.setLocalObject('teams', data.Teams);
@@ -76,7 +75,7 @@ export class MagicLinkPage {
                   this.cacheService.setLocalObject('user', results[1].User);
                 }
                 // results[2] milestone API data
-                this.milestone_id = results[2].data[0].id;
+                this.milestone_id = results[2][0].id;
                 if(this.milestone_id){
                   this.cacheService.setLocalObject('milestone_id', this.milestone_id);
                 }

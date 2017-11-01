@@ -19,7 +19,7 @@ export class LevelService {
     let milestoneIds = [];
 
     return new Promise((resolve, reject) => {
-      this.milestoneService.getList()
+      this.milestoneService.getMilestones()
       .toPromise()
       .then((result: any) => {
         milestones = result.data;
