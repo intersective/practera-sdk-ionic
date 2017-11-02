@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 // Others
@@ -14,10 +14,9 @@ export class GameService {
 
   /**
    * Get games
-   * @param {object} options
    */
-  getGames(options = {}) {
-    return this.request.get('api/games', options);
+  getGames() {
+    return this.request.get('api/games');
   }
 
   /**
@@ -25,13 +24,10 @@ export class GameService {
    * @param {string} gameId
    * @param {object} options
    */
-  getCharacters(gameId, options = {}) {
-    options = _.merge({
-      search: {
-        game_id: gameId
-      }
-    }, options);
-    return this.request.get('api/characters', options);
+  getCharacters(game_id, params = {}) {
+    return this.request.get('api/characters', {
+      search: Object.assign(params, { game_id })
+    });
   }
 
   /**
@@ -40,7 +36,7 @@ export class GameService {
    */
   postCharacter(data) {
     return this.request.post('api/characters', data, {
-      'Content-Type': 'application/json'
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
 
@@ -49,21 +45,15 @@ export class GameService {
    * @param {string} gameId
    * @param {string} characterId
    */
-   getRanking(gameId, characterId) {
+  getRanking(gameId, character_id) {
+    let params:any = {
+      'action': 'ranking',
+      'period': 'monthly'
+    };
+
     return Observable.forkJoin([
-      this.getCharacters(gameId, {
-        search: {
-          action: 'ranking',
-          period: 'monthly'
-        }
-      }),
-      this.getCharacters(gameId, {
-        search: {
-          action: 'ranking',
-          period: 'monthly',
-          character_id: characterId
-        }
-      })
+      this.getCharacters(gameId, params),
+      this.getCharacters(gameId, Object.assign(params, { character_id }))
     ])
     .map((data: any[]) => {
       let characters = data[0] || [];
@@ -75,14 +65,14 @@ export class GameService {
 
   /**
    * Get items
-   * @param {object} options
+   * @param {object} options optional search query got GET request
    */
-  getItems(options?) {
+  getItems(options = {}) {
     options = _.merge({
       character_id: null,
       filter: 'all'
     }, options);
-    return this.request.get('api/items.json', {search: options});
+    return this.request.get('api/items.json', { search: options });
   }
 
   /**
@@ -97,6 +87,8 @@ export class GameService {
       "id": null
     }
   }) {
-    return this.request.post('api/items.json', options, {'Content-Type': 'application/json'});
+    return this.request.post('api/items.json', options, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }

@@ -283,9 +283,10 @@ export class AssessmentsGroupPage implements OnInit {
    * @param {Object} answers
    */
   retrieveProgress = (questions: Array<any>, answers?) => {
-    let cachedProgress = answers || {},
-        newQuestions = questions,
-        savedProgress = cachedProgress.AssessmentSubmissionAnswer;
+    let cachedProgress = answers || {}; //this.cache.getLocal(this.cacheKey);
+
+    let newQuestions = questions;
+    let savedProgress = cachedProgress.AssessmentSubmissionAnswer;
 
     if (!_.isEmpty(savedProgress)) {
 

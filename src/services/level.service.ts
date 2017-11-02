@@ -32,11 +32,8 @@ export class LevelService {
         });
 
         return this.activityService.getLevels({
-          // @TODO: Should have some way to get data from stroage...
-          search: {
-            milestone_id: JSON.stringify(milestoneIds),
-            has: []
-          }
+          milestone_id: JSON.stringify(milestoneIds),
+          has: []
         });
       })
       .then((result: any) => {

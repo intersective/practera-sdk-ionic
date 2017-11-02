@@ -11,7 +11,7 @@ export class TeamService {
     public request: RequestService
   ) {}
 
-  getTeam(options? : any) {
-    return this.request.get('api/teams.json', options).toPromise();
+  getTeam() {
+    return this.request.get('api/teams.json').toPromise();
   }
 }

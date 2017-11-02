@@ -33,7 +33,7 @@ export class AssessmentsPage {
   combinedItems: any = [];
   discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   getCharacterID: any = this.cacheService.getLocal('character_id');
-  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  getInitialItems: any = this.cacheService.getLocal('initialItems');
   gotNewItems: boolean = false;
   isEventSubmission: boolean = false;
   initialItemsCount: any = {};
@@ -255,27 +255,13 @@ export class AssessmentsPage {
       }
     });
 
-    // prepare statuses of submissions for different condition filtering (activity & event)
-    // Statuses: `in progress`, `done`
-
-    // "in progress" never > 1 (cuz "_.find" return only 1 found value)
-    let hasInProgress = _.find(submissions, {status: 'in progress'});
-    let isNew = (!currentSubmission && (filteredSubmissions.length === 0 || !_.isEmpty(hasInProgress)));
-    let isDone = _.find(submissions, {status: 'done'}); // "done" for view checkin
-    let isCheckin = (this.navParams.get('event') && isDone);
-
-
-    if (isCheckin) { // on event's view checkin, no status filtering required
-      results = submissions;
-    } else if (isNew) { // on new submission
-      results = !_.isEmpty(hasInProgress) ? [hasInProgress] : [];
-    } else if (!isNew && hasInProgress) { // on resume "in progress"
-      filteredSubmissions.push(hasInProgress);
-      results = filteredSubmissions;
-    } else if (currentSubmission) { // display current submission
-      filteredSubmissions.push(currentSubmission);
-      results = filteredSubmissions;
-    }
+      // get_assessments request with 'assessment_id' & 'structured'
+      let getAssessment = (assessmentId) => {
+        return this.assessmentService.getAll({
+          assessment_id: assessmentId,
+          structured: true
+        });
+      };
 
     return results;
   }
@@ -544,7 +530,7 @@ export class AssessmentsPage {
               // display items on dashboard page
               this.gotNewItems = true;
               this.cacheService.setLocal('gotNewItems', this.gotNewItems);
-              this.cacheService.setLocalObject('allNewItems', this.combinedItems);
+              this.cacheService.setLocal('allNewItems', this.combinedItems);
               loading.onDidDismiss(() => {
                 this.navCtrl.setRoot(ActivitiesListPage);
               });

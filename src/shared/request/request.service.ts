@@ -1,5 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
-import { Http, Response, Headers, RequestOptions, RequestOptionsArgs, URLSearchParams } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
@@ -22,7 +22,7 @@ export class RequestService {
 
   constructor (
     @Optional() config: RequestServiceConfig,
-    private http: Http,
+    private http: HttpClient,
     private cacheService: CacheService
   ) {
     // Inject appKey and prefixUrl when RequestServiceConfig loaded
@@ -52,69 +52,76 @@ export class RequestService {
    * Error handle for API response
    * @param {Error} error
    */
-  private handleError (error) {
+  private handleError(error) {
     let errorFrom = {
         api: 'SERVER_ERROR',
       },
-      currentError: any = error.json();
+      currentError: any = error;
+    console.log(currentError);
     if (typeof error !== 'object') {
       throw 'Unable to process API respond!';
     }
     if (error.status === 0) { // client unrecoverable error encountered
       currentError.frontendCode = errorFrom.api;
     } else {
-      let errorBody = error.json();
+      let errorBody = error.body;
       currentError.frontendCode = errorBody.data || errorBody.error;
     }
     return Observable.throw(currentError);
   }
 
   // Inject required fields to header of API request
-  appendHeader(customHeader: Object = {
-    'Content-Type': 'application/json',
+  appendHeader(customHeader: any = {
+    'contentType': 'application/json',
     'apikey': null
-  }) {
-    let headers = new Headers(customHeader);
+  }): HttpHeaders {
+    let result:any;
+    let headers = new HttpHeaders();
+
+    result = headers.set('Content-Type', customHeader.contentType);
 
     // Inject apiKey from cached
     let apiKey = this.cacheService.getCached('apikey') ||
-      this.cacheService.getLocalObject('apikey');
+      this.cacheService.getLocal('apikey');
     if (!_.isEmpty(apiKey)) {
-      headers.set('apikey', apiKey);
+      result = result.set('apikey', apiKey.toString());
     }
 
     // Inject timelineID from cached
     let timelineId = this.cacheService.getCached('timelineID') ||
-      this.cacheService.getLocalObject('timelineID');
+      this.cacheService.getLocal('timelineID');
     if (timelineId) {
-      headers.set('timelineID', timelineId);
+      result = result.set('timelineID', timelineId.toString());
     }
 
-    // Inject appKey from config
-    if (!_.isUndefined(this.appkey)) {
-      headers.set('appkey', this.appkey);
-    }
-    return headers;
+    return result;
   }
 
   // Set API request options
-  setOptions(options) {
-    let result = new RequestOptions({ headers: this.appendHeader() });
-    let timelineId = this.cacheService.getLocal('timelineID');
+  setOptions(options?): {
+    headers?: HttpHeaders;
+    observe?: "body";
+    params?: HttpParams;
+    reportProgress?: boolean;
+    withCredentials?: boolean;
+    search?: string;
+  } {
+    let headers = this.appendHeader();
 
-    let params = new URLSearchParams();
-    if (timelineId) {
-      params.set('timelineID', timelineId);
-    }
-
+    // setup http params
+    let params = (options && options.params) ? options.params : new HttpParams();
     if (options && options.search) {
       _.each(options.search, (value, key) => {
-        params.set(key, value);
+        params = params.set(key, value.toString());
       });
     }
-    result.search = params;
 
-    return result;
+    let timelineId = this.cacheService.getLocal('timelineID');
+    if (timelineId) {
+      params = params.set('timelineID', timelineId);
+    }
+
+    return { headers, params };
   }
 
   /**
@@ -123,9 +130,13 @@ export class RequestService {
    * @param {Object} options
    */
   get(endPoint: string = '', options?: any) {
-    let opt = this.setOptions(options);
+    let searchQuery = (options && options.search) ? options.search : null;
+    options = this.setOptions(options);
+    options.observe = 'body';
+    options.responseType = 'json';
+    options.search = searchQuery;
 
-    return this.http.get(this.prefixUrl + endPoint, opt)
+    return this.http.get(this.prefixUrl + endPoint, options)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -136,11 +147,13 @@ export class RequestService {
    * @param {Object} data
    * @param {Object} header
    */
-  post(endPoint: string, data: any, header = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }) {
-    let options = new RequestOptions({ headers: this.appendHeader(header) });
-    return this.http.post(this.prefixUrl + endPoint, data, options)
+  post(endPoint: string, data: any, header?: any) {
+    let headers = this.appendHeader();
+
+    // @TODO: make sure if Content-Type is optional
+    headers = headers.delete('Content-Type');
+    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    return this.http.post(this.prefixUrl + endPoint, data, { headers })
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -151,15 +164,14 @@ export class RequestService {
    * @param {Object} header
    */
   delete(endPoint: string, header?:Object) {
-    let options = new RequestOptions({ headers: this.appendHeader(header) });
-    return this.http.delete(this.prefixUrl + endPoint, options)
+    return this.http.delete(this.prefixUrl + endPoint, {
+        headers: this.appendHeader(header)
+      })
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  // Extract response data and convert it to JSON
-  extractData(res: Response) {
-    let body = res.json();
-    return body.data || {};
+  extractData(res) {
+    return res.data || {};
   }
 }

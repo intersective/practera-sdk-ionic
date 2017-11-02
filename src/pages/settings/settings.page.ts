@@ -43,7 +43,7 @@ export class SettingsPage {
     });
     loading.present();
 
-    let gameId = this.cacheService.getLocalObject('game_id');
+    let gameId = this.cacheService.getLocal('game_id');
     this.gameService.getCharacters(gameId)
       .subscribe((characters) => {
         let me = characters.Characters[0];
@@ -79,7 +79,7 @@ export class SettingsPage {
     loader.present().then(() => {
       this.gameService.postCharacter({
         Character: {
-          id: this.cacheService.getLocalObject('character_id'),
+          id: this.cacheService.getLocal('character_id'),
           meta: {
             private: (this.hideName) ? 1 : 0
           }
@@ -101,7 +101,7 @@ export class SettingsPage {
   }
 
   getUserEmail() {
-    return this.cacheService.getLocalObject('email') || '';
+    return this.cacheService.getLocal('email') || '';
   }
 
   goToTutorial() {
