@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
+import { TranslationService } from '../../shared/translation/translation.service';
 // pages
 import { LoginPage } from '../login/login';
 import { TabsPage } from '../tabs/tabs.page';
@@ -33,7 +34,8 @@ export class MagicLinkPage {
     public authService: AuthService,
     public cacheService: CacheService,
     public gameService: GameService,
-    public milestoneService: MilestoneService) {
+    public milestoneService: MilestoneService,
+    public translationService: TranslationService) {
       this.cacheService.setLocal('gotNewItems', false);
     }
   ionViewDidLoad() {
