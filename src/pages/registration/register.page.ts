@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
@@ -105,7 +105,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
     });
     if (!decodeURIComponent(this.navParams.get('email')) || !this.navParams.get('key')) {
       this.displayError();
-    } 
+    }
     else {
       loading.present().then(() => {
         let email = decodeURIComponent(this.navParams.get('email')),
@@ -124,7 +124,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                 key: key
               };
             });
-          }, 
+          },
           err => {
             loading.dismiss().then(() => {
               this.displayError(err.msg);
@@ -187,8 +187,9 @@ export class RegisterPage implements OnInit { // this part of registration is fo
         }).subscribe(regRespond => {
           //@TODO: set user data
           regRespond = regRespond.data;
-          this.cacheService.setLocalObject('apikey', regRespond.apikey);
-          this.cacheService.setLocalObject('timelineID', regRespond.Timeline.id);
+          console.log(regRespond);
+          this.cacheService.setLocal('apikey', regRespond.apikey);
+          this.cacheService.setLocal('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
@@ -201,28 +202,10 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                     .subscribe(
                       results => {
                         loading.dismiss().then(() => {
-                          // results[0] game API data
-                          this.gameID = results[0].Games[0].id;
-                          if(this.gameID){
-                            this.cacheService.setLocalObject('game_id', this.gameID);
-                          }
-                          // results[1] user API data
-                          this.userData = results[1];
-                          if(this.userData){
-                            this.cacheService.setLocalObject('name', results[1].User.name);
-                            this.cacheService.setLocalObject('email', results[1].User.email);
-                            this.cacheService.setLocalObject('program_id', results[1].User.program_id);
-                            this.cacheService.setLocalObject('project_id', results[1].User.project_id);
-                            this.cacheService.setLocalObject('user', results[1].User);
-                          }
-                          // results[2] milestone API data
-                          this.milestone_id = results[2].data[0].id;
-                          if(this.milestone_id){
-                            this.cacheService.setLocalObject('milestone_id', this.milestone_id);
-                          }
-                          this.navCtrl.setRoot(TabsPage).then(() => {
-                            this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                            window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                          this.milestone_id = data[0].id;
+                          self.cacheService.setLocal('milestone_id', data[0].id);
+                          self.navCtrl.push(TabsPage).then(() => {
+                            window.history.replaceState({}, '', window.location.origin);
                           });
                         });
                       },
@@ -244,7 +227,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   logError(error){
     const alert = this.alertCtrl.create({
       title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.', 
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alert.present();

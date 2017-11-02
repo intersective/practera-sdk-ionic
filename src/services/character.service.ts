@@ -1,4 +1,5 @@
 import { Injectable }    from '@angular/core';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 // services
 import { CacheService } from '../shared/cache/cache.service';
@@ -17,11 +18,14 @@ export class CharacterService {
    * Get character
    */
   getCharacter() {
-    return this.request.get(this.charactersAPIEndpoint, {
-      search: {
-        game_id: this.cache.getLocalObject('game_id')
-      }
-    });
+    let options:any = {};
+    let game_id = this.cache.getLocal('game_id');
+
+    if (game_id) {
+      options['game_id'] = game_id;
+    }
+
+    return this.request.get(this.charactersAPIEndpoint, { search: options });
   }
 
   /**
@@ -29,8 +33,9 @@ export class CharacterService {
    * @param {object} data
    */
   postCharacter(data) {
-    return this.request.post(this.charactersAPIEndpoint, data, {
-      'Content-Type': 'application/json'
-    });
+    let headers = new HttpHeaders();
+    headers = headers.set('Content-Type', 'application/json');
+
+    return this.request.post(this.charactersAPIEndpoint, data, { headers });
   }
 }

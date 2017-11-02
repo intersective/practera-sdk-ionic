@@ -1,97 +1,62 @@
 import { Injectable } from '@angular/core';
 import { RequestService } from '../shared/request/request.service';
-import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
+
+const AUTH_ENDPOINT = 'api/auths.json?action=';
+
 @Injectable()
 export class AuthService {
   appkey: any = this.request.getAppkey();
   prefixUrl: any = this.request.getPrefixUrl();
-  AUTH_ENDPOINT: any = this.prefixUrl + 'api/auths.json?action=';
 
   constructor(
     public request: RequestService,
-    public http: Http
   ) {}
 
-  headerData() {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    headers.append('appkey', this.appkey);
-    return headers;
-  }
-
   getTerms() {
-    let options = new RequestOptions({headers: this.headerData()});
-    return this.http.get(this.prefixUrl+'api/registration_details.json', options)
-                    .map(res => res.json());
+    return this.request.get('api/registration_details.json');
+  }
+  private postRequest(type, body) {
+    return this.request.post(AUTH_ENDPOINT + type, body);
   }
 
   verifyRegistration(data) {
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams([
-      `email=${data.email}`,
-      `key=${data.key}`
-    ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'verify_registration', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    let params = new HttpParams();
+    params.set('email', data.email);
+    params.set('key', data.key);
+
+    return this.postRequest('verify_registration', params);
   }
 
   register(data) {
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams([
-      `password=${data.password}`,
-      `user_id=${data.user_id}`,
-      `key=${data.key || 'thisissamplekey'}`
-    ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'registration', urlSearchParams.toString(), options)
-    .map(res => res.json());
+    return this.postRequest('registration', {
+      password: data.password,
+      user_id: data.user_id,
+      key: data.key,
+    });
   }
 
   loginAuth(email, password) {
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams([
-      `data[User][email]=${email}`,
-      `data[User][password]=${password}`
-    ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'authentication', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.postRequest('authentication', `data[User][email]=${email}&data[User][password]=${password}`);
   }
 
-  forgotPassword(email){
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('email', email);
-    return this.http.post(this.AUTH_ENDPOINT+'forgot_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+  forgotPassword(email) {
+    return this.postRequest('forgot_password', { email });
   }
 
-  verifyUserKeyEmail(key, email){
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams([
-      `key=${key}`,
-      `email=${email}`
-    ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'verify_reset_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+  verifyUserKeyEmail(key, email) {
+    return this.postRequest('verify_reset_password', {
+      key: key,
+      email: email,
+    });
   }
 
   resetUserPassword(key, email, password, verify_password) {
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams([
-      `key=${key}`,
-      `email=${email}`,
-      `password=${password}`,
-      `verify_password=${verify_password}`
-    ].join('&'));
-    return this.http.post(this.AUTH_ENDPOINT+'reset_password', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+    return this.postRequest('reset_password', { key, email, password, verify_password });
   }
 
-  magicLinkLogin(auth_token){
-    let options = new RequestOptions({headers: this.headerData()});
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('auth_token', auth_token);
-    return this.http.post(this.prefixUrl+'api/auths.json?', urlSearchParams.toString(), options)
-                    .map(res => res.json());
+  magicLinkLogin(auth_token) {
+    return this.request.post('api/auths.json', { auth_token });
   }
 
   getUser() {
