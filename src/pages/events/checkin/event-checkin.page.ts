@@ -37,7 +37,7 @@ export class EventCheckinPage {
   ionViewDidEnter() {
     this.checkin = this.getCheckinAnswer(this.submissions[0]); // event checkin has just single submission
     this.assessment = this.assessmentService.normaliseGroup(this.assessmentGroup);
-    this.user = this.cache.getLocalObject('user');
+    this.user = this.cache.getLocal('user');
   }
 
   // Only checkin/file upload answer is displayed in check-in view

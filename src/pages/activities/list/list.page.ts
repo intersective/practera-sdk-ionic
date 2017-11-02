@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
 import { NavController, ToastController, LoadingController, ModalController } from 'ionic-angular';
 import { Observable } from 'rxjs/Observable';
 
@@ -22,7 +21,6 @@ import { TranslationService } from '../../../shared/translation/translation.serv
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'activities-list-page',
   templateUrl: 'list.html'
 })
 export class ActivitiesListPage implements OnInit {
@@ -54,7 +52,6 @@ export class ActivitiesListPage implements OnInit {
     public activityService: ActivityService,
     public cacheService: CacheService,
     public gameService: GameService,
-    public http: Http,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
     public navCtrl: NavController,
@@ -63,7 +60,7 @@ export class ActivitiesListPage implements OnInit {
     public translationService: TranslationService
   ) {
     this.anyNewItems = this.cacheService.getLocal('gotNewItems');
-    this.newItemsData = this.cacheService.getLocalObject('allNewItems');
+    this.newItemsData = this.cacheService.getLocal('allNewItems');
   }
   ngOnInit() {
     this.loadingDashboard();
@@ -91,7 +88,7 @@ export class ActivitiesListPage implements OnInit {
             if(this.activities.length == 0){
               this.returnError = true;
             }
-            let gameId = this.cacheService.getLocalObject('game_id');
+            let gameId = this.cacheService.getLocal('game_id');
             let getCharacter = this.gameService.getCharacters(gameId);
             let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
@@ -121,7 +118,7 @@ export class ActivitiesListPage implements OnInit {
                   .subscribe(
                     data => {
                       this.initialItems = data.Items;
-                      this.cacheService.setLocalObject('initialItems', this.initialItems);
+                      this.cacheService.setLocal('initialItems', this.initialItems);
                       console.log('Items Data: ', this.initialItems);
                     },
                     err => {
@@ -161,7 +158,7 @@ export class ActivitiesListPage implements OnInit {
   // close modal and display as main page
   closeItemsShwon(){
     this.anyNewItems = !this.cacheService.getLocal('gotNewItems');
-    this.cacheService.setLocalObject('allNewItems', []);
+    this.cacheService.setLocal('allNewItems', []);
     this.cacheService.setLocal('gotNewItems', !this.cacheService.getLocal('gotNewItems'));
     this.navCtrl.setRoot(TabsPage);
   }

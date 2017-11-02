@@ -29,3 +29,4 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 
 /src/configs/config.ts
+.sourcemaps/

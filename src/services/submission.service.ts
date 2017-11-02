@@ -15,7 +15,7 @@ export class SubmissionService {
 
   // list()
   getSubmissions(options?: any) {
-    return this.request.get(this.targetUrl, options);
+    return this.request.get(this.targetUrl, { search: options });
   }
 
   extractPhotos(data) {
@@ -219,11 +219,7 @@ export class SubmissionService {
 
     // get_submissions API to retrieve submitted answer
     let getSubmissions = (contextId) => {
-      return this.getSubmissions({
-        search: {
-          context_id: contextId
-        }
-      });
+      return this.getSubmissions({ context_id: contextId });
     };
     // Congregation of get_submissions API Observable with different context_id
     _.forEach(references, reference => {

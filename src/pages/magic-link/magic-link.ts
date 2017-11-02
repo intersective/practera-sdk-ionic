@@ -51,9 +51,9 @@ export class MagicLinkPage {
     loading.present().then(() => {
       observable.subscribe(
         data => {
-          this.cacheService.setLocalObject('apikey', data.apikey);
-          this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-          this.cacheService.setLocalObject('teams', data.Teams);
+          this.cacheService.setLocal('apikey', data.apikey);
+          this.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
+          this.cacheService.setLocal('teams', data.Teams);
           let getGame = this.gameService.getGames();
           let getUser = this.authService.getUser();
           let getMilestone = this.milestoneService.getMilestones();
@@ -63,21 +63,21 @@ export class MagicLinkPage {
                 // results[0] game API data
                 this.gameID = results[0].Games[0].id;
                 if(this.gameID){
-                  this.cacheService.setLocalObject('game_id', this.gameID);
+                  this.cacheService.setLocal('game_id', this.gameID);
                 }
                 // results[1] user API data
                 this.userData = results[1];
                 if(this.userData){
-                  this.cacheService.setLocalObject('name', results[1].User.name);
-                  this.cacheService.setLocalObject('email', results[1].User.email);
-                  this.cacheService.setLocalObject('program_id', results[1].User.program_id);
-                  this.cacheService.setLocalObject('project_id', results[1].User.project_id);
-                  this.cacheService.setLocalObject('user', results[1].User);
+                  this.cacheService.setLocal('name', results[1].User.name);
+                  this.cacheService.setLocal('email', results[1].User.email);
+                  this.cacheService.setLocal('program_id', results[1].User.program_id);
+                  this.cacheService.setLocal('project_id', results[1].User.project_id);
+                  this.cacheService.setLocal('user', results[1].User);
                 }
                 // results[2] milestone API data
                 this.milestone_id = results[2][0].id;
                 if(this.milestone_id){
-                  this.cacheService.setLocalObject('milestone_id', this.milestone_id);
+                  this.cacheService.setLocal('milestone_id', this.milestone_id);
                 }
                 loading.dismiss().then(() => {
                   this.navCtrl.setRoot(TabsPage).then(() => {
