@@ -5,6 +5,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { MilestoneComponentTest } from './milestone.component.test';
 import { MilestoneService } from '../services/milestone.service';
 import { RequestModule } from '../shared/request/request.module';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { default as Configure } from '../configs/config';
 
 // import '../shared/rxjs-operators';
@@ -24,13 +25,17 @@ describe('Milestone Service test', () => {
       imports: [
         CacheModule,
         HttpClientModule,
+        HttpClientTestingModule,
         RequestModule.forRoot({
           appKey: Configure.appKey,
           prefixUrl: Configure.prefixUrl
         })
       ],
       providers: [
-        { provide: MilestoneService, useClass: MilestoneService }
+        { provide: MilestoneService, useClass: MilestoneService },
+        HttpClientTestingBackend,
+        { provide: HttpBackend, useExisting: HttpClientTestingBackend },
+        { provide: HttpTestingController, useExisting: HttpClientTestingBackend },
       ]
     });
 
@@ -38,12 +43,21 @@ describe('Milestone Service test', () => {
     comp = fixture.componentInstance;
   });
 
-  it('Test getMilestones()', async(() => {
-    fixture.componentInstance.getMilestones()
-      .subscribe((res) => {
-        console.log('res', res);
-      }, (err) => {
-        console.log('err', err);
-      });
-  }));
+  it('Test getMilestones()', () => {
+    const milestoneService = TestBed.get(MilestoneService);
+    const http = TestBed.get(HttpTestingController);
+    const expectedResponse = [];
+    milestoneService.getMilestones().subscribe((res) => {
+      console.log('res', res)
+    });
+
+    http.expectOne('/api/milestones.json').flush(expectedResponse);
+    expect(expectedResponse).toEqual(expectedResponse);
+    // fixture.componentInstance.getMilestones()
+    //   .subscribe((res) => {
+    //     console.log('res', res);
+    //   }, (err) => {
+    //     console.log('err', err);
+    //   });
+  });
 });
