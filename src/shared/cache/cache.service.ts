@@ -15,7 +15,6 @@ export class CacheService {
     public storage: Storage
   ) {
     storage.ready().then(() => {
-      console.log('Storage loaded.');
       this.read('*', true).then(content => this.bufferZone = content);
     });
 
@@ -107,7 +106,7 @@ export class CacheService {
     this.localStorage[key] = JSON.stringify(value);
   }
 
-  public getLocal(key: string): object {
+  public getLocal(key: string): string | boolean | number | object {
     if (!this.localStorage[key]) {
       return null;
     }
