@@ -1,62 +1,63 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { NavController, ViewController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { AlertController,
+         LoadingController,
+         ModalController,
+         NavController,
+         NavParams,
+         ViewController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
-
+import { loadingMessages, errMessages } from '../../app/messages';
+import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
+// directives
+import { FormValidator } from '../../shared/validators/formValidator';
+// pages
+import { TabsPage } from '../tabs/tabs.page';
+import { LoginPage } from '../login/login';
+import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
-// directives
-import { FormValidator } from '../../shared/validators/formValidator';
-// pages
-import { LoginPage } from '../login/login';
-import { TabsPage } from '../tabs/tabs.page';
-import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
-// Others
+import { ResponsiveService } from '../../services/responsive.service';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages';
-import * as _ from 'lodash';
-
 @Component({
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
 })
 export class ResetPasswordPage implements OnInit {
-
-  emailVal: string;
-  keyVal: string;
-
-  invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
-  isLandscaped: boolean = false;
-  isPwdMatch: boolean = false;
-  minLengthCheck: boolean = true;
-  milestone_id: string;
-  password: string;
-  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
-  resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
-  resetPwdFormGroup: any;
-  successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
-  verify_password: string;
-  verifyPwd: boolean = false;
-  verifySuccess: boolean = null;
-  verifyUserMessage = loadingMessages.VerifyUser.verify;
-  windowHeight: number = window.innerHeight / 3;
-
-  constructor(
+  public emailVal: string;
+  public gameID: string = null;
+  public isLandscaped: boolean = false;
+  public isPwdMatch: boolean = false;
+  public keyVal: string;
+  public minLengthCheck: boolean = true;
+  public milestone_id: string;
+  public password: string;
+  public resetPwdFormGroup: any;
+  public userData: any = [];
+  public verify_password: string;
+  public verifyPwd: boolean = false;
+  public verifySuccess: boolean = null;
+  // loading & error message variables
+  public invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
+  public successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  public verifyUserMessage = loadingMessages.VerifyUser.verify;
+  constructor(public formBuilder: FormBuilder,
     public alertCtrl: AlertController,
-    public authService: AuthService,
-    public cacheService: CacheService,
-    public formBuilder: FormBuilder,
-    public gameService: GameService,
     public loadingCtrl: LoadingController,
     public milestoneService: MilestoneService,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public translationService: TranslationService,
-    public viewCtrl: ViewController
-  ) {
+    public viewCtrl: ViewController,
+    public authService: AuthService,
+    public cacheService: CacheService,
+    public gameService: GameService,
+    public translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
           password: ['', [Validators.minLength(8), Validators.required]],
@@ -72,11 +73,7 @@ export class ResetPasswordPage implements OnInit {
              user screen is mobile device or desktop device. If device is mobile
              device, ngOnInit() will disable landscape mode for mobile device
   */
-  ngOnInit() {
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ResetpasswordPage');
-  }
+  ngOnInit() {}
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
@@ -103,17 +100,15 @@ export class ResetPasswordPage implements OnInit {
       .subscribe(data => {
         loading.dismiss();
         this.verifySuccess = true;
-        console.log("valueTrue: " + this.verifySuccess);
       },
       err => {
         loading.dismiss();
         this.verifySuccess = false;
-        console.log("valueFalse: " + this.verifySuccess);
         setTimeout(() => {
-          this.navCtrl.push(LoginPage).then(() => {
+          this.navCtrl.setRoot(LoginPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
             });
-        }, 5000);
+        }, 30000);
       });
   }
   /**
@@ -132,8 +127,6 @@ export class ResetPasswordPage implements OnInit {
     });
     loading.present().then(() => {
       this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
-        // loading.dismiss();
-        // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
               this.cacheService.setLocal('apikey', data.apikey);
@@ -182,19 +175,18 @@ export class ResetPasswordPage implements OnInit {
                           window.history.replaceState({}, '', window.location.origin);
                         });
                       });
-                    },
-                    err => {
-                      loading.dismiss().then(() => {
-                        console.log(err);
-                      });
-                    }
-                  )
+                    });
+                  },
+                  err => {
+                    this.logError(err);
+                  }
+                )
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             },
             err => {
               loading.dismiss().then(() => {
-                this.loginError(err);
+                this.logError(err);
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
@@ -202,16 +194,16 @@ export class ResetPasswordPage implements OnInit {
       },
       err => {
         loading.dismiss().then(() => {
-          console.log(err);
+          this.logError(err);
         });
       });
-    });
   }
+
   // after password set, auto login error alertbox
-  loginError(error) {
+  logError(error) {
     const alertLogin = this.alertCtrl.create({
-      title: 'Login Failed ..',
-      message: this.resetPasswordLoginFailedMessage,
+      title: 'Error Message',
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alertLogin.present();
@@ -226,5 +218,11 @@ export class ResetPasswordPage implements OnInit {
   }
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+  }
+  // go to login page when verification is failed
+  goToLogin() {
+    this.navCtrl.setRoot(LoginPage).then(() => {
+      window.history.replaceState({}, '', window.location.origin);
+    });
   }
 }
