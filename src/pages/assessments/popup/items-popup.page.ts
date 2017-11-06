@@ -30,7 +30,7 @@ export class ItemsPopupPage {
   ) {}
 
   ionViewWillEnter() {
-    this.combinedData = this.cacheService.getLocalObject('allNewItems');
+    this.combinedData = this.cacheService.getLocal('allNewItems');
   }
 
   /**

@@ -70,9 +70,7 @@ export class EventsViewPage {
   ionViewDidEnter() {
     this.completedSubmissions = false;
     this.submissionService.getSubmissions({
-      search: {
-        context_id: this.event.context_id
-      }
+      context_id: this.event.context_id
     }).subscribe(res => {
       this.loadings.checkin = false;
       res.forEach(submission => {

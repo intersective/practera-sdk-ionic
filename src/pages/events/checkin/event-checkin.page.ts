@@ -38,7 +38,7 @@ export class EventCheckinPage {
     // We assume event checkin has just single submission
     this.checkin = this.getCheckinAnswer(this.submissions[0]);
     this.assessment = this.assessmentService.normaliseGroup(this.assessmentGroup);
-    this.user = this.cache.getLocalObject('user');
+    this.user = this.cache.getLocal('user');
   }
 
   // Only checkin/file upload answer is displayed in check-in view

@@ -46,7 +46,7 @@ export class RankingsPage {
     });
     loading.present();
     // @TODO remove later
-    let gameId = this.cacheService.getLocalObject('game_id');
+    let gameId = this.cacheService.getLocal('game_id');
     this.gameService.getCharacters(gameId)
       .subscribe((characters) => {
         // Now only have one character per project

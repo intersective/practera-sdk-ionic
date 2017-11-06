@@ -31,7 +31,7 @@ export class SettingsPage {
   ) {}
 
   getUserEmail() {
-    return this.cache.getLocalObject('email') || '';
+    return this.cache.getLocal('email') || '';
   }
 
   goLeaderBoardSettings(){
