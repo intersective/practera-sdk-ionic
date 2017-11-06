@@ -134,8 +134,8 @@ export class RegisterPage implements OnInit {
           //@TODO: set user data
           regRespond = regRespond.data;
           console.log(regRespond);
-          this.cache.setLocalObject('apikey', regRespond.apikey);
-          this.cache.setLocalObject('timelineID', regRespond.Timeline.id);
+          this.cache.setLocal('apikey', regRespond.apikey);
+          this.cache.setLocal('timelineID', regRespond.Timeline.id);
           this.cache.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cache.getLocal('user.email'), this.regForm.get('password').value)
@@ -169,9 +169,8 @@ export class RegisterPage implements OnInit {
                   self.milestone.getMilestones()
                       .subscribe( data => {
                         loading.dismiss().then(() => {
-                          // console.log(data.data[0].id);
-                          this.milestone_id = data.data[0].id;
-                          self.cache.setLocalObject('milestone_id', data.data[0].id);
+                          this.milestone_id = data[0].id;
+                          self.cache.setLocal('milestone_id', data[0].id);
                           self.navCtrl.push(TabsPage).then(() => {
                             window.history.replaceState({}, '', window.location.origin);
                           });

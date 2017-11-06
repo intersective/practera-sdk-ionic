@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 // services
 import { CacheService } from '../shared/cache/cache.service';
@@ -35,49 +35,45 @@ class ReferenceBase {
 @Injectable()
 export class ActivityService {
   cachedActivites = {};
-  milestoneID = this.cacheService.getLocalObject('milestone_id');
+  milestoneID = this.cacheService.getLocal('milestone_id');
 
   constructor(
     public cacheService: CacheService,
     public request: RequestService,
   ) {}
 
-  getList(options?) {
-    let mid = this.cacheService.getLocal('milestone_id');
+  getList(options: any = {}) {
+    let milestone_id = JSON.stringify(this.cacheService.getLocal('milestone_id'));
 
-    options = options || {
-      search: {
-        milestone_id: this.cacheService.getLocal('milestone_id')
-      }
-    };
-
-    if (!this.cachedActivites[mid]) {
-      this.cachedActivites[mid] = this.request.get('api/activities.json', options);
-      return this.request.get('api/activities.json', options);
+    // use cached activity query if available
+    if (!this.cachedActivites[milestone_id]) {
+      let requestQuery = this.request.get('api/activities.json', {
+        search: _.merge({ milestone_id }, options)
+      });
+      this.cachedActivites[milestone_id] = requestQuery;
+      return requestQuery;
     }
 
-    return this.cachedActivites[mid];
+    return this.cachedActivites[milestone_id];
   }
 
   getLevels(options?: any) {
-    let params: URLSearchParams = new URLSearchParams();
-    if (options.search) {
-      _.forEach(options.search, (value, key) => {
-        params.set(key, value);
-      });
-      options.search = params;
-    }
     return this.cacheService.read()
       .then((data: any) => {
-        if (!options.search.timeline_id && data.user.timeline_id) {
-          params.set('timeline_id', data.user.timeline_id);
-          options.search = params;
+        let query:any = {};
+        if (options) {
+          _.forEach(options, (value, key) => {
+            query[key] = value;
+          });
         }
-        if (!options.search.project_id && data.user.project_id) {
-          params.set('project_id', data.user.project_id);
-          options.search = params;
+
+        if (!options.timeline_id && data.user.timeline_id) {
+          query['timeline_id'] = data.user.timeline_id;
         }
-        return this.getList(options).toPromise();
+        if (!options.project_id && data.user.project_id) {
+          query['project_id'] = data.user.project_id;
+        }
+        return this.getList(query).toPromise();
       });
   }
 
