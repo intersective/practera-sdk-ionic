@@ -8,7 +8,6 @@ import { CacheComponent } from '../shared/cache/cache.component';
 import { AuthService } from './auth.service';
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestModule } from '../shared/request/request.module';
-import { RequestService } from '../shared/request/request.service';
 
 describe('AuthService', () => {
   let injector;
@@ -32,15 +31,14 @@ describe('AuthService', () => {
       ],
       providers: [
         { provide: AuthService, useClass: AuthService },
-        { provide: CacheService, useClass: CacheService },
-        { provide: RequestService, useClass: RequestService }
+        { provide: CacheService, useClass: CacheService }
       ]
     });
     injector = getTestBed();
     service = injector.get(AuthService);
     httpMock = injector.get(HttpTestingController);
   });
-
+  // get users API returns
   describe('getUser()' , () => {
     it('return user data', () => {
       const fakeData = {
@@ -56,22 +54,16 @@ describe('AuthService', () => {
         timeline_id: 7
       };
       service.getUser().subscribe(data => {
-        expect(data.User).toEqual(fakeData);
+        expect(data).toEqual(fakeData);
       });
-      // const req = httpMock.expectOne(`${service.API_URL}/api/users.json`);
-      // const req = httpMock.expectOne(`http://local.practera.com:8080/api/users.json?timelineID=7`);
-      // const req = httpMock.expectOne(`http://local.practera.com:8080/api/users.json`);
-      // const req = httpMock.expectOne(`api/users.json`);
       const req = httpMock.expectOne({
         url: 'api/users.json',
         method: 'GET'
       });
-      // expect(req.request.method).toBe('GET');
       req.flush(fakeData);
-      // httpMock.match('http://local.practera.com:8080/api/users.json');
-      // httpMock.verify();
     })
   });
+  // login authentication API returns
   describe('loginAuth()' , () => {
     it('login successfully', () => {
       const expectedLoggedInData = {
