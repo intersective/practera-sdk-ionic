@@ -172,6 +172,10 @@ export class RequestService {
   }
 
   extractData(res) {
-    return res.data || {};
+    // return res.data || res;
+    if(res.data){
+      return res.data
+    }
+    return res;
   }
 }

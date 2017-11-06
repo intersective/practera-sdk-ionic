@@ -119,14 +119,14 @@ export class LoginPage {
                     });
                   },
                   err => {
-                    this.logError(err);
+                    this.logError();
                   }
                 )
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             }, err => {
               loading.dismiss().then(() => {
-                this.logError(err);
+                this.logError();
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
@@ -173,10 +173,10 @@ export class LoginPage {
    * This function is used to log unexpected error accountered in the client side
    * @param {object} error result from API request
    */
-  logError(error) {
+  logError() {
     const alert = this.alertCtrl.create({
-      title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.',
+      title: 'Invalid Login',
+      message: 'Your login attempt has failed. Make sure the username and password are correct.',
       buttons: ['Close']
     });
     alert.present();
