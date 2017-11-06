@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CacheService } from '../cache/cache.service';
 
 // Pages
 import { EventsListPage } from '../../pages/events/list/list.page';
@@ -50,26 +51,30 @@ export class AppConfigService {
     }
   };
 
+  constructor (
+    private cacheService: CacheService
+  ) {}
+
   /**
-   * @description Get raw configure data from server
+   * @description Get full configure data
    */
-  get(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      resolve(this.appConfigContent);
-    });
+  get(): any {
+    return this.cacheService.getLocal('appConfig');
   }
 
   /**
    * @description Get only configure for tabs
    */
-  getTabs(): Promise<any> {
-    return this.get().then((data: any) => {
-      return _.sortBy(data.tabs, [(o) => o.order]);
-    }).then((data: any) => {
-      return _.map(data, (o) => {
-        o.root = this.pagesMap[o.name];
-        return o;
-      });
+  getTabs(): any {
+    let appConfig: any = this.cacheService.getLocal('appConfig');
+    if (!appConfig.tabs) {
+      return appConfig.tabs;
+    }
+
+    let modules = _.sortBy(appConfig.tabs, [(o) => o.order]);
+    return _.map(modules, (o) => {
+      o.root = this.pagesMap[o.name];
+      return o;
     });
   }
 }
