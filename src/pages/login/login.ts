@@ -90,10 +90,10 @@ export class LoginPage {
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
               self.cacheService.setLocal('apikey', data.apikey);
-              // saved for 3 types of timeline id in order for later use
               self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
+              self.cacheService.setLocal('appConfig', data.Experience.config || {});
               // get game_id data after login
               this.gameService.getGames()
                   .subscribe(data => {

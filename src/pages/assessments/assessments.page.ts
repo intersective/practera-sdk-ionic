@@ -510,9 +510,11 @@ export class AssessmentsPage {
                 }
               }
             });
+
             _.forEach(this.totalItems, (element, index) => {
               element.id = parseInt(element.id);
             });
+
             this.allItemsData = _.intersectionBy(this.newItemsData, this.totalItems, 'id');
             // get the final object with item occurance count value
             let groupData = _.groupBy(this.totalItems, 'id');
@@ -525,7 +527,7 @@ export class AssessmentsPage {
               loading.dismiss();
             } else {
               _.map(this.allItemsData, (ele) => {
-                this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele))
+                this.combinedItems.push(_.extend({count: groupData[ele.id] || []}, ele));
               });
               // display items on dashboard page
               this.gotNewItems = true;
