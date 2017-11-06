@@ -7,6 +7,7 @@ import { CacheComponent } from '../shared/cache/cache.component';
 // service file
 import { AuthService } from './auth.service';
 import { CacheService } from '../shared/cache/cache.service';
+import { RequestModule } from '../shared/request/request.module';
 import { RequestService } from '../shared/request/request.service';
 
 describe('AuthService', () => {
@@ -19,10 +20,14 @@ describe('AuthService', () => {
         CacheComponent
       ],
       imports: [
-        HttpClientTestingModule, 
+        HttpClientTestingModule,
         IonicStorageModule.forRoot({
-          name: '__app-vault',
+          name: '__test-app-vault',
           driverOrder: ['localstorage']
+        }),
+        RequestModule.forRoot({
+          appKey: '',
+          prefixUrl: ''
         })
       ],
       providers: [
@@ -35,18 +40,19 @@ describe('AuthService', () => {
     service = injector.get(AuthService);
     httpMock = injector.get(HttpTestingController);
   });
+
   describe('getUser()' , () => {
     it('return user data', () => {
       const fakeData = {
-        email: "damon3@test.com",
+        email: 'damon3@test.com',
         experience_id: 3,
         image: null,
         linkedinConnected: false,
         linkedin_url: null,
-        name: "damon3",
+        name: 'damon3',
         program_id: 6,
         project_id: 6,
-        role: "participant",
+        role: 'participant',
         timeline_id: 7
       };
       service.getUser().subscribe(data => {
@@ -68,13 +74,52 @@ describe('AuthService', () => {
   });
   describe('loginAuth()' , () => {
     it('login successfully', () => {
+      const expectedLoggedInData = {
+        success: true,
+        tutorial: true,
+        apikey: '7xxxxxxxa3fdxxxx9330a6',
+        Timelines: [
+          {
+            Timeline: {
+              id: 5,
+              title: 'Phase 1 2016S2',
+              start_date: '2016-10-23',
+              state: 1
+            },
+            Program: {
+              id: 4,
+              name: 'Job Smart Phase 1',
+              max_achievable_points: 500
+            },
+            Project: {
+              id: 7,
+              name: 'Job Smart Phase 1',
+              description: 'This is jobsmart project',
+              lead_image: null,
+              emails: ''
+            },
+            Enrolment: {
+              id: 3559,
+              status: 'fullaccess'
+            }
+          }
+        ],
+        Teams: [
+          {
+            id: 1,
+            name: 'Team 1'
+          }
+        ],
+        Experience: {
+          config: {}
+        }
+      };
+      let actualLoggedInData = {};
       service.loginAuth('damon3@test.com', '123123123').subscribe(data => {
-        expect(data).toBeFalsy();
+        actualLoggedInData = data;
       });
-      httpMock.expectOne('authentication').flush(null, { 
-        status: 200, statusText: 'Ok' 
-      });
+      httpMock.expectOne('api/auths.json?action=authentication').flush(expectedLoggedInData);
+      expect(actualLoggedInData).toEqual(expectedLoggedInData);
     })
   });
 })
-
