@@ -24,7 +24,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
       <ion-card *ngIf="activityData.video_url">
         <ion-card-content>
           <video controls width="100%" height="100%">
-            <source src='{{resourceUrl}}' autostart="false">
+            <source [src]='resourceUrl' autostart="false">
           </video>
         </ion-card-content>
       </ion-card>
