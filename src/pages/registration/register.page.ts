@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
@@ -105,7 +105,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
     });
     if (!decodeURIComponent(this.navParams.get('email')) || !this.navParams.get('key')) {
       this.displayError();
-    } 
+    }
     else {
       loading.present().then(() => {
         let email = decodeURIComponent(this.navParams.get('email')),
@@ -113,22 +113,25 @@ export class RegisterPage implements OnInit { // this part of registration is fo
         this.user = {
           email: email,
           key: key
-        }
-        this.authService.verifyRegistration(this.user)
-          .subscribe(
-            res => {
-              loading.dismiss().then(() => {
-                this.cacheService.setLocal('user.email', email);
-                this.cacheService.setLocal('user.registration_key', key);
-                this.cacheService.setLocal('user.id', res.User.id);
-              });
-            }, 
-            err => {
-              loading.dismiss().then(() => {
-                this.displayError(err.msg);
-              });
-            }
-          );
+        };
+        this.authService.verifyRegistration(this.user).subscribe(
+          res => {
+            loading.dismiss().then(() => {
+              this.cacheService.setLocal('user.email', email);
+              this.cacheService.setLocal('user.registration_key', key);
+              this.cacheService.setLocal('user.id', res.data.User.id);
+              this.user = {
+                email: email,
+                key: key
+              };
+            });
+          },
+          err => {
+            loading.dismiss().then(() => {
+              this.displayError(err.msg);
+            });
+          }
+        );
       });
     }
   }
@@ -184,6 +187,8 @@ export class RegisterPage implements OnInit { // this part of registration is fo
           password: this.regForm.get('password').value
         }).subscribe(regRespond => {
           //@TODO: set user data
+          regRespond = regRespond.data;
+          console.log(regRespond);
           this.cacheService.setLocal('apikey', regRespond.apikey);
           this.cacheService.setLocal('timelineID', regRespond.Timeline.id);
           this.cacheService.setLocal('gotNewItems', false);
@@ -198,28 +203,10 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                     .subscribe(
                       results => {
                         loading.dismiss().then(() => {
-                          // results[0] game API data
-                          this.gameID = results[0].Games[0].id;
-                          if(this.gameID){
-                            this.cacheService.setLocal('game_id', this.gameID);
-                          }
-                          // results[1] user API data
-                          this.userData = results[1];
-                          if(this.userData){
-                            this.cacheService.setLocal('name', results[1].User.name);
-                            this.cacheService.setLocal('email', results[1].User.email);
-                            this.cacheService.setLocal('program_id', results[1].User.program_id);
-                            this.cacheService.setLocal('project_id', results[1].User.project_id);
-                            this.cacheService.setLocal('user', results[1].User);
-                          }
-                          // results[2] milestone API data
-                          this.milestone_id = results[2][0].id;
-                          if(this.milestone_id){
-                            this.cacheService.setLocal('milestone_id', this.milestone_id);
-                          }
-                          this.navCtrl.setRoot(TabsPage).then(() => {
-                            this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                            window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                          this.milestone_id = data[0].id;
+                          self.cacheService.setLocal('milestone_id', data[0].id);
+                          self.navCtrl.push(TabsPage).then(() => {
+                            window.history.replaceState({}, '', window.location.origin);
                           });
                         });
                       },
@@ -241,7 +228,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   logError(error){
     const alert = this.alertCtrl.create({
       title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.', 
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alert.present();

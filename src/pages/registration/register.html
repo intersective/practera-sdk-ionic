@@ -2,7 +2,7 @@
   <ion-grid class="default-center-container">
     <ion-row>
       <ion-col col-12>
-        <img class="default-logo" src="./assets/img/default/practera.png" alt="Logo"/>
+        <img class="default-logo" src="/assets/img/default/practera.png" alt="Logo"/>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -10,18 +10,18 @@
           <form [formGroup]="regForm" (ngSubmit)="onSubmit(regForm)" class="general-form" [formGroup]="regForm">
             <ion-list>
               <ion-item no-lines>
-                <ion-input type="password" 
-                  [(ngModel)]="password" 
-                  placeholder="New Password" 
+                <ion-input type="password"
+                  [(ngModel)]="password"
+                  placeholder="New Password"
                   formControlName="password">
                 </ion-input>
               </ion-item>
               <ion-item no-lines>
-                <ion-input (keyup)="verifyPwdKeyUp()" 
-                  type="password" 
-                  name="verify_password" 
-                  [(ngModel)]="verify_password" 
-                  placeholder="Confirm password" 
+                <ion-input (keyup)="verifyPwdKeyUp()"
+                  type="password"
+                  name="verify_password"
+                  [(ngModel)]="verify_password"
+                  placeholder="Confirm password"
                   formControlName="verify_password">
                 </ion-input>
               </ion-item>

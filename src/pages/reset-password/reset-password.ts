@@ -6,7 +6,7 @@ import { AlertController,
          NavParams,
          ViewController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 // directives
@@ -133,35 +133,47 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocal('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              let getGame = this.gameService.getGames();
-              let getUser = this.authService.getUser();
-              let getMilestone = this.milestoneService.getMilestones();
-              Observable.forkJoin([getGame, getUser, getMilestone])
-                .subscribe(
-                  results => {
-                    loading.dismiss().then(() => {
-                      // results[0] game API data
-                      this.gameID = results[0].Games[0].id;
-                      if(this.gameID){
-                        this.cacheService.setLocal('game_id', this.gameID);
-                      }
-                      // results[1] user API data
-                      this.userData = results[1];
-                      if(this.userData){
-                        this.cacheService.setLocal('name', results[1].User.name);
-                        this.cacheService.setLocal('email', results[1].User.email);
-                        this.cacheService.setLocal('program_id', results[1].User.program_id);
-                        this.cacheService.setLocal('project_id', results[1].User.project_id);
-                        this.cacheService.setLocal('user', results[1].User);
-                      }
-                      // results[2] milestone API data
-                      this.milestone_id = results[2][0].id;
-                      if(this.milestone_id){
-                        this.cacheService.setLocal('milestone_id', this.milestone_id);
-                      }
-                      this.navCtrl.setRoot(TabsPage).then(() => {
-                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
+              // get game_id data after login
+              this.gameService.getGames()
+                  .subscribe(
+                    data => {
+                      console.log("game data: ", data);
+                      _.map(data, (element) => {
+                        console.log("game id: ", element[0].id);
+                        this.cacheService.setLocal('game_id', element[0].id);
+                      });
+                    },
+                    err => {
+                      console.log("game err: ", err);
+                    }
+                  );
+              // get milestone data after login
+              this.authService.getUser()
+                  .subscribe(
+                    data => {
+                      this.cacheService.setLocal('name', data.User.name);
+                      this.cacheService.setLocal('email', data.User.email);
+                      this.cacheService.setLocal('program_id', data.User.program_id);
+                      this.cacheService.setLocal('project_id', data.User.project_id);
+                    },
+                    err => {
+                      console.log(err);
+                    }
+                  );
+              // get milestone data after login
+              this.milestoneService.getMilestones()
+                  .subscribe(
+                    data => {
+                      loading.dismiss().then(() => {
+                        console.log(data[0].id);
+                        this.milestone_id = data[0].id;
+                        this.cacheService.setLocal('milestone_id', data[0].id);
+                        console.log("milestone id: " + data[0].id);
+                        loading.dismiss();
+                        this.navCtrl.push(TabsPage).then(() => {
+                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                          window.history.replaceState({}, '', window.location.origin);
+                        });
                       });
                     });
                   },
@@ -185,13 +197,13 @@ export class ResetPasswordPage implements OnInit {
           this.logError(err);
         });
       });
-    });
   }
+
   // after password set, auto login error alertbox
   logError(error) {
     const alertLogin = this.alertCtrl.create({
       title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.', 
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alertLogin.present();
