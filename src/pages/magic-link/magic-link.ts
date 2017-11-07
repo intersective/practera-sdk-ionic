@@ -1,40 +1,41 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-
+import { AlertController, NavController, NavParams, LoadingController, ViewController } from 'ionic-angular';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 // pages
-import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+import { TabsPage } from '../tabs/tabs.page';
 // Others
 import { loadingMessages, errMessages } from '../../app/messages';
+import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-
 @Component({
   selector: 'page-magic-link',
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  auth_token: string;
-  loginLoadingMessage: any = loadingMessages.Login.login;
-  milestone_id: string;
-  misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
-  verifySuccess = null;
-
+  public auth_token: string = null;
+  public gameID: string = null;
+  public loginLoadingMessage: any = loadingMessages.Login.login;
+  public milestone_id: string = null;
+  public misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  public userData: any = [];
+  public verifySuccess = null;
   constructor(
     public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
     public authService: AuthService,
     public cacheService: CacheService,
     public gameService: GameService,
-    public loadingCtrl: LoadingController,
-    public milestoneService: MilestoneService,
-    public navCtrl: NavController,
-    public navParams: NavParams
-  ) {}
-
+    public milestoneService: MilestoneService) {
+      this.cacheService.setLocal('gotNewItems', false);
+    }
   ionViewDidLoad() {
     this.auth_token = this.navParams.get('auth_token');
   }

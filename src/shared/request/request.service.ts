@@ -172,6 +172,6 @@ export class RequestService {
   }
 
   extractData(res) {
-    return res.data || {};
+    return res.data || res;
   }
 }
