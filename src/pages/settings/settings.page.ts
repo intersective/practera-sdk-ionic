@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { App, NavController, MenuController, LoadingController, AlertController } from 'ionic-angular';
-
 // services
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 // pages
 import { LoginPage } from '../../pages/login/login';
 import { TutorialPage } from '../settings/tutorial/tutorial.page';
-import { TermConditionPage } from '../term-condition/term-condition.page';
+import { TermsConditionsPage } from '../registration/terms-conditions/terms-conditions.page';
 // Others
 import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages } from '../../app/messages';
@@ -21,7 +20,6 @@ export class SettingsPage {
   hideName: boolean = false;
   logoutMessage: any = loadingMessages.Logout.logout;
   settings: any = [];
-
   constructor(
     public appCtrl: App,
     public alertCtrl: AlertController,
@@ -109,7 +107,7 @@ export class SettingsPage {
   }
 
   goToTermConditions() {
-    this.navCtrl.push(TermConditionPage);
+    this.navCtrl.push(TermsConditionsPage);
   }
 
   logout() {
@@ -122,7 +120,7 @@ export class SettingsPage {
         localStorage.clear();
         window.location.reload(); // the reason of doing this is because of we need to refresh page content instead of API data cache issue occurs
         loader.dismiss();
-        this.navCtrl.push(LoginPage);
+        this.navCtrl.setRoot(LoginPage);
       });
     });
   }

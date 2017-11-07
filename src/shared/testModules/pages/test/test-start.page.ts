@@ -10,7 +10,7 @@ import { EventsDownloadPage } from '../../../../pages/events/download/events-dow
 import { GalleryPage } from '../../../../pages/gallery/gallery.page';
 import { LevelsListPage } from '../../../../pages/levels/list/list';
 import { LoginPage } from '../../../../pages/login/login';
-import { RegistrationPage } from '../../../../pages/registration/registration.page';
+import { RegisterPage } from '../../../../pages/registration/register.page';
 import { SettingsPage } from '../../../../pages/settings/settings.page';
 import { EventCheckinPage } from '../../../../pages/events/checkin/event-checkin.page';
 import { TeamPage } from '../../../../pages/team/team.page';
@@ -972,7 +972,7 @@ const PAGES = [
   },
   {
     name: 'Registration',
-    page: RegistrationPage
+    page: RegisterPage    
   },
   {
     name: 'Gallery',

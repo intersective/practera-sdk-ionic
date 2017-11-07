@@ -1,60 +1,59 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController,
-         NavParams,
+import { AlertController,
          LoadingController,
-         AlertController,
          ModalController,
+         NavController,
+         NavParams,
          ViewController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-
-import * as _ from 'lodash';
-import { TranslationService } from '../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../app/messages';
-// services
-import { AuthService } from '../../services/auth.service';
-import { MilestoneService } from '../../services/milestone.service';
-import { CacheService } from '../../shared/cache/cache.service';
-import { GameService } from '../../services/game.service';
-import { RequestServiceConfig } from '../../shared/request/request.service';
+import { Observable } from 'rxjs/Observable';
+import { TranslationService } from '../../shared/translation/translation.service';
+import * as _ from 'lodash';
 // directives
-import {FormValidator} from '../../shared/validators/formValidator';
+import { FormValidator } from '../../shared/validators/formValidator';
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+// services
+import { AuthService } from '../../services/auth.service';
+import { CacheService } from '../../shared/cache/cache.service';
+import { GameService } from '../../services/game.service';
+import { MilestoneService } from '../../services/milestone.service';
+import { RequestServiceConfig } from '../../shared/request/request.service';
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  email: string;
-  password: any;
-  userName: string;
-  userImage: string;
-  API_KEY: string;
-  milestone_id: string;
-  loginFormGroup: any;
+  API_KEY: string = null;
+  email: string = null;
+  gameID: string = null;
   forgetpasswordPage = ForgetPasswordPage;
-  loginLoadingMessages: any = loadingMessages.Login.login;
   invalidLoginMessage: any = errMessages.Login.login;
-
+  loginFormGroup: any;
+  loginLoadingMessages: any = loadingMessages.Login.login;
+  milestone_id: string = null;
+  password: any = null;
+  userData: any = [];
+  userName: string = null;
+  userImage: string = null;
   constructor(
-    public navCtrl: NavController,
-    public navParams: NavParams,
-    public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController,
-    public modalCtrl: ModalController,
-    public viewCtrl: ViewController,
-    public authService: AuthService,
-    public gameService: GameService,
-    public translationService: TranslationService,
     public config: RequestServiceConfig,
     public formBuilder: FormBuilder,
+    public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public modalCtrl: ModalController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
+    public authService: AuthService,
+    public cacheService: CacheService,
+    public gameService: GameService,
     public milestoneService: MilestoneService,
-    public cacheService: CacheService
-  ) {
+    public translationService: TranslationService) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
       email: ['', [FormValidator.isValidEmail,
@@ -64,14 +63,9 @@ export class LoginPage {
   }
 
   ionViewCanLeave(): boolean {
-    // user is authorized
-    console.log('authorized');
+    // to check whether user is authorized
     let authorized = true;
-    if (authorized){
-      return true;
-    } else {
-      return false;
-    }
+    return authorized ? true : false;
   }
 
   /**
@@ -179,7 +173,6 @@ export class LoginPage {
     cacheProcesses.push(this.cacheService.write('teams', data.Teams));
     this.cacheService.setLocal('apikey', data.apikey);
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);
-    console.log("cache data: " + cacheProcesses);
     return Observable.from(cacheProcesses);
   }
 
@@ -195,7 +188,6 @@ export class LoginPage {
     this.cacheService.write('userData', userData);
     this.cacheService.setLocal('userData', userData);
     this.API_KEY = user.data.apikey;
-    // console.log("Timeline ID: " + user.data.Timelines[0].Timeline.id);
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
   }
@@ -208,8 +200,8 @@ export class LoginPage {
    */
   logError(error) {
     const alert = this.alertCtrl.create({
-      title: 'Login Failed ..',
-      message: this.invalidLoginMessage,
+      title: 'Error Message',
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alert.present();
@@ -220,7 +212,6 @@ export class LoginPage {
    * forget password page link function
    */
   linkToForgetPassword() {
-    this.navCtrl.push(this.forgetpasswordPage);
-    this.viewCtrl.dismiss();
+    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window
   }
 }
