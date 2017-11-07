@@ -185,8 +185,8 @@ export class ResetPasswordPage implements OnInit {
           this.logError(err);
         });
       });
-    });
   }
+
   // after password set, auto login error alertbox
   logError(error) {
     const alertLogin = this.alertCtrl.create({

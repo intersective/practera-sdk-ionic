@@ -154,7 +154,6 @@ export class RequestService {
   }
   // Extract response data and convert it to JSON
   extractData(res) {
-    let body = res.data;
-    return body || {};
+    return res.data || res;
   }
 }

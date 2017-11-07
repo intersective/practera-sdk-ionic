@@ -2,7 +2,6 @@ import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
 // Others
 import { RequestService } from '../shared/request/request.service';
-
 const AUTH_ENDPOINT = 'api/auths.json?action=';
 @Injectable()
 export class AuthService {
