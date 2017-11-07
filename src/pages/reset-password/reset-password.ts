@@ -95,21 +95,23 @@ export class ResetPasswordPage implements OnInit {
     const loading = this.loadingCtrl.create({
       content: this.verifyUserMessage
     });
-    loading.present();
-    this.authService.verifyUserKeyEmail(key, email)
+    loading.present().then(() => {
+      this.authService.verifyUserKeyEmail(key, email)
       .subscribe(data => {
         loading.dismiss();
         this.verifySuccess = true;
       },
       err => {
-        loading.dismiss();
-        this.verifySuccess = false;
-        setTimeout(() => {
-          this.navCtrl.setRoot(LoginPage).then(() => {
-              window.history.replaceState({}, '', window.location.origin);
-            });
-        }, 30000);
+        loading.dismiss().then(() => {
+          this.verifySuccess = false;
+          setTimeout(() => {
+            this.navCtrl.setRoot(LoginPage).then(() => {
+                window.history.replaceState({}, '', window.location.origin);
+              });
+          }, 30000);
+        });
       });
+    });
   }
   /**
    * to update password in db
@@ -185,6 +187,7 @@ export class ResetPasswordPage implements OnInit {
           this.logError(err);
         });
       });
+    });
   }
 
   // after password set, auto login error alertbox
