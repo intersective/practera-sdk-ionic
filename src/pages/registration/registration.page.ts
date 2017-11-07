@@ -89,12 +89,12 @@ export class RegistrationPage implements OnInit {
   }
 
   ionViewDidEnter(): void {
-    this.authService.getTerms().subscribe(res => {
-      console.log("terms data: ", res);
-      this.term = res.terms_description;
-      this.content = this.sanitizer.bypassSecurityTrustResourceUrl(this.prefixUrl + res.terms_url);
-    });
-    this.params.get('test');
+    // this.authService.getTerms().subscribe(res => {
+    //   console.log("terms data: ", res);
+    //   this.term = res.terms_description;
+    //   this.content = this.sanitizer.bypassSecurityTrustResourceUrl(this.prefixUrl + res.terms_url);
+    // });
+    // this.params.get('test');
   }
 
   ionViewDidLoad(): void {

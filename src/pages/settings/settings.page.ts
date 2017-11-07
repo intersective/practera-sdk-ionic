@@ -20,6 +20,7 @@ export class SettingsPage {
   hideName: boolean = false;
   logoutMessage: any = loadingMessages.Logout.logout;
   settings: any = [];
+  isLock: boolean = false;
   constructor(
     public appCtrl: App,
     public alertCtrl: AlertController,
@@ -62,40 +63,46 @@ export class SettingsPage {
   }
 
   triggerHideName() {
-    const showAlert = (msg) => {
-      let alert = this.alertCtrl.create({
-        subTitle: msg,
-        buttons: ['OK']
+    if (this.isLock) {
+      this.isLock = false;
+    } else {
+      const showAlert = (msg) => {
+        let alert = this.alertCtrl.create({
+          subTitle: msg,
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+
+      const loader = this.loadingCtrl.create({
+        content: 'Updating'
       });
-      alert.present();
-    }
 
-    const loader = this.loadingCtrl.create({
-      content: 'Updating'
-    });
-
-    loader.present().then(() => {
-      this.gameService.postCharacter({
-        Character: {
-          id: this.cacheService.getLocal('character_id'),
-          meta: {
-            private: (this.hideName) ? 1 : 0
+      loader.present().then(() => {
+        this.isLock = true;
+        this.gameService.postCharacter({
+          Character: {
+            id: this.cacheService.getLocal('character_id'),
+            meta: {
+              private: (this.hideName) ? 1 : 0
+            }
           }
-        }
-      })
-      .subscribe((result) => {
-        loader.dismiss();
-        let msg = 'You name will now be hidden if in the ranking';
-        if (!this.hideName) {
-          msg = 'Your name will now be displayed if in the ranking';
-        }
-        showAlert(msg);
-      }, (err) => {
-        this.hideName = !this.hideName;
-        showAlert('Unabled to change your privacy setting.');
-        loader.dismiss();
+        })
+        .subscribe((result) => {
+          this.isLock = false;
+          loader.dismiss();
+          let msg = 'You name will now be hidden if in the ranking';
+          if (!this.hideName) {
+            msg = 'Your name will now be displayed if in the ranking';
+          }
+          showAlert(msg);
+        }, (err) => {
+          this.hideName = !this.hideName;
+          showAlert('Unabled to change your privacy setting.');
+          loader.dismiss();
+        });
       });
-    });
+    }
   }
 
   getUserEmail() {

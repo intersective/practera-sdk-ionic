@@ -79,7 +79,7 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
 import { TabsPage } from '../pages/tabs/tabs.page';
-import { TeamPage } from '../pages/team/team';
+import { TeamPage } from '../pages/team/team.page';
 import { TermsConditionsPage } from '../pages/registration/terms-conditions/terms-conditions.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
