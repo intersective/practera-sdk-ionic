@@ -42,12 +42,12 @@ describe('AuthService', () => {
   describe('getUser()' , () => {
     it('return user data', () => {
       const fakeData = {
-        email: 'damon3@test.com',
+        email: 'test@test.com',
         experience_id: 3,
         image: null,
         linkedinConnected: false,
         linkedin_url: null,
-        name: 'damon3',
+        name: 'test',
         program_id: 6,
         project_id: 6,
         role: 'participant',
@@ -74,19 +74,19 @@ describe('AuthService', () => {
           {
             Timeline: {
               id: 5,
-              title: 'Phase 1 2016S2',
+              title: 'test 1 2016S2',
               start_date: '2016-10-23',
               state: 1
             },
             Program: {
               id: 4,
-              name: 'Job Smart Phase 1',
+              name: 'test 1',
               max_achievable_points: 500
             },
             Project: {
               id: 7,
-              name: 'Job Smart Phase 1',
-              description: 'This is jobsmart project',
+              name: 'test 1',
+              description: 'This is test project',
               lead_image: null,
               emails: ''
             },
@@ -106,8 +106,12 @@ describe('AuthService', () => {
           config: {}
         }
       };
+      const userData = {
+        email: 'test@test.com',
+        password: 'w467r32a3yg3fy4#dfghjsdfsd'
+      }
       let actualLoggedInData = {};
-      service.loginAuth('damon3@test.com', '123123123').subscribe(data => {
+      service.loginAuth(userData.email, userData.password).subscribe(data => {
         actualLoggedInData = data;
       });
       httpMock.expectOne('api/auths.json?action=authentication').flush(expectedLoggedInData);
