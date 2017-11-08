@@ -1,10 +1,9 @@
 import { Component, ViewChild, ViewChildren } from '@angular/core';
 import { NavController } from 'ionic-angular';
-
 // pages
 import { AchievementsViewPage } from '../../../../pages/achievements/view/achievements-view.page';
 import { AssessmentsGroupPage } from '../../../../pages/assessments/group/assessments-group.page';
-import { ActivitiesClassicListPage } from '../../../../pages/activities-classic/list/activities-classic-list.page';
+import { ActivitiesListPage } from '../../../../pages/activities/list/list.page';
 import { EventsListPage } from '../../../../pages/events/list/list.page';
 import { EventsDownloadPage } from '../../../../pages/events/download/events-download.page';
 import { GalleryPage } from '../../../../pages/gallery/gallery';
@@ -989,7 +988,7 @@ const PAGES = [
   },
   {
     name: 'Activities',
-    page: ActivitiesClassicListPage
+    page: ActivitiesListPage
   },
   {
     name: 'Levels',
@@ -1015,17 +1014,10 @@ const PAGES = [
 })
 export class TestStartPage {
   items: Array<any> = PAGES;
-
   testPage;
-
-  constructor(public nav: NavController) {
-    // console.log('ActivitiesClassicListPage', ActivitiesClassicListPage)
-    // console.log('??', ActivitiesClassicListPage);
-  }
-
+  constructor(public nav: NavController) {}
   goTo(nav) {
     this.testPage = nav.page;
-
     this.nav.push(nav.page, nav.params || null);
   }
 }
