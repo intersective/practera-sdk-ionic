@@ -24,33 +24,6 @@ export class AppConfigService {
     team: TeamPage
   }
 
-  // JSON format sent back from server
-  appConfigContent: any = {
-    app: {
-      name: 'ISDK'
-    },
-    tabs: {
-      events: {
-        name: 'events',
-        title: 'Events',
-        icon: 'md-calendar',
-        order: 1
-      },
-      rankings: {
-        name: 'rankings',
-        title: 'Rankings',
-        icon: 'md-medal',
-        order: 2
-      },
-      settings: {
-        name: 'settings',
-        title: 'Settings',
-        icon: 'md-person',
-        order: 3
-      }
-    }
-  };
-
   constructor (
     private cacheService: CacheService
   ) {}
