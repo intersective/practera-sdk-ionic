@@ -11,22 +11,26 @@ import { loadingMessages, errMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../shared/translation/translation.service';
 import * as _ from 'lodash';
+
 // directives
 import { FormValidator } from '../../shared/validators/formValidator';
+
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+
 // services
+import { AppService } from '../../services/app.service';
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { GameService } from '../../services/game.service';
-import { MilestoneService } from '../../services/milestone.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
+
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
+
 export class LoginPage {
   public API_KEY: string = null;
   public email: string = null;
@@ -49,10 +53,9 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public appService: AppService,
     public authService: AuthService,
     public cacheService: CacheService,
-    public gameService: GameService,
-    public milestoneService: MilestoneService,
     public translationService: TranslationService) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -61,11 +64,13 @@ export class LoginPage {
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
   ionViewCanLeave(): boolean {
     // to check whether user is authorized
     let authorized = true;
     return authorized ? true : false;
   }
+
   /**
    * user login function to authenticate user with email and password
    */
@@ -86,10 +91,7 @@ export class LoginPage {
               self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
-              let getGame = this.gameService.getGames();
-              let getUser = this.authService.getUser();
-              let getMilestone = this.milestoneService.getMilestones();
-              Observable.forkJoin([getGame, getUser, getMilestone])
+              this.appService.getCharacter()
                 .subscribe(
                   results => {
                     loading.dismiss().then(() => {
@@ -122,18 +124,20 @@ export class LoginPage {
                     this.logError();
                   }
                 )
-              this.cacheService.write('isAuthenticated', true);
-              this.cacheService.setLocal('isAuthenticated', true);
-            }, err => {
-              loading.dismiss().then(() => {
-                this.logError();
-                this.cacheService.removeLocal('isAuthenticated');
-                this.cacheService.write('isAuthenticated', false);
-              });
-            });
+                this.cacheService.write('isAuthenticated', true);
+                this.cacheService.setLocal('isAuthenticated', true);
+              }, err => {
+                loading.dismiss().then(() => {
+                  this.logError();
+                  this.cacheService.removeLocal('isAuthenticated');
+                  this.cacheService.write('isAuthenticated', false);
+                });
+              }
+            );
       });
     });
   }
+
   /**
    * Insert post_auth() api result into localStorage
    * @param {object} data result from API request
@@ -152,6 +156,7 @@ export class LoginPage {
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   /**
    * Insert get_user() api result into localStorage
    * @param {object} user result from API request
@@ -167,6 +172,7 @@ export class LoginPage {
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
   }
+
   /**
    * @TODO we'll come back to this logging workflow later in this development
    *
@@ -182,6 +188,7 @@ export class LoginPage {
     alert.present();
     // handle API calling errors display with alert controller
   }
+
   /**
    * forget password page link function
    */

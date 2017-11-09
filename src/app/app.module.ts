@@ -20,6 +20,7 @@ import { WindowRef } from '../shared/window';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
+import { AppService } from '../services/app.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
 import { EventService } from '../services/event.service';
@@ -249,6 +250,7 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
+    { provide: AppService, useClass: AppService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },

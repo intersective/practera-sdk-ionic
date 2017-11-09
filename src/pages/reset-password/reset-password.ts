@@ -9,74 +9,78 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { loadingMessages, errMessages } from '../../app/messages'; 
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+
 // directives
 import { FormValidator } from '../../shared/validators/formValidator';
+
 // pages
 import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
 import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
+
 // services
+import { AppService } from '../../services/app.service';
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { GameService } from '../../services/game.service';
-import { MilestoneService } from '../../services/milestone.service';
 import { ResponsiveService } from '../../services/responsive.service';
 import { TranslationService } from '../../shared/translation/translation.service';
+
 @Component({
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
 })
+
 export class ResetPasswordPage implements OnInit {
-  public emailVal: string;
-  public gameID: string = null;
-  public isLandscaped: boolean = false;
-  public isPwdMatch: boolean = false;
-  public keyVal: string;
-  public minLengthCheck: boolean = true;
-  public milestone_id: string;
-  public password: string;
-  public resetPwdFormGroup: any;
-  public userData: any = [];
-  public verify_password: string;
-  public verifyPwd: boolean = false;
-  public verifySuccess: boolean = null;
+  emailVal: string;
+  gameID: string = null;
+  isLandscaped: boolean = false;
+  isPwdMatch: boolean = false;
+  keyVal: string;
+  minLengthCheck: boolean = true;
+  milestone_id: string;
+  password: string;
+  resetPwdFormGroup: any;
+  userData: any = [];
+  verify_password: string;
+  verifyPwd: boolean = false;
+  verifySuccess: boolean = null;
   // loading & error message variables
-  public invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
-  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
-  public resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
-  public successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
-  public verifyUserMessage = loadingMessages.VerifyUser.verify;
+  invalidLinkErrMessage: any = null;
+  passwordMismatchMessage: any = null;
+  passwordMinlengthMessage: any = null;
+  resetPasswordLoginFailedMessage: any = null;
+  successResetPasswordMessage: any = null;
+  verifyUserMessage: any = null;
+
   constructor(public formBuilder: FormBuilder,
     public alertCtrl: AlertController,
     public loadingCtrl: LoadingController,
-    public milestoneService: MilestoneService,
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public appService: AppService,
     public authService: AuthService,
     public cacheService: CacheService,
-    public gameService: GameService,
     public translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
           password: ['', [Validators.minLength(8), Validators.required]],
           verify_password: ['', [Validators.minLength(8), Validators.required]],
-      })
+      });
+      this.invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+      this.passwordMismatchMessage = errMessages.PasswordValidation.mismatch.mismatch;
+      this.passwordMinlengthMessage = errMessages.PasswordValidation.minlength.minlength;
+      this.resetPasswordLoginFailedMessage = errMessages.ResetPassword.resetLoginFailed.failed;
+      this.successResetPasswordMessage = loadingMessages.SuccessResetPassword.successResetPassword;
+      this.verifyUserMessage = loadingMessages.VerifyUser.verify;
     }
-  /**
-   * Detect user device type (mobile or desktop) on initial page load
-   * Purpose: Initially page loaded, this peice code will detect user screen
-              whether is mobile or desktop device (including iPad).
-   * @param {}
-   * @return A calculated ratio value plus screen innerWidth value to determine
-             user screen is mobile device or desktop device. If device is mobile
-             device, ngOnInit() will disable landscape mode for mobile device
-  */
+
   ngOnInit() {}
+
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
+
   /**
    * to verify user is whether typed or clicked the email link
    * Purpose: if user is typed the email link key and email, user is not allowed
@@ -113,6 +117,7 @@ export class ResetPasswordPage implements OnInit {
       });
     });
   }
+
   /**
    * to update password in db
    * Purpose: store new password for user
@@ -135,10 +140,7 @@ export class ResetPasswordPage implements OnInit {
               this.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               this.cacheService.setLocal('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              let getGame = this.gameService.getGames();
-              let getUser = this.authService.getUser();
-              let getMilestone = this.milestoneService.getMilestones();
-              Observable.forkJoin([getGame, getUser, getMilestone])
+              this.appService.getCharacter()
                 .subscribe(
                   results => {
                     loading.dismiss().then(() => {
@@ -199,17 +201,21 @@ export class ResetPasswordPage implements OnInit {
     });
     alertLogin.present();
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
   }
+
   // go to login page when verification is failed
   goToLogin() {
     this.navCtrl.setRoot(LoginPage).then(() => {

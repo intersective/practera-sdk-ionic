@@ -12,13 +12,14 @@ export class MilestoneService {
     public cacheService: CacheService,
     public request: RequestService
   ) {}
+  
   getList() {
     let timeline_id = this.cacheService.getLocal('timeline_id');
-
     return this.request.get('api/milestones.json', {
       search: { timeline_id }
     });
   }
+
   getMilestones(){
     return this.request.get('api/milestones.json');
   }
