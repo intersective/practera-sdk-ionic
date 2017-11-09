@@ -100,12 +100,9 @@ export class RegisterPage implements OnInit {
       if (err.frontendErrorCode === 'SERVER_ERROR') {
         throw 'API endpoint error';
       }
-      let message = this.registrationErrMessage + supportEmail;
+      let message = `${this.registrationErrMessage} ${supportEmail}`;
       if (err && err.data && err.data.msg) {
         switch (err.data.msg) {
-          case 'Invalid user':
-            message = this.invalidUserErrMessage + supportEmail;
-          break;
           case 'No password':
             message = this.noPasswordErrMessage;
           break;
@@ -113,7 +110,7 @@ export class RegisterPage implements OnInit {
             message = this.registeredErrMessage;
           break;
           default:
-            message = this.registrationErrMessage + supportEmail;
+            message = `${this.registrationErrMessage} ${supportEmail}`;
           break;
         }
       }
