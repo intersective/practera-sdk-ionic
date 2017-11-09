@@ -65,17 +65,7 @@ export class ResetPasswordPage implements OnInit {
       })
     }
 
-  /**
-   * Detect user device type (mobile or desktop) on initial page load
-   * Purpose: Initially page loaded, this peice code will detect user screen
-              whether is mobile or desktop device (including iPad).
-   * @param {}
-   * @return A calculated ratio value plus screen innerWidth value to determine
-             user screen is mobile device or desktop device. If device is mobile
-             device, ngOnInit() will disable landscape mode for mobile device
-  */
   ngOnInit() {}
-
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }

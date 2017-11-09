@@ -28,18 +28,18 @@ import { RequestServiceConfig } from '../../shared/request/request.service';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  API_KEY: string = null;
-  email: string = null;
-  gameID: string = null;
-  forgetpasswordPage = ForgetPasswordPage;
-  invalidLoginMessage: any = errMessages.Login.login;
-  loginFormGroup: any;
-  loginLoadingMessages: any = loadingMessages.Login.login;
-  milestone_id: string = null;
-  password: any = null;
-  userData: any = [];
-  userName: string = null;
-  userImage: string = null;
+  public API_KEY: string = null;
+  public email: string = null;
+  public gameID: string = null;
+  public forgetpasswordPage = ForgetPasswordPage;
+  public invalidLoginMessage: any = errMessages.Login.login;
+  public loginFormGroup: any;
+  public loginLoadingMessages: any = loadingMessages.Login.login;
+  public milestone_id: string = null;
+  public password: any = null;
+  public userData: any = [];
+  public userName: string = null;
+  public userImage: string = null;
   constructor(
     public config: RequestServiceConfig,
     public formBuilder: FormBuilder,

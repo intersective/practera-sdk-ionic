@@ -25,17 +25,17 @@ const supportEmail = generalVariableMessages.helpMail.email;
 })
 export class RegisterPage implements OnInit { // this part of registration is for setting password before login
   @ViewChild('registrationForm') registrationForm: NgForm;
-  agreed: boolean = false;
-  changeContent: boolean = false;
-  clickSuspended: boolean = false;
-  gameID: string = null;
-  isPwdMatch: boolean = false;
-  milestone_id: string = null;
-  minLengthCheck: boolean = true;
-  password: string = null;
-  regForm: any;
-  submitted: boolean = false;
-  userInput: any = {
+  public agreed: boolean = false;
+  public changeContent: boolean = false;
+  public clickSuspended: boolean = false;
+  public gameID: string = null;
+  public isPwdMatch: boolean = false;
+  public milestone_id: string = null;
+  public minLengthCheck: boolean = true;
+  public password: string = null;
+  public regForm: any;
+  public submitted: boolean = false;
+  public userInput: any = {
     password: '',
     verify_password: ''
   };
@@ -43,23 +43,23 @@ export class RegisterPage implements OnInit { // this part of registration is fo
     email: null,
     key: null
   };
-  pwdMacthBool: boolean = false;
-  userData: any = [];
-  verify_password: string;
-  verifyPwd: boolean = false;
-  verifySuccess: boolean = null;
+  public pwdMacthBool: boolean = false;
+  public userData: any = [];
+  public verify_password: string;
+  public verifyPwd: boolean = false;
+  public verifySuccess: boolean = null;
   // loading & error messages variables
-  invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
-  noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
-  termConditionsErrMessage: any = errMessages.Registration.acceptTermsConditions.accepted;
-  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
-  passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
-  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
-  registrationErrMessage: any = errMessages.Registration.error.error;
-  successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
-  termConditionsVerifyFailedErr = errMessages.TermConditions.verifyFailed.verifyfailed;
-  verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
+  public invalidUserErrMessage: any = errMessages.Registration.invalidUser.account;
+  public noPasswordErrMessage: any = errMessages.Registration.noPassword.password;
+  public termConditionsErrMessage: any = errMessages.Registration.acceptTermsConditions.accepted;
+  public passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
+  public passwordMismatchErrMessage: any = errMessages.Registration.mismatch.mismatch;
+  public passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
+  public registeredErrMessage: any = errMessages.Registration.alreadyRegistered.registered;
+  public registrationErrMessage: any = errMessages.Registration.error.error;
+  public successRegistrationLoading: any = loadingMessages.SuccessRegistration.successRegistration;
+  public termConditionsVerifyFailedErr = errMessages.TermConditions.verifyFailed.verifyfailed;
+  public verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
   constructor(
     @Inject(FormBuilder) fb: FormBuilder,
     public alertCtrl: AlertController,
@@ -134,8 +134,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
       });
     }
   }
-
-  displayAlert(message) {
+  public displayAlert(message) {
     return this.alertCtrl.create({
       title: 'Error',
       message: message,
@@ -253,7 +252,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
-  // check password mismacth issue
+  // set verify password value to true
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
