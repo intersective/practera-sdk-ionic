@@ -1,7 +1,6 @@
 <ion-header>
   <ion-navbar>
     <ion-title></ion-title>
-
     <ion-buttons end>
       <button ion-button (click)="clickSubmit()" class="btn-submit" *ngIf="allowSubmit">
         {{ 'GENERAL.SUBMIT' | translate }}
@@ -13,11 +12,10 @@
 
   <div *ngFor="let assessmentGroup of assessmentGroups">
     <div *ngFor="let assessment of assessmentGroup">
-
       <ion-card *ngIf="assessment.description || assessment.name" class="no-box-shadow">
         <ion-card-content>
-          <h2 class="text-center">{{ assessment.name }}</h2>
-          <div [innerHTML]="assessment.description"></div>
+          <h2 class="text-center assessment-title">{{ assessment.name }}</h2>
+          <p [innerHTML]="assessment.description" class="assessment-description"></p>
         </ion-card-content>
       </ion-card>
 

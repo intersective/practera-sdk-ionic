@@ -46,4 +46,7 @@ export class AuthService {
   isAuthenticated() {
     return true;
   }
+  getTerms() {
+    return this.request.get('api/registration_details.json');
+  }
 }

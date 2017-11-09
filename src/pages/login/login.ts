@@ -28,18 +28,17 @@ import { RequestServiceConfig } from '../../shared/request/request.service';
   templateUrl: 'login.html'
 })
 export class LoginPage {
-  public API_KEY: string = null;
-  public email: string = null;
-  public gameID: string = null;
-  public forgetpasswordPage = ForgetPasswordPage;
-  public invalidLoginMessage: any = errMessages.Login.login;
-  public loginFormGroup: any;
-  public loginLoadingMessages: any = loadingMessages.Login.login;
-  public milestone_id: string = null;
-  public password: any = null;
-  public userData: any = [];
-  public userName: string = null;
-  public userImage: string = null;
+  email: string;
+  password: any;
+  userName: string;
+  userImage: string;
+  API_KEY: string;
+  milestone_id: string;
+  loginFormGroup: any;
+  forgetpasswordPage = ForgetPasswordPage;
+  loginLoadingMessages: any = loadingMessages.Login.login;
+  invalidLoginMessage: any = errMessages.Login.login;
+
   constructor(
     public config: RequestServiceConfig,
     public formBuilder: FormBuilder,
@@ -61,11 +60,13 @@ export class LoginPage {
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
   ionViewCanLeave(): boolean {
     // to check whether user is authorized
     let authorized = true;
     return authorized ? true : false;
   }
+
   /**
    * user login function to authenticate user with email and password
    */
@@ -93,28 +94,32 @@ export class LoginPage {
                 .subscribe(
                   results => {
                     loading.dismiss().then(() => {
+                      let gameID = results[0].Games[0].id;
+                      let userData = results[1];
+                      let milestone_id = results[2][0].id;
+
                       // results[0] game API data
-                      this.gameID = results[0].Games[0].id;
-                      if(this.gameID){
-                        this.cacheService.setLocal('game_id', this.gameID);
+                      if (gameID) {
+                        this.cacheService.setLocal('game_id', gameID);
                       }
+
                       // results[1] user API data
-                      this.userData = results[1];
-                      if(this.userData){
+                      if (userData) {
                         this.cacheService.setLocal('name', results[1].User.name);
                         this.cacheService.setLocal('email', results[1].User.email);
                         this.cacheService.setLocal('program_id', results[1].User.program_id);
                         this.cacheService.setLocal('project_id', results[1].User.project_id);
                         this.cacheService.setLocal('user', results[1].User);
                       }
+
                       // results[2] milestone API data
-                      this.milestone_id = results[2][0].id;
                       if(this.milestone_id){
                         this.cacheService.setLocal('milestone_id', this.milestone_id);
                       }
+
                       this.navCtrl.setRoot(TabsPage).then(() => {
                         this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url
                       });
                     });
                   },
@@ -134,6 +139,7 @@ export class LoginPage {
       });
     });
   }
+
   /**
    * Insert post_auth() api result into localStorage
    * @param {object} data result from API request
@@ -152,6 +158,7 @@ export class LoginPage {
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   /**
    * Insert get_user() api result into localStorage
    * @param {object} user result from API request
@@ -167,6 +174,7 @@ export class LoginPage {
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
   }
+
   /**
    * @TODO we'll come back to this logging workflow later in this development
    *
@@ -182,10 +190,11 @@ export class LoginPage {
     alert.present();
     // handle API calling errors display with alert controller
   }
+
   /**
    * forget password page link function
    */
-  linkToForgetPassword() { 
-    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window 
+  linkToForgetPassword() {
+    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window
   }
 }
