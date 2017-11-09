@@ -174,7 +174,7 @@ export class ResetPasswordPage implements OnInit {
                         this.cacheService.setLocalObject('milestone_id', data.data[0].id);
                         console.log("milestone id: " + data.data[0].id);
                         loading.dismiss();
-                        this.navCtrl.push(TabsPage).then(() => {
+                        this.navCtrl.setRoot(TabsPage).then(() => {
                           this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
                           window.history.replaceState({}, '', window.location.origin);
                         });
