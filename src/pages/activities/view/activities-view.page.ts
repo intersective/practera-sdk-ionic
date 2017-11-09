@@ -21,7 +21,6 @@ export class ActivitiesViewPage {
   };
   activity: any = {};
   assessment: any = {};
-  assessments: any = {};
   loadings = {
     submissions: false
   };
@@ -51,7 +50,6 @@ export class ActivitiesViewPage {
   ionViewDidEnter(): void {
     // assessment
     this.activity = this.activityService.normaliseActivity(this.navParams.get('activity') || {});
-    this.assessments = this.activity.sequences || [];
     this.assessment = this.activity.assessment;
 
     // submission
@@ -64,6 +62,8 @@ export class ActivitiesViewPage {
             return this.submissionService.normalise(submission);
           });
           this.submissions = _.orderBy(this.submissions, 'created', 'desc'); // latest at top
+
+          this.submissions = this.setSubmissionStatusTitle(this.submissions);
         }
       });
 
@@ -128,7 +128,7 @@ export class ActivitiesViewPage {
   goAssessment(submission?, opts = { hasSubmission: false }) {
     if ((this.inProgressSubmission()).length > 0 && opts.hasSubmission === false) {
       let alert = this.alertCtrl.create({
-        title: 'You have a submission in progress.',
+        title: 'You already have started a new submission! Please tap on "In Progress" below to continue with it.',
         buttons: ["Ok"]
       });
       alert.present();
@@ -145,5 +145,69 @@ export class ActivitiesViewPage {
         assessment: this.assessment
       });
     }
+  }
+
+  /**
+   * @name setSubmissionStatusTitle
+   * @description refer to assessment status and inject proper UI displayable title for different submissions (in a assessments, multiple submission has no unique title, this function is added to help user identify different submission by title)
+   * @param {Array<object>} submissions submissions array objects
+   */
+  setSubmissionStatusTitle(submissions: Array<any>) {
+    let results: Array<{
+      name: string,
+      score: number,
+      published: boolean,
+      inprogress: boolean,
+      moderated_assessment: boolean
+    }>;
+
+    submissions = submissions.map((submission, index) => {
+      let result = {
+        name: '',
+        score: 0,
+        published: false,
+        inprogress: false,
+        moderated_assessment: false
+      };
+
+      if (submission.status == "published") {
+        result.published = true;
+
+        switch (submission.moderated_score) {
+          case "1":
+            result.score = 4;
+            result.name = "Outstanding";
+            break;
+          case "0.75":
+            result.score = 3;
+            result.name = "Commendable";
+            break;
+          case "0.5":
+            result.score = 2;
+            result.name = "Competent";
+            break;
+          case "0.25":
+            result.score = 1;
+            result.name = "Developing";
+            break;
+          case "0":
+            result.score = 0;
+            result.name = "Needs Improvement";
+        }
+      } else if(submission.status == "in progress") {
+        result.inprogress = true;
+      } else {
+        result.inprogress = false;
+      }
+
+      if (submission.assessment.assessment_type == "moderated") {
+        result.moderated_assessment = true;
+      }
+
+      submission.statusTitle = result;
+      return submission;
+    });
+
+    return submissions;
   }
 }

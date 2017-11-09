@@ -43,12 +43,13 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.0.0",
+    "@ionic/app-scripts": "^3.0.1",
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.13",
     "angular2-template-loader": "^0.6.2",
     "connect": "^3.6.0",
     "del": "2.2.0",
+    "html-loader": "^0.4.5",
     "jasmine": "^2.5.3",
     "jasmine-core": "^2.8.0",
     "jasmine-spec-reporter": "^4.2.1",

@@ -7,9 +7,8 @@
 
       <span class="title">{{ assessment['Assess.Assessment'].name }}</span>
     </div>
-    <div class="spacer"></div>
 
-    <div class="answer">
+    <div class="answer spacer-top">
       <div *ngIf="assessment['Assess.Assessment'].answer">
 
         <div *ngIf="assessment['Assess.Assessment'].answer.type === 'checkin'">
