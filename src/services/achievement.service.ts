@@ -7,7 +7,7 @@ import { RequestService } from '../shared/request/request.service';
 @Injectable()
 export class AchievementService {
   target_model = 'program';
-  target_id = this.cacheService.getLocalObject('program_id');
+  target_id = this.cacheService.getLocal('program_id');
   getMaximumPointsUrl = `api/maximum_points.json?target_model=${this.target_model}&target_id=${this.target_id}`;
   totalAchievementUrl = 'api/achievements.json';
   userAchievementUrl = 'api/user_achievements.json';

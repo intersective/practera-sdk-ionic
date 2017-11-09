@@ -33,7 +33,7 @@ export class AssessmentsPage {
   combinedItems: any = [];
   discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   getCharacterID: any = this.cacheService.getLocal('character_id');
-  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  getInitialItems: any = this.cacheService.getLocal('initialItems');
   gotNewItems: boolean = false;
   isEventSubmission: boolean = false;
   initialItemsCount: any = {};
@@ -544,7 +544,7 @@ export class AssessmentsPage {
               // display items on dashboard page
               this.gotNewItems = true;
               this.cacheService.setLocal('gotNewItems', this.gotNewItems);
-              this.cacheService.setLocalObject('allNewItems', this.combinedItems);
+              this.cacheService.setLocal('allNewItems', this.combinedItems);
               loading.onDidDismiss(() => {
                 this.navCtrl.setRoot(ActivitiesListPage);
               });

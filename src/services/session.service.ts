@@ -15,12 +15,11 @@ export class SessionService {
 
   getSessions() {
     return this.request.get(this.targetUrl)
-      .map(response => response.json())
       .map(this._normalise)
       .toPromise();
   }
 
-  _normalise(session) {
+  private _normalise(session) {
     session.start = moment.utc(session.start);
     session.end = moment.utc(session.end);
     session.isExpired = moment().isAfter(session.end);

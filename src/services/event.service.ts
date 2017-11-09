@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 // others
 import { CacheService } from '../shared/cache/cache.service';
@@ -10,23 +10,18 @@ import * as moment from 'moment';
 @Injectable()
 export class EventService {
   bookEventUrl = 'api/book_events.json';
-  targetUrl = 'api/events.json';
 
   constructor(
     public cache: CacheService,
     public request: RequestService
   ) {}
 
-  getEvents(options: Object = {}) {
-    options = _.merge({
-      search: {
-        type: 'session'
-      }
-    }, options);
-
-    return this.request.get(this.targetUrl, options)
-    .map(this._normalise)
-    .toPromise();
+  getEvents(options: object = {}) {
+    return this.request.get('api/events.json', {
+        search: _.merge({ type: 'session' }, options)
+      })
+      .map(this._normalise)
+      .toPromise();
   }
 
   _normalise(events) {
@@ -56,9 +51,7 @@ export class EventService {
    * @param {integer} eventId single event id
    */
   bookEvent(eventId) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('event_id', eventId);
-    return this.request.post(this.bookEventUrl, urlSearchParams);
+    return this.request.post(this.bookEventUrl, { event_id: eventId});
   }
 
   cancelEventBooking(eventId){

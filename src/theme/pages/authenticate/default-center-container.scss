@@ -12,14 +12,13 @@
     width: 100%;
     text-align: center;
     .default-logo {
-      width: 128pt;
-      height: 128pt;
+      width: 120pt;
+      height: 120pt;
     }
     h3 {
       color: color($colors, practera-thick);
       z-index: 3;
-      font-size: 22pt;
-      padding-bottom: 12pt;
+      font-size: 20pt;
     }
   }
 }

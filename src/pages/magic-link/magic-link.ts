@@ -1,40 +1,41 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
-
+import { AlertController, NavController, NavParams, LoadingController, ViewController } from 'ionic-angular';
 // services
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
 import { GameService } from '../../services/game.service';
 import { MilestoneService } from '../../services/milestone.service';
 // pages
-import { TabsPage } from '../tabs/tabs.page';
 import { LoginPage } from '../login/login';
+import { TabsPage } from '../tabs/tabs.page';
 // Others
 import { loadingMessages, errMessages } from '../../app/messages';
+import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
-
 @Component({
   selector: 'page-magic-link',
   templateUrl: 'magic-link.html'
 })
 export class MagicLinkPage {
-  auth_token: string;
-  loginLoadingMessage: any = loadingMessages.Login.login;
-  milestone_id: string;
-  misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
-  verifySuccess = null;
-
+  public auth_token: string = null;
+  public gameID: string = null;
+  public loginLoadingMessage: any = loadingMessages.Login.login;
+  public milestone_id: string = null;
+  public misMatchTokenErrMessage: any = errMessages.DirectLink.mismatch;
+  public userData: any = [];
+  public verifySuccess = null;
   constructor(
     public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public viewCtrl: ViewController,
     public authService: AuthService,
     public cacheService: CacheService,
     public gameService: GameService,
-    public loadingCtrl: LoadingController,
-    public milestoneService: MilestoneService,
-    public navCtrl: NavController,
-    public navParams: NavParams
-  ) {}
-
+    public milestoneService: MilestoneService) {
+      this.cacheService.setLocal('gotNewItems', false);
+    }
   ionViewDidLoad() {
     this.auth_token = this.navParams.get('auth_token');
   }
@@ -53,11 +54,9 @@ export class MagicLinkPage {
     observable.subscribe(data => {
       // localStorage.setItem('isAuthenticated', 'true');
       // this.navCtrl.push(TabsPage);
-      // console.log("Successfully logged in");
-      data = data.data;
-      this.cacheService.setLocalObject('apikey', data.apikey);
-      this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-      this.cacheService.setLocalObject('teams', data.Teams);
+      this.cacheService.setLocal('apikey', data.apikey);
+      this.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
+      this.cacheService.setLocal('teams', data.Teams);
       // get game_id data after login
       this.gameService.getGames()
           .subscribe(
@@ -76,10 +75,10 @@ export class MagicLinkPage {
       this.authService.getUser()
         .subscribe(
           data => {
-            this.cacheService.setLocalObject('name', data.User.name);
-            this.cacheService.setLocalObject('email', data.User.email);
-            this.cacheService.setLocalObject('program_id', data.User.program_id);
-            this.cacheService.setLocalObject('project_id', data.User.project_id);
+            this.cacheService.setLocal('name', data.User.name);
+            this.cacheService.setLocal('email', data.User.email);
+            this.cacheService.setLocal('program_id', data.User.program_id);
+            this.cacheService.setLocal('project_id', data.User.project_id);
           },
           err => {
             console.log(err);
@@ -89,10 +88,10 @@ export class MagicLinkPage {
       this.milestoneService.getMilestones()
         .subscribe(
           data => {
-            console.log(data.data[0].id);
-            this.milestone_id = data.data[0].id;
-            this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-            console.log("milestone id: " + data.data[0].id);
+            console.log(data[0].id);
+            this.milestone_id = data[0].id;
+            this.cacheService.setLocal('milestone_id', data[0].id);
+            console.log("milestone id: " + data[0].id);
             loading.dismiss();
             this.navCtrl.push(TabsPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
