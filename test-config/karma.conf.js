@@ -1,13 +1,20 @@
 var webpackConfig = require('./webpack.test.js');
 
 module.exports = function (config) {
+  var appBase    = 'src/';       // transpiled app JS and map files
+  var appSrcBase = appBase;      // app source TS files
+
+  // Testing helpers (optional) are conventionally in a folder called `testing`
+  var testingBase    = 'testing/'; // transpiled test JS and map files
+  var testingSrcBase = 'testing/'; // test source TS files
+
   var _config = {
     basePath: '',
 
     frameworks: ['jasmine'],
 
     files: [
-      {pattern: './karma-test-shim.js', watched: true}
+      { pattern: './karma-test-shim.js', watched: true },
     ],
 
     preprocessors: {
