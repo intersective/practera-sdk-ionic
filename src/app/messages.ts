@@ -97,7 +97,7 @@ export const errMessages = {
 }
 export const generalVariableMessages = {
   helpMail: {
-    "email": "help@support.com"
+    "email": "personaledge@rmit.edu.vn"
   }
 }
 export const loadingMessages = {
