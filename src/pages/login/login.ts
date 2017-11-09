@@ -61,11 +61,13 @@ export class LoginPage {
       password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
+
   ionViewCanLeave(): boolean {
     // to check whether user is authorized
     let authorized = true;
     return authorized ? true : false;
   }
+
   /**
    * user login function to authenticate user with email and password
    */
@@ -82,10 +84,10 @@ export class LoginPage {
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
               self.cacheService.setLocal('apikey', data.apikey);
-              // saved for 3 types of timeline id in order for later use
               self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
+              self.cacheService.setLocal('appConfig', data.Experience.config || {});
               // get game_id data after login
               this.gameService.getGames()
                   .subscribe(data => {
@@ -154,6 +156,7 @@ export class LoginPage {
       });
     });
   }
+
   /**
    * Insert post_auth() api result into localStorage
    * @param {object} data result from API request
@@ -172,6 +175,7 @@ export class LoginPage {
     this.cacheService.setLocal('timeline_id', data.Timelines[0].Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   /**
    * Insert get_user() api result into localStorage
    * @param {object} user result from API request
@@ -187,6 +191,7 @@ export class LoginPage {
     // to get API KEY and timeline_id and stored in localStorage
     // then other API calls can directly use (API KEY and timeline_id)
   }
+
   /**
    * @TODO we'll come back to this logging workflow later in this development
    *
@@ -202,6 +207,7 @@ export class LoginPage {
     alert.present();
     // handle API calling errors display with alert controller
   }
+
   /**
    * forget password page link function
    */

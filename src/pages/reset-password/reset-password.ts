@@ -64,19 +64,12 @@ export class ResetPasswordPage implements OnInit {
           verify_password: ['', [Validators.minLength(8), Validators.required]],
       })
     }
-  /**
-   * Detect user device type (mobile or desktop) on initial page load
-   * Purpose: Initially page loaded, this peice code will detect user screen
-              whether is mobile or desktop device (including iPad).
-   * @param {}
-   * @return A calculated ratio value plus screen innerWidth value to determine
-             user screen is mobile device or desktop device. If device is mobile
-             device, ngOnInit() will disable landscape mode for mobile device
-  */
+
   ngOnInit() {}
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
+
   /**
    * to verify user is whether typed or clicked the email link
    * Purpose: if user is typed the email link key and email, user is not allowed
@@ -111,6 +104,7 @@ export class ResetPasswordPage implements OnInit {
         }, 30000);
       });
   }
+
   /**
    * to update password in db
    * Purpose: store new password for user
@@ -208,14 +202,17 @@ export class ResetPasswordPage implements OnInit {
     });
     alertLogin.present();
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
   }

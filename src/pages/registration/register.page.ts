@@ -241,11 +241,13 @@ export class RegisterPage implements OnInit { // this part of registration is fo
     this.cacheService.setLocal('timelineID', data.Timeline.id);
     return Observable.from(cacheProcesses);
   }
+
   goToLogin() {
     this.cacheService.clear().then(() => {
       this.navCtrl.setRoot(LoginPage);
     });
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;

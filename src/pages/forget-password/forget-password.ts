@@ -8,7 +8,7 @@ import { AlertController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
