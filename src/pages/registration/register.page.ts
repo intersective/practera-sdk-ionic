@@ -66,9 +66,8 @@ export class RegisterPage implements OnInit {
     private authService: AuthService,
     private cacheService: CacheService,
     private gameService: GameService,
-    public translationService: TranslationService,
     private milestoneService: MilestoneService,
-  ) {
+    public translationService: TranslationService) {
     this.verifyFailedErrMessage = errMessages.Registration.verifyFailed.verifyfailed;
     this.successRegistrationLoading = loadingMessages.SuccessRegistration.successRegistration;
     this.passwordMismatchErrMessage = errMessages.Registration.mismatch.mismatch;
@@ -148,54 +147,61 @@ export class RegisterPage implements OnInit {
           this.cacheService.setLocal('gotNewItems', false);
           // after passed registration api call, we come to post_auth api call to let user directly login after registred successfully
           this.authService.loginAuth(this.cacheService.getLocal('user.email'), this.regForm.get('password').value)
-              .subscribe(
-                data => {
-                  let getGame = this.gameService.getGames();
-                  let getUser = this.authService.getUser();
-                  let getMilestone = this.milestoneService.getMilestones();
-                  Observable.forkJoin([getGame, getUser, getMilestone])
+            .subscribe(
+              data => {
+                // get game_id data after login
+                this.gameService.getGames()
                     .subscribe(
-                      results => {
-                        loading.dismiss().then(() => {
-                          // results[0] game API data
-                          this.gameID = results[0].Games[0].id;
-                          if(this.gameID){
-                            this.cacheService.setLocal('game_id', this.gameID);
-                          }
-                          // results[1] user API data
-                          this.userData = results[1];
-                          if(this.userData){
-                            this.cacheService.setLocal('name', results[1].User.name);
-                            this.cacheService.setLocal('email', results[1].User.email);
-                            this.cacheService.setLocal('program_id', results[1].User.program_id);
-                            this.cacheService.setLocal('project_id', results[1].User.project_id);
-                            this.cacheService.setLocal('user', results[1].User);
-                          }
-                          // results[2] milestone API data
-                          this.milestone_id = results[2][0].id;
-                          if(this.milestone_id){
-                            this.cacheService.setLocalObject('milestone_id', this.milestone_id);
-                          }
-                          this.navCtrl.setRoot(TabsPage).then(() => {
-                            this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                            window.history.replaceState({}, '', window.location.origin); // reformat current url 
-                          });
+                      data => {
+                        _.map(data, (element) => {
+                          this.cacheService.setLocal('game_id', element[0].id);
                         });
                       },
                       err => {
-                        this.logError();
+                        this.logError(err);
                       }
-                    )
-                  }
-              );
+                    );
+                // get user data after registration and login
+                self.authService.getUser()
+                    .subscribe(
+                      data => {
+                        console.log(data);
+                      },
+                      err => {
+                        this.logError(err);
+                      }
+                    );
+                // get milestone data after registration and login
+                self.milestoneService.getMilestones()
+                    .subscribe( data => {
+                      loading.dismiss().then(() => {
+                        this.milestone_id = data.data[0].id;
+                        self.cacheService.setLocalObject('milestone_id', data.data[0].id);
+                        self.navCtrl.push(TabsPage).then(() => {
+                          window.history.replaceState({}, '', window.location.origin);
+                        });
+                      });
+                    },
+                    err => {
+                      loading.dismiss().then(() => {
+                        this.logError(err);
+                      });
+                    });
+              },
+              err => {
+                loading.dismiss().then(() => {
+                  this.logError(err);
+                });
+              }
+            );
         }, onRegError, onFinally);
       });
     }
   }
-  logError(){
+  logError(err){
     return this.alertCtrl.create({
       title: 'Error Message',
-      message: this.invalidUserErrMessage + supportEmail,
+      message: err,
       buttons: ['Close']
     });
   }
