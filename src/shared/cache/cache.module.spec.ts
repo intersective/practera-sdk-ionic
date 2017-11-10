@@ -33,8 +33,9 @@ describe('Cache read/write test', () => {
   });
 
   it('write/read single value', async(() => {
-    fixture.componentInstance.setLocal('singleValue', 'yes')
+    let yes: any ='yes';
+    fixture.componentInstance.setLocal('singleValue', yes)
     fixture.componentInstance.getLocal('singleValue')
-    expect(fixture.componentInstance.getLocal('singleValue')).toEqual('yes');
+    expect(fixture.componentInstance.getLocal('singleValue')).toEqual(yes);
   }));
 });
