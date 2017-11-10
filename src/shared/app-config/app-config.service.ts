@@ -3,11 +3,11 @@ import { CacheService } from '../cache/cache.service';
 
 // Pages
 import { EventsListPage } from '../../pages/events/list/list.page';
-import { GalleryPage } from '../../pages/gallery/gallery.page';
+import { GalleryPage } from '../../pages/gallery/gallery';
 import { LevelsPage } from '../../pages/levels/list/list.page';
 import { RankingsPage } from '../../pages/rankings/list/rankings.page';
 import { SettingsPage } from '../../pages/settings/settings.page';
-import { TeamPage } from '../../pages/team/team.page';
+import { TeamPage } from '../../pages/team/team';
 
 // Others
 import * as _ from 'lodash';
