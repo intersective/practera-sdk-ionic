@@ -33,9 +33,6 @@ export class CharacterService {
    * @param {object} data
    */
   postCharacter(data) {
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json');
-
-    return this.request.post(this.charactersAPIEndpoint, data, { headers });
+    return this.request.post(this.charactersAPIEndpoint, data);
   }
 }

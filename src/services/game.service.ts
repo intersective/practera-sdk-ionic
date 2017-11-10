@@ -35,9 +35,7 @@ export class GameService {
    * @param {object} data
    */
   postCharacter(data) {
-    return this.request.post('api/characters', data, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
+    return this.request.post('api/characters', data);
   }
 
   /**
@@ -87,8 +85,6 @@ export class GameService {
       "id": null
     }
   }) {
-    return this.request.post('api/items.json', options, {
-      headers: new HttpHeaders().set('Content-Type', 'application/json')
-    });
+    return this.request.post('api/items.json', options);
   }
 }

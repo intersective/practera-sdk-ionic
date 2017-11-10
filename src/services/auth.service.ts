@@ -11,7 +11,9 @@ export class AuthService {
     public request: RequestService,
   ) {}
   private postRequest(type, body) {
-    return this.request.post(AUTH_ENDPOINT + type, body);
+    return this.request.post(AUTH_ENDPOINT + type, body, {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
   }
   verifyRegistration(data) {
     let params = new HttpParams();
@@ -43,7 +45,9 @@ export class AuthService {
     return this.postRequest('reset_password', { key, email, password, verify_password });
   }
   magicLinkLogin(auth_token) {
-    return this.request.post('api/auths.json', { auth_token });
+    return this.request.post('api/auths.json', { auth_token }, {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    });
   }
   getUser() {
     return this.request.get('api/users.json');

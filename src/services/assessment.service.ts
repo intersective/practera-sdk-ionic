@@ -98,9 +98,7 @@ export class AssessmentService {
   }
 
   post(assessmentAnswer: Submission) {
-    return this.request.post('api/assessment_submissions.json', assessmentAnswer, {
-      'Content-Type': 'application/json'
-    });
+    return this.request.post('api/assessment_submissions.json', assessmentAnswer);
   }
 
   /**
