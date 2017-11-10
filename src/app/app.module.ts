@@ -1,4 +1,5 @@
 // libs
+import { AppConfigModule } from '../shared/app-config/app-config.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler, OnInit } from '@angular/core';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
@@ -147,6 +148,7 @@ export function createTranslateLoader(http: HttpClient) {
     EscapeHtmlPipe,
   ],
   imports: [
+    AppConfigModule,
     BrowserModule,
     CacheModule,
     FormsModule,

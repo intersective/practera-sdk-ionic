@@ -91,6 +91,7 @@ export class LoginPage {
               self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
+              self.cacheService.setLocal('appConfig', data.Experience.config || {});
               this.appService.getCharacter()
                 .subscribe(
                   results => {
@@ -116,7 +117,7 @@ export class LoginPage {
                       }
                       this.navCtrl.setRoot(TabsPage).then(() => {
                         this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url
                       });
                     });
                   },
@@ -192,7 +193,7 @@ export class LoginPage {
   /**
    * forget password page link function
    */
-  linkToForgetPassword() { 
-    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window 
+  linkToForgetPassword() {
+    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window
   }
 }
