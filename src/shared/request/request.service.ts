@@ -149,10 +149,6 @@ export class RequestService {
    */
   post(endPoint: string, data: any, header?: any) {
     let headers = this.appendHeader();
-
-    // @TODO: make sure if Content-Type is optional
-    headers = headers.delete('Content-Type');
-    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
     return this.http.post(this.prefixUrl + endPoint, data, { headers })
       .map(this.extractData)
       .catch(this.handleError);
