@@ -4,11 +4,10 @@ import { Platform, NavController } from 'ionic-angular';
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
 // pages
-import { TermConditionPage } from '../pages/term-condition/term-condition.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { TabsPage } from '../pages/tabs/tabs.page';
-import { RegistrationPage } from '../pages/registration/registration.page';
+import { RegisterPage } from '../pages/registration/register.page';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
 import { TestPage } from '../pages/tabs/test.page';
@@ -21,7 +20,7 @@ export class MyApp implements OnInit {
   rootPage: any;
   urlParameters: Array<any> = [];
   do = {
-    'registration': RegistrationPage,
+    'registration': RegisterPage,
     'login': LoginPage,
     'resetpassword': ResetPasswordPage,
     'secure': MagicLinkPage,

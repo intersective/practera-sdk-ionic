@@ -1,7 +1,6 @@
 /**
  * @page pages/forget-password/forget-password.html
  */
-
 .login-container {
   @include placeholderColor;
   background-color: color($colors, secondary, base);
@@ -20,16 +19,6 @@
     .error-hint {
       text-align: center;
       padding-top: 5pt;
-    }
-  }
-  .forget-password-container {
-    text-align: center;
-    border: none;
-    button {
-      color: color($colors, practera-thick); // default-theme
-      margin-top: 24pt;
-      font-size: 11pt;
-      background-color: transparent;
     }
   }
   ion-item {

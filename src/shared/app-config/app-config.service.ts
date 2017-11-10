@@ -16,44 +16,19 @@ import * as _ from 'lodash';
 export class AppConfigService {
   // Mapping page to name,
   // use for changing page in tab menu
-  pagesMap: any = {
-    events: EventsListPage,
-    rankings: RankingsPage,
-    settings: SettingsPage,
-    gallery: GalleryPage,
-    team: TeamPage
-  }
-
-  // JSON format sent back from server
-  appConfigContent: any = {
-    app: {
-      name: 'ISDK'
-    },
-    tabs: {
-      events: {
-        name: 'events',
-        title: 'Events',
-        icon: 'md-calendar',
-        order: 1
-      },
-      rankings: {
-        name: 'rankings',
-        title: 'Rankings',
-        icon: 'md-medal',
-        order: 2
-      },
-      settings: {
-        name: 'settings',
-        title: 'Settings',
-        icon: 'md-person',
-        order: 3
-      }
-    }
-  };
+  pagesMap: any = {};
 
   constructor (
     private cacheService: CacheService
-  ) {}
+  ) {
+    this.pagesMap = {
+      events: EventsListPage,
+      rankings: RankingsPage,
+      settings: SettingsPage,
+      gallery: GalleryPage,
+      team: TeamPage
+    };
+  }
 
   /**
    * @description Get full configure data
