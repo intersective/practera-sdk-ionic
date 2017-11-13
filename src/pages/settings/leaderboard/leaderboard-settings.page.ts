@@ -9,10 +9,13 @@ import { CacheService } from '../../../shared/cache/cache.service';
 })
 export class LeaderboardSettingsPage {
   isHide: boolean = false;
-  useremail: string = this.cacheService.getLocalObject('email') || '';
-  username: string = this.cacheService.getLocalObject('name') || '';
+  useremail: string;
+  username: string;
 
   constructor(
     public cacheService: CacheService
-  ) {}
+  ) {
+    this.useremail = JSON.stringify(this.cacheService.getLocal('email'));
+    this.username = JSON.stringify(this.cacheService.getLocal('name'));
+  }
 }

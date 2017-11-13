@@ -1,85 +1,86 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { NavController, ViewController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
+import { AlertController,
+         LoadingController,
+         ModalController,
+         NavController,
+         NavParams,
+         ViewController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
+import { loadingMessages, errMessages } from '../../app/messages'; 
+import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
-// services
-import { AuthService } from '../../services/auth.service';
-import { CacheService } from '../../shared/cache/cache.service';
-import { GameService } from '../../services/game.service';
-import { MilestoneService } from '../../services/milestone.service';
 // directives
 import { FormValidator } from '../../shared/validators/formValidator';
+
 // pages
-import { LoginPage } from '../login/login';
 import { TabsPage } from '../tabs/tabs.page';
+import { LoginPage } from '../login/login';
 import { ResetpasswordModelPage } from '../../pages/resetpassword-model/resetpassword-model';
-// Others
+
+// services
+import { AppService } from '../../services/app.service';
+import { AuthService } from '../../services/auth.service';
+import { CacheService } from '../../shared/cache/cache.service';
+import { ResponsiveService } from '../../services/responsive.service';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'page-reset-password',
   templateUrl: 'reset-password.html'
 })
+
 export class ResetPasswordPage implements OnInit {
-
   emailVal: string;
-  keyVal: string;
-
-  invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+  gameID: string = null;
   isLandscaped: boolean = false;
   isPwdMatch: boolean = false;
+  keyVal: string;
   minLengthCheck: boolean = true;
   milestone_id: string;
   password: string;
-  passwordMismatchMessage: any = errMessages.PasswordValidation.mismatch.mismatch;
-  passwordMinlengthMessage: any = errMessages.PasswordValidation.minlength.minlength;
-  resetPasswordLoginFailedMessage: any = errMessages.ResetPassword.resetLoginFailed.failed;
   resetPwdFormGroup: any;
-  successResetPasswordMessage: any = loadingMessages.SuccessResetPassword.successResetPassword;
+  userData: any = [];
   verify_password: string;
   verifyPwd: boolean = false;
   verifySuccess: boolean = null;
-  verifyUserMessage = loadingMessages.VerifyUser.verify;
-  windowHeight: number = window.innerHeight / 3;
+  // loading & error message variables
+  invalidLinkErrMessage: any = null;
+  passwordMismatchMessage: any = null;
+  passwordMinlengthMessage: any = null;
+  resetPasswordLoginFailedMessage: any = null;
+  successResetPasswordMessage: any = null;
+  verifyUserMessage: any = null;
 
-  constructor(
+  constructor(public formBuilder: FormBuilder,
     public alertCtrl: AlertController,
-    public authService: AuthService,
-    public cacheService: CacheService,
-    public formBuilder: FormBuilder,
-    public gameService: GameService,
     public loadingCtrl: LoadingController,
-    public milestoneService: MilestoneService,
     public navCtrl: NavController,
     public navParams: NavParams,
-    public translationService: TranslationService,
-    public viewCtrl: ViewController
-  ) {
+    public viewCtrl: ViewController,
+    public appService: AppService,
+    public authService: AuthService,
+    public cacheService: CacheService,
+    public translationService: TranslationService) {
       // validation for both password values: required & minlength is 8
       this.resetPwdFormGroup = formBuilder.group({
           password: ['', [Validators.minLength(8), Validators.required]],
           verify_password: ['', [Validators.minLength(8), Validators.required]],
-      })
+      });
+      this.invalidLinkErrMessage = errMessages.ResetPassword.invalidLink.invalid;
+      this.passwordMismatchMessage = errMessages.PasswordValidation.mismatch.mismatch;
+      this.passwordMinlengthMessage = errMessages.PasswordValidation.minlength.minlength;
+      this.resetPasswordLoginFailedMessage = errMessages.ResetPassword.resetLoginFailed.failed;
+      this.successResetPasswordMessage = loadingMessages.SuccessResetPassword.successResetPassword;
+      this.verifyUserMessage = loadingMessages.VerifyUser.verify;
     }
-  /**
-   * Detect user device type (mobile or desktop) on initial page load
-   * Purpose: Initially page loaded, this peice code will detect user screen
-              whether is mobile or desktop device (including iPad).
-   * @param {}
-   * @return A calculated ratio value plus screen innerWidth value to determine
-             user screen is mobile device or desktop device. If device is mobile
-             device, ngOnInit() will disable landscape mode for mobile device
-  */
-  ngOnInit() {
-  }
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ResetpasswordPage');
-  }
+
+  ngOnInit() {}
+
   ionViewWillEnter() {
     this.verifyKeyEmail();
   }
+
   /**
    * to verify user is whether typed or clicked the email link
    * Purpose: if user is typed the email link key and email, user is not allowed
@@ -98,24 +99,25 @@ export class ResetPasswordPage implements OnInit {
     const loading = this.loadingCtrl.create({
       content: this.verifyUserMessage
     });
-    loading.present();
-    this.authService.verifyUserKeyEmail(key, email)
+    loading.present().then(() => {
+      this.authService.verifyUserKeyEmail(key, email)
       .subscribe(data => {
         loading.dismiss();
         this.verifySuccess = true;
-        console.log("valueTrue: " + this.verifySuccess);
       },
       err => {
-        loading.dismiss();
-        this.verifySuccess = false;
-        console.log("valueFalse: " + this.verifySuccess);
-        setTimeout(() => {
-          this.navCtrl.push(LoginPage).then(() => {
-              window.history.replaceState({}, '', window.location.origin);
-            });
-        }, 5000);
+        loading.dismiss().then(() => {
+          this.verifySuccess = false;
+          setTimeout(() => {
+            this.navCtrl.setRoot(LoginPage).then(() => {
+                window.history.replaceState({}, '', window.location.origin);
+              });
+          }, 30000);
+        });
       });
+    });
   }
+
   /**
    * to update password in db
    * Purpose: store new password for user
@@ -132,70 +134,51 @@ export class ResetPasswordPage implements OnInit {
     });
     loading.present().then(() => {
       this.authService.resetUserPassword(key, email, this.password, this.verify_password).subscribe(data => {
-        // loading.dismiss();
-        // this.navCtrl.push(LoginPage);
         this.authService.loginAuth(email, this.password)
             .subscribe(data => {
-              data = data.data;
-              this.cacheService.setLocalObject('apikey', data.apikey);
-              this.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
-              this.cacheService.setLocalObject('teams', data.Teams);
+              this.cacheService.setLocal('apikey', data.apikey);
+              this.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
+              this.cacheService.setLocal('teams', data.Teams);
               this.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login
-              this.gameService.getGames()
-                  .subscribe(
-                    data => {
-                      console.log("game data: ", data);
-                      _.map(data, (element) => {
-                        console.log("game id: ", element[0].id);
-                        this.cacheService.setLocal('game_id', element[0].id);
+              this.appService.getCharacter()
+                .subscribe(
+                  results => {
+                    loading.dismiss().then(() => {
+                      // results[0] game API data
+                      this.gameID = results[0].Games[0].id;
+                      if(this.gameID){
+                        this.cacheService.setLocal('game_id', this.gameID);
+                      }
+                      // results[1] user API data
+                      this.userData = results[1];
+                      if(this.userData){
+                        this.cacheService.setLocal('name', results[1].User.name);
+                        this.cacheService.setLocal('email', results[1].User.email);
+                        this.cacheService.setLocal('program_id', results[1].User.program_id);
+                        this.cacheService.setLocal('project_id', results[1].User.project_id);
+                        this.cacheService.setLocal('user', results[1].User);
+                      }
+                      // results[2] milestone API data
+                      this.milestone_id = results[2][0].id;
+                      if(this.milestone_id){
+                        this.cacheService.setLocal('milestone_id', this.milestone_id);
+                      }
+                      this.navCtrl.setRoot(TabsPage).then(() => {
+                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
                       });
-                    },
-                    err => {
-                      console.log("game err: ", err);
-                    }
-                  );
-              // get milestone data after login
-              this.authService.getUser()
-                  .subscribe(
-                    data => {
-                      this.cacheService.setLocalObject('name', data.User.name);
-                      this.cacheService.setLocalObject('email', data.User.email);
-                      this.cacheService.setLocalObject('program_id', data.User.program_id);
-                      this.cacheService.setLocalObject('project_id', data.User.project_id);
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  );
-              // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        console.log(data.data[0].id);
-                        this.milestone_id = data.data[0].id;
-                        this.cacheService.setLocalObject('milestone_id', data.data[0].id);
-                        console.log("milestone id: " + data.data[0].id);
-                        loading.dismiss();
-                        this.navCtrl.push(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      loading.dismiss().then(() => {
-                        console.log(err);
-                      });
-                    }
-                  )
+                    });
+                  },
+                  err => {
+                    this.logError(err);
+                  }
+                )
               this.cacheService.write('isAuthenticated', true);
               this.cacheService.setLocal('isAuthenticated', true);
             },
             err => {
               loading.dismiss().then(() => {
-                this.loginError(err);
+                this.logError(err);
                 this.cacheService.removeLocal('isAuthenticated');
                 this.cacheService.write('isAuthenticated', false);
               });
@@ -203,29 +186,40 @@ export class ResetPasswordPage implements OnInit {
       },
       err => {
         loading.dismiss().then(() => {
-          console.log(err);
+          this.logError(err);
         });
       });
     });
   }
+
   // after password set, auto login error alertbox
-  loginError(error) {
+  logError(error) {
     const alertLogin = this.alertCtrl.create({
-      title: 'Login Failed ..',
-      message: this.resetPasswordLoginFailedMessage,
+      title: 'Error Message',
+      message: 'Oops, loading failed, please try it again later.', 
       buttons: ['Close']
     });
     alertLogin.present();
   }
+
   // check password minmimum length
   checkMinLength(){
     return (this.password.length < 8 || this.verify_password.length < 8) ? this.minLengthCheck = true : this.minLengthCheck = false;
   }
+
   // check password mismacth issue
   verifyPwdKeyUp() {
     return this.verifyPwd = true;
   }
+
   pwdMatchCheck() {
     return this.password != this.verify_password ? this.isPwdMatch = true : this.isPwdMatch = false;
+  }
+
+  // go to login page when verification is failed
+  goToLogin() {
+    this.navCtrl.setRoot(LoginPage).then(() => {
+      window.history.replaceState({}, '', window.location.origin);
+    });
   }
 }

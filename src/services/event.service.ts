@@ -1,5 +1,5 @@
 import { Injectable }    from '@angular/core';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams } from '@angular/common/http';
 
 // others
 import { CacheService } from '../shared/cache/cache.service';
@@ -21,7 +21,6 @@ export class EventService {
    * @description Normalise event
    * @param {[events]} events data from API
    */
-
   _normalise(events) {
     _.forEach(events, (event, idx) => {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
@@ -41,17 +40,12 @@ export class EventService {
    * @description Get events data
    * @param {object} options
    */
-
-  getEvents(options: Object = {}) {
-    options = _.merge({
-      search: {
-        type: 'session'
-      }
-    }, options);
-
-    return this.request.get(this.targetUrl, options)
-    .map(this._normalise)
-    .toPromise();
+  getEvents(options: object = {}) {
+    return this.request.get(this.targetUrl, {
+        search: _.merge({ type: 'session' }, options)
+      })
+      .map(this._normalise)
+      .toPromise();
   }
 
   /**
@@ -72,9 +66,7 @@ export class EventService {
    */
 
   bookEvent(eventId) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('event_id', eventId);
-    return this.request.post(this.bookEventUrl, urlSearchParams);
+    return this.request.post(this.bookEventUrl, { event_id: eventId});
   }
 
   /**

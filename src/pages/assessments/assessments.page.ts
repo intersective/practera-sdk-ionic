@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 //services
 import { AssessmentService } from '../../services/assessment.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { CharacterService } from '../../services/character.service';
 import { GameService } from '../../services/game.service';
 import { SubmissionService } from '../../services/submission.service';
 import { TranslationService } from '../../shared/translation/translation.service';
@@ -34,7 +33,7 @@ export class AssessmentsPage {
   combinedItems: any = [];
   discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
   getCharacterID: any = this.cacheService.getLocal('character_id');
-  getInitialItems: any = this.cacheService.getLocalObject('initialItems');
+  getInitialItems: any = this.cacheService.getLocal('initialItems');
   gotNewItems: boolean = false;
   isEventSubmission: boolean = false;
   initialItemsCount: any = {};
@@ -52,7 +51,6 @@ export class AssessmentsPage {
     public alertCtrl: AlertController,
     public assessmentService: AssessmentService,
     public cacheService: CacheService,
-    public characterService: CharacterService,
     public events: Events,
     public gameService: GameService,
     public loadingCtrl: LoadingController,
@@ -288,10 +286,8 @@ export class AssessmentsPage {
       // get_assessments request with 'assessment_id' & 'structured'
       let getAssessment = (assessmentId) => {
         return this.assessmentService.getAll({
-          search: {
-            assessment_id: assessmentId,
-            structured: true
-          }
+          assessment_id: assessmentId,
+          structured: true
         });
       };
 
@@ -538,7 +534,7 @@ export class AssessmentsPage {
           // display items on dashboard page
           this.gotNewItems = true;
           this.cacheService.setLocal('gotNewItems', this.gotNewItems);
-          this.cacheService.setLocalObject('allNewItems', this.combinedItems);
+          this.cacheService.setLocal('allNewItems', this.combinedItems);
           loading.onDidDismiss(() => {
             this.navCtrl.setRoot(ActivitiesListPage);
           });

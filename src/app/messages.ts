@@ -52,10 +52,10 @@ export const errMessages = {
   },
   PasswordValidation: {
     mismatch: {
-      "mismatch": "You must enter matching passwords. Please Try again."
+      "mismatch": "Passwords don’t match"
     },
     minlength: {
-      "minlength": "The minimum length allowed for a password is 8 characters."
+      "minlength": "At least 8 characters required"
     }
   },
   Registration: {
@@ -76,6 +76,9 @@ export const errMessages = {
     },
     verifyFailed: {
       "verifyfailed": "Sorry, verification failed, please resend your email and password."
+    },
+    acceptTermsConditions: {
+      "accepted": "You need to agree to the Terms & Conditions before completing registration."
     }
   },
   ResetPassword: {
@@ -83,12 +86,12 @@ export const errMessages = {
       "failed": "Whoops, we were unable to reset your password. Please try again."
     },
     invalidLink: {
-      "invalid": "Oops... The log in link is broken. You will be redirected to the login page. Try again with your username and password."
+      "invalid": "Oops... The reset password link has expired, please contact your program coordinator."
     }
   },
   TermConditions: {
     disagreement: {
-      "noAccepted": "You must agree to the Terms and Conditions."
+      "noAccepted": "You need to agree to the Terms & Conditions."
     },
     verifyFailed: {
       "verifyfailed": "Oops... Registration verification has failed. Please try again later."
@@ -111,7 +114,7 @@ export const loadingMessages = {
     "logout": "See you next time"
   },
   SendingEmail: {
-    "send": "Sending email to us ..." 
+    "send": "Sending email to us ..."
   },
   SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
     "partOne": "We have sent an email to",

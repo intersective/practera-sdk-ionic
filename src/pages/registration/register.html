@@ -2,43 +2,57 @@
   <ion-grid class="default-center-container">
     <ion-row>
       <ion-col col-12>
-        <img class="default-logo" src="./assets/img/default/practera.png" alt="App Logo"/>
-        <p>
-          {{ 'REGISTRATION.HEADER' | translate }}
-        </p>
+        <img class="default-logo" src="/assets/img/default/practera.png" alt="Logo"/>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col col-10 offset-1>
           <form [formGroup]="regForm" (ngSubmit)="onSubmit(regForm)" class="general-form" [formGroup]="regForm">
-              <ion-list>
-                <ion-item no-lines>
-                  <ion-input type="password" [(ngModel)]="password" placeholder="New Password" formControlName="password"></ion-input>
-                </ion-item>
-                <ion-item no-lines>
-                  <ion-input (keyup)="verifyPwdKeyUp()" type="password" name="verify_password" [(ngModel)]="verify_password" placeholder="Confirm password" formControlName="verify_password"></ion-input>
-                </ion-item>
-              </ion-list>
-              <button type="submit"
-                ion-button
-                block
-                color="practera-thick"
-                [disabled]="password!=verify_password || regForm.invalid">
-                {{ 'GENERAL.DONE' | translate }}
-              </button>
+            <ion-list>
+              <ion-item no-lines>
+                <ion-input type="password" 
+                  [(ngModel)]="password" 
+                  placeholder="New Password" 
+                  formControlName="password">
+                </ion-input>
+              </ion-item>
+              <ion-item no-lines>
+                <ion-input (keyup)="verifyPwdKeyUp()" 
+                  type="password" 
+                  name="verify_password" 
+                  [(ngModel)]="verify_password" 
+                  placeholder="Confirm password" 
+                  formControlName="verify_password">
+                </ion-input>
+              </ion-item>
+            </ion-list>
+            <div class="term-condition-link">
+              <ion-checkbox class="agree-tick" [(ngModel)]="agreed" (change)="toggleAgree()" formControlName="agreed"></ion-checkbox>
+              <span class="agree-text">I accept the </span> <u (click)="openTermsCondition()">terms & conditions</u>
+            </div>
+            <button type="submit"
+              ion-button
+              block
+              class="general-circle-btn"
+              color="practera-thick"
+              [disabled]="password!=verify_password || regForm.invalid || agreed === false">
+              {{ 'GENERAL.DONE' | translate }}
+            </button>
+            <div class="errors">
               <div *ngIf="verifyPwd == true">
                 <div *ngIf="pwdMatchCheck()" class="error-hint">
-                  <small class="text-danger">
-                   {{ passwordMismatchMessage }}
+                  <small>
+                    {{ passwordMismatchMessage }}
                   </small>
                 </div>
                 <div *ngIf="checkMinLength() == true" class="error-hint">
-                  <small class="text-danger">
-                   {{ passwordMinlengthMessage }}
+                  <small>
+                    {{ passwordMinlengthMessage }}
                   </small>
                 </div>
               </div>
-            </form>
+            </div>
+          </form>
       </ion-col>
     </ion-row>
   </ion-grid>
