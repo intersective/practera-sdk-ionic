@@ -84,15 +84,13 @@ export class RequestService {
     });
 
     // Inject apiKey from cached
-    let apiKey = this.cacheService.getCached('apikey') ||
-      this.cacheService.getLocal('apikey');
+    let apiKey = this.cacheService.getLocal('apikey');
     if (!_.isEmpty(apiKey)) {
       header = header.set('apikey', apiKey.toString());
     }
 
     // Inject timelineID from cached
-    let timelineId = this.cacheService.getCached('timelineID') ||
-      this.cacheService.getLocal('timelineID');
+    let timelineId = this.cacheService.getLocal('timelineID');
     if (timelineId) {
       header = header.set('timelineID', timelineId.toString());
     }
@@ -103,7 +101,7 @@ export class RequestService {
   // Set API request options
   setOptions(options?): {
     headers?: HttpHeaders;
-    observe?: "body";
+    observe?: 'body';
     params?: HttpParams;
     reportProgress?: boolean;
     withCredentials?: boolean;

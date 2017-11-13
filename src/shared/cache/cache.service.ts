@@ -32,6 +32,7 @@ export class CacheService {
   }
 
   /**
+   * DEPRECATED
    * get memory cached values by key
    * @param {object||string}
    */
@@ -43,6 +44,7 @@ export class CacheService {
   }
 
   /**
+   * DEPRECATED
    * Write data into local storage
    * @param {string} path - path to store data
    * @param {any} content - data to store
@@ -58,6 +60,7 @@ export class CacheService {
   }
 
   /**
+   * DEPRECATED
    * Read data into local storage
    * @param {string} path - path to read data
    * @return {promise} <data store>
@@ -93,6 +96,9 @@ export class CacheService {
     }
   }
 
+  /**
+   * DEPRECATED
+   */
   public clear(): any {
     return this.storage.clear();
   }
