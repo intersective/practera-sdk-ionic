@@ -15,7 +15,6 @@ export class RequestServiceConfig {
 export class RequestService {
   private appkey: string;
   private prefixUrl: string;
-
   private apikey: string;
   private timelineID: number;
 
