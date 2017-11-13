@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 import { ActivityService } from '../../../services/activity.service';
 import { AchievementService } from '../../../services/achievement.service';
 import { CacheService } from '../../../shared/cache/cache.service';
-import { CharacterService } from '../../../services/character.service';
 import { GameService } from '../../../services/game.service';
 import { SubmissionService } from '../../../services/submission.service';
 // pages
@@ -52,7 +51,6 @@ export class ActivitiesListPage implements OnInit {
     public achievementService: AchievementService,
     public activityService: ActivityService,
     public cacheService: CacheService,
-    public characterService: CharacterService,
     public gameService: GameService,
     public loadingCtrl: LoadingController,
     public modalCtrl: ModalController,
@@ -90,7 +88,8 @@ export class ActivitiesListPage implements OnInit {
             if(this.activities.length == 0){
               this.returnError = true;
             }
-            let getCharacter = this.characterService.getCharacter();
+            let gameId = this.cacheService.getLocal('game_id');
+            let getCharacter = this.gameService.getCharacters(gameId);
             let getSubmission = this.submissionService.getSubmissionsData();
             Observable.forkJoin([getSubmission, getCharacter])
               .subscribe(results => {

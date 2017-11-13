@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
 // Others
 import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
@@ -11,14 +10,12 @@ export class GameService {
   constructor(
     public request: RequestService
   ) {}
-
   /**
    * Get games
    */
   getGames() {
     return this.request.get('api/games');
   }
-
   /**
    * Get character
    * @param {string} gameId
@@ -29,7 +26,6 @@ export class GameService {
       search: Object.assign(params, { game_id })
     });
   }
-
   /**
    * Post character
    * @param {object} data
@@ -37,7 +33,6 @@ export class GameService {
   postCharacter(data) {
     return this.request.post('api/characters', data);
   }
-
   /**
    * Get ranking
    * @param {string} gameId
@@ -48,7 +43,6 @@ export class GameService {
       'action': 'ranking',
       'period': 'monthly'
     };
-
     return Observable.forkJoin([
       this.getCharacters(gameId, params),
       this.getCharacters(gameId, Object.assign(params, { character_id }))
@@ -60,7 +54,6 @@ export class GameService {
       return characters;
     });
   }
-
   /**
    * Get items
    * @param {object} options optional search query got GET request
@@ -72,7 +65,6 @@ export class GameService {
     }, options);
     return this.request.get('api/items.json', { search: options });
   }
-
   /**
    * Update items
    * @param {object} options

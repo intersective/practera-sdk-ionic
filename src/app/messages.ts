@@ -86,7 +86,7 @@ export const errMessages = {
       "failed": "Whoops, we were unable to reset your password. Please try again."
     },
     invalidLink: {
-      "invalid": "Oops... The reset password link is expired, please contact your program coordinator."
+      "invalid": "Oops... The reset password link has expired, please contact your program coordinator."
     }
   },
   TermConditions: {
@@ -114,7 +114,7 @@ export const loadingMessages = {
     "logout": "See you next time"
   },
   SendingEmail: {
-    "send": "Sending email to us ..." 
+    "send": "Sending email to us ..."
   },
   SentMessage: { // the reason why this message has been divided into two parts, because of we have a variable (${this.email}) in the middle of message
     "partOne": "We have sent an email to",

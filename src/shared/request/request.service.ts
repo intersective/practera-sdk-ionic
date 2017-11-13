@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/comm
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import { CacheService } from '../../shared/cache/cache.service';
-
 // Definition configure for API request
 // This ONLY definition of class, any changed of value will no effect.
 // Please configuring on `configs/config.ts`.
@@ -31,7 +30,6 @@ export class RequestService {
       this.prefixUrl = config.prefixUrl;
     }
   }
-
   /**
    * Return current prefixUrl
    * @param {String} prefixUrl
@@ -39,7 +37,6 @@ export class RequestService {
   public getPrefixUrl(){
     return this.prefixUrl;
   }
-
   /**
    * Return current appKey
    * @param {String} appKey
@@ -47,7 +44,6 @@ export class RequestService {
   public getAppkey(){
     return this.appkey;
   }
-
   /**
    * Error handle for API response
    * @param {Error} error
@@ -57,7 +53,6 @@ export class RequestService {
         api: 'SERVER_ERROR',
       },
       currentError: any = error;
-    console.log(currentError);
     if (typeof error !== 'object') {
       throw 'Unable to process API respond!';
     }
@@ -69,7 +64,6 @@ export class RequestService {
     }
     return Observable.throw(currentError);
   }
-
   // Inject required fields to header of API request
   appendHeader(custom: object = {}): HttpHeaders {
     // Define default header
@@ -88,7 +82,6 @@ export class RequestService {
     if (!_.isEmpty(apiKey)) {
       header = header.set('apikey', apiKey.toString());
     }
-
     // Inject timelineID from cached
     let timelineId = this.cacheService.getLocal('timelineID');
     if (timelineId) {
@@ -97,7 +90,6 @@ export class RequestService {
 
     return header;
   }
-
   // Set API request options
   setOptions(options?): {
     headers?: HttpHeaders;
@@ -108,7 +100,6 @@ export class RequestService {
     search?: string;
   } {
     let headers = this.appendHeader();
-
     // setup http params
     let params = (options && options.params) ? options.params : new HttpParams();
     if (options && options.search) {
@@ -116,15 +107,12 @@ export class RequestService {
         params = params.set(key, value.toString());
       });
     }
-
     let timelineId = this.cacheService.getLocal('timelineID');
     if (timelineId) {
       params = params.set('timelineID', timelineId);
     }
-
     return { headers, params };
   }
-
   /**
    * Send GET request to server
    * @param {String} endPoint
@@ -141,7 +129,6 @@ export class RequestService {
       .map(this.extractData)
       .catch(this.handleError);
   }
-
   /**
    * Send POST request to server
    * @param {String} endPoint
@@ -155,7 +142,6 @@ export class RequestService {
       .map(this.extractData)
       .catch(this.handleError);
   }
-
   /**
    * Send DELETE request to server
    * @param {String} endPoint
@@ -168,7 +154,7 @@ export class RequestService {
       .map(this.extractData)
       .catch(this.handleError);
   }
-
+  // Extract response data and convert it to JSON
   extractData(res) {
     return res.data || res;
   }
