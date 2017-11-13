@@ -71,9 +71,7 @@
           <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
         <ion-col class="note" col-2>
-          <ion-badge [ngClass]="{'best-grade-color': submission.statusTitle.score >= 3.5, 'better-grade-color': (submission.statusTitle.score < 3.5 && submission.statusTitle.score >= 2), 'worse-grade-color': submission.statusTitle.score < 2 }">
-            {{ submission.statusTitle.score }}
-          </ion-badge>
+          <ion-badge>{{ submission.statusTitle.score }}</ion-badge>
         </ion-col>
       </ion-row>
     </ion-item>
