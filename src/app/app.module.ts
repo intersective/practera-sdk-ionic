@@ -93,7 +93,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
-var letMetry = {
+@NgModule({
   declarations: [
     AchievementsViewPage,
     ActivitiesListPage,
@@ -268,7 +268,5 @@ var letMetry = {
     GameService,
     // { provide: RequestOptions, useClass: CustomRequestOptions }
   ]
-};
-
-@NgModule(letMetry)
+})
 export class AppModule {}
