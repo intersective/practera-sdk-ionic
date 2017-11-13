@@ -69,9 +69,9 @@ import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboa
 import { LevelsListPage } from '../pages/levels/list/list';
 import { LoginPage } from '../pages/login/login';
 import { MagicLinkPage } from '../pages/magic-link/magic-link';
-import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
-import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
-import { RankingsPage } from '../pages/rankings/list/rankings.page';
+// import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
+// import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
+// import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
@@ -86,6 +86,9 @@ import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 import { TimeAgoPipe } from '../pipes/timeago';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
+
+import { RankingModule } from '../shared/ranking.module';
+
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
@@ -128,9 +131,9 @@ export function createTranslateLoader(http: HttpClient) {
     OneofQuestionComponent,
     PhotoComponent,
     QuestionGroupComponent,
-    RankingBadgesPage,
-    RankingDetailsPage,
-    RankingsPage,
+    // RankingBadgesPage,
+    // RankingDetailsPage,
+    // RankingsPage,
     RegisterPage,
     ResetPasswordPage,
     SettingsPage,
@@ -147,6 +150,7 @@ export function createTranslateLoader(http: HttpClient) {
     EscapeHtmlPipe,
   ],
   imports: [
+    RankingModule,
     BrowserModule,
     CacheModule,
     FormsModule,
@@ -235,9 +239,9 @@ export function createTranslateLoader(http: HttpClient) {
     MagicLinkPage,
     ModalComponent,
     MyApp,
-    RankingBadgesPage,
-    RankingDetailsPage,
-    RankingsPage,
+    // RankingBadgesPage,
+    // RankingDetailsPage,
+    // RankingsPage,
     RegisterPage,
     ResetPasswordPage,
     SettingsPage,

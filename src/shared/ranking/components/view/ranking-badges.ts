@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
-import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages'; 
+import { TranslationService } from '../../../translation/translation.service';
+import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
 // services
-import { AchievementService } from '../../../services/achievement.service';
+import { AchievementService } from '../../../../services/achievement.service';
 // pages
 import { RankingDetailsPage } from '../view/ranking-details.page';
 @Component({

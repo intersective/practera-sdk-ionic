@@ -2,13 +2,12 @@ import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 
 // services
-import { CacheService } from '../../../shared/cache/cache.service';
-import { GameService } from '../../../services/game.service';
+import { CacheService } from '../../../cache/cache.service';
+import { GameService } from '../../../../services/game.service';
 // pages
 import { RankingDetailsPage } from '../view/ranking-details.page';
 // Others
 import { loadingMessages, errMessages } from '../../../app/messages';
-import { TranslationService } from '../../../shared/translation/translation.service';
 import * as _ from 'lodash';
 
 @Component({

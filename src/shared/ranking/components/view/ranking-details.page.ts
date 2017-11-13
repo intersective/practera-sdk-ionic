@@ -5,7 +5,7 @@ import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 // services
-import { AchievementService } from '../../../services/achievement.service';
+import { AchievementService } from '../../../../services/achievement.service';
 // pages
 import { RankingBadgesPage } from './ranking-badges';
 @Component({
