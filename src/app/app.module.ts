@@ -11,7 +11,6 @@ import { FilepickerModule } from '../shared/filepicker/filepicker.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
@@ -21,9 +20,9 @@ import { WindowRef } from '../shared/window';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
+import { AppService } from '../services/app.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilepickerService } from '../shared/filepicker/filepicker.service';
 import { GameService } from '../services/game.service';
@@ -55,7 +54,6 @@ import { ActivitiesListPage } from '../pages/activities/list/list.page';
 import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
-import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
@@ -98,7 +96,6 @@ export function createTranslateLoader(http: HttpClient) {
 @NgModule({
   declarations: [
     AchievementsViewPage,
-    ActivitiesClassicListPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -213,7 +210,6 @@ export function createTranslateLoader(http: HttpClient) {
   ],
   entryComponents: [
     AchievementsViewPage,
-    ActivitiesClassicListPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -254,9 +250,9 @@ export function createTranslateLoader(http: HttpClient) {
   providers: [
     { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
+    { provide: AppService, useClass: AppService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
-    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
     { provide: FilepickerService, useClass: FilepickerService },
