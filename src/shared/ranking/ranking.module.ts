@@ -6,20 +6,26 @@ import {
 } from '@angular/core';
 import { IonicModule } from 'ionic-angular';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RequestModule } from './request.module';
+import { RequestModule } from '../request/request.module';
 import { CommonModule } from '@angular/common';
-import { RequestServiceConfig, RequestService } from './request.service';
+import { RequestServiceConfig, RequestService } from '../request/request.service';
 import { RankingBadgesPage } from './components/view/ranking-badges';
 import { RankingDetailsPage } from './components/view/ranking-details.page';
 import { RankingsPage } from './components/list/rankings.page';
 
-import { CacheService } from '../services/cache.service';
-import { GameService } from '../services/game.service';
-import { TranslationService } from '../services/translation.service';
-import { AchievementService } from '../services/achievement.service';
+import { CacheService } from '../cache/cache.service';
+import { GameService } from '../../services/game.service';
+import { TranslationModule } from '../translation/translation.module';
+import { TranslationService } from '../translation/translation.service';
+import { AchievementService } from '../../services/achievement.service';
 
 @NgModule({
-  imports: [ RequestModule, CommonModule ],
+  imports: [
+    RequestModule,
+    CommonModule,
+    IonicModule,
+    TranslationModule
+  ],
   providers: [
     RequestService,
     CacheService,
@@ -37,7 +43,9 @@ import { AchievementService } from '../services/achievement.service';
     RankingDetailsPage,
     RankingsPage,
     CommonModule,
-    IonicModule
+    IonicModule,
+    RequestModule,
+    TranslationModule
   ]
 })
 

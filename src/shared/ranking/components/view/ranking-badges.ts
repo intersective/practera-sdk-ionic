@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ViewController, ToastController, LoadingController, NavParams } from 'ionic-angular';
 import { TranslationService } from '../../../translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages';
+import { loadingMessages, errMessages } from '../../../../app/messages';
 import * as _ from 'lodash';
 // services
 import { AchievementService } from '../../../../services/achievement.service';

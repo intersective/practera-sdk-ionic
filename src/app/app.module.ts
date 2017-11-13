@@ -87,7 +87,7 @@ import { TimeAgoPipe } from '../pipes/timeago';
 import { TruncatePipe } from '../pipes/truncate.pipe';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 
-import { RankingModule } from '../shared/ranking.module';
+import { RankingModule } from '../shared/ranking/ranking.module';
 
 // configs
 import { default as Configure } from '../configs/config';

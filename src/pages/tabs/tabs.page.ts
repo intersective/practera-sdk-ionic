@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 // Pages
 import { ActivitiesListPage } from '../activities/list/list.page';
-import { RankingsPage } from '../rankings/list/rankings.page';
+import { RankingsPage } from '../../shared/ranking/components/list/rankings.page';
 import { SettingsPage } from '../settings/settings.page';
 import { TestPage } from './test.page';
 import { EventsListPage } from '../events/list/list.page';

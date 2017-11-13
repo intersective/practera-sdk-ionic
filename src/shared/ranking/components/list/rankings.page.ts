@@ -7,7 +7,7 @@ import { GameService } from '../../../../services/game.service';
 // pages
 import { RankingDetailsPage } from '../view/ranking-details.page';
 // Others
-import { loadingMessages, errMessages } from '../../../app/messages';
+import { loadingMessages, errMessages } from '../../../../app/messages';
 import * as _ from 'lodash';
 
 @Component({

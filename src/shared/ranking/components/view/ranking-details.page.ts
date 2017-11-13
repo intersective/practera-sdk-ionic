@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { TranslationService } from '../../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../../app/messages';
+import { loadingMessages, errMessages } from '../../../../app/messages';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 // services
