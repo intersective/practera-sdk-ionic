@@ -148,9 +148,9 @@ export class ActivitiesListPage {
     if(this.email && this.program_id){
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocal('email');
-      this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
+      this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
     }else {
-      this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/1/test@test.com`;
+      this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
     }
   }
   ionViewWillEnter(){
