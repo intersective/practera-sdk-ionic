@@ -76,13 +76,13 @@ export class RequestService {
     let apiKey = this.cacheService.getCached('apikey') ||
       this.cacheService.getLocal('apikey');
     if (!_.isEmpty(apiKey)) {
-      result = result.set('apikey', apiKey.toString());
+      result = result.set('apikey', _.toString(apiKey));
     }
     // Inject timelineID from cached
     let timelineId = this.cacheService.getCached('timelineID') ||
       this.cacheService.getLocal('timelineID');
     if (timelineId) {
-      result = result.set('timelineID', timelineId.toString());
+      result = result.set('timelineID', _.toString(timelineId));
     }
     return result;
   }
@@ -100,7 +100,7 @@ export class RequestService {
     let params = (options && options.params) ? options.params : new HttpParams();
     if (options && options.search) {
       _.each(options.search, (value, key) => {
-        params = params.set(key, value.toString());
+        params = params.set(key, _.toString(value));
       });
     }
     let timelineId = this.cacheService.getLocal('timelineID');
