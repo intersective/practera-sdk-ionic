@@ -21,6 +21,7 @@ export class SettingsPage {
   logoutMessage: any = loadingMessages.Logout.logout;
   settings: any = [];
   isLock: boolean = false;
+  pageLoad: boolean = true;
   constructor(
     public appCtrl: App,
     public alertCtrl: AlertController,
@@ -33,6 +34,7 @@ export class SettingsPage {
   ) {}
 
   ionViewWillEnter(){
+    this.pageLoad = true;
     this.preload();
   }
 
@@ -46,10 +48,10 @@ export class SettingsPage {
     this.gameService.getCharacters(gameId)
       .subscribe((characters) => {
         let me = characters.Characters[0];
-        if(me.meta == null) {
+        if (me.meta == null) {
           this.hideName = false;
         }
-        if(me.meta != null){
+        if (me.meta != null){
           if (me.meta.private === 0) {
             this.hideName = false;
           } else {
@@ -63,6 +65,11 @@ export class SettingsPage {
   }
 
   triggerHideName() {
+    if (this.pageLoad) {
+      this.pageLoad = false;
+      return false;
+    }
+
     if (this.isLock) {
       this.isLock = false;
     } else {

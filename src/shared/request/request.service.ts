@@ -74,18 +74,18 @@ export class RequestService {
     let header: HttpHeaders = new HttpHeaders();
 
     _.forEach(custom, (value, key) => {
-      header = header.set(key, value);
+      header = header.set(key, _.toString(value));
     });
 
     // Inject apiKey from cached
     let apiKey = this.cacheService.getLocal('apikey');
     if (!_.isEmpty(apiKey)) {
-      header = header.set('apikey', apiKey.toString());
+      header = header.set('apikey', _.toString(apiKey));
     }
     // Inject timelineID from cached
     let timelineId = this.cacheService.getLocal('timelineID');
     if (timelineId) {
-      header = header.set('timelineID', timelineId.toString());
+      header = header.set('timelineID', _.toString(timelineId));
     }
 
     return header;
@@ -104,7 +104,7 @@ export class RequestService {
     let params = (options && options.params) ? options.params : new HttpParams();
     if (options && options.search) {
       _.each(options.search, (value, key) => {
-        params = params.set(key, value.toString());
+        params = params.set(key, _.toString(value));
       });
     }
     let timelineId = this.cacheService.getLocal('timelineID');
