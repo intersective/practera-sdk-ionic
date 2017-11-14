@@ -65,6 +65,7 @@ export class ActivitiesListPage {
   }
   public hardcode_assessment_id: any = Configure.hardcode_assessment_id;
   public hardcode_context_id: any = Configure.hardcode_context_id;
+  public portfolio_domain: any = Configure.portfolio_domain;
   public activityIndex: any = 0;
   public activities: any = [];
   public activityIDs: any = [];
@@ -144,12 +145,12 @@ export class ActivitiesListPage {
     public translationService: TranslationService,
     public win: WindowRef
   ) {
-    if(this.email && this.program_id){
+    if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocal('email');
-      this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/${this.program_id}/${this.email}`;
-    }else {
-      this.viewPortfolioLink = `https://practera.com/assess/assessments/portfolio/1/test@test.com`;
+      this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
+    } else {
+      this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
     }
   }
   ionViewWillEnter(){
