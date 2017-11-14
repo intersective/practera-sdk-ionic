@@ -44,26 +44,36 @@ export class RequestService {
   public getAppkey(){
     return this.appkey;
   }
+
   /**
    * Error handle for API response
    * @param {Error} error
    */
   private handleError(error) {
-    let errorFrom = {
-        api: 'SERVER_ERROR',
-      },
-      currentError: any = error;
+    let errorFrom = { api: 'SERVER_ERROR' },
+        currentError: any = error;
+
     if (typeof error !== 'object') {
       throw 'Unable to process API respond!';
     }
+
+    let errorBody = error.body || error.error;
+    if (typeof errorBody == 'string') {
+      errorBody = JSON.parse(errorBody);
+    }
+
+    /* @TODO: error tracking - logging feature coming soon
     if (error.status === 0) { // client unrecoverable error encountered
       currentError.frontendCode = errorFrom.api;
     } else {
-      let errorBody = error.body;
       currentError.frontendCode = errorBody.data || errorBody.error;
     }
     return Observable.throw(currentError);
+    */
+
+    return Observable.throw(errorBody);
   }
+
   // Inject required fields to header of API request
   appendHeader(customHeader: any = {
     'contentType': 'application/json',
