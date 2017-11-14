@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 //services
 import { AssessmentService } from '../../services/assessment.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { CharacterService } from '../../services/character.service';
 import { GameService } from '../../services/game.service';
 import { SubmissionService } from '../../services/submission.service';
 import { TranslationService } from '../../shared/translation/translation.service';
@@ -52,7 +51,6 @@ export class AssessmentsPage {
     public alertCtrl: AlertController,
     public assessmentService: AssessmentService,
     public cacheService: CacheService,
-    public characterService: CharacterService,
     public events: Events,
     public gameService: GameService,
     public loadingCtrl: LoadingController,

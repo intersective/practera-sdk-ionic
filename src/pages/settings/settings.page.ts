@@ -45,10 +45,10 @@ export class SettingsPage {
     });
     loader.present().then(() => {
       this.cache.clear().then(() => {
+        loader.dismiss();
+        this.navCtrl.push(LoginPage);
         localStorage.clear();
         window.location.reload(); // the reason of doing this is because of we need to refresh page content instead of API data cache issue occurs
-        loader.dismiss();
-        this.navCtrl.setRoot(LoginPage);
       });
     });
   }

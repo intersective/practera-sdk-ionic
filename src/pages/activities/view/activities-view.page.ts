@@ -153,16 +153,14 @@ export class ActivitiesViewPage {
    * @param {Array<object>} submissions submissions array objects
    */
   setSubmissionStatusTitle(submissions: Array<any>) {
-    let results: Array<{
-      name: string,
-      score: number,
-      published: boolean,
-      inprogress: boolean,
-      moderated_assessment: boolean
-    }>;
-
     submissions = submissions.map((submission, index) => {
-      let result = {
+      let result: {
+        name: string,
+        score: number,
+        published: boolean,
+        inprogress: boolean,
+        moderated_assessment: boolean
+      } = {
         name: '',
         score: 0,
         published: false,
