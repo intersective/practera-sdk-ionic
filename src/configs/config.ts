@@ -26,7 +26,7 @@ const hardcode_context_id = 2532; // Reference Model - Assessment Context ID
 const hardcode_activity_id = 7850; // <Activity ID> is the activity id of career strategist, checking this id to see if all skills activities has been revealed.
 const hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050]; // for handling submitted assessments title display
 const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; // for handling submitted assessments title display
-const portfolio_domain = 'https://www.practera.com/assess/assessments/portfolio'; //for handling digital portfolio url
+const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital portfolio url
 // function of hardcode list data
 const HardcodeDataList = () => {
   if(!(window.location.href.indexOf('pe.practera.com') > -1)){ // if not live server, then, go to sandbox hardcode list and pre-config data
@@ -55,7 +55,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7655;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
-    this.portfolio_domain = 'https://sandbox.practera.com/assess/assessments/portfolio/';
+    this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
   }else {
     this.prefixUrl = 'https://api.practera.com/';
     this.appKey = '69ad1e66dc';
@@ -82,14 +82,14 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7850;
     this.hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050];
     this.hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661];
-    this.portfolio_domain = 'https://www.practera.com/assess/assessments/portfolio/';
+    this.portfolio_domain = `https://www.practera.com/${portfolio_domain}`;
   }
   return {
     filestack: {
       apiKey: 'AO6F4C72uTPGRywaEijdLz'
     },
     prefixUrl: this.prefixUrl,
-    appKey: this.appKey, 
+    appKey: this.appKey,
     achievementListIDs: this.achievementListIDs,
     newbieOrderedIDs: this.newbieOrderedIDs,
     hardcode_assessment_id: this.hardcode_assessment_id,

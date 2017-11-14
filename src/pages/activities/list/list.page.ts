@@ -145,11 +145,11 @@ export class ActivitiesListPage {
     public translationService: TranslationService,
     public win: WindowRef
   ) {
-    if(this.email && this.program_id){
+    if (this.email && this.program_id) {
       this.program_id = this.cacheService.getLocal('program_id');
       this.email = this.cacheService.getLocal('email');
       this.viewPortfolioLink = `${this.portfolio_domain}/${this.program_id}/${this.email}`;
-    }else {
+    } else {
       this.viewPortfolioLink = `${this.portfolio_domain}/1/test@test.com`;
     }
   }
