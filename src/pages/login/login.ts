@@ -11,22 +11,26 @@ import { loadingMessages, errMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../shared/translation/translation.service';
 import * as _ from 'lodash';
+
 // directives
 import { FormValidator } from '../../shared/validators/formValidator';
+
 // pages
 import { TabsPage } from '../../pages/tabs/tabs.page';
 import { ForgetPasswordPage } from '../../pages/forget-password/forget-password';
+
 // services
+import { AppService } from '../../services/app.service';
 import { AuthService } from '../../services/auth.service';
 import { CacheService } from '../../shared/cache/cache.service';
-import { GameService } from '../../services/game.service';
-import { MilestoneService } from '../../services/milestone.service';
 import { RequestServiceConfig } from '../../shared/request/request.service';
+
 /* This page is for handling user login process */
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
+
 export class LoginPage {
   email: string;
   password: any;
@@ -48,10 +52,9 @@ export class LoginPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public viewCtrl: ViewController,
+    public appService: AppService,
     public authService: AuthService,
     public cacheService: CacheService,
-    public gameService: GameService,
-    public milestoneService: MilestoneService,
     public translationService: TranslationService) {
     this.navCtrl = navCtrl;
     this.loginFormGroup = formBuilder.group({
@@ -87,71 +90,49 @@ export class LoginPage {
               self.cacheService.setLocal('timelineID', data.Timelines[0].Timeline.id);
               self.cacheService.setLocal('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
-              // get game_id data after login
-              this.gameService.getGames()
-                  .subscribe(data => {
-                    console.log("game data: ", data);
-                    if (data && data.Games) {
-                      data.Games.map(game => {
-                        console.log("game id: ", game.id);
-                        if (game && game.id) { // avoid storing empty game id
-                          this.cacheService.setLocal('game_id', game.id);
-                        }
+              this.appService.getCharacter()
+                .subscribe(
+                  results => {
+                    loading.dismiss().then(() => {
+                      // results[0] game API data
+                      this.gameID = results[0].Games[0].id;
+                      if(this.gameID){
+                        this.cacheService.setLocal('game_id', this.gameID);
+                      }
+                      // results[1] user API data
+                      this.userData = results[1];
+                      if(this.userData){
+                        this.cacheService.setLocal('name', results[1].User.name);
+                        this.cacheService.setLocal('email', results[1].User.email);
+                        this.cacheService.setLocal('program_id', results[1].User.program_id);
+                        this.cacheService.setLocal('project_id', results[1].User.project_id);
+                        this.cacheService.setLocal('user', results[1].User);
+                      }
+                      // results[2] milestone API data
+                      this.milestone_id = results[2][0].id;
+                      if(this.milestone_id){
+                        this.cacheService.setLocal('milestone_id', this.milestone_id);
+                      }
+                      this.navCtrl.setRoot(TabsPage).then(() => {
+                        this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
                       });
-                    }
-
-                    if (!this.cacheService.getLocal('game_id') && data.Games) {
-                      // For now only have one game per project
-                      self.cacheService.setLocal('game_id', data.Games[0].id);
-                    }
-                  }, err => {
-                    console.log("game err: ", err);
-                  });
-
-              // get milestone data after login
-              this.authService.getUser()
-                  .subscribe(
-                    data => {
-                      self.cacheService.setLocal('name', data.User.name);
-                      self.cacheService.setLocal('email', data.User.email);
-                      self.cacheService.setLocal('program_id', data.User.program_id);
-                      self.cacheService.setLocal('project_id', data.User.project_id);
-                      self.cacheService.setLocal('user', data.User);
-                    },
-                    err => {
-                      console.log(err);
-                      throw 'Fatal: Unable to retrieve user data.';
-                    }
-                  );
-
-              // get milestone data after login
-              this.milestoneService.getMilestones()
-                  .subscribe(
-                    data => {
-                      loading.dismiss().then(() => {
-                        console.log(data[0].id);
-                        this.milestone_id = data[0].id;
-                        self.cacheService.setLocal('milestone_id', data[0].id);
-                        console.log("milestone id: " + data[0].id);
-                        this.navCtrl.push(TabsPage).then(() => {
-                          this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                          window.history.replaceState({}, '', window.location.origin);
-                        });
-                      });
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  )
-              this.cacheService.write('isAuthenticated', true);
-              this.cacheService.setLocal('isAuthenticated', true);
-            }, err => {
-              loading.dismiss().then(() => {
-                this.logError(err);
-                this.cacheService.removeLocal('isAuthenticated');
-                this.cacheService.write('isAuthenticated', false);
-              });
-            });
+                    });
+                  },
+                  err => {
+                    this.logError();
+                  }
+                )
+                this.cacheService.write('isAuthenticated', true);
+                this.cacheService.setLocal('isAuthenticated', true);
+              }, err => {
+                loading.dismiss().then(() => {
+                  this.logError();
+                  this.cacheService.removeLocal('isAuthenticated');
+                  this.cacheService.write('isAuthenticated', false);
+                });
+              }
+            );
       });
     });
   }
@@ -197,10 +178,10 @@ export class LoginPage {
    * This function is used to log unexpected error accountered in the client side
    * @param {object} error result from API request
    */
-  logError(error) {
+  logError() {
     const alert = this.alertCtrl.create({
-      title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.',
+      title: 'Invalid Login',
+      message: 'Your login attempt has failed. Make sure the username and password are correct.',
       buttons: ['Close']
     });
     alert.present();
@@ -210,7 +191,7 @@ export class LoginPage {
   /**
    * forget password page link function
    */
-  linkToForgetPassword() {
-    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window
+  linkToForgetPassword() { 
+    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window 
   }
 }

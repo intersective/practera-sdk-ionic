@@ -1,8 +1,8 @@
+import { Http, Headers, URLSearchParams, RequestOptions } from '@angular/http';
 import { Injectable } from '@angular/core';
+// Others
 import { RequestService } from '../shared/request/request.service';
-import { HttpParams } from '@angular/common/http';
 const AUTH_ENDPOINT = 'api/auths.json?action=';
-
 @Injectable()
 export class AuthService {
   appkey: any = this.request.getAppkey();
@@ -14,11 +14,9 @@ export class AuthService {
     return this.request.post(AUTH_ENDPOINT + type, body);
   }
   verifyRegistration(data) {
-    let params = new HttpParams();
-    params.set('email', data.email);
-    params.set('key', data.key);
-
-    return this.postRequest('verify_registration', params);
+    let email = data.email;
+    let key = data.key;
+    return this.postRequest('verify_registration', { email, key });
   }
   register(data) {
     return this.postRequest('registration', {
@@ -34,10 +32,7 @@ export class AuthService {
     return this.postRequest('forgot_password', { email });
   }
   verifyUserKeyEmail(key, email) {
-    return this.postRequest('verify_reset_password', {
-      key: key,
-      email: email,
-    });
+    return this.postRequest('verify_reset_password', { key, email });
   }
   resetUserPassword(key, email, password, verify_password) {
     return this.postRequest('reset_password', { key, email, password, verify_password });
