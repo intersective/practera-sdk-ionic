@@ -201,9 +201,8 @@ export class EventsViewPage {
     loading.present().then(() => {
       // if submission exist
       loading.dismiss().then(() => {
-        // this.navCtrl.push(AssessmentsGroupPage, {
         this.navCtrl.push(AssessmentsPage, {
-          event,
+          event: event,
           activity: event.activity,
           submissions: this.submissions
         });

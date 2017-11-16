@@ -32,6 +32,7 @@ export class AssessmentsPage {
   assessmentQuestions: any = [];
   combinedItems: any = [];
   discardConfirmMessage = confirmMessages.Assessments.DiscardChanges.discard;
+  event: any = {};
   getCharacterID: any = this.cacheService.getLocal('character_id');
   getInitialItems: any = this.cacheService.getLocal('initialItems');
   gotNewItems: boolean = false;
@@ -61,6 +62,7 @@ export class AssessmentsPage {
     public translationService: TranslationService
   ) {
     this.activity = this.navParams.get('activity');
+    this.event = this.navParams.get('event');
     if (!this.activity) {
       throw 'Fatal Error: Activity not available';
     }
@@ -282,26 +284,6 @@ export class AssessmentsPage {
 
   loadQuestions(): Promise<any> {
     return new Promise((resolve, reject) => {
-
-      // get_assessments request with 'assessment_id' & 'structured'
-      let getAssessment = (assessmentId) => {
-        return this.assessmentService.getAll({
-          assessment_id: assessmentId,
-          structured: true
-        });
-      };
-
-      // Congregation of assessment ids to fulfill get_assessments API's param requirement
-      let tasks = [];
-      _.forEach(this.activity.References, (reference) => {
-        if (
-          reference.Assessment &&
-          reference.Assessment.id
-        ) {
-          return tasks.push(getAssessment(reference.Assessment.id));
-        }
-      });
-
       /**
        * merging submission into question inside of assessment array objects
        * - set question statuses (quantity of total answered)
@@ -349,7 +331,7 @@ export class AssessmentsPage {
       };
 
       // first batch API requests (get_assessments)
-      Observable.forkJoin(tasks)
+      Observable.forkJoin(this.preStackTasks())
         .subscribe(
           (assessments: any) => {
             this.assessmentGroups = assessments;
@@ -379,6 +361,33 @@ export class AssessmentsPage {
           }
         );
     });
+  }
+
+  /**
+   * @name preStackTasks
+   * @description stack of tasks prepared to handle multiple activity references (ids)
+   */
+  preStackTasks() {
+    // get_assessments request with "assessment_id" & "structured"
+    let getAssessment = (assessmentId) => {
+      // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
+      return this.assessmentService.getAll({
+        search: {
+          assessment_id: assessmentId,
+          structured: true
+        }
+      });
+    };
+
+    let tasks: Array<any> = [];
+    // Congregate assessment ids for rxjs forkJoin (batch API requests)
+    _.forEach(this.event.References, ref => {
+      if (ref.Assessment && ref.Assessment.id) {
+        tasks.push(getAssessment(ref.Assessment.id));
+      }
+    });
+
+    return tasks;
   }
 
 

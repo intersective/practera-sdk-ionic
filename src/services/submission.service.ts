@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-
-// Others
 import { RequestService } from '../shared/request/request.service';
+import { Observable } from 'rxjs/Observable';
+
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
 @Injectable()
 export class SubmissionService {
-  targetUrl = 'api/submissions.json';
+  private targetUrl = 'api/submissions.json';
 
-  constructor(
-    public request: RequestService
-  ) {}
+  constructor(private request: RequestService) {}
 
-  // list()
+  /**
+   * @description List all submissions
+   */
   getSubmissions(options?: any) {
-    return this.request.get(this.targetUrl, { search: options });
+    return this.request.get(this.targetUrl, options);
   }
 
   extractPhotos(data) {
@@ -214,12 +214,16 @@ export class SubmissionService {
    * extract reference IDs and prepare Observables to retrieve submissions
    * @param {array} references References array responded with get_activities() api
    */
-  getSubmissionsByReferences(references) {
+  getSubmissionsByReferences(references: Array<{context_id : Number}>): Array<Observable<any>> {
     let tasks = []; // multiple API requests
 
     // get_submissions API to retrieve submitted answer
     let getSubmissions = (contextId) => {
-      return this.getSubmissions({ context_id: contextId });
+      return this.getSubmissions({
+        search: {
+          context_id: contextId
+        }
+      });
     };
     // Congregation of get_submissions API Observable with different context_id
     _.forEach(references, reference => {
