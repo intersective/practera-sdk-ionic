@@ -13,7 +13,6 @@ import { loadingMessages, errMessages } from '../../../app/messages';
   templateUrl: 'popup.html'
 })
 export class ActivityListPopupPage {
-
   achievementData: any = null;
   achievementName: string;
   achievementsLoadingErr: any = errMessages.General.loading.load;

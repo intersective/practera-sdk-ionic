@@ -19,8 +19,6 @@ export class TeamPage {
     public toastCtrl: ToastController
   ) {}
 
-
-
   // @TODO: Move to shared function later...
   _error(err) {
     let toast = this.toastCtrl.create({

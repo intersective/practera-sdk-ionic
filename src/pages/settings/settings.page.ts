@@ -29,15 +29,19 @@ export class SettingsPage {
   getUserEmail() {
     return this.cache.getLocal('email') || '';
   }
+
   goLeaderBoardSettings(){
     this.navCtrl.push(LeaderboardSettingsPage);
   }
+
   goToTutorial() {
     this.navCtrl.push(TutorialPage);
   }
+
   goToTermConditions() {
     this.navCtrl.push(TermsConditionsPage);
   }
+
   logout() {
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
