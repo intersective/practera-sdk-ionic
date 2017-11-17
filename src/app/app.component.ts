@@ -4,7 +4,6 @@ import { Platform, NavController } from 'ionic-angular';
 import { CacheService } from '../shared/cache/cache.service';
 import { AuthService } from '../services/auth.service';
 // pages
-import { SidenavPage } from '../pages/sidenav/sidenav';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { RegisterPage } from '../pages/registration/register.page';

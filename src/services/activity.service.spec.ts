@@ -15,7 +15,7 @@ describe('ActivityService', () => {
   let activityService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
+    let module = {
       declarations: [
         CacheComponent
       ],
@@ -34,7 +34,9 @@ describe('ActivityService', () => {
         { provide: ActivityService, useClass: ActivityService },
         { provide: CacheService, useClass: CacheService }
       ]
-    });
+    };
+
+    TestBed.createComponent(ActivityService);
     activityService = TestBed.get(ActivityService);
     httpMock = TestBed.get(HttpTestingController);
   });
