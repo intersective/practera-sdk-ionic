@@ -36,7 +36,12 @@ module.exports = function (config) {
       format: '%b %T: %m',
       terminal: true
     },
-
+    remapIstanbulReporter: {
+      reports: {
+        html: 'coverage',
+        lcovonly: './coverage/coverage.lcov'
+      }
+    },
     reporters: ['kjhtml', 'dots'],
     port: 9876,
     colors: true,

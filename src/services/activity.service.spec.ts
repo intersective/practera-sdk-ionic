@@ -1,23 +1,26 @@
 
-import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { TestBed, getTestBed, inject } from '@angular/core/testing';
+import {
+  HttpClientTestingModule,
+  HttpTestingController
+} from '@angular/common/http/testing';
 import { IonicStorageModule } from '@ionic/storage';
+import { CacheModule } from '../shared/cache/cache.module';
 import { CacheComponent } from '../shared/cache/cache.component';
+
 // service file
 import { ActivityService } from './activity.service';
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestModule } from '../shared/request/request.module';
 
-describe('ActivityService', () => {
-  let injector;
-  let service: ActivityService;
-  let httpMock: HttpTestingController;
-  let activityService;
+let httpMock: HttpTestingController;
+let service: ActivityService;
 
+describe('ActivityService', () => {
   beforeEach(() => {
     let module = {
       declarations: [
-        CacheComponent
+
       ],
       imports: [
         HttpClientTestingModule,
@@ -28,31 +31,56 @@ describe('ActivityService', () => {
         RequestModule.forRoot({
           appKey: '',
           prefixUrl: ''
-        })
+        }),
+        CacheModule
       ],
       providers: [
-        { provide: ActivityService, useClass: ActivityService },
-        { provide: CacheService, useClass: CacheService }
+        ActivityService,
+        CacheService
       ]
     };
 
-    TestBed.createComponent(ActivityService);
-    activityService = TestBed.get(ActivityService);
-    httpMock = TestBed.get(HttpTestingController);
+    TestBed.configureTestingModule(module)
+    .overrideModule(CacheModule, {
+      add: {
+        declarations: [
+          CacheComponent
+        ]
+      }
+    })
+    .compileComponents()
+    .then(() => {
+      service = TestBed.get(ActivityService);
+      httpMock = TestBed.get(HttpTestingController);
+    });
   });
 
-  it('true is true', () => expect(true).toBe(true));
-
-  it('should get activity list', () => {
-    let result:any;
-    activityService.getList().subscribe((res) => {
-      result = res;
-      console.log(res);
+  it('activity service is defined', () => {
+    inject([ActivityService], (service: ActivityService) => {
+      expect(service instanceof ActivityService).toBe(true);
     });
+  });
 
-    httpMock.expectOne('api/activities.json').flush({
-      data: true
+  describe('when getActivities', () => {
+    let backend: HttpClientTestingModule;
+    let service: ActivityService;
+    let fakeActivities;
+    let response: Response;
+
+    it('should get activity list', () => {
+      inject([HttpTestingController, service], (httpMock: HttpTestingController,
+        service: ActivityService) => {
+
+        let result:any;
+        service.getList().subscribe((res) => {
+          result = res;
+          console.log(res);
+        });
+
+        httpMock.expectOne('api/activities.json').flush({
+          data: true
+        });
+      });
     });
-    expect(result).toBe({});
   })
 })

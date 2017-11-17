@@ -16,9 +16,14 @@ import { TestPage } from '../pages/tabs/test.page';
 import { NotificationModule } from '../shared/notification/notification.module';
 
 // services
-import { AuthService } from '../services/auth.service';
-import { RequestModule } from '../shared/request/request.module';
-import { CacheModule } from '../shared/cache/cache.module';
+import {
+  AuthService,
+  ActivityService
+} from '../services';
+import {
+  RequestModule,
+  CacheModule
+} from '../shared';
 
 let fixture: ComponentFixture<MyApp>;
 let component: MyApp;
@@ -68,7 +73,7 @@ describe('MyApp Component', () => {
     };
     console.log(component.do);
 
-    expect(component.do.registration).toBe(supportedParams.registration);
+    expect(component.do.registration).toBe(RegisterPage);
     expect(component.do.login).toBe(supportedParams.login);
     expect(component.do.resetpassword).toBe(supportedParams.resetpassword);
     expect(component.do.secure).toBe(supportedParams.secure);
