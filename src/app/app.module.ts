@@ -88,6 +88,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 
 import { RankingModule } from '../shared/ranking/ranking.module';
+import { RankingsPage } from '../shared/ranking/components/list/rankings.page';
 
 // configs
 import { default as Configure } from '../configs/config';
@@ -96,84 +97,155 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
+const declarations = [
+  AchievementsViewPage,
+  ActivitiesListPage,
+  ActivitiesViewModalPage,
+  ActivitiesViewPage,
+  ActivityListPopupPage,
+  AssessmentsGroupPage,
+  AssessmentsPage,
+  EventCheckinPage,
+  EventComponent,
+  EventsComponent,
+  EventsDownloadPage,
+  EventsListPage,
+  EventsPreviewPage,
+  EventsViewPage,
+  FeedbackComponent,
+  FileQuestionComponent,
+  ForgetPasswordPage,
+  GalleryPage,
+  ItemsPopupPage,
+  LeaderboardSettingsPage,
+  LevelComponent,
+  LevelsListPage,
+  LoadingMarkerComponent,
+  LockerComponent,
+  LoginPage,
+  MagicLinkPage,
+  MemberComponent,
+  ModalComponent,
+  MultipleQuestionComponent,
+  MyApp,
+  OneofQuestionComponent,
+  PhotoComponent,
+  QuestionGroupComponent,
+  // RankingBadgesPage,
+  // RankingDetailsPage,
+  // RankingsPage,
+  RegisterPage,
+  ResetPasswordPage,
+  SettingsPage,
+  SidenavPage,
+  TabsPage,
+  TeamPage,
+  TestPage,
+  TutorialPage,
+  TermsConditionsPage,
+  TextQuestionComponent,
+  TimeAgoPipe,
+  TruncatePipe,
+  UcfirstPipe,
+  EscapeHtmlPipe,
+]
+
+const imports = [
+  RankingModule,
+  BrowserModule,
+  CacheModule,
+  FormsModule,
+  MomentModule,
+  NotificationModule,
+  HttpClientModule,
+  UtilsModule,
+  TestModule,
+  RequestModule.forRoot({
+    appKey: Configure.appKey,
+    prefixUrl: Configure.prefixUrl
+  }),
+  FilepickerModule.forRoot({
+    apikey: Configure.filestack.apiKey
+  }),
+  TranslateModule.forRoot({
+    loader: {
+      provide: TranslateLoader,
+      useFactory: createTranslateLoader,
+      deps: [HttpClient]
+    }
+  }),
+  TranslationModule
+]
+
+const entryComponents = [
+  RankingsPage,
+
+  AchievementsViewPage,
+  ActivitiesListPage,
+  ActivitiesViewModalPage,
+  ActivitiesViewPage,
+  ActivityListPopupPage,
+  AssessmentsGroupPage,
+  AssessmentsPage,
+  EventCheckinPage,
+  EventComponent,
+  EventsComponent,
+  EventsDownloadPage,
+  EventsListPage,
+  EventsPreviewPage,
+  EventsViewPage,
+  ForgetPasswordPage,
+  ItemsPopupPage,
+  GalleryPage,
+  LeaderboardSettingsPage,
+  LevelComponent,
+  LevelsListPage,
+  LoadingMarkerComponent,
+  LockerComponent,
+  LoginPage,
+  MagicLinkPage,
+  ModalComponent,
+  MyApp,
+  // RankingBadgesPage,
+  // RankingDetailsPage,
+  // RankingsPage,
+  RegisterPage,
+  ResetPasswordPage,
+  SettingsPage,
+  SidenavPage,
+  TabsPage,
+  TestPage,
+  TermsConditionsPage,
+  TutorialPage,
+]
+
+const providers = [
+  { provide: AchievementService, useClass: AchievementService },
+  { provide: ActivityService, useClass: ActivityService },
+  { provide: AppService, useClass: AppService },
+  { provide: AssessmentService, useClass: AssessmentService },
+  { provide: AuthService, useClass: AuthService },
+  { provide: ErrorHandler, useClass: IonicErrorHandler },
+  { provide: EventService, useClass: EventService },
+  { provide: FilepickerService, useClass: FilepickerService },
+  { provide: LevelService, useClass: LevelService },
+  { provide: LocationStrategy , useClass: HashLocationStrategy },
+  { provide: MilestoneService, useClass: MilestoneService },
+  { provide: NotificationService, useClass: NotificationService },
+  { provide: SessionService, useClass: SessionService },
+  { provide: SubmissionService, useClass: SubmissionService },
+  { provide: TeamService, useClass: TeamService },
+  WindowRef,
+  GroupEmitterService,
+  GameService,
+  // { provide: RequestOptions, useClass: CustomRequestOptions }
+]
+
 @NgModule({
   declarations: [
-    AchievementsViewPage,
-    ActivitiesListPage,
-    ActivitiesViewModalPage,
-    ActivitiesViewPage,
-    ActivityListPopupPage,
-    AssessmentsGroupPage,
-    AssessmentsPage,
-    EventCheckinPage,
-    EventComponent,
-    EventsComponent,
-    EventsDownloadPage,
-    EventsListPage,
-    EventsPreviewPage,
-    EventsViewPage,
-    FeedbackComponent,
-    FileQuestionComponent,
-    ForgetPasswordPage,
-    GalleryPage,
-    ItemsPopupPage,
-    LeaderboardSettingsPage,
-    LevelComponent,
-    LevelsListPage,
-    LoadingMarkerComponent,
-    LockerComponent,
-    LoginPage,
-    MagicLinkPage,
-    MemberComponent,
-    ModalComponent,
-    MultipleQuestionComponent,
-    MyApp,
-    OneofQuestionComponent,
-    PhotoComponent,
-    QuestionGroupComponent,
-    // RankingBadgesPage,
-    // RankingDetailsPage,
-    // RankingsPage,
-    RegisterPage,
-    ResetPasswordPage,
-    SettingsPage,
-    SidenavPage,
-    TabsPage,
-    TeamPage,
-    TestPage,
-    TutorialPage,
-    TermsConditionsPage,
-    TextQuestionComponent,
-    TimeAgoPipe,
-    TruncatePipe,
-    UcfirstPipe,
-    EscapeHtmlPipe,
+    ...declarations
   ],
   imports: [
-    RankingModule,
-    BrowserModule,
-    CacheModule,
-    FormsModule,
-    MomentModule,
-    NotificationModule,
-    HttpClientModule,
-    UtilsModule,
-    TestModule,
-    RequestModule.forRoot({
-      appKey: Configure.appKey,
-      prefixUrl: Configure.prefixUrl
-    }),
-    FilepickerModule.forRoot({
-      apikey: Configure.filestack.apiKey
-    }),
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: createTranslateLoader,
-        deps: [HttpClient]
-      }
-    }),
-    TranslationModule,
     IonicModule.forRoot(MyApp, {}, {
        links: [
         {
@@ -207,70 +279,17 @@ export function createTranslateLoader(http: HttpClient) {
           defaultHistory: [TestPage]
         }
       ]
-    })
+    }),
+    ...imports
   ],
   bootstrap: [
     IonicApp
   ],
   entryComponents: [
-    AchievementsViewPage,
-    ActivitiesListPage,
-    ActivitiesViewModalPage,
-    ActivitiesViewPage,
-    ActivityListPopupPage,
-    AssessmentsGroupPage,
-    AssessmentsPage,
-    EventCheckinPage,
-    EventComponent,
-    EventsComponent,
-    EventsDownloadPage,
-    EventsListPage,
-    EventsPreviewPage,
-    EventsViewPage,
-    ForgetPasswordPage,
-    ItemsPopupPage,
-    GalleryPage,
-    LeaderboardSettingsPage,
-    LevelComponent,
-    LevelsListPage,
-    LoadingMarkerComponent,
-    LockerComponent,
-    LoginPage,
-    MagicLinkPage,
-    ModalComponent,
-    MyApp,
-    // RankingBadgesPage,
-    // RankingDetailsPage,
-    // RankingsPage,
-    RegisterPage,
-    ResetPasswordPage,
-    SettingsPage,
-    SidenavPage,
-    TabsPage,
-    TestPage,
-    TermsConditionsPage,
-    TutorialPage,
+    ...entryComponents
   ],
   providers: [
-    { provide: AchievementService, useClass: AchievementService },
-    { provide: ActivityService, useClass: ActivityService },
-    { provide: AppService, useClass: AppService },
-    { provide: AssessmentService, useClass: AssessmentService },
-    { provide: AuthService, useClass: AuthService },
-    { provide: ErrorHandler, useClass: IonicErrorHandler },
-    { provide: EventService, useClass: EventService },
-    { provide: FilepickerService, useClass: FilepickerService },
-    { provide: LevelService, useClass: LevelService },
-    { provide: LocationStrategy , useClass: HashLocationStrategy },
-    { provide: MilestoneService, useClass: MilestoneService },
-    { provide: NotificationService, useClass: NotificationService },
-    { provide: SessionService, useClass: SessionService },
-    { provide: SubmissionService, useClass: SubmissionService },
-    { provide: TeamService, useClass: TeamService },
-    WindowRef,
-    GroupEmitterService,
-    GameService,
-    // { provide: RequestOptions, useClass: CustomRequestOptions }
+    ...providers
   ]
 })
 export class AppModule {}
