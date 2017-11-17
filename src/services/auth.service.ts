@@ -15,10 +15,16 @@ export class AuthService {
   }
   verifyRegistration(data) {
     let email = data.email;
-    let key = data.key;
+    let key = data.key; 
+    if(!data.email || !data.key){
+      return undefined;
+    }
     return this.postRequest('verify_registration', { email, key });
   }
   register(data) {
+    if(!data.password || !data.user_id || !data.key){
+      return undefined;
+    }
     return this.postRequest('registration', {
       password: data.password,
       user_id: data.user_id,
@@ -26,18 +32,33 @@ export class AuthService {
     });
   }
   loginAuth(email, password) {
+    if(!email || !password){
+      return undefined;
+    }
     return this.postRequest('authentication', `data[User][email]=${email}&data[User][password]=${password}`);
   }
   forgotPassword(email) {
+    if(!email){
+      return undefined;
+    }
     return this.postRequest('forgot_password', { email });
   }
   verifyUserKeyEmail(key, email) {
+    if(!key || !email){
+      return undefined;
+    }
     return this.postRequest('verify_reset_password', { key, email });
   }
   resetUserPassword(key, email, password, verify_password) {
+    if(!key || !email || !password || !verify_password){
+      return undefined;
+    }
     return this.postRequest('reset_password', { key, email, password, verify_password });
   }
   magicLinkLogin(auth_token) {
+    if(!auth_token){
+      return undefined;
+    }
     return this.request.post('api/auths.json', { auth_token });
   }
   getUser() {
