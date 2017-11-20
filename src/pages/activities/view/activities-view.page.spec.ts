@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
@@ -20,6 +20,7 @@ import {
 import * as Config from '../../../configs/config';
 
 // pages
+import { MyApp } from '../../../app/app.component';
 import { ActivitiesViewPage } from './activities-view.page';
 import { ActivitiesViewModalPage } from './activities-view-modal.page';
 import { AssessmentsPage } from '../../assessments/assessments.page';
@@ -65,25 +66,28 @@ describe('activie view component', () => {
         TranslationModule,
         MomentModule,
         CacheModule,
-        RequestModule,
-        IonicModule,
+        RequestModule.forRoot({
+          appKey: '',
+          prefixUrl: ''
+        }),
+        IonicModule.forRoot(MyApp, {})
       ],
       providers: [
         ActivityService,
         SubmissionService,
-        Config
+        Config,
+        { provide: AlertController, useClass: AlertMock },
+        { provide: NavParams, useClass: NavParamsMock },
+        { provide: NavController, useClass: NavCtrlMock },
+        { provide: ModalController, useClass: ModalCtrlMock}
       ]
     })
-    .overrideModule(IonicModule, {
+    /*.overrideModule(IonicModule, {
       add: {
         providers: [
-          { provide: AlertController, useClass: AlertMock },
-          { provide: NavParams, useClass: NavParamsMock },
-          { provide: NavController, useClass: NavCtrlMock },
-          { provide: ModalController, useClass: ModalCtrlMock}
         ]
       }
-    })
+    })*/
     .compileComponents()
     .then(() => {
       fixture = TestBed.createComponent(ActivitiesViewPage);
@@ -93,6 +97,10 @@ describe('activie view component', () => {
   }));
 
   it('should has activity service imported', () => {
+    fixture = TestBed.createComponent(ActivitiesViewPage);
+    fixture.detectChanges();
+    component = fixture.componentInstance;
+
     expect(component.achievements).toBe({
       available: [],
       obtained: {},
