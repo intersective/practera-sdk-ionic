@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
+
 import { TranslationService } from '../../../shared/translation/translation.service';
 import { loadingMessages, errMessages } from '../../../app/messages';
 import * as _ from 'lodash';
@@ -13,15 +14,15 @@ import { RankingBadgesPage } from './ranking-badges';
   templateUrl: 'ranking-details.html'
 })
 export class RankingDetailsPage {
-  public userAchievementsData: any = [];
-  public achievementBadgeImage = '../assets/img/default/default-badge.png';
-  public achievementName = 'Achievement';
-  public totalPoints = 0;
-  public myRank: any= {};
+  userAchievementsData: any = [];
+  achievementBadgeImage = '../assets/img/default/default-badge.png';
+  achievementName = 'Achievement';
+  totalPoints = 0;
+  myRank: any= {};
+  emptyAchievementMessage = errMessages.Activities.achievements.empty;
+  loadingMessages: any = loadingMessages.LoadingSpinner.loading;
+  emptyErrorMessage: any = errMessages.General.loading.load;
 
-  public emptyAchievementMessage = errMessages.Activities.achievements.empty;
-  public loadingMessages: any = loadingMessages.LoadingSpinner.loading;
-  public emptyErrorMessage: any = errMessages.General.loading.load;
   constructor(public navCtrl: NavController,
               public loadingCtrl: LoadingController,
               public alertCtrl: AlertController,
@@ -44,6 +45,7 @@ export class RankingDetailsPage {
     });
 
   }
+
   userAchievements(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.achievementService.getAchievements()
@@ -67,6 +69,7 @@ export class RankingDetailsPage {
         );
     });
   }
+
   goToBadgeDetailsPage(achievementData){
     let goRankingBadgesPopup = this.modalCtrl.create(RankingBadgesPage, { achievement: achievementData });
     goRankingBadgesPopup.present();
