@@ -1,9 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NO_ERRORS_SCHEMA, NgModule } from '@angular/core';
+import { NO_ERRORS_SCHEMA, DebugElement } from '@angular/core';
 import { TestBed, ComponentFixture, async } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
-  IonicModule,
   AlertController,
   NavParams,
   NavController,
@@ -17,7 +16,6 @@ import {
   ModalCtrlMock
 } from '../../../../test-config/mocks-ionic';
 
-import * as Config from '../../../configs/config';
 
 // pages
 import { MyApp } from '../../../app/app.component';
@@ -35,7 +33,7 @@ import {
 } from '../../../services';
 
 // translation module
-import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 
 // angular-moment module
 import { MomentModule } from 'angular2-moment';
@@ -48,8 +46,16 @@ import {
   TranslationService,
 } from '../../../shared';
 
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 let fixture: ComponentFixture<ActivitiesViewPage>;
 let component: ActivitiesViewPage;
+
+// AoT requires an exported function for factories
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
+}
+
 
 describe('activie view component', () => {
 
@@ -62,32 +68,31 @@ describe('activie view component', () => {
       schemas: [ NO_ERRORS_SCHEMA ],
       imports: [
         BrowserModule,
-        TranslateModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: createTranslateLoader,
+            deps: [HttpClient]
+          }
+        }),
         TranslationModule,
         MomentModule,
         CacheModule,
         RequestModule.forRoot({
           appKey: '',
           prefixUrl: ''
-        }),
-        IonicModule.forRoot(MyApp, {})
+        })
       ],
       providers: [
         ActivityService,
         SubmissionService,
-        Config,
+        TranslateService,
         { provide: AlertController, useClass: AlertMock },
         { provide: NavParams, useClass: NavParamsMock },
         { provide: NavController, useClass: NavCtrlMock },
         { provide: ModalController, useClass: ModalCtrlMock}
       ]
     })
-    /*.overrideModule(IonicModule, {
-      add: {
-        providers: [
-        ]
-      }
-    })*/
     .compileComponents()
     .then(() => {
       fixture = TestBed.createComponent(ActivitiesViewPage);
@@ -101,11 +106,14 @@ describe('activie view component', () => {
     fixture.detectChanges();
     component = fixture.componentInstance;
 
-    expect(component.achievements).toBe({
+    // Object({ available: [  ], obtained: Object({  }), maxPoints: Object({  }) })
+    expect(component.achievements).toEqual({
       available: [],
       obtained: {},
       maxPoints: {}
     });
+
+    // expect(component.achievements).toContain
 
     expect(component.activity).toBeDefined();
     expect(component.assessment).toBeDefined();
@@ -113,10 +121,10 @@ describe('activie view component', () => {
     expect(component.submissions).toBeDefined();
   });
 
-  /*it('should has detail content', () => {
+  it('should has detail content', () => {
     const de = fixture.debugElement.query(By.css('ion-content'));
     expect(de).toBeDefined();
-  });*/
+  });
 });
 
 
