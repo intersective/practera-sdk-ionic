@@ -140,7 +140,7 @@ describe('Event Service test', () => {
 
     // Call API
     let actualResponse = [];
-    eventService.cancelEventBooking('fake_id').subscribe((success) => {)
+    eventService.cancelEventBooking('fake_id').subscribe((success) => {
       actualResponse = success;
     });
 
