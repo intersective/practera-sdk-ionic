@@ -89,8 +89,14 @@ export class AssessmentService {
      return published;
    }
 
-  // listAll()
-  getAll(options?: any) {
+  /**
+   * get all list of assessment questions available under a assessment in structured manner
+   * @param {Object} options params provided to obtain specific kind of response
+   */
+  getAll(options?: {
+    assessment_id: number,
+    structured?: boolean
+  }) {
     return this.request.get('api/assessments.json', { search: options });
   }
 
@@ -208,7 +214,7 @@ export class AssessmentService {
    */
   normalise(assessment) {
     let result = assessment.Assessment;
-    let thisGroups = assessment.AssessmentGroup;
+    let thisGroups = assessment.AssessmentGroup || assessment.AssessmentQuestion;
 
     thisGroups = thisGroups.map(group => {
       return this.normaliseGroup(group);

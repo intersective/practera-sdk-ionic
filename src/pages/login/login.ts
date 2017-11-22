@@ -32,16 +32,19 @@ import { RequestServiceConfig } from '../../shared/request/request.service';
 })
 
 export class LoginPage {
-  email: string;
-  password: any;
-  userName: string;
-  userImage: string;
+
   API_KEY: string;
-  milestone_id: string;
-  loginFormGroup: any;
+  email: string;
   forgetpasswordPage = ForgetPasswordPage;
-  loginLoadingMessages: any = loadingMessages.Login.login;
+  gameID: string = null;
   invalidLoginMessage: any = errMessages.Login.login;
+  loginFormGroup: any;
+  loginLoadingMessages: any = loadingMessages.Login.login;
+  milestone_id: string;
+  password: any;
+  userData: any = [];
+  userImage: string;
+  userName: string;
 
   constructor(
     public config: RequestServiceConfig,
@@ -96,7 +99,7 @@ export class LoginPage {
                     loading.dismiss().then(() => {
                       // results[0] game API data
                       this.gameID = results[0].Games[0].id;
-                      if(this.gameID){
+                      if(this.gameID) {
                         this.cacheService.setLocal('game_id', this.gameID);
                       }
                       // results[1] user API data
@@ -115,7 +118,7 @@ export class LoginPage {
                       }
                       this.navCtrl.setRoot(TabsPage).then(() => {
                         this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url
                       });
                     });
                   },
@@ -191,7 +194,7 @@ export class LoginPage {
   /**
    * forget password page link function
    */
-  linkToForgetPassword() { 
-    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window 
+  linkToForgetPassword() {
+    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window
   }
 }

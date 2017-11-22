@@ -289,10 +289,8 @@ export class AssessmentsPage {
     let getAssessment = (assessmentId) => {
       // @TODO: we might need to pass in submission id (if available) to get properly filtered assessmnet questions
       return this.assessmentService.getAll({
-        search: {
-          assessment_id: assessmentId,
-          structured: true
-        }
+        assessment_id: assessmentId,
+        structured: true
       });
     };
 
