@@ -32,18 +32,20 @@ import { RequestServiceConfig } from '../../shared/request/request.service';
 })
 
 export class LoginPage {
-  public API_KEY: string = null;
-  public email: string = null;
-  public gameID: string = null;
-  public forgetpasswordPage = ForgetPasswordPage;
-  public invalidLoginMessage: any = errMessages.Login.login;
-  public loginFormGroup: any;
-  public loginLoadingMessages: any = loadingMessages.Login.login;
-  public milestone_id: string = null;
-  public password: any = null;
-  public userData: any = [];
-  public userName: string = null;
-  public userImage: string = null;
+
+  API_KEY: string;
+  email: string;
+  forgetpasswordPage = ForgetPasswordPage;
+  gameID: string = null;
+  invalidLoginMessage: any = errMessages.Login.login;
+  loginFormGroup: any;
+  loginLoadingMessages: any = loadingMessages.Login.login;
+  milestone_id: string;
+  password: any;
+  userData: any = [];
+  userImage: string;
+  userName: string;
+
   constructor(
     public config: RequestServiceConfig,
     public formBuilder: FormBuilder,
@@ -97,7 +99,7 @@ export class LoginPage {
                     loading.dismiss().then(() => {
                       // results[0] game API data
                       this.gameID = results[0].Games[0].id;
-                      if(this.gameID){
+                      if(this.gameID) {
                         this.cacheService.setLocal('game_id', this.gameID);
                       }
                       // results[1] user API data
@@ -116,7 +118,7 @@ export class LoginPage {
                       }
                       this.navCtrl.setRoot(TabsPage).then(() => {
                         this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url
                       });
                     });
                   },
@@ -192,7 +194,7 @@ export class LoginPage {
   /**
    * forget password page link function
    */
-  linkToForgetPassword() { 
-    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window 
+  linkToForgetPassword() {
+    this.modalCtrl.create(this.forgetpasswordPage).present(); // go to forgot password modal window
   }
 }

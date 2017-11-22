@@ -8,9 +8,7 @@
       <span class="title">{{ question.name }}</span>
     </div>
 
-    <div class="spacer"></div>
-
-    <div class="answer">
+    <div class="answer spacer-top">
       <div *ngIf="question.answer">
         <div *ngIf="question.answer.type === 'file'">
           <div *ngIf="question.answer.files.length === 1">

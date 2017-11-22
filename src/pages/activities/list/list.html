@@ -21,6 +21,7 @@
       refreshingSpinner="circles">
     </ion-refresher-content>
 	</ion-refresher>
+
   <ion-grid>
     <ion-row class="score-board">
       <ion-col class="score-board-inner">
@@ -41,6 +42,7 @@
         </div>
       </ion-col>
     </ion-row>
+
     <ion-row class="activity-list">
       <ion-col>
         <!--<button (click)="shiftLanguageTrial()">Shift Language</button>-->
@@ -55,6 +57,7 @@
               {{ activity.Activity.name }}
             </p>
           </div>
+
           <div *ngIf="activity.Activity.is_locked == true" class="locked">
             <i class="fa fa-lock" aria-hidden="true"></i>
             <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">

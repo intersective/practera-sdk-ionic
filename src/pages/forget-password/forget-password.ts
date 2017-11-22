@@ -8,7 +8,7 @@ import { AlertController,
 import { FormBuilder, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 // services
 import { AuthService } from '../../services/auth.service';
 // directives
@@ -33,13 +33,18 @@ export class ForgetPasswordPage {
     public navParams: NavParams,
     public translationService: TranslationService,
     public toastCtrl: ToastController,
-    public viewCtrl: ViewController) {
-      this.forgotPwdFormGroup = formBuilder.group({
-        email: ['', [FormValidator.isValidEmail,
-                    Validators.required]],
-      });
-    }
-  userForgotPassword(){
+    public viewCtrl: ViewController
+  ) {
+    this.forgotPwdFormGroup = formBuilder.group({
+      email: ['', [FormValidator.isValidEmail,
+                  Validators.required]],
+    });
+  }
+
+  ionViewDidLoad() {
+  }
+
+  userForgotPassword() {
     const loading = this.loadingCtrl.create({
       dismissOnPageChange: true,
       content: this.sendingEmailLoadingMessage

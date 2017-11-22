@@ -46,22 +46,33 @@
     </ion-list-header>
 
     <ion-item *ngIf="loadings.submissions" class="center">
-      <ion-spinner>Loading submissions...</ion-spinner>
+      <loading-marker [loading]="loadings.submissions">
+        <p>Loading submissions...</p>
+      </loading-marker>
     </ion-item>
 
-    <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})">
-      <ion-row>
-
-        <ion-col align-self-start>
-          <div>
-            <h2>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</h2>
-          </div>
+    <ion-item *ngFor="let submission of submissions" (click)="goAssessment(submission, {hasSubmission: true})" no-lines>
+      <ion-row *ngIf='!submission.statusTitle.published'>
+        <ion-col class="submission-title" col-10>
+          <h2 *ngIf='!submission.statusTitle.inprogress && submission.statusTitle.moderated_assessment'>Waiting for Review</h2>
+          <h2 *ngIf='!submission.statusTitle.inprogress && !submission.statusTitle.moderated_assessment'>Done</h2>
+          <h2 *ngIf='submission.statusTitle.inprogress'>In Progress</h2>
+          <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
         </ion-col>
-
-        <ion-col align-self-end class="note">
-          <ion-note>{{ submission.status }}</ion-note>
+        <ion-col class="note" col-2 *ngIf="submission.status !== 'done'">
+          <i class="fa fa-clock-o" aria-hidden="true"></i>
         </ion-col>
+      </ion-row>
 
+      <ion-row *ngIf='submission.statusTitle.published'>
+        <ion-col class="submission-title" col-10>
+          <h2 *ngIf="submission.statusTitle">{{ submission.statusTitle | truncate: 50 }}</h2>
+          <h2 *ngIf="!submission.statusTitle">{{ submission.statusTitle.name }}</h2>
+          <p>{{ (submission.submitted || submission.created).format() | amDateFormat:"MMM D YYYY, h:mm a" }}</p>
+        </ion-col>
+        <ion-col class="note" col-2>
+          <ion-badge>{{ submission.statusTitle.score }}</ion-badge>
+        </ion-col>
       </ion-row>
     </ion-item>
   </ion-list>

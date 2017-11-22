@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 // Others
 import { RequestService } from '../shared/request/request.service';
@@ -214,7 +215,7 @@ export class SubmissionService {
    * extract reference IDs and prepare Observables to retrieve submissions
    * @param {array} references References array responded with get_activities() api
    */
-  getSubmissionsByReferences(references) {
+  getSubmissionsByReferences(references: Array<{context_id : Number}>): Array<Observable<any>> {
     let tasks = []; // multiple API requests
 
     // get_submissions API to retrieve submitted answer
