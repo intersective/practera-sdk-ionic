@@ -18,10 +18,10 @@ export class EventService {
 
   getEvents(options: object = {}) {
     return this.request.get('api/events.json', {
-        search: _.merge({ type: 'session' }, options)
-      })
-      .map(this._normalise)
-      .toPromise();
+      search: _.merge({ type: 'session' }, options)
+    })
+    .map(this._normalise)
+    .toPromise();
   }
 
   _normalise(events) {
