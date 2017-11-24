@@ -6,11 +6,11 @@
     <div class="tag" color="palette-five">Attended</div>
   </div>
 
-  <ion-card-content class="with-cover" [style.background-image]="'url(' + event.coverUrl + ')'">
-    <div class="event-title">
-      {{ event.title }}
-    </div>
-  </ion-card-content>
+  <ion-list class="title-background"
+    [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}"
+    card-image-height>
+    <div class="title">{{ event.title }}</div>
+  </ion-list>
 
   <ion-row>
     <ion-col col-6 class="event-details">
