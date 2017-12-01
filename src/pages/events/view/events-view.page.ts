@@ -46,7 +46,7 @@ export class EventsViewPage {
   public bookEventErrMessage: any = errMessages.Events.bookEvents.book;
   public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
   public completedSubmissions: boolean = false;
-  private submissions: Array<any> = [];
+  public submissions: Array<any> = [];
 
   constructor(
     private navParams: NavParams,
@@ -86,10 +86,7 @@ export class EventsViewPage {
       this.bookingStatus = this.availability(this.event);
     }
 
-    this.event.isStarted = false;
-    if (moment().isAfter(this.event.start)) {
-      this.event.isStarted = true;
-    }
+    this.event.isStarted = moment.utc().isAfter(moment.utc(this.event.end));
 
     // Make submission API call
     this.completedSubmissions = false;
