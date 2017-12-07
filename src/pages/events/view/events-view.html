@@ -62,7 +62,7 @@
           </span>
         </button>
 
-        <button ion-button *ngIf="(event.References && event.References.length > 0) && !completedSubmissions" class="checkin-btn primary-button" (click)="checkin()" [disabled]="!event.isStarted">
+        <button ion-button *ngIf="(event.References && event.References.length > 0) && !completedSubmissions" class="checkin-btn primary-button" (click)="checkin()" [disabled]="event.isStarted">
           <span>
             {{ 'EVENTS.CHECKIN' | translate }}
           </span>
