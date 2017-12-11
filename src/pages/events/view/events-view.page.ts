@@ -86,7 +86,7 @@ export class EventsViewPage {
       this.bookingStatus = this.availability(this.event);
     }
 
-    this.event.isStarted = moment.utc().isAfter(moment.utc(this.event.end));
+    this.event.isStarted = moment.utc().isBefore(moment.utc(this.event.start));
 
     // Make submission API call
     this.completedSubmissions = false;
