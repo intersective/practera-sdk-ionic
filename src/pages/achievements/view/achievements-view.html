@@ -3,10 +3,10 @@
     <ion-title>{{ this.achievement.name }}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content class="achievements-view">
-  <ion-list inset>
+<ion-content class="achievements-view" data-track-content>
+  <ion-list inset data-tract-name="achievement">
     <ion-list-header>
-      <img
+      <img data-track-piece
         class="badge {{ (!this.achievement.achieved) ? 'unachieved' : '' }}"
         alt="{{this.achievement.name}}"
         src="{{this.achievement.badge}}"
@@ -17,7 +17,7 @@
       <ion-label class="point">{{ this.achievement.points }}</ion-label>
     </ion-item>
     <ion-item>
-      <p>{{ this.achievement.description }}</p>
+      <p data-track-piece>{{ this.achievement.description }}</p>
     </ion-item>
   </ion-list>
 </ion-content>

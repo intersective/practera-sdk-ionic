@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header data-content-name="{{ 'Popup: ' + achievementName }}">
   <ion-navbar>
     <ion-grid>
       <ion-row>
@@ -15,9 +15,9 @@
     <ion-row>
       <ion-col>
         <div class="popup-contents" *ngIf="enableData == true">
-          <img class="badge-image" src="{{ badgeUrl }}" alt="Badge Image"/> 
+          <img class="badge-image" src="{{ badgeUrl }}" alt="Badge Image"/>
           <p>{{ description }}</p>
-          <p class="badge-points"><span>{{ 'ACTIVITY.POINTS' | translate }}: </span> <span>{{ points }}</span></p>
+          <p class="badge-points" data-content-piece><span>{{ 'ACTIVITY.POINTS' | translate }}: </span> <span>{{ points }}</span></p>
         </div>
         <div class="popup-contents" *ngIf="enableData == false">
           <p>{{ achievementsLoadingErr }}</p>

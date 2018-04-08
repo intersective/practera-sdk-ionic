@@ -3,14 +3,14 @@
     <ion-title>{{ 'TERMCONDITIONS.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content data-track-content>
   <ion-list>
     <term-content></term-content>
   </ion-list>
   <ion-list *ngIf="accessMethod() == true">
     <ion-item>
      <ion-label>{{ 'TERMCONDITIONS.AGREE' | translate }}</ion-label>
-     <ion-checkbox [(ngModel)]="agreed" (change)="toggleAgree()" value="Agree"></ion-checkbox>
+     <ion-checkbox data-track-piece="agree to t&c" [(ngModel)]="agreed" (change)="toggleAgree()" value="Agree"></ion-checkbox>
    </ion-item>
   </ion-list>
   <ion-list class="register-next" *ngIf="accessMethod() == true">
@@ -20,7 +20,7 @@
     <button class="general-circle-btn"
       ion-button
       block
-      class="primary-button" 
+      class="primary-button"
       (click)="backToSAccountPage()">
       Back
     </button>

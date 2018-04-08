@@ -1,9 +1,9 @@
-<ion-card class="rounded">
+<ion-card class="rounded" data-content-name="{{ event.title }}">
   <div *ngIf="isBookedEvent(event)" class="status">
-    <div class="tag" color="palette-five">Booked</div>
+    <div class="tag" color="palette-five" data-content-piece="Booked">Booked</div>
   </div>
   <div *ngIf="isAttendedEvent(event)" class="status">
-    <div class="tag" color="palette-five">Attended</div>
+    <div class="tag" color="palette-five" data-content-piece="Attended">Attended</div>
   </div>
 
   <ion-list class="title-background"

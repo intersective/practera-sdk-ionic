@@ -1,6 +1,6 @@
-<ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}">
+<ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}" data-track-content>
   <ion-navbar>
-    <ion-title>{{ activity.name }}</ion-title>
+    <ion-title data-tract-name="{{ activity.name }}">{{ activity.name }}</ion-title>
     <ion-buttons end *ngIf="activity.description">
       <button ion-button icon-only (click)="openModal()">
         <ion-icon name="information-circle"></ion-icon>

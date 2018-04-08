@@ -4,8 +4,10 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content class="events">
-  <ion-list class="title-background"
+<ion-content class="events" data-track-content>
+  <ion-list
+    data-track-name="{{ event.title }}"
+    class="title-background"
     [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
     <div class="title">{{ event.title }}</div>
   </ion-list>
@@ -34,11 +36,11 @@
     </ion-item>
   </ion-list>
   <ion-list inset class="download" *ngIf="event.files && event.files.length > 0">
-    <button ion-item (click)="gotoDownload(event)" detail-push>{{ 'GENERAL.DOWNLOAD' | translate }}</button>
+    <button ion-item  data-track-piece="Download event file" (click)="gotoDownload(event)" detail-push>{{ 'GENERAL.DOWNLOAD' | translate }}</button>
   </ion-list>
 </ion-content>
 
-<ion-footer class="events">
+<ion-footer class="events" data-content-name="booking status: {{ bookingStatus }}">
   <ion-toolbar>
     <p *ngIf="event.capacity > 0" class="lighter spacer-left">
       {{ bookingStatus }}
@@ -51,24 +53,24 @@
     </ion-buttons>
 
     <ion-buttons end *ngIf="!loadings.checkin && event.capacity > 0">
-      <button ion-button *ngIf="!event.isBooked" class="book-btn primary-button" (click)="book()">
+      <button data-track-piece="book" ion-button *ngIf="!event.isBooked" class="book-btn primary-button" (click)="book()">
         {{ 'EVENTS.BOOK' | translate }}
       </button>
 
       <div *ngIf="event.isBooked">
-        <button ion-button *ngIf="(event.References && event.References.length > 0) && completedSubmissions" class="checkin-btn primary-button" (click)="checkin()">
+        <button data-track-piece="view checkin" ion-button *ngIf="(event.References && event.References.length > 0) && completedSubmissions" class="checkin-btn primary-button" (click)="checkin()">
           <span>
             {{ 'EVENTS.VIEWCHECKIN' | translate }}
           </span>
         </button>
 
-        <button ion-button *ngIf="(event.References && event.References.length > 0) && !completedSubmissions" class="checkin-btn primary-button" (click)="checkin()" [disabled]="event.isStarted">
+        <button data-track-piece="checkin" ion-button *ngIf="(event.References && event.References.length > 0) && !completedSubmissions" class="checkin-btn primary-button" (click)="checkin()" [disabled]="event.isStarted">
           <span>
             {{ 'EVENTS.CHECKIN' | translate }}
           </span>
         </button>
 
-        <button ion-button *ngIf="!completedSubmissions && !event.isAttended" class="cancel-btn" outline (click)="cancelBooking(event)">
+        <button data-track-piece="cancel booking" ion-button *ngIf="!completedSubmissions && !event.isAttended" class="cancel-btn" outline (click)="cancelBooking(event)">
           <span>
             {{ 'EVENTS.CANCELBOOKING' | translate }}
           </span>
