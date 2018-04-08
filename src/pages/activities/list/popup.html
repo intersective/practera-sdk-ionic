@@ -3,7 +3,7 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12 class="flex-display">
-          <ion-title>{{ achievementName }}</ion-title>
+          <ion-title data-content-name>{{ achievementName }}</ion-title>
           <button (click)="closeModal()" class="close" menuClose="right">&times;</button>
         </ion-col>
       </ion-row>
@@ -15,9 +15,9 @@
     <ion-row>
       <ion-col>
         <div class="popup-contents" *ngIf="enableData == true">
-          <img class="badge-image" src="{{ badgeUrl }}" alt="Badge Image"/> 
+          <img class="badge-image" src="{{ badgeUrl }}" alt="Badge Image"/>
           <p>{{ description }}</p>
-          <p class="badge-points"><span>{{ 'ACTIVITY.POINTS' | translate }}: </span> <span>{{ points }}</span></p>
+          <p class="badge-points" data-content-piece><span>{{ 'ACTIVITY.POINTS' | translate }}: </span> <span>{{ points }}</span></p>
         </div>
         <div class="popup-contents" *ngIf="enableData == false">
           <p>{{ achievementsLoadingErr }}</p>

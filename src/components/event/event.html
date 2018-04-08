@@ -1,15 +1,15 @@
 <ion-card class="rounded">
   <div *ngIf="isBookedEvent(event)" class="status">
-    <div class="tag" color="palette-five">Booked</div>
+    <div class="tag" color="palette-five" data-content-piece="Booked">Booked</div>
   </div>
   <div *ngIf="isAttendedEvent(event)" class="status">
-    <div class="tag" color="palette-five">Attended</div>
+    <div class="tag" color="palette-five" data-content-piece="Attended">Attended</div>
   </div>
 
   <ion-list class="title-background"
     [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}"
     card-image-height>
-    <div class="title">{{ event.title }}</div>
+    <div class="title" data-content-name>{{ event.title }}</div>
   </ion-list>
 
   <ion-row>

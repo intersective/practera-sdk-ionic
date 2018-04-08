@@ -1,5 +1,5 @@
-<ion-content padding>
-  <segment>
+<ion-content padding data-track-content>
+  <segment data-track-name="spinner dashboard">
     <li col-6>
       <h5>Spins</h5>
       <p class="content" id="spinChances">{{ statuses.chances }}</p>
@@ -10,9 +10,9 @@
     </li>
   </segment>
 
-  <div class="center">
+  <div class="center" data-track-name="spinner">
     <div class="spinwheel-pointer"></div>
-    <div class="spinwheel" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
+    <div class="spinwheel"  data-track-piece="spin" (tap)="tapSpin($event)" (swipe)="swipeSpin($event)">
       <canvas id="spinwheel" [attr.width]="canvas.width" [attr.height]="canvas.height">
         <p align="center">
           Sorry, your browser doesn't support canvas. Please try another.

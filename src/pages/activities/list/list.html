@@ -53,7 +53,7 @@
   </ion-grid>
 </ion-header>
 
-<ion-content class="activities" no-bounce>
+<ion-content class="activities" no-bounce data-track-content>
   <ion-refresher *ngIf="checkUserPointer" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
@@ -70,14 +70,14 @@
     <div *ngIf="activity.Activity.is_locked == false"
       class="unlocked bg-color-{{i}} line-break"
       (click)="goToDetail(activity)">
-      <p col-7 class="activity-title">
+      <p col-7 class="activity-title" data-content-name>
         {{ activity.Activity.name }}
         <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
       </p>
 
       <rainbow-icons *ngIf="changeColor && changeColor[i]" col-3 class="ticks" [styling]="i" [colorings]="[changeColor[i][0], changeColor[i][1], changeColor[i][2], changeColor[i][3]]"></rainbow-icons>
 
-      <p col-2 class="assessment-score">
+      <p col-2 class="assessment-score" data-content-piece>
         <button block *ngIf="!show_score_act[i]" >
           <i class="fa fa-clock-o" aria-hidden="true"></i>
         </button>
@@ -87,9 +87,11 @@
       </p>
     </div>
 
-    <div *ngIf="activity.Activity.is_locked == true" class="locked">
+    <div
+      *ngIf="activity.Activity.is_locked == true"
+      class="locked">
       <i class="fa fa-lock" aria-hidden="true"></i>
-      <span (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
+      <span (click)="goToPopup(activity.Activity.unlock_id)" class="line-break" data-content-name>
         {{ activity.Activity.name }}
       </span>
     </div>
