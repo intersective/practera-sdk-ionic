@@ -27,7 +27,7 @@ export class EventService {
 
   private _normalise(events) {
     _.forEach(events, (event, idx) => {
-      events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
+      events[idx].isAttended = (event.isBooked === true && moment.utc().isAfter(moment.utc(event.end)));
       // We assume server datetime response is UTC...
       events[idx].startDisplay = moment.utc(event.start).local().format("dddd, MMM D [at] h:mm A");
       events[idx].startDisplayDate = moment.utc(event.start).local().format("dddd, MMM D");

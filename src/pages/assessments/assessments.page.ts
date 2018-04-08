@@ -251,7 +251,9 @@ export class AssessmentsPage {
     let filteredSubmissions = [];
     submissions.forEach(submission => {
       if (currentSubmission && currentSubmission.id === submission.id) {
-        filteredSubmissions.push(submission);
+        filteredSubmissions = filteredSubmissions.concat([
+          submission
+        ]);
       }
     });
 
@@ -264,17 +266,18 @@ export class AssessmentsPage {
     let isDone = _.find(submissions, {status: 'done'}); // "done" for view checkin
     let isCheckin = (this.navParams.get('event') && isDone);
 
-
     if (isCheckin) { // on event's view checkin, no status filtering required
       results = submissions;
     } else if (isNew) { // on new submission
       results = !_.isEmpty(hasInProgress) ? [hasInProgress] : [];
     } else if (!isNew && hasInProgress) { // on resume "in progress"
-      filteredSubmissions.push(hasInProgress);
-      results = filteredSubmissions;
+      results = results.concat([
+        hasInProgress
+      ]);
     } else if (currentSubmission) { // display current submission
-      filteredSubmissions.push(currentSubmission);
-      results = filteredSubmissions;
+      results = results.concat([
+        currentSubmission
+      ]);
     }
 
     return results;
