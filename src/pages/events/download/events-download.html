@@ -5,7 +5,7 @@
 </ion-header>
 <ion-content data-track-content>
   <ion-item
-    data-track-name="{{ file.name }}"
+    data-track-name
     *ngFor="let file of files; let idx = index;" text-wrap (click)="view(file)">
     <ion-icon name="{{file.icon}}" class="fa" item-left></ion-icon>
     {{ file.name || 'Attachment ' + (++idx) }}

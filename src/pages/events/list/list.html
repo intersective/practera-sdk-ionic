@@ -45,8 +45,8 @@
       <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
     </button>
     <ion-fab-list side="top">
-      <button data-track-piece="{{ location.code }}" ion-fab *ngFor="let location of locations" (click)="selectedLocation(location.name, fab)">
-        <p>{{ location.code }}</p>
+      <button ion-fab *ngFor="let location of locations" (click)="selectedLocation(location.name, fab)">
+        <p data-track-piece>{{ location.code }}</p>
       </button>
       <button data-track-piece="all" ion-fab (click)="selectedLocation(null, fab)">
         <p>All</p>

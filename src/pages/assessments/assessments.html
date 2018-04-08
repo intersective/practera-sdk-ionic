@@ -10,10 +10,10 @@
 </ion-header>
 <ion-content data-track-content>
   <div *ngFor="let assessmentGroup of assessmentGroups; let i = index">
-    <div *ngFor="let assessment of assessmentGroup; let j = index" data-track-name="{{ assessment.description || assessment.name }}">
+    <div *ngFor="let assessment of assessmentGroup; let j = index">
       <ion-card *ngIf="assessment.description || assessment.name" class="no-box-shadow">
         <ion-card-content>
-          <h2 *ngIf="assessment.name" class="text-center assessment-title">{{ assessment.name }}</h2>
+          <h2 *ngIf="assessment.name" class="text-center assessment-title" data-track-name>{{ assessment.name }}</h2>
           <p *ngIf="assessment.description" [innerHTML]="assessment.description" class="assessment-description"></p>
         </ion-card-content>
       </ion-card>

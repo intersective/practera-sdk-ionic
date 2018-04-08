@@ -67,11 +67,10 @@
 
   <ion-list class="activity-list" *ngFor="let activity of activities; let i = index">
 
-    <div data-content-name="{{ activity.Activity.name }}"
-      *ngIf="activity.Activity.is_locked == false"
+    <div *ngIf="activity.Activity.is_locked == false"
       class="unlocked bg-color-{{i}} line-break"
       (click)="goToDetail(activity)">
-      <p col-7 class="activity-title">
+      <p col-7 class="activity-title" data-content-name>
         {{ activity.Activity.name }}
         <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
       </p>
@@ -88,11 +87,11 @@
       </p>
     </div>
 
-    <div data-content-name="{{ activity.Activity.name }}"
+    <div
       *ngIf="activity.Activity.is_locked == true"
       class="locked">
       <i class="fa fa-lock" aria-hidden="true"></i>
-      <span (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
+      <span (click)="goToPopup(activity.Activity.unlock_id)" class="line-break" data-content-name>
         {{ activity.Activity.name }}
       </span>
     </div>

@@ -6,10 +6,9 @@
 
 <ion-content class="events" data-track-content>
   <ion-list
-    data-track-name="{{ event.title }}"
     class="title-background"
     [ngStyle]="{'background-image': 'url(' + event.coverUrl + ')'}">
-    <div class="title">{{ event.title }}</div>
+    <div class="title" data-track-name>{{ event.title }}</div>
   </ion-list>
   <div *ngIf="event.isBooked" class="status">
     <div *ngIf="eventTag" class="tag event-view-tag" color="palette-five">{{ eventTag }}</div>
@@ -40,7 +39,7 @@
   </ion-list>
 </ion-content>
 
-<ion-footer class="events" data-content-name="booking status: {{ bookingStatus }}">
+<ion-footer class="events" data-content-name="booking status">
   <ion-toolbar>
     <p *ngIf="event.capacity > 0" class="lighter spacer-left">
       {{ bookingStatus }}

@@ -24,11 +24,10 @@
   <div *ngFor="let question of questions; let i = index;"
     class="assessments-group-text"
     [ngSwitch]="question.type"
-    [ngClass]="{'hr': (i > 0 && i < questions.length)}"
-    data-track-name="{{ question.name }}">
+    [ngClass]="{'hr': (i > 0 && i < questions.length)}">
 
     <ion-list text-wrap>
-      <span class="strong">{{question.name}}</span>
+      <span class="strong" data-track-name>{{question.name}}</span>
       <span *ngIf="question.required" class="red">*</span>
     </ion-list>
 

@@ -9,8 +9,8 @@
   </ion-navbar>
 </ion-header>
 <ion-content padding data-track-content>
-  <ion-list  data-track-name="{{ 'Modal: ' + activityData.name }}">
-    <h2>{{ activityData.name }}</h2>
+  <ion-list>
+    <h2 data-track-name>{{ activityData.name }}</h2>
     <p>{{ activityData.description || 'No descriptions available.' }}</p>
   </ion-list>
   <ion-card *ngIf="activityData.video_url">
