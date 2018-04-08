@@ -18,6 +18,9 @@ import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
 import { LinkyModule } from 'angular-linky';
 
+// custom modules
+import { PiwikModule } from '../shared/piwik/piwik.module';
+
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
@@ -200,6 +203,11 @@ export function HttpLoaderFactory(http: Http) {
     RequestModule.forRoot({
       appKey: Configure.appKey,
       prefixUrl: Configure.prefixUrl
+    }),
+    PiwikModule.forRoot({
+      apikey: '',
+      sid: '',
+      trackerUrl: '',
     }),
     FilestackModule.forRoot({
       apikey: Configure.filestack.apiKey
