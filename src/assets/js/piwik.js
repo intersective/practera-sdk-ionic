@@ -13,7 +13,7 @@ window.addEventListener('hashchange', function () {
 
   _paq.push(['setGenerationTimeMs', 0]);
 
-  var content = document.getElementById('mainContainer');
+  var content = document.getElementById('main-container');
   _paq.push(['MediaAnalytics::scanForMedia', content]);
   _paq.push(['FormAnalytics::scanForForms', content]);
   _paq.push(['trackContentImpressionsWithinNode', content]);
