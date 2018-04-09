@@ -1,5 +1,5 @@
-<ion-content class="settings" padding="true">
-  <ion-list no-lines>
+<ion-content class="settings" padding="true" data-track-content>
+  <ion-list no-lines data-track-name="setting">
     <ion-list-header>
       {{ 'SETTINGS.PROFILE' | translate }} <span *ngIf="getUserEmail()">({{ getUserEmail() }})</span>
     </ion-list-header>
@@ -10,14 +10,14 @@
       <ion-label class="opt-label" [ngClass]="{'bold':(!hideMe)}">Visible</ion-label>
       <ion-toggle color="primary" [(ngModel)]="hideMe" (ionChange)="changePrivate()"></ion-toggle>
     </ion-item>
-    <button ion-item (click)="goToTutorial()">
+    <button data-content-piece ion-item (click)="goToTutorial()">
       <ion-icon name="medkit" item-left></ion-icon> {{ 'SETTINGS.TUTORIAL' | translate }}
     </button>
-    <button ion-item (click)="goToTermConditions()">
+    <button data-content-piece ion-item (click)="goToTermConditions()">
       <ion-icon name="clipboard" item-left></ion-icon> {{ 'SETTINGS.TERMS' | translate }}
     </button>
     <a target="_blank" href="./assets/files/handbook2017.pdf" download class="handbook-download">
-      <button ion-item>
+      <button data-content-piece ion-item>
         <ion-icon name="download" item-left></ion-icon> {{ 'SETTINGS.HANDBOOK' | translate }}
       </button>
     </a>

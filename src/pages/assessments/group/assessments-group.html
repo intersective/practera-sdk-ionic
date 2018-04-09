@@ -9,7 +9,7 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content class="groups-question" padding>
+<ion-content class="groups-question" padding data-track-content>
   <ion-list *ngIf="inProgress">
     <ion-list-header>
       In Progress
@@ -27,7 +27,7 @@
     [ngClass]="{'hr': (i > 0 && i < questions.length)}">
 
     <ion-list text-wrap>
-      <span class="strong">{{question.name}}</span>
+      <span class="strong" data-track-name>{{question.name}}</span>
       <span *ngIf="question.required" class="red">*</span>
     </ion-list>
 
@@ -37,6 +37,7 @@
 
     <!-- type: oneOf -->
     <oneof-question
+      data-track-piece="one of type"
       [question]="question"
       [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
@@ -44,6 +45,7 @@
 
     <!-- type: oneOf -->
     <multiple-question
+      data-track-piece="multiple type"
       [question]="question"
       [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
@@ -51,6 +53,7 @@
 
     <!-- type: file -->
     <file-question
+      data-track-piece="file type"
       [question]="question"
       [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
@@ -58,12 +61,17 @@
 
     <!-- type: text -->
     <text-question
+      data-track-piece="text type"
       [question]="question"
       [form]="formGroup[question.question_id]"
       [disabled]="!canUpdateInput"
       *ngSwitchCase="'text'"></text-question>
 
     <!-- Reviewer's answer and comment -->
-    <feedback [question]="question" *ngIf="question.review_answer" class="feedback"></feedback>
+    <feedback
+      data-track-piece="mentor feedback"
+      [question]="question"
+      *ngIf="question.review_answer"
+      class="feedback"></feedback>
   </div>
 </ion-content>
