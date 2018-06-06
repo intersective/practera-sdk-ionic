@@ -82,7 +82,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7850;
     this.hardcodeAssessmentIds = [2124, 2125, 2126, 2127, 2128, 2129, 2050];
     this.hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661];
-    this.portfolio_domain = `https://www.practera.com/${portfolio_domain}`;
+    this.portfolio_domain = `https://my.practera.com/${portfolio_domain}`;
   }
   return {
     filestack: {
