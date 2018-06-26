@@ -3,6 +3,7 @@
     <ion-title data-track-name>{{ activity.name }}</ion-title>
     <ion-buttons end *ngIf="activity.description">
       <button ion-button icon-only (click)="openModal()">
+        <span style="text-transform:none">Info</span>
         <ion-icon name="information-circle"></ion-icon>
       </button>
     </ion-buttons>
