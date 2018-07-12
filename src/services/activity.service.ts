@@ -111,7 +111,7 @@ export class ActivityService {
   /**
    * normalise single activity object
    */
-   normaliseActivity(activity) {
+  normaliseActivity(activity) {
     let thisActivity = activity.Activity,
         normalisedActivity: ActivityBase,
         sequence = this.mergeReferenceToSequence(activity);
@@ -122,7 +122,7 @@ export class ActivityService {
       assessment: this.extractAssessment(sequence),
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
-      References: activity.References
+      References: activity.References || [], // @OFFSET: inconsistency
     });
 
     if (activity.Activity) {
