@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+// Services
 import { ActivityService } from '../../../services/activity.service';
 import { MilestoneService } from '../../../services/milestone.service';
 

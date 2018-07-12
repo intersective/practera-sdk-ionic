@@ -10,19 +10,19 @@ import { MyApp } from './app.component';
 import { FilepickerModule } from '../shared/filepicker/filepicker.module';
 import { UtilsModule } from '../shared/utils/utils.module';
 import { TestModule } from '../shared/testModules/test.module';
-import { HttpModule, Http } from '@angular/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
-
+import { WindowRef } from '../shared/window';
 // services
 import { AchievementService } from '../services/achievement.service';
 import { ActivityService } from '../services/activity.service';
+import { AppService } from '../services/app.service';
 import { AssessmentService } from '../services/assessment.service';
 import { AuthService } from '../services/auth.service';
-import { CharacterService } from '../services/character.service';
 import { EventService } from '../services/event.service';
 import { FilepickerService } from '../shared/filepicker/filepicker.service';
 import { GameService } from '../services/game.service';
@@ -31,34 +31,29 @@ import { LevelService } from '../services/level.service';
 import { MilestoneService } from '../services/milestone.service';
 import { NotificationService } from '../shared/notification/notification.service';
 import { RequestModule } from '../shared/request/request.module';
-import { ResponsiveService } from '../services/responsive.service';
 import { SessionService } from '../services/session.service';
 import { SubmissionService } from '../services/submission.service';
-
 import { TeamService } from '../services/team.service';
-import { WindowRef } from '../shared/window';
 // components
-import { ModalComponent } from '../shared/notification/modal.component';
-import { QuestionGroupComponent } from '../components/questionGroup/questionGroup.component';
 import { EventComponent } from '../components/event/event.component';
+import { FeedbackComponent } from '../components/questions/feedback';
+import { FileQuestionComponent } from '../components/questions/file';
 import { LevelComponent } from '../components/level/level';
 import { LoadingMarkerComponent } from '../components/loadingMarker/loadingMarker';
 import { LockerComponent } from '../components/locker/locker';
 import { MemberComponent } from '../components/member/member';
-import { PhotoComponent } from '../components/photo/photo';
-import { TermContentComponent } from '../pages/term-condition/term-content.component';
-import { FileQuestionComponent } from '../components/questions/file';
-import { OneofQuestionComponent } from '../components/questions/oneof';
-import { TextQuestionComponent } from '../components/questions/text';
+import { ModalComponent } from '../shared/notification/modal.component';
 import { MultipleQuestionComponent } from '../components/questions/multiple';
-import { FeedbackComponent } from '../components/questions/feedback';
+import { OneofQuestionComponent } from '../components/questions/oneof';
+import { PhotoComponent } from '../components/photo/photo';
+import { QuestionGroupComponent } from '../components/question-group/question-group.component';
+import { TextQuestionComponent } from '../components/questions/text';
 // pages
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
 import { ActivitiesListPage } from '../pages/activities/list/list.page';
 import { ActivityListPopupPage } from '../pages/activities/list/popup';
 import { ActivitiesViewModalPage } from '../pages/activities/view/activities-view-modal.page';
 import { ActivitiesViewPage } from '../pages/activities/view/activities-view.page';
-import { ActivitiesClassicListPage } from '../pages/activities-classic/list/activities-classic-list.page';
 import { AssessmentsPage } from '../pages/assessments/assessments.page';
 import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-group.page';
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
@@ -78,32 +73,29 @@ import { RankingBadgesPage } from '../pages/rankings/view/ranking-badges';
 import { RankingDetailsPage } from '../pages/rankings/view/ranking-details.page';
 import { RankingsPage } from '../pages/rankings/list/rankings.page';
 import { RegisterPage } from '../pages/registration/register.page';
-import { RegistrationPage } from '../pages/registration/registration.page';
 import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
 import { TabsPage } from '../pages/tabs/tabs.page';
 import { TeamPage } from '../pages/team/team';
-import { TermConditionPage } from '../pages/term-condition/term-condition.page';
+import { TermsConditionsPage } from '../pages/registration/terms-conditions/terms-conditions.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
 // custom pipes
-import { TimeAgoPipe } from '../pipes/timeago';
-import { UcfirstPipe } from '../pipes/ucfirst.pipe';
-import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
-
+import { TimeAgoPipe } from '../pipes/timeago';
+import { TruncatePipe } from '../pipes/truncate.pipe';
+import { UcfirstPipe } from '../pipes/ucfirst.pipe';
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
-export function HttpLoaderFactory(http: Http) {
+export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, "./assets/i18n-", ".json");
 }
 
 @NgModule({
   declarations: [
     AchievementsViewPage,
-    ActivitiesClassicListPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -140,7 +132,6 @@ export function HttpLoaderFactory(http: Http) {
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
@@ -148,8 +139,7 @@ export function HttpLoaderFactory(http: Http) {
     TeamPage,
     TestPage,
     TutorialPage,
-    TermConditionPage,
-    TermContentComponent,
+    TermsConditionsPage,
     TextQuestionComponent,
     TimeAgoPipe,
     TruncatePipe,
@@ -162,6 +152,7 @@ export function HttpLoaderFactory(http: Http) {
     FormsModule,
     MomentModule,
     NotificationModule,
+    HttpClientModule,
     UtilsModule,
     TestModule,
     RequestModule.forRoot({
@@ -174,8 +165,8 @@ export function HttpLoaderFactory(http: Http) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
-        deps: [Http]
+        useFactory: createTranslateLoader,
+        deps: [HttpClient]
       }
     }),
     TranslationModule,
@@ -200,10 +191,10 @@ export function HttpLoaderFactory(http: Http) {
           defaultHistory: [ MagicLinkPage ]
         },
         {
-          component: RegistrationPage,
+          component: RegisterPage,
           name: 'Registration',
           segment: 'registration',
-          defaultHistory: [ RegistrationPage ]
+          defaultHistory: [ RegisterPage ]
         },
         {
           component: TestPage,
@@ -219,7 +210,6 @@ export function HttpLoaderFactory(http: Http) {
   ],
   entryComponents: [
     AchievementsViewPage,
-    ActivitiesClassicListPage,
     ActivitiesListPage,
     ActivitiesViewModalPage,
     ActivitiesViewPage,
@@ -249,22 +239,20 @@ export function HttpLoaderFactory(http: Http) {
     RankingDetailsPage,
     RankingsPage,
     RegisterPage,
-    RegistrationPage,
     ResetPasswordPage,
     SettingsPage,
     SidenavPage,
     TabsPage,
     TestPage,
-    TermConditionPage,
+    TermsConditionsPage,
     TutorialPage,
-    TermContentComponent,
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },
     { provide: ActivityService, useClass: ActivityService },
+    { provide: AppService, useClass: AppService },
     { provide: AssessmentService, useClass: AssessmentService },
     { provide: AuthService, useClass: AuthService },
-    { provide: CharacterService, useClass: CharacterService },
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     { provide: EventService, useClass: EventService },
     { provide: FilepickerService, useClass: FilepickerService },
@@ -272,7 +260,6 @@ export function HttpLoaderFactory(http: Http) {
     { provide: LocationStrategy , useClass: HashLocationStrategy },
     { provide: MilestoneService, useClass: MilestoneService },
     { provide: NotificationService, useClass: NotificationService },
-    { provide: ResponsiveService, useClass: ResponsiveService },
     { provide: SessionService, useClass: SessionService },
     { provide: SubmissionService, useClass: SubmissionService },
     { provide: TeamService, useClass: TeamService },

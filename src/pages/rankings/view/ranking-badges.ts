@@ -20,11 +20,11 @@ export class RankingBadgesPage {
   public loadingMessage: any = loadingMessages.LoadingSpinner.loading;
   public achievementsLoadingErr: any = errMessages.General.loading.load;
   public achievementsEmptyDataErr: any = errMessages.Activities.achievements.empty;
-  constructor(private viewCtrl: ViewController,
-              private navParams: NavParams,
-              private toastCtrl: ToastController,
-              private loadingCtrl: LoadingController,
-              private achievementService: AchievementService,
+  constructor(public viewCtrl: ViewController,
+              public navParams: NavParams,
+              public toastCtrl: ToastController,
+              public loadingCtrl: LoadingController,
+              public achievementService: AchievementService,
               public translationService: TranslationService){
                 this.currentAchievement = this.navParams.get('achievement');
                 console.log("currentAchievement: ", this.currentAchievement);

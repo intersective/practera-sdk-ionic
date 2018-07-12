@@ -3,18 +3,18 @@
     <ion-grid>
       <ion-row>
         <ion-col col-12 class="flex-display">
-          <ion-title *ngIf="anyNewItems == 'true'">New Items</ion-title>
-          <button *ngIf="anyNewItems == 'true'" 
-            (click)="closeItemsShwon()" 
-            class="close" 
+          <ion-title *ngIf="anyNewItems == true">New Items</ion-title>
+          <button *ngIf="anyNewItems == true"
+            (click)="closeItemsShwon()"
+            class="close"
             menuClose="right">&times;</button>
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-title *ngIf="anyNewItems == 'false'">{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
+    <ion-title *ngIf="anyNewItems == false">{{ 'ACTIVITY.PAGETITLE' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content class="activities" scroll="false" *ngIf="anyNewItems == 'false'">
+<ion-content class="activities" scroll="false" *ngIf="anyNewItems == false">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
@@ -27,10 +27,10 @@
         <div class="score-inner-box">
           <div>
             <h4>{{ 'ACTIVITY.PROGRESS' | translate }}</h4>
-            <h1>{{ currentPercentage }}%</h1>  
+            <h1>{{ currentPercentage }}%</h1>
           </div>
         </div>
-      </ion-col> 
+      </ion-col>
       <ion-col>
         <div class="score-inner-box">
           <div>
@@ -58,15 +58,16 @@
           <div *ngIf="activity.Activity.is_locked == true" class="locked">
             <i class="fa fa-lock" aria-hidden="true"></i>
             <p (click)="goToPopup(activity.Activity.unlock_id)" class="line-break">
-              {{ activity.Activity.name }} 
-            </p>  
+              {{ activity.Activity.name }}
+            </p>
           </div>
         </div>
       </ion-col>
     </ion-row>
   </ion-grid>
 </ion-content>
-<ion-content *ngIf="anyNewItems == 'true'" id="itemsPopup" class="items-popup">
+
+<ion-content *ngIf="anyNewItems == true" id="itemsPopup" class="items-popup">
   <ion-list class="items-popup-data">
     <ion-grid>
       <ion-row>
@@ -74,15 +75,15 @@
           <ion-slides pager="true" class="tutorial-slides" *ngFor="let item of newItemsData">
             <ion-slide>
               <img *ngIf="item.meta !== null" class="item-popup-img" src="{{ item.meta.img }}" alt="item"/>
-              <img *ngIf="item.meta === null || item.meta.img === null" 
-                class="item-popup-img" 
+              <img *ngIf="item.meta === null || item.meta.img === null"
+                class="item-popup-img"
                 src="https://www.filepicker.io/api/file/ySw7HfSQbOmkVdowHrag" alt="item"/>
               <p class="item-popup-text">
                 {{ item.name }} <span> x{{ item.count[0].count }}</span>
-              </p> 
+              </p>
             </ion-slide>
           </ion-slides>
-          <button class="general-circle-btn" (click)="closeItemsShwon()">OK</button> 
+          <button class="general-circle-btn" (click)="closeItemsShwon()">OK</button>
         </ion-col>
       </ion-row>
     </ion-grid>

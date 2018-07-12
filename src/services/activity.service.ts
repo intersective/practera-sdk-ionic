@@ -1,10 +1,12 @@
 import { Injectable }    from '@angular/core';
-import { URLSearchParams } from '@angular/http';
-import * as moment from 'moment';
-import * as _ from 'lodash';
+import { HttpParams } from '@angular/common/http';
+
 // services
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
+// Others
+import * as moment from 'moment';
+import * as _ from 'lodash';
 
 class ActivityBase {
   id: number;
@@ -24,50 +26,46 @@ class ReferenceBase {
 
 @Injectable()
 export class ActivityService {
-  private cachedActivites = {};
+  cachedActivites = {};
+  milestoneID = this.cacheService.getLocal('milestone_id');
 
-  public milestoneID = this.cacheService.getLocalObject('milestone_id');
   constructor(
-    private request: RequestService,
-    private cacheService: CacheService,
+    public cacheService: CacheService,
+    public request: RequestService,
   ) {}
 
-  public getList(options?) {
-    let mid = this.cacheService.getLocal('milestone_id');
+  getList(options: any = {}) {
+    let milestone_id = JSON.stringify(this.cacheService.getLocal('milestone_id'));
 
-    options = options || {
-      search: {
-        milestone_id: this.cacheService.getLocal('milestone_id')
-      }
-    };
-
-    if (!this.cachedActivites[mid]) {
-      this.cachedActivites[mid] = this.request.get('api/activities.json', options);
-      return this.request.get('api/activities.json', options);
+    // use cached activity query if available
+    if (!this.cachedActivites[milestone_id]) {
+      let requestQuery = this.request.get('api/activities.json', {
+        search: _.merge({ milestone_id }, options)
+      });
+      this.cachedActivites[milestone_id] = requestQuery;
+      return requestQuery;
     }
 
-    return this.cachedActivites[mid];
+    return this.cachedActivites[milestone_id];
   }
 
-  public getLevels = (options?: any) => {
-    let params: URLSearchParams = new URLSearchParams();
-    if (options.search) {
-      _.forEach(options.search, (value, key) => {
-        params.set(key, value);
-      });
-      options.search = params;
-    }
+  getLevels(options?: any) {
     return this.cacheService.read()
       .then((data: any) => {
-        if (!options.search.timeline_id && data.user.timeline_id) {
-          params.set('timeline_id', data.user.timeline_id);
-          options.search = params;
+        let query:any = {};
+        if (options) {
+          _.forEach(options, (value, key) => {
+            query[key] = value;
+          });
         }
-        if (!options.search.project_id && data.user.project_id) {
-          params.set('project_id', data.user.project_id);
-          options.search = params;
+
+        if (!options.timeline_id && data.user.timeline_id) {
+          query['timeline_id'] = data.user.timeline_id;
         }
-        return this.getList(options).toPromise();
+        if (!options.project_id && data.user.project_id) {
+          query['project_id'] = data.user.project_id;
+        }
+        return this.getList(query).toPromise();
       });
   }
 
@@ -113,7 +111,7 @@ export class ActivityService {
   /**
    * normalise single activity object
    */
-  public normaliseActivity(activity) {
+  normaliseActivity(activity) {
     let thisActivity = activity.Activity,
         normalisedActivity: ActivityBase,
         sequence = this.mergeReferenceToSequence(activity);
@@ -124,7 +122,7 @@ export class ActivityService {
       assessment: this.extractAssessment(sequence),
       Activity: activity.Activity,
       ActivitySequence: activity.ActivitySequence,
-      References: activity.References
+      References: activity.References || [], // @OFFSET: inconsistency
     });
 
     if (activity.Activity) {
@@ -188,7 +186,7 @@ export class ActivityService {
       20: 26
     }
    */
-  public rebuildReferences(references) {
+  rebuildReferences(references) {
     let result = {};
     (references || []).forEach(ref => {
       result[ref.Assessment.id] = ref.context_id;
@@ -280,7 +278,7 @@ export class ActivityService {
       }
     }
    */
-  private mergeReferenceToSequence(activity) {
+   mergeReferenceToSequence(activity) {
     let refs = this.rebuildReferences(activity.References);
 
     // @NOTE: first "[0]" sequence is the assessment of an activity
@@ -366,7 +364,7 @@ export class ActivityService {
       "auto_publish_reviews": false
     }
    */
-  private extractAssessment(sequence) {
+   extractAssessment(sequence) {
     let assessment: any = {};
     if (sequence['Assess.Assessment']) {
       assessment = sequence['Assess.Assessment'];

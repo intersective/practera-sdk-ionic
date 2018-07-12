@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
+
 import { TranslationService } from '../../../shared/translation/translation.service';
+
 let _mock = {
     "id": 59,
     "name": "Test Achievement",
@@ -20,10 +22,11 @@ let _mock = {
   templateUrl: './achievements-view.html'
 })
 export class AchievementsViewPage {
-  public achievement: any;
+
+  achievement: any;
 
   constructor(
-    private params: NavParams,
+    public params: NavParams,
     public translationService: TranslationService
   ) {
     this.achievement = {};

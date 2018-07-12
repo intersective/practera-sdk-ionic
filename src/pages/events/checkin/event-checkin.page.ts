@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { NavParams, NavController, LoadingController } from 'ionic-angular';
+
 // services
-import { CacheService } from '../../../shared/cache/cache.service';
 import { EventService } from '../../../services/event.service';
 import { AssessmentService } from '../../../services/assessment.service';
-
+// Others
+import { CacheService } from '../../../shared/cache/cache.service';
 import * as moment from 'moment';
 
 @Component({
@@ -12,20 +13,20 @@ import * as moment from 'moment';
   templateUrl: './event-checkin.html',
 })
 export class EventCheckinPage {
-  public event: any;
-  public submissions: any;
-  public assessment;
-  public assessmentGroup;
-  private user: any = {};
-  public checkin: any = {};
+  assessment: any;
+  assessmentGroup: any;
+  checkin: any = {};
+  event: any;
+  submissions: any;
+  user: any = {};
 
   constructor(
-    private navParams: NavParams,
-    private navCtrl: NavController,
-    private cache: CacheService,
-    private eventService: EventService,
-    private assessmentService: AssessmentService,
-    private loadingCtrl: LoadingController
+    public assessmentService: AssessmentService,
+    public cache: CacheService,
+    public eventService: EventService,
+    public loadingCtrl: LoadingController,
+    public navCtrl: NavController,
+    public navParams: NavParams,
   ) {
     this.event = navParams.get('event');
     this.submissions = navParams.get('submissions');
@@ -36,11 +37,11 @@ export class EventCheckinPage {
   ionViewDidEnter() {
     this.checkin = this.getCheckinAnswer(this.submissions[0]); // event checkin has just single submission
     this.assessment = this.assessmentService.normaliseGroup(this.assessmentGroup);
-    this.user = this.cache.getLocalObject('user');
+    this.user = this.cache.getLocal('user');
   }
 
   // Only checkin/file upload answer is displayed in check-in view
-  private getCheckinAnswer(submission) {
+  public getCheckinAnswer(submission) {
     let result = {};
     submission.answer.forEach(ans => {
       if (typeof ans.answer === 'object') {

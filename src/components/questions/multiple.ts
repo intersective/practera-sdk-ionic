@@ -11,6 +11,7 @@ export class MultipleQuestionComponent implements OnInit {
   @Input() form: FormGroup;
 
   constructor() {}
+
   change(e) {
     console.log(e);
     console.log(this.question);

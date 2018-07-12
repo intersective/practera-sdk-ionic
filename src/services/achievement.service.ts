@@ -1,28 +1,34 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
-// services
+
+// Services
 import { CacheService } from '../shared/cache/cache.service';
+import { RequestService } from '../shared/request/request.service';
+
 @Injectable()
 export class AchievementService {
-  private target_id = this.cacheService.getLocalObject('program_id');
-  private target_model = 'program';
-  private getMaximumPointsUrl = `api/maximum_points.json?target_model=${this.target_model}&target_id=${this.target_id}`;
-  private userAchievementUrl = 'api/user_achievements.json';
-  private totalAchievementUrl = 'api/achievements.json';
-  constructor(private request: RequestService,
-              private cacheService: CacheService) {}
+  target_model = 'program';
+  target_id = this.cacheService.getLocal('program_id');
+  getMaximumPointsUrl = `api/maximum_points.json?target_model=${this.target_model}&target_id=${this.target_id}`;
+  totalAchievementUrl = 'api/achievements.json';
+  userAchievementUrl = 'api/user_achievements.json';
+
+  constructor(
+    public cacheService: CacheService,
+    public request: RequestService
+  ) {}
+
   // List Maximum Point Of Total Achievements
-  public getMaxPoints(){
+  getMaxPoints(){
     return this.request.get(this.getMaximumPointsUrl);
   }
 
   // List User Achievements
-  public getAchievements(params = {}) {
+  getAchievements(params = {}) {
     return this.request.get(this.userAchievementUrl);
   }
 
   // List All Achievements
-  public getAll() {
+  getAll() {
     return this.request.get(this.totalAchievementUrl);
   }
 
@@ -59,7 +65,7 @@ export class AchievementService {
       "points": 100
     }
    */
-  public normalise(achievement) {
+   normalise(achievement) {
     return achievement.Achievement;
   }
 }

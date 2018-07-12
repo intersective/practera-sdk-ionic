@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, ToastController, Platform } from 'ionic-angular';
 import { Http } from '@angular/http';
 
+// Services
 import { LevelService } from '../../../services/level.service';
 
 @Component({
@@ -9,17 +10,7 @@ import { LevelService } from '../../../services/level.service';
   templateUrl: 'list.html'
 })
 export class LevelsListPage {
-
-  constructor(
-    public navCtrl: NavController,
-    public platform: Platform,
-    public toastCtrl: ToastController,
-    public levelService: LevelService,
-  ) {
-      platform.ready().then(() => {});
-  }
-
-  private _mock = [
+  _mock = [
     {
       id: 1,
       name: 'Rookie'
@@ -29,11 +20,19 @@ export class LevelsListPage {
       name: 'Cookie'
     }
   ];
+  levels = [];
 
-  public levels = [];
+  constructor(
+    public navCtrl: NavController,
+    public levelService: LevelService,
+    public platform: Platform,
+    public toastCtrl: ToastController
+  ) {
+      platform.ready().then(() => {});
+  }
 
   // @TODO: Move to shared function later...
-  private _error(err) {
+  _error(err) {
     let toast = this.toastCtrl.create({
       message: err,
       duration: 5000,
@@ -48,7 +47,7 @@ export class LevelsListPage {
     toast.present();
   }
 
-  private _pullData(refresher = null) {
+  _pullData(refresher = null) {
     return this.levelService.getLevels()
       .then((levels: any) => {
         this.levels = levels;
@@ -65,7 +64,7 @@ export class LevelsListPage {
       });
   }
 
-  public doRefresh(refresher) {
+  doRefresh(refresher) {
     this._pullData(refresher);
     // @TODO Remove it when API work
     this.levels = this._mock;

@@ -1,68 +1,53 @@
 import { Injectable } from '@angular/core';
-import { RequestService } from '../shared/request/request.service';
-import { URLSearchParams } from '@angular/http';
+import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-
+// Others
+import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
 
 @Injectable()
 export class GameService {
   constructor(
-    private request: RequestService
+    public request: RequestService
   ) {}
-
   /**
    * Get games
-   * @param {object} options
    */
-  public getGames(options = {}) {
-    return this.request.get('api/games', options);
+  getGames() {
+    return this.request.get('api/games');
   }
-
   /**
    * Get character
    * @param {string} gameId
    * @param {object} options
    */
-  public getCharacters(gameId, options = {}) {
-    options = _.merge({
-      search: {
-        game_id: gameId
-      }
-    }, options);
-    return this.request.get('api/characters', options);
+  getCharacters(game_id, params = {}) {
+    return this.request.get('api/characters', {
+      search: Object.assign(params, { game_id })
+    });
   }
-
   /**
    * Post character
    * @param {object} data
    */
-  public postCharacter(data) {
+  postCharacter(data) {
     return this.request.post('api/characters', data, {
-      'Content-Type': 'application/json'
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
     });
   }
-
   /**
    * Get ranking
    * @param {string} gameId
    * @param {string} characterId
    */
-  public getRanking(gameId, characterId) {
+  getRanking(gameId, character_id) {
+    let params:any = {
+      'action': 'ranking',
+      'period': 'monthly'
+    };
     return Observable.forkJoin([
-      this.getCharacters(gameId, {
-        search: {
-          action: 'ranking',
-          period: 'monthly'
-        }
-      }),
-      this.getCharacters(gameId, {
-        search: {
-          action: 'ranking',
-          period: 'monthly',
-          character_id: characterId
-        }
-      })
+      this.getCharacters(gameId, params),
+      this.getCharacters(gameId, Object.assign(params, { character_id }))
     ])
     .map((data: any[]) => {
       let characters = data[0] || [];
@@ -71,24 +56,22 @@ export class GameService {
       return characters;
     });
   }
-
   /**
    * Get items
-   * @param {object} options
+   * @param {object} options optional search query got GET request
    */
-  public getItems(options?) {
+  getItems(options = {}) {
     options = _.merge({
       character_id: null,
       filter: 'all'
     }, options);
-    return this.request.get('api/items.json', {search: options});
+    return this.request.get('api/items.json', { search: options });
   }
-
   /**
    * Update items
    * @param {object} options
    */
-  public postItems(options: any = {
+  postItems(options: any = {
     "Character": {
       "id": null
     },
@@ -96,6 +79,8 @@ export class GameService {
       "id": null
     }
   }) {
-    return this.request.post('api/items.json', options, {'Content-Type': 'application/json'});
+    return this.request.post('api/items.json', options, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 }

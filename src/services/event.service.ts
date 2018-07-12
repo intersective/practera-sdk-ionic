@@ -1,6 +1,7 @@
 import { Injectable }    from '@angular/core';
-import { URLSearchParams } from '@angular/http';
-// services
+import { HttpParams } from '@angular/common/http';
+
+// others
 import { CacheService } from '../shared/cache/cache.service';
 import { RequestService } from '../shared/request/request.service';
 import * as _ from 'lodash';
@@ -8,24 +9,22 @@ import * as moment from 'moment';
 
 @Injectable()
 export class EventService {
-  private targetUrl = 'api/events.json';
-  private bookEventUrl = 'api/book_events.json';
-  constructor(private request: RequestService,
-              private cache: CacheService) {}
+  bookEventUrl = 'api/book_events.json';
 
-  public getEvents(options: Object = {}) {
-    options = _.merge({
-      search: {
-        type: 'session'
-      }
-    }, options);
+  constructor(
+    public cache: CacheService,
+    public request: RequestService
+  ) {}
 
-    return this.request.get(this.targetUrl, options)
-    .map(this._normalise)
-    .toPromise();
+  getEvents(options: object = {}) {
+    return this.request.get('api/events.json', {
+        search: _.merge({ type: 'session' }, options)
+      })
+      .map(this._normalise)
+      .toPromise();
   }
 
-  private _normalise(events) {
+  _normalise(events) {
     _.forEach(events, (event, idx) => {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
       // We assume server datetime response is UTC...
@@ -39,7 +38,8 @@ export class EventService {
    * download attachment by single event object
    * @param {[type]} event [description]
    */
-  public downloadAttachment(event) {
+
+  downloadAttachment(event) {
     let url = event.fileUrl;
     // var blob = new Blob([data], { type: 'text/csv' });
     // var url= window.URL.createObjectURL(blob);
@@ -50,12 +50,11 @@ export class EventService {
    * get event using observable
    * @param {integer} eventId single event id
    */
-  public bookEvent(eventId) {
-    let urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('event_id', eventId);
-    return this.request.post(this.bookEventUrl, urlSearchParams);
+  bookEvent(eventId) {
+    return this.request.post(this.bookEventUrl, { event_id: eventId});
   }
-  public cancelEventBooking(eventId){
+
+  cancelEventBooking(eventId){
     return this.request.delete(this.bookEventUrl + '?event_id=' + eventId);
   }
 }

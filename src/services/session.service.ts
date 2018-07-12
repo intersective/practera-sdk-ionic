@@ -1,22 +1,20 @@
 import { Injectable }    from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { RequestService } from '../shared/request/request.service';
 
+// Others
+import { RequestService } from '../shared/request/request.service';
 import * as moment from 'moment';
 
 @Injectable()
 export class SessionService {
-  private targetUrl = 'api/sessions.json';
+  targetUrl = 'api/sessions.json';
 
-  constructor(private request: RequestService) {}
+  constructor(
+    public request: RequestService
+  ) {}
 
-  public getSessions() {
-
-    // let params: URLSearchParams = new URLSearchParams();
-    // params.set('activity_id', params.activity_id);
-
+  getSessions() {
     return this.request.get(this.targetUrl)
-      .map(response => response.json())
       .map(this._normalise)
       .toPromise();
   }
