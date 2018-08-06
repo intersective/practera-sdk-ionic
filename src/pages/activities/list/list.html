@@ -72,7 +72,7 @@
       (click)="goToDetail(activity)">
       <p col-7 class="activity-title" data-content-name>
         {{ activity.Activity.name }}
-        <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>
+        <i id="fingerPointer" *ngIf="activity.Activity.name == 'Newbie' && activities.length == 1" class="fa fa-hand-o-left shake" aria-hidden="true"></i>Click here
       </p>
 
       <rainbow-icons *ngIf="changeColor && changeColor[i]" col-3 class="ticks" [styling]="i" [colorings]="[changeColor[i][0], changeColor[i][1], changeColor[i][2], changeColor[i][3]]"></rainbow-icons>
