@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { EventService } from '../../services/event.service';
+import { CardHeightDirective } from './card-height.directive';
 
 import * as moment from 'moment';
 
@@ -10,7 +11,7 @@ import * as moment from 'moment';
 })
 export class EventComponent {
   @Input() event: any;
-
+  
   // Check event has been booked
   isBookedEvent(event) {
     return (event.isBooked === true && moment().isBefore(moment.utc(event.end).local()));

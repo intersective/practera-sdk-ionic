@@ -1,4 +1,4 @@
-<ion-content class="events">
+<ion-content class="events" data-track-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown"
       pullingText="Pull to refresh"
@@ -6,17 +6,17 @@
     </ion-refresher-content>
 	</ion-refresher>
 
-  <ion-grid>
+  <ion-grid data-track-name="Event filter">
     <ion-row>
       <ion-col col-12>
         <ion-segment [(ngModel)]="filter" color="palette-five">
-          <ion-segment-button value="browses" (ionSelect)="selected('browses')">
+          <ion-segment-button data-track-piece="Browse" value="browses" (ionSelect)="selected('browses')">
             {{ 'EVENTS.BROWSE' | translate }}
           </ion-segment-button>
-          <ion-segment-button value="my-bookings" (ionSelect)="selected('my-bookings')">
+          <ion-segment-button data-track-piece="my bookings" value="my-bookings" (ionSelect)="selected('my-bookings')">
             {{ 'EVENTS.MYBOOKINGS' | translate }}
           </ion-segment-button>
-          <ion-segment-button value="attended" (ionSelect)="selected('attended')">
+          <ion-segment-button  data-track-piece="attended" value="attended" (ionSelect)="selected('attended')">
             {{ 'EVENTS.ATTENDED' | translate }}
           </ion-segment-button>
         </ion-segment>
@@ -39,16 +39,16 @@
     <event *ngFor="let event of events; let i = index" [event]="event" (click)="view(event)" tappable></event>
   </ion-list>
 
-  <ion-fab right bottom #fab>
-    <button ion-fab color="palette-five" (click)="setIonFab($event, fab)">
+  <ion-fab right bottom #fab data-track-name="fab button">
+    <button data-track-piece="filter location" ion-fab color="palette-five" (click)="setIonFab($event, fab)">
       <p *ngIf="filterLocation">{{ filterLocation }}</p>
       <ion-icon *ngIf="filterLocation === null" name="pin"></ion-icon>
     </button>
     <ion-fab-list side="top">
       <button ion-fab *ngFor="let location of locations" (click)="selectedLocation(location.name, fab)">
-        <p>{{ location.code }}</p>
+        <p data-track-piece>{{ location.code }}</p>
       </button>
-      <button ion-fab (click)="selectedLocation(null, fab)">
+      <button data-track-piece="all" ion-fab (click)="selectedLocation(null, fab)">
         <p>All</p>
       </button>
     </ion-fab-list>

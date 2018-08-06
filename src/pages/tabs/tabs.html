@@ -1,9 +1,9 @@
-<ion-tabs selectedIndex="0" color="white" #myTabs scroll="false" no-bounce>
-  <ion-tab tabsHideOnSubPages="true" [root]="dashboard" tabTitle=" {{ 'TABS.DASHBOARD' | translate }}" tabIcon="md-list-box"></ion-tab>
-  <ion-tab tabsHideOnSubPages="true" [root]="events" tabTitle=" {{ 'TABS.EVENTS' | translate }}" tabIcon="md-calendar"></ion-tab>
-  <ion-tab tabsHideOnSubPages="true" [root]="ranking" tabTitle=" {{ 'TABS.RANKING' | translate }}" tabIcon="md-trophy"></ion-tab>
+<ion-tabs selectedIndex="0" color="white" #myTabs scroll="false" no-bounce data-track-content>
+  <ion-tab data-track-piece="dashboard" tabsHideOnSubPages="true" [root]="dashboard" tabTitle=" {{ 'TABS.DASHBOARD' | translate }}" tabIcon="md-list-box"></ion-tab>
+  <ion-tab data-track-piece="event" tabsHideOnSubPages="true" [root]="events" tabTitle=" {{ 'TABS.EVENTS' | translate }}" tabIcon="md-calendar"></ion-tab>
+  <ion-tab data-track-piece="ranking" tabsHideOnSubPages="true" [root]="ranking" tabTitle=" {{ 'TABS.RANKING' | translate }}" tabIcon="md-trophy"></ion-tab>
 
-  <ion-tab tabsHideOnSubPages="true"
+  <ion-tab data-track-piece="spinner" tabsHideOnSubPages="true"
     [root]="spinner"
     tabBadge="{{spins}}"
     tabTitle=" {{ 'TABS.SPINNER' | translate }}"
