@@ -8,14 +8,14 @@
     <ion-title>{{activityData.name}}</ion-title>
   </ion-navbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding data-track-content>
   <ion-list>
-    <h2>{{ activityData.name }}</h2>
+    <h2 data-track-name>{{ activityData.name }}</h2>
     <p>{{ activityData.description || 'No descriptions available.' }}</p>
   </ion-list>
   <ion-card *ngIf="activityData.video_url">
     <ion-card-content>
-      <video controls width="100%" height="100%">
+      <video data-content-piece controls width="100%" height="100%">
         <source src='{{activityData.video_url}}' autostart="false">
       </video>
     </ion-card-content>

@@ -111,7 +111,8 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { EscapeHtmlPipe } from '../pipes/keep-html.pipe';
 // unused but needed for build
 import { OrderByPipe } from '../pipes/OrderBy';
-
+// directives
+import { CardHeightDirective } from '../components/event/card-height.directive';
 // configs
 import { default as Configure } from '../configs/config';
 // AoT requires an exported function for factories
@@ -130,6 +131,7 @@ export function HttpLoaderFactory(http: Http) {
     AssessmentsGroupPage,
     AssessmentsPage,
     CutWithoutDotPipe,
+    CardHeightDirective,
     EventCheckinPage,
     EventComponent,
     EventsComponent,

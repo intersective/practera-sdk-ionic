@@ -28,9 +28,6 @@
     background-color: color($colors, dahsboard-bg, base) !important; // default-theme
     background-size: cover;
     text-align: center;
-    .score-board-inner {
-      height: 100%;
-    }
     .tittle-logo {
       color: #fff;
       font-size: 50px;
@@ -41,6 +38,12 @@
     }
     ion-row:last-child {
       background-color: color($colors, secondary);
+    }
+    ion-col:first-child {
+      padding: 6% 0 3%;
+    }
+    ion-col:last-child {
+      padding: 3% 0 6%;
     }
     ion-col {
       .score-inner-box {
@@ -66,7 +69,6 @@
           }
         }
       }
-
       .dashboard-logo {
         max-width: 80%;
         height: 86px;

@@ -53,7 +53,7 @@
     body {
       background: #ffffff;
     }
-    .main-container {
+    #main-container {
       position: absolute;
       top: 0;
       left: 0;
@@ -67,7 +67,7 @@
 </head>
 <body>
   <!-- Ionic's root component and where the app will load -->
-  <ion-app class="main-container"></ion-app>
+  <ion-app id="main-container"></ion-app>
   <!-- The polyfills js is generated during the build process -->
   <script src="build/polyfills.js"></script>
   <!-- The vendor js is generated during the build process
@@ -76,7 +76,9 @@
   <!-- The bundle js is generated during the build process -->
   <script src="build/main.js"></script>
   <script src="assets/js/filestack-0.6.2.js"></script>
+  <script src="assets/js/filestack.js"></script>
   <script type="text/javascript" src="assets/js/piwik.js"></script>
+  <script type="text/javascript" src="assets/js/newrelic.js"></script>
   <!-- Piwik -->
   <noscript>
     <p>

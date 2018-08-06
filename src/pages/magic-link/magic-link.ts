@@ -89,7 +89,7 @@ export class MagicLinkPage {
             this.milestone_id = data.data[0].id;
             this.cacheService.setLocalObject('milestone_id', data.data[0].id);
             loading.dismiss();
-            this.navCtrl.push(TabsPage).then(() => {
+            this.navCtrl.setRoot(TabsPage).then(() => {
               window.history.replaceState({}, '', window.location.origin);
             });
           },
