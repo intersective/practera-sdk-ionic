@@ -45,7 +45,7 @@
     "zone.js": "0.8.18"
   },
   "devDependencies": {
-    "@ionic/app-scripts": "3.0.0",
+    "@ionic/app-scripts": "^3.2.0",
     "@types/jasmine": "^2.5.47",
     "@types/node": "^7.0.13",
     "angular2-template-loader": "^0.6.2",
@@ -54,7 +54,7 @@
     "jasmine": "^3.1.0",
     "jasmine-core": "^3.1.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "karma": "^2.0.4",
+    "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-cli": "^1.0.1",
     "karma-coverage-istanbul-reporter": "^2.0.1",
@@ -64,7 +64,7 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^3.0.0",
     "null-loader": "^0.1.1",
-    "protractor": "^5.2.0",
+    "protractor": "^5.4.1",
     "ts-loader": "^2.3.7",
     "ts-node": "^3.3.0",
     "typescript": "2.3.4"
