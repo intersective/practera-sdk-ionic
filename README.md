@@ -12,37 +12,36 @@ Docs
 ## Requirements
 
 For development environment, here are mandatory utilities.
-    - __Npm (Nodejs)__ : Refer to https://nodejs.org/download/
-    - __Ionic v2__ : version 2.*
+  - __Npm (Nodejs)__ : Refer to https://nodejs.org/download/
+  - __Ionic v3__ : version 3++
 
 ## Setup Notes
 
 1. Install dependencies
-    ```shell
+    ```bash
     npm install -g ionic #install ionic-cli globally
     ```
-1. Make sure your ionic is running at v2 by `ionic -v`
-    ```shell
-    ionic -v
-    2.2.1 # example version number (> 2.2) from the command above
+1. Make sure your ionic is running at least v3 and above by running `ionic -v` command
+    ```bash
+    ionic -v # example version number (> 3) from the command above
     ```
 
-1. If you have problem installing ionic v2, please uninstall current version of ionic with the following and repeat the step 1 & 2 above again to install ionic v2 correctly.
-    ```shell
+1. If you have problem installing ionic, please uninstall current version of ionic with the following and repeat the step 1 & 2 above again to install ionic correctly.
+    ```bash
     npm uninstall -g ionic
     ```
 
-1. after git clone with `git clone git@github.com:jazzmind/practera-ionic.git`
+1. after git clone with `git clone git@github.com:intersective/practera-sdk-ionic.git`
 
-1. change directory into the project folder `cd practera-ionic`
+1. change directory into the project folder `cd practera-sdk-ionic`
 
 1. Install node dependencies
-    ```shell
+    ```bash
     npm install
     ```
 
 1. To run app locally
-    ```shell
+    ```bash
     ionic serve
     ```
 
@@ -83,3 +82,18 @@ For development environment, here are mandatory utilities.
             1. Get into `Preference` (use shortcut key `CMD + ,`)
             1. Select `Advanced`
             1. At the `Cached Web Content` click '[*Clear Now*]' button
+
+1. To clear npm cache, if you get prompted about `node-sass`, run command below
+    ```bash
+    npm rebuild node-sass
+    ```
+
+1. To make sure your npm package installed has the latest/match `package.json` dependencies correctly
+    ```bash
+    # reinstall after node_modules & npm cache cleared
+    rm -fr node_modules
+    rm -fr package-lock.json
+    npm cache clean --force
+    npm install
+    ```
+

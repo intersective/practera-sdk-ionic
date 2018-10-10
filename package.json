@@ -8,12 +8,10 @@
     "ionic_sass": "./config/sass.config.js"
   },
   "scripts": {
+    "start": "ionic-app-scripts serve",
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
-    "ionic:build": "npm run build",
-    "ionic:serve": "npm run serve",
-    "ionic:lint": "npm run lint",
     "test": "./node_modules/karma/bin/karma start ./test-config/karma.conf.js"
   },
   "repository": {
