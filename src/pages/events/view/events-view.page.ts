@@ -1,11 +1,11 @@
 import { Component, Output, EventEmitter } from '@angular/core';
-import { Tabs, 
-  NavParams, 
-  NavController, 
-  AlertController, 
-  LoadingController, 
-  ActionSheetController, 
-  ToastController, 
+import { Tabs,
+  NavParams,
+  NavController,
+  AlertController,
+  LoadingController,
+  ActionSheetController,
+  ToastController,
   PopoverController } from 'ionic-angular';
 import { loadingMessages, errMessages } from '../../../app/messages';
 import { TranslationService } from '../../../shared/translation/translation.service';
@@ -66,6 +66,12 @@ export class EventsViewPage {
     this.eventTag = navParams.get('tag');
   }
 
+  /**
+   * @name availability
+   * @description translate user-readable status text to booking status
+   * @param  {object} event
+   * @return {string}       booking status
+   */
   availability(event): string {
     let text = (event.remaining_capacity === 1) ? ' seat available' : ' seats available';
     return (event.isBooked)? terms.booked : event.remaining_capacity + text;
@@ -74,9 +80,12 @@ export class EventsViewPage {
   ionViewWillEnter() {
     this.submissions = []; // reset submissions
 
-    if (!this.event.References && this.event.activity.References) {
-      this.event.References = this.event.activity.References;
-    }
+    // refer to activity's References object if event's object isnt available.
+    // if assessment checkbox isn't linked in the practera web platform, should
+    // expect `Reference` object is missing from event object (2018_12_03)
+    // if (!this.event.References && this.event.activity.References) {
+    //   this.event.References = this.event.activity.References;
+    // }
 
     if (this.event.References) {
       this.event = Object.assign(this.event, this.extractAssessment(this.event.References));
@@ -116,7 +125,7 @@ export class EventsViewPage {
 
   /**
    * @name extractAssessment
-   * @description each event has only one assessment
+   * @description each event has only one assessment (get the very first object from the References array)
    * @param {Array} references References array response from get_activity API
    */
    extractAssessment(references: Array<any>) {
