@@ -183,7 +183,7 @@ export class AssessmentsPage {
     let accessible = true;
     let submitterAllowed = false;
 
-    if (question.audience.indexOf('submitter') !== -1) {
+    if (question.audience && question.audience.indexOf('submitter') !== -1) {
       submitterAllowed = true;
     }
 
