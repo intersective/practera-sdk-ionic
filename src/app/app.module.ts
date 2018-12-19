@@ -58,9 +58,12 @@ import { FeedbackComponent } from '../components/questions/feedback';
 import { RankIconComponent } from '../components/rank/icon';
 import { SegmentComponent } from '../components/segment/segment.component';
 import { PreviewComponent } from '../components/preview/preview.component';
+import { ReadonlyComponent } from '../components/readonly/readonly.component';
+
 // unused but necessary for build
 import { LevelsComponent } from '../components/levels/levels';
 import { QuestionComponent } from '../components/question/question.component';
+
 // pages
 import { ActivityAchievementModalPage } from '../pages/activities/view/activity-achievement.modal.page';
 import { AchievementsViewPage } from '../pages/achievements/view/achievements-view.page';
@@ -73,7 +76,6 @@ import { AssessmentsGroupPage } from '../pages/assessments/group/assessments-gro
 import { EventCheckinPage } from '../pages/events/checkin/event-checkin.page';
 import { EventsComponent } from '../components/events/events.component';
 import { EventsDownloadPage } from '../pages/events/download/events-download.page';
-import { EventsBookingPage } from '../pages/events/booking/booking.page';
 import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventTitlePopoverPage } from '../pages/events/view/event-title-popover.page';
@@ -140,7 +142,6 @@ export function HttpLoaderFactory(http: Http) {
     EventsPreviewPage,
     EventTitlePopoverPage,
     EventsViewPage,
-    EventsBookingPage,
     FeedbackComponent,
     RankIconComponent,
     FileQuestionComponent,
@@ -190,6 +191,7 @@ export function HttpLoaderFactory(http: Http) {
     TruncatePipe,
     UcfirstPipe,
     EscapeHtmlPipe,
+    ReadonlyComponent,
   ],
   imports: [
     BrowserModule,
@@ -308,6 +310,7 @@ export function HttpLoaderFactory(http: Http) {
     TermConditionPage,
     TutorialPage,
     TermContentComponent,
+    ReadonlyComponent
   ],
   providers: [
     { provide: AchievementService, useClass: AchievementService },

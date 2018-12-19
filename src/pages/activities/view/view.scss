@@ -32,6 +32,7 @@
 .toolbar-background-md {
   background: transparent;
 }
+
 .activity-detail {
   .pulse-button {
     border: none;
@@ -54,7 +55,7 @@
   @keyframes pulse {to {box-shadow: 0 0 0 15px rgba(232, 76, 61, 0);}}
 
   .scroll-content {
-    margin-top: 225px !important;
+    margin-top: 25rem !important;
   }
   &.header {
     background-color: color($colors, background, contrast);
@@ -92,25 +93,6 @@
       opacity: 0.5;
       filter: grayscale(100%);
     }
-  }
-  .question-mark-button {
-    position: relative;
-    top: 147px;
-    right: 0px;
-    left: -70px;
-    z-index: 10;
-    width: 30px;
-    height: 30px;
-    ion-icon[name="help"] {
-      color: color($colors, background, contrast);
-      font-size: 24pt;
-      font-weight: 600;
-    }
-  }
-  .add-submission {
-    position: relative;
-    top: 140px;
-    z-index: 10;
   }
   .submissions {
     ion-col {

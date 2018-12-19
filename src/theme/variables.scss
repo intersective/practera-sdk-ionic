@@ -126,7 +126,11 @@ $colors: (
   dahsboard-bg: (
     base: $dashboard-bg,
     contrast: $primary-bg
-  )
+  ),
+  warning: (
+    base: $secondary-palette-nine,
+    contrast: $secondary-bg
+  ),
 );
 
 // Small arrow color for list

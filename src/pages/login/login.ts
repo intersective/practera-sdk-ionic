@@ -83,13 +83,17 @@ export class LoginPage {
         // This part is calling post_auth() API from backend
         this.authService.loginAuth(this.email, this.password)
             .subscribe(data => {
+
               data = data.data;
               // this.getLogInData(data);
               self.cacheService.setLocalObject('apikey', data.apikey);
 
               // saved timeline id for later
+              const thisTimeline = data.Timelines[0];
               if (data.Timelines.length > 0) {
-                self.cacheService.setLocalObject('timelineID', data.Timelines[0].Timeline.id);
+                self.cacheService.setLocalObject('timelineID', thisTimeline.Timeline.id);
+                // to tell current enrolment status ('fullaccess'/'readonly')
+                self.cacheService.setLocalObject('enrolmentStatus', thisTimeline.Enrolment.status);
               }
               self.cacheService.setLocalObject('teams', data.Teams);
               self.cacheService.setLocal('gotNewItems', false);
