@@ -44,7 +44,6 @@ export class QuestionBase<T> {
   type: string;
   description: string;
   required: boolean;
-  audience: string | Array<any>;
   file_type?: string | any;
   choices?: ChoiceBase<any>[];
   answer?: any;
@@ -299,26 +298,6 @@ export class AssessmentService {
     }
   }
 
-  /**
-   * filter submission by:
-   * - "submitter" as audience
-   * - "submitter" as audience && status as "published"
-   * @name isAccessible
-   * @param {object} question Single normalised assessment
-   *                            object from this.normalise above
-   */
-  public isAccessible(question, status) {
-    let result = true;
-    if (question.audience.indexOf('submitter') === -1) {
-      result = false;
-    }
-
-    if (result && status === 'published') {
-      result = false;
-    }
-    return result;
-  }
-
   /*
     turn "AssessmentGroupQuestion" array format from:
     {
@@ -368,7 +347,6 @@ export class AssessmentService {
       group_id: question.assessment_group_id,
       name: thisQuestion.name,
       type: thisQuestion.question_type,
-      audience: thisQuestion.audience,
       description: thisQuestion.description,
       file_type: thisQuestion.file_type,
       required: thisQuestion.is_required,
@@ -429,24 +407,13 @@ export class AssessmentService {
   public getStatus(questionsResult, submissionResult): string {
     let questionsStatus = [];
     _.forEach(questionsResult, q => {
-      if (q.required && q.answer !== null) {
-        if (
-          q.reviewerAnswer !== null &&
+      // answer is available
+      if (q.answer !== null) {
+        const isReviewed = q.reviewerAnswer !== null &&
           submissionResult.status !== 'pending approval' &&
-          (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
-        ) {
-          questionsStatus.push('reviewed');
-        } else {
-          questionsStatus.push('completed');
-        }
-      }
+          (q.reviewerAnswer.answer || q.reviewerAnswer.comment);
 
-      if (!q.required && q.answer !== null) {
-        if (
-          q.reviewerAnswer !== null &&
-          submissionResult.status !== 'pending approval' &&
-          (q.reviewerAnswer.answer || q.reviewerAnswer.comment)
-        ) {
+        if (isReviewed) {
           questionsStatus.push('reviewed');
         } else {
           questionsStatus.push('completed');
@@ -456,17 +423,11 @@ export class AssessmentService {
       if (q.answer === null) {
         questionsStatus.push('incomplete');
       }
-
-      if(q.answer === null && q.audience == '["reviewer"]'){
-        questionsStatus.push('reviewed');
-      }
     });
 
-    // get final status by checking all questions' statuses
+    // get final status by checking all collected questions statuses
     let status = 'incomplete';
-    if (_.every(questionsStatus, (v) => {
-      return (v === 'completed');
-    })) {
+    if (_.every(questionsStatus, v => v === 'completed')) {
       status = 'completed';
     }
     if (_.includes(questionsStatus, 'reviewed')) {
