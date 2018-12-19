@@ -29,9 +29,12 @@ const hardcodeQuestionIDs = [21316, 21327, 21338, 21349, 21360, 21371, 20661]; /
 const portfolio_domain = 'assess/assessments/portfolio'; //for handling digital portfolio url
 // function of hardcode list data
 const HardcodeDataList = () => {
-  if(!(window.location.href.indexOf('pe.practera.com') > -1)){ // if not live server, then, go to sandbox hardcode list and pre-config data
+  const liveEndpoints = ['pe.practera.com', 'pe.rmit.edu.vn'];
+  this.appKey = appKey;
+
+  // if not live server, then, go to sandbox hardcode list and pre-config data
+  if (!liveEndpoints.includes(window.location.hostname)) {
     this.prefixUrl = 'https://sandbox.practera.com/';
-    this.appKey = '69ad1e66dc';
     this.achievementListIDs = [
       [349, 350, 347, 348],
       [345, 346, 343, 344],
@@ -56,9 +59,8 @@ const HardcodeDataList = () => {
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
     this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
-  }else {
+  } else { // use live endpoint
     this.prefixUrl = 'https://api.practera.com/';
-    this.appKey = '69ad1e66dc';
     this.achievementListIDs = [
       [355, 402, 353, 354],
       [351, 404, 349, 350],

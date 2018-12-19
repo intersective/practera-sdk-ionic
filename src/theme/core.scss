@@ -138,6 +138,10 @@ $title-font: 'Arvo';
   .toolbar-background-ios {
     background-color: color($colors, white, base);
   }
+  // have to hardcode, because previous toolbar-background-md/ios has overlapped everything
+  .warning .toolbar-background{
+    background-color: color($colors, warning, base) !important;
+  }
   .bar-button-default-md,
   .bar-button-default-ios,
   .toolbar-title-md,

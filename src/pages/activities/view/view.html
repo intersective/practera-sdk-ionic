@@ -1,4 +1,5 @@
 <ion-header class="activity-detail activity-badge-bg-{{ activityIndex }}" data-track-content>
+  <readonly></readonly>
   <ion-navbar>
     <ion-title data-track-name>{{ activity.name }}</ion-title>
     <ion-buttons end *ngIf="activity.description">
@@ -8,20 +9,35 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-list class="header-content ">
-    <ion-grid>
-      <ion-row>
-        <ion-col col-12 class="activity-badge">
-          <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge 1"/>
-          <img *ngIf="activityIndex > 1"
-            src="./assets/img/badges/badge{{ activityIndex }}.svg"
-            alt="Activity Badge {{ activityIndex }}"/>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-fab top right edge *ngIf="false">
+        <button ion-fab class="question-mark-button" color="dark" mini>
+          <ion-icon name="help" color="secondary"></ion-icon>
+        </button>
+      </ion-fab>
+    </ion-row>
+    <ion-row>
+      <ion-col col-12 class="activity-badge">
+        <img *ngIf="activityIndex == 1" src="{{ logo_act1 }}" alt="Activity Badge 1"/>
+        <img *ngIf="activityIndex > 1"
+          src="./assets/img/badges/badge{{ activityIndex }}.svg"
+          alt="Activity Badge {{ activityIndex }}"/>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && allowSubmission(assessment, submissions)">
+          <button ion-fab class="primary-button add-submission" [ngClass]="submissions.length > 0 ? '' : 'pulse-button'" (click)="goAssessment()">
+            <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
+          </button>
+        </ion-fab>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-header>
-<ion-content no-bounce padding class="activity-detail">
+
+<ion-content class="activity-detail" no-bounce padding>
   <ion-list class="medals-display">
     <ion-row>
       <p class="medal-statistics">{{ tickedCount }} OF {{ ticksLength }} MEDALS</p>
@@ -47,17 +63,6 @@
     </ion-row>
   </ion-list>
 
-  <ion-fab top right edge *ngIf="false">
-    <button ion-fab class="question-mark-button" color="dark" mini>
-      <ion-icon name="help" color="secondary"></ion-icon>
-    </button>
-  </ion-fab>
-
-  <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && allowSubmission(assessment, submissions)">
-    <button ion-fab class="primary-button add-submission" [ngClass]="submissions.length > 0 ? '' : 'pulse-button'" (click)="goAssessment()">
-      <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
-    </button>
-  </ion-fab>
   <!--This piece of code needs to be keot in case changing back -->
   <!-- <ion-list class="badges spacer-top-lg" *ngIf="activity.badges">
     <ion-slides pager>
