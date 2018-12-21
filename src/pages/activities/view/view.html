@@ -30,7 +30,7 @@
         <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && allowSubmission(assessment, submissions)">
           <button ion-fab
             class="primary-button add-submission"
-            [ngClass]="(submissions.length > 0 && !isReadonly) ? '' : 'pulse-button'"
+            [ngClass]="(submissions.length > 0 || isReadonly) ? '' : 'pulse-button'"
             (click)="goAssessment()"
             [disabled]="isReadonly"
             >
