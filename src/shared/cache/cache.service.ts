@@ -126,4 +126,14 @@ export class CacheService {
   public clearLocal(cb): any {
     return cb(this.localStorage.clear());
   }
+
+  /**
+   * @name isReadonly
+   * @description check wheter current enrolment has 'fullaccess' or 'readonly'
+   * @return {boolean} readonly status
+   */
+  public isReadonly(): boolean {
+    const readonly = this.getLocalObject('enrolmentStatus');
+    return (readonly === 'readonly');
+  }
 }

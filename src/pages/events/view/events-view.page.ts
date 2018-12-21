@@ -47,6 +47,7 @@ export class EventsViewPage {
   public cancelBookingErrMessage: any = errMessages.Events.cancelBooking.cancel;
   public completedSubmissions: boolean = false;
   public submissions: Array<any> = [];
+  public isReadonly: boolean = false;
 
   constructor(
     private navParams: NavParams,
@@ -78,6 +79,8 @@ export class EventsViewPage {
   }
 
   ionViewWillEnter() {
+    this.isReadonly = this.cache.isReadonly();
+
     this.submissions = []; // reset submissions
 
     // refer to activity's References object if event's object isnt available.
