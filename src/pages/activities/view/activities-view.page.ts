@@ -13,6 +13,8 @@ import { AssessmentsPage } from '../../assessments/assessments.page';
 import { AchievementService } from '../../../services/achievement.service';
 import { ActivityService } from '../../../services/activity.service';
 import { SubmissionService } from '../../../services/submission.service';
+import { CacheService } from '../../../shared/cache/cache.service';
+
 @Component({
   templateUrl: './view.html'
 })
@@ -47,7 +49,11 @@ export class ActivitiesViewPage {
   public loadings = {
     submissions: false
   };
+  public isReadonly: boolean = false;
+
   initialised_eset() {
+    this.isReadonly = this.cache.isReadonly();
+
     this.findAchievementObj = [];
     this.achievementData = [];
     this.newTickIDsArray = [];
@@ -67,7 +73,8 @@ export class ActivitiesViewPage {
     private achievementService: AchievementService,
     private activityService: ActivityService,
     private submissionService: SubmissionService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private cache: CacheService
   ) {
     this.portfolioView = this.navParams.get('portfolioView');
   }
