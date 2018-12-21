@@ -28,7 +28,12 @@
     <ion-row>
       <ion-col>
         <ion-fab top right edge *ngIf="!loadings.submissions && portfolioView == false && allowSubmission(assessment, submissions)">
-          <button ion-fab class="primary-button add-submission" [ngClass]="submissions.length > 0 ? '' : 'pulse-button'" (click)="goAssessment()">
+          <button ion-fab
+            class="primary-button add-submission"
+            [ngClass]="(submissions.length > 0 || isReadonly) ? '' : 'pulse-button'"
+            (click)="goAssessment()"
+            [disabled]="isReadonly"
+            >
             <ion-icon name="add" color="black" id="submissionIcon"></ion-icon>
           </button>
         </ion-fab>

@@ -90,6 +90,12 @@ export class LoginPage {
 
               // saved timeline id for later
               const thisTimeline = data.Timelines[0];
+
+              // if no timeline available (throw error)
+              if (!thisTimeline) {
+                throw "Current student hasn't enrolled in any timeline.";
+              }
+
               if (data.Timelines.length > 0) {
                 self.cacheService.setLocalObject('timelineID', thisTimeline.Timeline.id);
                 // to tell current enrolment status ('fullaccess'/'readonly')
