@@ -34,7 +34,7 @@ const HardcodeDataList = () => {
 
   // if not live server, then, go to sandbox hardcode list and pre-config data
   if (!liveEndpoints.includes(window.location.hostname)) {
-    this.prefixUrl = 'https://sandbox.practera.com/';
+    this.prefixUrl = 'https://stage-test.practera.com/';
     this.achievementListIDs = [
       [349, 350, 347, 348],
       [345, 346, 343, 344],
@@ -58,7 +58,7 @@ const HardcodeDataList = () => {
     this.hardcode_activity_id = 7655;
     this.hardcodeAssessmentIds = [2066, 2067, 2068, 2069, 2070, 2071, 2050];
     this.hardcodeQuestionIDs = [20775, 20785, 20795, 20805, 20815, 20825, 20661];
-    this.portfolio_domain = `https://sandbox.practera.com/${portfolio_domain}`;
+    this.portfolio_domain = `https://stage-test.practera.com/${portfolio_domain}`;
   } else { // use live endpoint
     this.prefixUrl = 'https://api.practera.com/';
     this.achievementListIDs = [
