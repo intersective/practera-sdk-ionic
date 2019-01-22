@@ -65,31 +65,35 @@ export class RequestService {
     return Observable.throw(currentError);
   }
   // Inject required fields to header of API request
-  appendHeader(customHeader: any = {
-    'contentType': 'application/json',
-    'apikey': null
-  }): HttpHeaders {
-    let result:any;
-    let headers = new HttpHeaders();
-    result = headers.set('Content-Type', customHeader.contentType);
+  appendHeader(custom: object = {}): HttpHeaders {
+    // Define default header
+    custom = _.merge({
+      'content-type': 'application/json'
+    }, custom);
+
+    let header: HttpHeaders = new HttpHeaders();
+
+    _.forEach(custom, (value, key) => {
+      header = header.set(key, _.toString(value));
+    });
+
     // Inject apiKey from cached
-    let apiKey = this.cacheService.getCached('apikey') ||
-      this.cacheService.getLocal('apikey');
+    let apiKey = this.cacheService.getLocal('apikey');
     if (!_.isEmpty(apiKey)) {
-      result = result.set('apikey', apiKey.toString());
+      header = header.set('apikey', _.toString(apiKey));
     }
     // Inject timelineID from cached
-    let timelineId = this.cacheService.getCached('timelineID') ||
-      this.cacheService.getLocal('timelineID');
+    let timelineId = this.cacheService.getLocal('timelineID');
     if (timelineId) {
-      result = result.set('timelineID', timelineId.toString());
+      header = header.set('timelineID', _.toString(timelineId));
     }
-    return result;
+
+    return header;
   }
   // Set API request options
   setOptions(options?): {
     headers?: HttpHeaders;
-    observe?: "body";
+    observe?: 'body';
     params?: HttpParams;
     reportProgress?: boolean;
     withCredentials?: boolean;
@@ -100,7 +104,7 @@ export class RequestService {
     let params = (options && options.params) ? options.params : new HttpParams();
     if (options && options.search) {
       _.each(options.search, (value, key) => {
-        params = params.set(key, value.toString());
+        params = params.set(key, _.toString(value));
       });
     }
     let timelineId = this.cacheService.getLocal('timelineID');
@@ -132,10 +136,8 @@ export class RequestService {
    * @param {Object} header
    */
   post(endPoint: string, data: any, header?: any) {
-    let headers = this.appendHeader();
-    // @TODO: make sure if Content-Type is optional
-    headers = headers.delete('Content-Type');
-    headers = headers.set('Content-Type', 'application/x-www-form-urlencoded');
+    let headers = this.appendHeader(header);
+
     return this.http.post(this.prefixUrl + endPoint, data, { headers })
       .map(this.extractData)
       .catch(this.handleError);

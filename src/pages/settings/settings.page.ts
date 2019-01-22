@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
-import { App, NavController, MenuController, LoadingController } from 'ionic-angular';
+import { App, NavController, MenuController, LoadingController, AlertController } from 'ionic-angular';
 // services
 import { CacheService } from '../../shared/cache/cache.service';
+import { GameService } from '../../services/game.service';
 // pages
-import { LeaderboardSettingsPage } from '../settings/leaderboard/leaderboard-settings.page';
 import { LoginPage } from '../../pages/login/login';
 import { TutorialPage } from '../settings/tutorial/tutorial.page';
 import { TermsConditionsPage } from '../registration/terms-conditions/terms-conditions.page';
 // Others
 import { TranslationService } from '../../shared/translation/translation.service';
-import { loadingMessages, errMessages } from '../../app/messages';
+import { loadingMessages } from '../../app/messages';
 
 @Component({
   selector: 'settings-page',
@@ -17,34 +17,120 @@ import { loadingMessages, errMessages } from '../../app/messages';
 })
 export class SettingsPage {
   helpline: string = "help@practera.com";
+  hideName: boolean = false;
   logoutMessage: any = loadingMessages.Logout.logout;
   settings: any = [];
+  isLock: boolean = false;
+  pageLoad: boolean = true;
   constructor(
     public appCtrl: App,
+    public alertCtrl: AlertController,
+    public cacheService: CacheService,
+    public gameService: GameService,
     public loadingCtrl: LoadingController,
     public menuCtrl: MenuController,
     public navCtrl: NavController,
-    public cache: CacheService,
-    public translationService: TranslationService) {}
+    public translationService: TranslationService,
+  ) {}
+
+  ionViewWillEnter(){
+    this.pageLoad = true;
+    this.preload();
+  }
+
+  preload() {
+    const loading = this.loadingCtrl.create({
+      content: 'Loading'
+    });
+    loading.present();
+
+    let gameId = this.cacheService.getLocal('game_id');
+    this.gameService.getCharacters(gameId)
+      .subscribe((characters) => {
+        let me = characters.Characters[0];
+        if (me.meta == null) {
+          this.hideName = false;
+        }
+        if (me.meta != null){
+          if (me.meta.private === 0) {
+            this.hideName = false;
+          } else {
+            this.hideName = true;
+          }
+        }
+        loading.dismiss();
+      }, (err) => {
+        loading.dismiss();
+      });
+  }
+
+  triggerHideName() {
+    if (this.pageLoad) {
+      this.pageLoad = false;
+      return false;
+    }
+
+    if (this.isLock) {
+      this.isLock = false;
+    } else {
+      const showAlert = (msg) => {
+        let alert = this.alertCtrl.create({
+          subTitle: msg,
+          buttons: ['OK']
+        });
+        alert.present();
+      }
+
+      const loader = this.loadingCtrl.create({
+        content: 'Updating'
+      });
+
+      loader.present().then(() => {
+        this.isLock = true;
+        this.gameService.postCharacter({
+          Character: {
+            id: this.cacheService.getLocal('character_id'),
+            meta: {
+              private: (this.hideName) ? 1 : 0
+            }
+          }
+        })
+        .subscribe((result) => {
+          this.isLock = false;
+          loader.dismiss();
+          let msg = 'You name will now be hidden if in the ranking';
+          if (!this.hideName) {
+            msg = 'Your name will now be displayed if in the ranking';
+          }
+          showAlert(msg);
+        }, (err) => {
+          this.hideName = !this.hideName;
+          showAlert('Unabled to change your privacy setting.');
+          loader.dismiss();
+        });
+      });
+    }
+  }
+
   getUserEmail() {
-    return this.cache.getLocal('email') || '';
+    return this.cacheService.getLocal('email') || '';
   }
-  goLeaderBoardSettings(){
-    this.navCtrl.push(LeaderboardSettingsPage);
-  }
+
   goToTutorial() {
     this.navCtrl.push(TutorialPage);
   }
+
   goToTermConditions() {
     this.navCtrl.push(TermsConditionsPage);
   }
+
   logout() {
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
       content: this.logoutMessage
     });
     loader.present().then(() => {
-      this.cache.clear().then(() => {
+      this.cacheService.clear().then(() => {
         loader.dismiss();
         this.navCtrl.push(LoginPage);
         localStorage.clear();

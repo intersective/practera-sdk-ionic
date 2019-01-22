@@ -51,7 +51,7 @@ export class EventService {
    * @param {integer} eventId single event id
    */
   bookEvent(eventId) {
-    return this.request.post(this.bookEventUrl, { event_id: eventId});
+    return this.request.post(this.bookEventUrl, { event_id: eventId });
   }
 
   cancelEventBooking(eventId){

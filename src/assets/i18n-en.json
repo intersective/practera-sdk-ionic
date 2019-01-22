@@ -45,9 +45,9 @@
   "RANKING": {
     "DETAIL": "Ranking Details",
     "ME": "Me",
-    "MONTHLYPOINTS": "Points(Monthly)",
-    "PAGETITLE": "Leaderboard",
-    "TOTALPOINTS": "Points(Total)"
+    "MONTHLYPOINTS": "Points (Monthly)",
+    "PAGETITLE": "Ranking (Monthly)",
+    "TOTALPOINTS": "Points (Total)"
   },
   "RESETPASSWORD": {
     "PAGETITLE": "Reset Password"
