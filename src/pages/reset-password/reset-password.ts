@@ -6,7 +6,7 @@ import { AlertController,
          NavParams,
          ViewController } from 'ionic-angular';
 import { FormBuilder, Validators } from '@angular/forms';
-import { loadingMessages, errMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 
@@ -165,7 +165,7 @@ export class ResetPasswordPage implements OnInit {
                       }
                       this.navCtrl.setRoot(TabsPage).then(() => {
                         this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                        window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                        window.history.replaceState({}, '', window.location.origin); // reformat current url
                       });
                     });
                   },
@@ -196,7 +196,7 @@ export class ResetPasswordPage implements OnInit {
   logError(error) {
     const alertLogin = this.alertCtrl.create({
       title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.', 
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alertLogin.present();

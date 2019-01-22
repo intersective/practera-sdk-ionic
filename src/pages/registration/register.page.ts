@@ -1,7 +1,7 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, LoadingController, NavController, NavParams, ModalController, ViewController } from 'ionic-angular';
-import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages'; 
+import { loadingMessages, errMessages, generalVariableMessages } from '../../app/messages';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
 import 'rxjs/add/operator/map';
@@ -122,7 +122,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
     });
     if (!decodeURIComponent(this.navParams.get('email')) || !this.navParams.get('key')) {
       this.displayError();
-    } 
+    }
     else {
       loading.present().then(() => {
         let email = decodeURIComponent(this.navParams.get('email')),
@@ -139,7 +139,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                 this.cacheService.setLocal('user.registration_key', key);
                 this.cacheService.setLocal('user.id', res.User.id);
               });
-            }, 
+            },
             err => {
               loading.dismiss().then(() => {
                 this.displayError(err.msg);
@@ -178,7 +178,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
           case 'User already registered':
             message = this.registeredErrMessage;
           break;
-          default: 
+          default:
             message = this.registrationErrMessage + supportEmail;
           break;
         }
@@ -238,7 +238,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
                           }
                           this.navCtrl.setRoot(TabsPage).then(() => {
                             this.viewCtrl.dismiss(); // close the login modal and go to dashaboard page
-                            window.history.replaceState({}, '', window.location.origin); // reformat current url 
+                            window.history.replaceState({}, '', window.location.origin); // reformat current url
                           });
                         });
                       },
@@ -261,7 +261,7 @@ export class RegisterPage implements OnInit { // this part of registration is fo
   logError(error){
     const alert = this.alertCtrl.create({
       title: 'Error Message',
-      message: 'Oops, loading failed, please try it again later.', 
+      message: 'Oops, loading failed, please try it again later.',
       buttons: ['Close']
     });
     alert.present();
