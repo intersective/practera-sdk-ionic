@@ -29,11 +29,13 @@ export class ItemsPopupPage {
     public viewCtrl: ViewController
   ) {}
 
-  ionViewWillEnter() {
+  ionViewWillEnter(){
     this.combinedData = this.cacheService.getLocal('allNewItems');
   }
 
-  // close disbaled activity popup
+  /**
+   * @description close disbaled activity popup
+   */
   closeModal() {
     this.viewCtrl.dismiss();
     this.navCtrl.setRoot(TabsPage);
