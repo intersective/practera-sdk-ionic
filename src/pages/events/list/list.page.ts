@@ -177,10 +177,6 @@ export class EventsListPage {
 
     return result;
   }
-  // Check event allow to check-in
-  allowCheckIn(event) {
-    return (moment(event.start).isAfter() && moment(event.end).isBefore());
-  }
 
   view(event) {
     this.navCtrl.push(EventsViewPage, {

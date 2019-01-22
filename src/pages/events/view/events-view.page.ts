@@ -180,14 +180,22 @@ export class EventsViewPage {
   /**
    * @note existence of References array determines if an event is
    *       a checkin type
-   * @description examine event to allow check in
+   * @description examine event contain reference, because we need context ID
    * @param {Object} event
    */
-  allowCheckIn(event) {
+  hasReference(event) {
     if (event.References && event.References.length > 0) {
       return true;
     }
     return false;
+  }
+
+  /**
+   * @description examine event to allow check in
+   * @param {Object} event
+   */
+  allowCheckIn(event) {
+    return moment().isAfter(moment(event.start));
   }
 
   /**

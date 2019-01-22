@@ -10,32 +10,46 @@ import * as moment from 'moment';
 @Injectable()
 export class EventService {
   bookEventUrl = 'api/book_events.json';
+  targetUrl = 'api/events.json';
 
   constructor(
     public cache: CacheService,
     public request: RequestService
   ) {}
 
-  getEvents(options: object = {}) {
-    return this.request.get('api/events.json', {
-        search: _.merge({ type: 'session' }, options)
-      })
-      .map(this._normalise)
-      .toPromise();
-  }
-
+  /**
+   * @description Normalise event
+   * @param {[events]} events data from API
+   */
   _normalise(events) {
     _.forEach(events, (event, idx) => {
       events[idx].isAttended = (event.isBooked === true && moment().isAfter(moment(event.end)));
       // We assume server datetime response is UTC...
       events[idx].startDisplay = moment.utc(event.start).local().format("dddd, MMM D [at] h:mm A");
+      events[idx].startDisplayDate = moment.utc(event.start).local().format("dddd, MMM D");
+      events[idx].startDisplayTime = moment.utc(event.start).local().format("h:mm A");
+      events[idx].endDisplay = moment.utc(event.end).local().format("dddd, MMM D [at] h:mm A");
+      events[idx].endDisplayDate = moment.utc(event.end).local().format("dddd, MMM D");
+      events[idx].endDisplayTime = moment.utc(event.end).local().format("h:mm A");
     });
 
     return events;
   }
 
   /**
-   * download attachment by single event object
+   * @description Get events data
+   * @param {object} options
+   */
+  getEvents(options: object = {}) {
+    return this.request.get(this.targetUrl, {
+        search: _.merge({ type: 'session' }, options)
+      })
+      .map(this._normalise)
+      .toPromise();
+  }
+
+  /**
+   * @description download attachment by single event object
    * @param {[type]} event [description]
    */
 
@@ -47,14 +61,29 @@ export class EventService {
   }
 
   /**
-   * get event using observable
+   * @description get event using observable
    * @param {integer} eventId single event id
    */
+
   bookEvent(eventId) {
     return this.request.post(this.bookEventUrl, { event_id: eventId});
   }
 
-  cancelEventBooking(eventId){
+  /**
+   * @description cancel booked event
+   * @param {integer} eventId single event id
+   */
+
+  cancelEventBooking(eventId) {
     return this.request.delete(this.bookEventUrl + '?event_id=' + eventId);
+  }
+
+  /**
+   * @description Get session events
+   * @param {[integer]} activityIDs
+   */
+
+  getUserEvents(activityIDs) {
+    return this.request.get(this.targetUrl+`?type=session&activity_id=[${activityIDs}]`);
   }
 }

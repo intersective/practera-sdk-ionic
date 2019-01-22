@@ -14,6 +14,7 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 import { i18nData } from './assets/i18n-en';
+import { AppConfigModule } from '../shared/app-config/app-config.module';
 import { TranslationModule } from '../shared/translation/translation.module';
 import { MomentModule } from 'angular2-moment';
 import { WindowRef } from '../shared/window';
@@ -63,7 +64,7 @@ import { EventsListPage } from '../pages/events/list/list.page';
 import { EventsPreviewPage } from '../pages/events/download/events-preview.page';
 import { EventsViewPage } from '../pages/events/view/events-view.page';
 import { ForgetPasswordPage } from '../pages/forget-password/forget-password';
-import { GalleryPage } from '../pages/gallery/gallery';
+import { GalleryPage } from '../pages/gallery/gallery.page';
 import { ItemsPopupPage } from '../pages/assessments/popup/items-popup.page';
 import { LeaderboardSettingsPage } from '../pages/settings/leaderboard/leaderboard-settings.page';
 import { LevelsListPage } from '../pages/levels/list/list';
@@ -77,7 +78,7 @@ import { ResetPasswordPage } from '../pages/reset-password/reset-password';
 import { SettingsPage } from '../pages/settings/settings.page';
 import { SidenavPage } from '../pages/sidenav/sidenav';
 import { TabsPage } from '../pages/tabs/tabs.page';
-import { TeamPage } from '../pages/team/team';
+import { TeamPage } from '../pages/team/team.page';
 import { TermsConditionsPage } from '../pages/registration/terms-conditions/terms-conditions.page';
 import { TestPage } from '../pages/tabs/test.page';
 import { TutorialPage } from '../pages/settings/tutorial/tutorial.page';
@@ -147,6 +148,7 @@ export function createTranslateLoader(http: HttpClient) {
     EscapeHtmlPipe,
   ],
   imports: [
+    AppConfigModule,
     BrowserModule,
     CacheModule,
     FormsModule,
